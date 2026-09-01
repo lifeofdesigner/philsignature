@@ -41,3 +41,4 @@ export const useModal = (): ModalContextType => {
   }
   return context;
 };
+

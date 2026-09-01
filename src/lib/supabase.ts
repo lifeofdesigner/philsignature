@@ -23,3 +23,4 @@ export const isSupabaseConfigured = (): boolean => {
     !env.VITE_SUPABASE_ANON_KEY.includes('placeholder')
   );
 };
+

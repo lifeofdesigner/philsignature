@@ -265,3 +265,4 @@ export interface ActivityLog {
   details: Record<string, unknown> | null;
   created_at: string;
 }
+

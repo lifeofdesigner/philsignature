@@ -40,3 +40,4 @@
 - Public `SELECT` enabled for `published` products, categories, collections, approved reviews, active shipping methods, and published CMS content.
 - Authenticated customer access restricted to their own orders, profile, wishlist, and addresses (`auth.uid() = customer_id`).
 - Admin write and update privileges restricted to verified `staff` or `super_admin` roles via secure PostgreSQL functions.
+

@@ -66,3 +66,4 @@ src/
 - **Protected Customer Routes**: `/account/*` requires active Supabase session.
 - **Protected Admin Routes**: `/admin/*` requires role `super_admin` or `staff`.
 - **Developer Backdoor**: `/developer/bootstrap` strictly guarded by passphrase validation, environment toggle, and local host verification.
+

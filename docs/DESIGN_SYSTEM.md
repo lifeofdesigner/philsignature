@@ -30,3 +30,4 @@ Inspired by **Dior, Tom Ford, Byredo, and Jo Malone**, PHILZ SIGNATURE embodies 
 - Minimal border radii (`rounded-none` to `rounded-sm`) to preserve crisp luxury bottle geometry.
 - Hairline borders (`border border-luxury-border/60`).
 - Subtle amber/gold glow effects (`shadow-[0_0_20px_rgba(197,168,128,0.08)]`).
+

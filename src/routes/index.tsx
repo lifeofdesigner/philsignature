@@ -5,51 +5,49 @@ import { StoreShell } from '@/components/layouts/StoreShell';
 import { CustomerShell } from '@/components/layouts/CustomerShell';
 import { AdminShell } from '@/components/layouts/AdminShell';
 
-// Storefront Pages
-import { HomePage } from '@/pages/storefront/HomePage';
-import { ShopPage } from '@/pages/storefront/ShopPage';
-import { CollectionsPage } from '@/pages/storefront/CollectionsPage';
-import { ProductDetailPage } from '@/pages/storefront/ProductDetailPage';
-import { AboutPage } from '@/pages/storefront/AboutPage';
-import { ContactPage } from '@/pages/storefront/ContactPage';
-import { FaqPage } from '@/pages/storefront/FaqPage';
-import { CartPage } from '@/pages/storefront/CartPage';
-import { CheckoutPage } from '@/pages/storefront/CheckoutPage';
-import { WishlistPage } from '@/pages/storefront/WishlistPage';
-import { TrackOrderPage } from '@/pages/storefront/TrackOrderPage';
+// Storefront Feature Pages
+import { HomePage } from '@/features/storefront/home';
+import { ShopPage } from '@/features/storefront/shop';
+import { CollectionsPage } from '@/features/storefront/collections';
+import { ProductDetailPage } from '@/features/storefront/product';
+import { AboutPage } from '@/features/storefront/about';
+import { ContactPage } from '@/features/storefront/contact';
+import { FaqPage } from '@/features/storefront/faq';
+import { CartPage } from '@/features/storefront/cart';
+import { CheckoutPage } from '@/features/storefront/checkout';
+import { WishlistPage } from '@/features/storefront/wishlist';
+import { TrackOrderPage } from '@/features/storefront/tracking';
+import { CustomerLoginPage, CustomerSignupPage, ForgotPasswordPage } from '@/features/storefront/auth';
 
-// Customer Pages
-import { CustomerLoginPage } from '@/pages/customer/CustomerLoginPage';
-import { CustomerSignupPage } from '@/pages/customer/CustomerSignupPage';
-import { ForgotPasswordPage } from '@/pages/customer/ForgotPasswordPage';
-import { CustomerDashboardPage } from '@/pages/customer/CustomerDashboardPage';
-import { CustomerOrdersPage } from '@/pages/customer/CustomerOrdersPage';
-import { CustomerAddressesPage } from '@/pages/customer/CustomerAddressesPage';
-import { CustomerProfilePage } from '@/pages/customer/CustomerProfilePage';
+// Customer Feature Pages
+import { CustomerDashboardPage } from '@/features/customer/dashboard';
+import { CustomerOrdersPage } from '@/features/customer/orders';
+import { CustomerAddressesPage } from '@/features/customer/addresses';
+import { CustomerProfilePage } from '@/features/customer/profile';
 
-// Admin Pages
-import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage';
-import { AdminProductsPage } from '@/pages/admin/AdminProductsPage';
-import { AdminCollectionsPage } from '@/pages/admin/AdminCollectionsPage';
-import { AdminCategoriesPage } from '@/pages/admin/AdminCategoriesPage';
-import { AdminOrdersPage } from '@/pages/admin/AdminOrdersPage';
-import { AdminCustomersPage } from '@/pages/admin/AdminCustomersPage';
-import { AdminCmsPage } from '@/pages/admin/AdminCmsPage';
-import { AdminMediaPage } from '@/pages/admin/AdminMediaPage';
-import { AdminCouponsPage } from '@/pages/admin/AdminCouponsPage';
-import { AdminReviewsPage } from '@/pages/admin/AdminReviewsPage';
-import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
-import { AdminShippingPage } from '@/pages/admin/AdminShippingPage';
-import { AdminAnalyticsPage } from '@/pages/admin/AdminAnalyticsPage';
-import { AdminUsersPage } from '@/pages/admin/AdminUsersPage';
-import { AdminSettingsPage } from '@/pages/admin/AdminSettingsPage';
-import { AdminSeoPage } from '@/pages/admin/AdminSeoPage';
+// Admin Feature Pages
+import { AdminDashboardPage } from '@/features/admin/dashboard';
+import { AdminProductsPage } from '@/features/admin/products';
+import { AdminCollectionsPage } from '@/features/admin/collections';
+import { AdminCategoriesPage } from '@/features/admin/categories';
+import { AdminOrdersPage } from '@/features/admin/orders';
+import { AdminCustomersPage } from '@/features/admin/customers';
+import { AdminCmsPage } from '@/features/admin/cms';
+import { AdminMediaPage } from '@/features/admin/media';
+import { AdminCouponsPage } from '@/features/admin/coupons';
+import { AdminReviewsPage } from '@/features/admin/reviews';
+import { AdminPaymentsPage } from '@/features/admin/payments';
+import { AdminShippingPage } from '@/features/admin/shipping';
+import { AdminAnalyticsPage } from '@/features/admin/analytics';
+import { AdminUsersPage } from '@/features/admin/users';
+import { AdminSettingsPage } from '@/features/admin/settings';
+import { AdminSeoPage } from '@/features/admin/seo';
 
-// Developer & Fallback Pages
-import { DeveloperBootstrapPage } from '@/pages/developer/DeveloperBootstrapPage';
-import { NotFoundPage } from '@/pages/NotFoundPage';
-import { UnauthorizedPage } from '@/pages/UnauthorizedPage';
-import { MaintenancePage } from '@/pages/MaintenancePage';
+// Developer & System Fallback Feature Pages
+import { DeveloperBootstrapPage } from '@/features/developer/bootstrap';
+import { NotFoundPage } from '@/features/system/not-found';
+import { UnauthorizedPage } from '@/features/system/unauthorized';
+import { MaintenancePage } from '@/features/system/maintenance';
 
 export const router = createBrowserRouter([
   // Public Storefront Routes

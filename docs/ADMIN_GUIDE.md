@@ -26,3 +26,4 @@ The admin panel is purpose-built for luxury brand managers and store operators.
 14. **Users & Roles**: Team members, permissions, deactivation.
 15. **Settings**: Store profile, WhatsApp concierge, currency, tax rates, timezone.
 16. **SEO**: Page-by-page meta titles, descriptions, social share cards.
+

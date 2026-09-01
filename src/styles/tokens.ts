@@ -33,3 +33,4 @@ export const luxuryTokens = {
     goldGlow: '0 0 25px rgba(197, 168, 128, 0.12)',
   },
 } as const;
+
