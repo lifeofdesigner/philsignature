@@ -75,15 +75,10 @@ Welcome to the central architectural, technical, and engineering documentation r
 - [Phase 1: Foundation & Tooling](implementation/PHASE_1_FOUNDATION.md)
 - [Phase 2: Database Schema & Seeds](implementation/PHASE_2_DATABASE_SCHEMA.md)
 - [Phase 3: Auth, RBAC & Bootstrap](implementation/PHASE_3_AUTH_RBAC_BOOTSTRAP.md)
-- [Phase 4: Storefront & Catalog](implementation/PHASE_4_STOREFRONT_CATALOG.md)
+- [Phase 4: Storefront & Catalog Implementation Plan](implementation/PHASE_4_IMPLEMENTATION_PLAN.md)
 - [Phase 5: Checkout & Payments](implementation/PHASE_5_CHECKOUT_PAYMENTS_ORDERS.md)
 - [Phase 6: Customer Portal](implementation/PHASE_6_CUSTOMER_PORTAL.md)
 - [Phase 7: Admin Core E-Commerce](implementation/PHASE_7_ADMIN_CORE_ECOMMERCE.md)
 - [Phase 8: Admin Visual CMS & Media](implementation/PHASE_8_ADMIN_CMS_MEDIA_SETTINGS.md)
 - [Phase 9: Production Verification](implementation/PHASE_9_VERIFICATION_PRODUCTION.md)
-
----
-
-## 📋 Architectural Reviews & Audits
-- [Phase 3 Architecture Review & Readiness Audit](reviews/PHASE_3_ARCHITECTURE_REVIEW.md) — Comprehensive 12-point audit verifying 5-tier layer isolation, security, RBAC, database readiness, and performance.
 
