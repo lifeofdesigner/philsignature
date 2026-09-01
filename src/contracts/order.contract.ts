@@ -19,3 +19,4 @@ export interface OrderCreationResponseContract {
   paymentRedirectUrl?: string;
   message: string;
 }
+

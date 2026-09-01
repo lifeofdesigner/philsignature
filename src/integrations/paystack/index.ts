@@ -38,3 +38,4 @@ export class PaystackClient {
 }
 
 export const paystackClient = new PaystackClient();
+

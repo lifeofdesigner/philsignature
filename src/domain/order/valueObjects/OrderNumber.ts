@@ -25,3 +25,4 @@ export class OrderNumber {
     return this.value;
   }
 }
+

@@ -104,3 +104,4 @@ export class ProductEntity {
     return { ...this.props };
   }
 }
+

@@ -8,3 +8,4 @@ export interface IOrderRepository {
   create(input: CreateOrderInput, calculated: { subtotal: number; shipping: number; discount: number; tax: number; total: number; orderNumber: string }): Promise<Order>;
   updateStatus(id: string, status: string): Promise<Order>;
 }
+

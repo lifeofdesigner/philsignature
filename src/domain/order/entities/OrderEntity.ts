@@ -82,3 +82,4 @@ export class OrderEntity {
     return { ...this.props };
   }
 }
+

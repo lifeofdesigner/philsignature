@@ -33,3 +33,4 @@ export class CloudinaryClient {
 }
 
 export const cloudinaryClient = new CloudinaryClient();
+

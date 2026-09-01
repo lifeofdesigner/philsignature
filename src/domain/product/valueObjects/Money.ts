@@ -53,3 +53,4 @@ export class Money {
     return this.amount === other.amount && this.currency === other.currency;
   }
 }
+

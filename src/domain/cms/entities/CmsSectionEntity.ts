@@ -44,3 +44,4 @@ export class CmsSectionEntity {
     return { ...this.props };
   }
 }
+

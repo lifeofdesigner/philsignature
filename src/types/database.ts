@@ -74,6 +74,8 @@ export interface Product {
   sale_price: number | null;
   stock_quantity: number;
   weight_grams: number | null;
+  volume_ml?: number;
+  concentration?: string;
   brand: string;
   category_id: string | null;
   collection_id: string | null;
@@ -88,6 +90,8 @@ export interface Product {
   is_bestseller: boolean;
   is_new_arrival: boolean;
   is_trending: boolean;
+  rating?: number;
+  reviews_count?: number;
   meta_title: string | null;
   meta_description: string | null;
   meta_keywords: string | null;

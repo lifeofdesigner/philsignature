@@ -15,3 +15,4 @@ export interface IProductRepository {
   update(id: string, input: unknown): Promise<Product>;
   delete(id: string): Promise<void>;
 }
+

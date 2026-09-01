@@ -43,3 +43,4 @@ export class CustomerEntity {
     return { ...this.props };
   }
 }
+

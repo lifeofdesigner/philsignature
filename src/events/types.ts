@@ -52,3 +52,4 @@ export type DomainEventMap = {
 
 export type DomainEventName = keyof DomainEventMap;
 export type EventHandler<T> = (payload: T) => void | Promise<void>;
+

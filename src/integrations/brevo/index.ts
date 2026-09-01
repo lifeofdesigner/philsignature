@@ -28,3 +28,4 @@ export class BrevoEmailClient {
 }
 
 export const brevoClient = new BrevoEmailClient();
+

@@ -45,3 +45,4 @@ export class FlutterwaveClient {
 }
 
 export const flutterwaveClient = new FlutterwaveClient();
+

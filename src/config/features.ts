@@ -29,3 +29,4 @@ export type FeatureKey = keyof FeatureFlags;
 export const isFeatureEnabled = (key: FeatureKey): boolean => {
   return Boolean(FEATURES[key]);
 };
+

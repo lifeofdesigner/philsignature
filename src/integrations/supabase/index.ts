@@ -31,3 +31,4 @@ export const checkSupabaseConnection = async (): Promise<SupabaseHealthCheckResu
 };
 
 export { supabase };
+
