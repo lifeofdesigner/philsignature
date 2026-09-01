@@ -201,6 +201,7 @@ export interface Order {
   tracking_number: string | null;
   carrier_name: string | null;
   notes: string | null;
+  coupon_code?: string | null;
   shipping_address: Partial<CustomerAddress>;
   billing_address?: Partial<CustomerAddress>;
   items?: OrderItem[];

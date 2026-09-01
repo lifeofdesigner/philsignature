@@ -14,12 +14,12 @@ export const orderItemSchema = z.object({
 export const orderAddressSchema = z.object({
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Valid email is required'),
+  email: z.string().email('Valid email is required').optional(),
   phone: z.string().min(7, 'Valid telephone is required'),
-  address_line1: z.string().min(5, 'Street address is required'),
+  address_line1: z.string().min(1, 'Street address is required'),
   address_line2: z.string().optional(),
-  city: z.string().min(2, 'City is required'),
-  state: z.string().min(2, 'State is required'),
+  city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
   postal_code: z.string().optional(),
   country: z.string().default('Nigeria'),
 });
@@ -30,6 +30,8 @@ export const createOrderSchema = z.object({
   customer_id: z.string().uuid().nullable().optional(),
   payment_method: z.enum(['paystack', 'flutterwave', 'bank_transfer', 'cod']),
   shipping_address: orderAddressSchema,
+  billing_address: orderAddressSchema.optional(),
+  notes: z.string().optional(),
   items: z.array(orderItemSchema).min(1, 'At least one item is required in the bag'),
   coupon_code: z.string().optional(),
 });

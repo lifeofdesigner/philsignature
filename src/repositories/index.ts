@@ -7,3 +7,6 @@ export * from './CollectionRepository';
 export * from './WishlistRepository';
 export * from './CMSRepository';
 export * from './UserRepository';
+export * from './AddressRepository';
+export * from './ShippingRepository';
+export * from './CouponRepository';

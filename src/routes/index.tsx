@@ -29,6 +29,7 @@ const ContactPage = lazy(() => import('@/features/contact').then((m) => ({ defau
 const FaqPage = lazy(() => import('@/features/faq').then((m) => ({ default: m.FaqPage })));
 const CartPage = lazy(() => import('@/features/cart').then((m) => ({ default: m.CartPage })));
 const CheckoutPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.CheckoutPage })));
+const OrderConfirmationPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.OrderConfirmationPage })));
 const WishlistPage = lazy(() => import('@/features/wishlist').then((m) => ({ default: m.WishlistPage })));
 const TrackOrderPage = lazy(() => import('@/features/tracking').then((m) => ({ default: m.TrackOrderPage })));
 const CustomerLoginPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.CustomerLoginPage })));
@@ -84,6 +85,7 @@ export const router = createBrowserRouter([
       { path: 'faq', element: withSuspense(FaqPage) },
       { path: 'cart', element: withSuspense(CartPage) },
       { path: 'checkout', element: withSuspense(CheckoutPage) },
+      { path: 'checkout/confirmation/:orderNumber', element: withSuspense(OrderConfirmationPage) },
       { path: 'wishlist', element: withSuspense(WishlistPage) },
       { path: 'track-order', element: withSuspense(TrackOrderPage) },
       {

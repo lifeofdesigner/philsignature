@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { orderService } from '@/services/OrderService';
+import { orderService, type PlaceOrderParams } from '@/services/OrderService';
 import type { Order } from '@/types/database';
 
 export const useCustomerOrders = (customerId?: string) => {
@@ -22,7 +22,7 @@ export const useCreateOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: unknown) => orderService.placeOrder(input),
+    mutationFn: (input: PlaceOrderParams) => orderService.placeOrder(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
     },

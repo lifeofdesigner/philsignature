@@ -6,3 +6,7 @@ export * from './CollectionService';
 export * from './WishlistService';
 export * from './CMSService';
 export * from './UserService';
+export * from './ShippingService';
+export * from './CouponService';
+export * from './AddressService';
+export * from './PaymentService';
