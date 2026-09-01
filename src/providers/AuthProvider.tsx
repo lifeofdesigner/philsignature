@@ -103,44 +103,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
+  // NOTE: login/register/logout intentionally do NOT toggle `isLoading`.
+  // `isLoading` represents initial session bootstrap only (gates GuestGuard/AuthGuard's
+  // skeleton). Toggling it during these actions previously unmounted the calling page
+  // mid-request, discarding any error state set in its catch block. Per-action pending
+  // state (e.g. a submit button spinner) is the caller's local responsibility.
   const login = useCallback(async (credentials: SignInCredentials) => {
-    setIsLoading(true);
-    try {
-      const { user: loggedInUser, session: newSession, profile: userProfile } =
-        await authService.login(credentials);
-      setUser(loggedInUser);
-      setSession(newSession);
-      setProfile(userProfile);
-    } finally {
-      setIsLoading(false);
-    }
+    const { user: loggedInUser, session: newSession, profile: userProfile } =
+      await authService.login(credentials);
+    setUser(loggedInUser);
+    setSession(newSession);
+    setProfile(userProfile);
   }, []);
 
   const register = useCallback(async (credentials: SignUpCredentials) => {
-    setIsLoading(true);
-    try {
-      const { user: registeredUser, session: newSession } = await authService.register(credentials);
-      setUser(registeredUser);
-      setSession(newSession);
-      if (registeredUser) {
-        const prof = await authRepository.getProfile(registeredUser.id);
-        setProfile(prof);
-      }
-    } finally {
-      setIsLoading(false);
+    const { user: registeredUser, session: newSession } = await authService.register(credentials);
+    setUser(registeredUser);
+    setSession(newSession);
+    if (registeredUser) {
+      const prof = await authRepository.getProfile(registeredUser.id);
+      setProfile(prof);
     }
   }, []);
 
   const logout = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      await authService.logout(user?.id);
-      setUser(null);
-      setProfile(null);
-      setSession(null);
-    } finally {
-      setIsLoading(false);
-    }
+    await authService.logout(user?.id);
+    setUser(null);
+    setProfile(null);
+    setSession(null);
   }, [user]);
 
   const resetPassword = useCallback(async (email: string) => {
