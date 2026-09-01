@@ -10,7 +10,9 @@ export class ProductRepository extends BaseRepository {
         .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
         .order('created_at', { ascending: false });
 
-      if (filter?.status) {
+      if (filter?.status === 'all') {
+        // no status filter — admin views need every draft/published/archived row
+      } else if (filter?.status) {
         query = query.eq('status', filter.status);
       } else {
         query = query.eq('status', 'published');
