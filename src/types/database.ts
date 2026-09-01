@@ -245,6 +245,8 @@ export interface CmsContent {
   updated_at: string;
 }
 
+export type MediaBucket = 'products' | 'banners' | 'cms' | 'avatars';
+
 export interface SiteSetting {
   id: string;
   key: string;
