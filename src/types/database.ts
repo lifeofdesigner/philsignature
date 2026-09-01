@@ -104,6 +104,10 @@ export type OrderFinancialStatus = 'pending' | 'paid' | 'refunded' | 'failed';
 export type OrderFulfillmentStatus = 'pending' | 'processing' | 'packed' | 'shipped' | 'delivered' | 'cancelled';
 export type PaymentGateway = 'paystack' | 'flutterwave' | 'bank_transfer' | 'cod';
 
+export type OrderStatus = OrderFulfillmentStatus;
+export type PaymentStatus = OrderFinancialStatus;
+export type ShippingStatus = OrderFulfillmentStatus;
+
 export interface CustomerAddress {
   id: string;
   customer_id: string;
