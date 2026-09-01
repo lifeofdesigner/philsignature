@@ -1,17 +1,52 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/constants/routes';
+import { AlertCircle, Check, ShieldCheck } from 'lucide-react';
 
 export const CustomerSignupPage: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { register } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      await register({
+        email,
+        password,
+        firstName,
+        lastName,
+        phone,
+      });
+      navigate('/verify-email', { state: { email } });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed. Please check your information.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const hasLength = password.length >= 8;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
 
   return (
-    <div className="container mx-auto px-4 py-20 max-w-md">
+    <div className="container mx-auto px-4 py-16 max-w-md">
       <div className="text-center space-y-2 mb-8">
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
           Privileged Membership
@@ -25,7 +60,14 @@ export const CustomerSignupPage: React.FC = () => {
       </div>
 
       <div className="bg-luxury-card border border-luxury-border p-8 space-y-6">
-        <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+        {error && (
+          <div className="flex items-start gap-2.5 p-3.5 bg-red-950/40 border border-red-800/60 text-red-200 text-xs font-light">
+            <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="First Name"
@@ -49,17 +91,49 @@ export const CustomerSignupPage: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
           <Input
-            label="Password"
+            label="Telephone"
+            type="tel"
+            placeholder="+234..."
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <Input
+            label="Master Password"
             type="password"
             placeholder="Minimum 8 characters"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="new-password"
           />
-          <Button variant="luxury" size="lg" className="w-full">
-            Register Account
+
+          {/* Password Policy Indicator */}
+          <div className="p-3 bg-luxury-charcoal/60 border border-luxury-border/60 space-y-1.5 text-[11px]">
+            <span className="text-luxury-sand font-medium uppercase tracking-wider block text-[10px]">
+              Security Requirements:
+            </span>
+            <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-luxury-muted">
+              <span className={`flex items-center gap-1 ${hasLength ? 'text-emerald-400' : ''}`}>
+                <Check className="h-3 w-3" /> 8+ Characters
+              </span>
+              <span className={`flex items-center gap-1 ${hasUpper ? 'text-emerald-400' : ''}`}>
+                <Check className="h-3 w-3" /> Uppercase Letter
+              </span>
+              <span className={`flex items-center gap-1 ${hasLower ? 'text-emerald-400' : ''}`}>
+                <Check className="h-3 w-3" /> Lowercase Letter
+              </span>
+              <span className={`flex items-center gap-1 ${hasNumber && hasSpecial ? 'text-emerald-400' : ''}`}>
+                <Check className="h-3 w-3" /> Number & Symbol
+              </span>
+            </div>
+          </div>
+
+          <Button variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
+            <ShieldCheck className="h-4 w-4" />
+            <span>{isSubmitting ? 'Registering...' : 'Register Account'}</span>
           </Button>
         </form>
 
@@ -76,4 +150,3 @@ export const CustomerSignupPage: React.FC = () => {
     </div>
   );
 };
-

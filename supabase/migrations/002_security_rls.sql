@@ -246,3 +246,4 @@ CREATE POLICY "Admins view activity logs"
 CREATE POLICY "System/Admins insert activity logs"
     ON activity_logs FOR INSERT
     WITH CHECK (true);
+

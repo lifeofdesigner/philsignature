@@ -22,11 +22,20 @@ export class PermissionEngine {
     return role === 'staff' || role === 'super_admin';
   }
 
-  static canCreateProduct(user?: UserContext | Profile | UserRole | null): boolean {
+  static isCustomer(user?: UserContext | Profile | UserRole | null): boolean {
+    return this.extractRole(user) === 'customer';
+  }
+
+  // Capability checks (No role === 'admin' in UI)
+  static canAccessAdmin(user?: UserContext | Profile | UserRole | null): boolean {
     return this.isStaff(user);
   }
 
-  static canEditProduct(user?: UserContext | Profile | UserRole | null): boolean {
+  static canAccessCustomer(user?: UserContext | Profile | UserRole | null): boolean {
+    return Boolean(user);
+  }
+
+  static canManageProducts(user?: UserContext | Profile | UserRole | null): boolean {
     return this.isStaff(user);
   }
 
@@ -34,11 +43,7 @@ export class PermissionEngine {
     return this.isSuperAdmin(user);
   }
 
-  static canViewOrders(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
-  }
-
-  static canUpdateOrderStatus(user?: UserContext | Profile | UserRole | null): boolean {
+  static canManageOrders(user?: UserContext | Profile | UserRole | null): boolean {
     return this.isStaff(user);
   }
 
@@ -54,12 +59,16 @@ export class PermissionEngine {
     return this.isSuperAdmin(user);
   }
 
-  static canViewAnalytics(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
+  static canEditSettings(user?: UserContext | Profile | UserRole | null): boolean {
+    return this.isSuperAdmin(user);
   }
 
-  static canManageSettings(user?: UserContext | Profile | UserRole | null): boolean {
+  static canDeleteMedia(user?: UserContext | Profile | UserRole | null): boolean {
     return this.isSuperAdmin(user);
+  }
+
+  static canViewAnalytics(user?: UserContext | Profile | UserRole | null): boolean {
+    return this.isStaff(user);
   }
 
   static canModerateReviews(user?: UserContext | Profile | UserRole | null): boolean {
@@ -68,4 +77,3 @@ export class PermissionEngine {
 }
 
 export const permissionEngine = PermissionEngine;
-

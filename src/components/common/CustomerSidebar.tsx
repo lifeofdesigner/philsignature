@@ -20,7 +20,7 @@ export const customerNavItems = [
 ];
 
 export const CustomerSidebar: React.FC = () => {
-  const { logout, user } = useAuth();
+  const { logout, profile } = useAuth();
 
   return (
     <aside className="w-full lg:w-64 space-y-6">
@@ -28,11 +28,11 @@ export const CustomerSidebar: React.FC = () => {
       <div className="bg-luxury-card border border-luxury-border p-6 text-center">
         <div className="h-16 w-16 mx-auto rounded-full border border-luxury-gold/40 bg-luxury-black flex items-center justify-center text-luxury-gold mb-3">
           <span className="font-serif text-xl">
-            {user?.first_name?.charAt(0) || 'P'}
+            {profile?.first_name?.charAt(0) || 'P'}
           </span>
         </div>
         <h3 className="font-serif text-lg text-white font-normal">
-          {user?.first_name ? `${user.first_name} ${user.last_name || ''}` : 'Privileged Patron'}
+          {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
         </h3>
         <p className="text-[11px] uppercase tracking-luxury text-luxury-gold mt-1">
           Private Circle Member

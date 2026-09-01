@@ -11,6 +11,7 @@ export interface Profile {
   phone: string | null;
   avatar_url: string | null;
   role: UserRole;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
 }

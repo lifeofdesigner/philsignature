@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/providers/AuthProvider';
 
 export const CustomerProfilePage: React.FC = () => {
-  const { user } = useAuth();
+  const { profile, user } = useAuth();
 
   return (
     <div className="space-y-8 max-w-xl">
@@ -21,25 +21,25 @@ export const CustomerProfilePage: React.FC = () => {
         <div className="grid grid-cols-2 gap-4">
           <Input
             label="First Name"
-            defaultValue={user?.first_name || ''}
+            defaultValue={profile?.first_name || ''}
             placeholder="First name"
           />
           <Input
             label="Last Name"
-            defaultValue={user?.last_name || ''}
+            defaultValue={profile?.last_name || ''}
             placeholder="Last name"
           />
         </div>
         <Input
           label="Email Address"
           type="email"
-          defaultValue={user?.email || ''}
+          defaultValue={profile?.email || user?.email || ''}
           disabled
         />
         <Input
           label="Phone Number"
           type="tel"
-          defaultValue={user?.phone || ''}
+          defaultValue={profile?.phone || ''}
           placeholder="+234..."
         />
         <Button variant="luxury" size="default">

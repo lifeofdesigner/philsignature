@@ -6,6 +6,9 @@ import { StoreShell } from '@/components/layouts/StoreShell';
 import { CustomerShell } from '@/components/layouts/CustomerShell';
 import { AdminShell } from '@/components/layouts/AdminShell';
 
+// Guards
+import { GuestGuard, AuthGuard, StaffGuard } from '@/components/guards';
+
 // Feedback Skeletons
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 
@@ -31,6 +34,8 @@ const TrackOrderPage = lazy(() => import('@/features/tracking').then((m) => ({ d
 const CustomerLoginPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.CustomerLoginPage })));
 const CustomerSignupPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.CustomerSignupPage })));
 const ForgotPasswordPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.ForgotPasswordPage })));
+const ResetPasswordPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.ResetPasswordPage })));
+const VerifyEmailPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.VerifyEmailPage })));
 
 // Customer Features (Lazy Loaded)
 const CustomerDashboardPage = lazy(() => import('@/features/customer').then((m) => ({ default: m.CustomerDashboardPage })));
@@ -81,16 +86,49 @@ export const router = createBrowserRouter([
       { path: 'checkout', element: withSuspense(CheckoutPage) },
       { path: 'wishlist', element: withSuspense(WishlistPage) },
       { path: 'track-order', element: withSuspense(TrackOrderPage) },
-      { path: 'login', element: withSuspense(CustomerLoginPage) },
-      { path: 'signup', element: withSuspense(CustomerSignupPage) },
-      { path: 'forgot-password', element: withSuspense(ForgotPasswordPage) },
+      {
+        path: 'login',
+        element: (
+          <GuestGuard>
+            {withSuspense(CustomerLoginPage)}
+          </GuestGuard>
+        ),
+      },
+      {
+        path: 'signup',
+        element: (
+          <GuestGuard>
+            {withSuspense(CustomerSignupPage)}
+          </GuestGuard>
+        ),
+      },
+      {
+        path: 'forgot-password',
+        element: (
+          <GuestGuard>
+            {withSuspense(ForgotPasswordPage)}
+          </GuestGuard>
+        ),
+      },
+      {
+        path: 'reset-password',
+        element: withSuspense(ResetPasswordPage),
+      },
+      {
+        path: 'verify-email',
+        element: withSuspense(VerifyEmailPage),
+      },
     ],
   },
 
-  // Customer Account Shell Routes
+  // Protected Customer Account Shell Routes
   {
     path: '/account',
-    element: <CustomerShell />,
+    element: (
+      <AuthGuard>
+        <CustomerShell />
+      </AuthGuard>
+    ),
     children: [
       { index: true, element: withSuspense(CustomerDashboardPage) },
       { path: 'orders', element: withSuspense(CustomerOrdersPage) },
@@ -99,10 +137,14 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // Admin CMS Shell Routes
+  // Protected Admin CMS Shell Routes
   {
     path: '/admin',
-    element: <AdminShell />,
+    element: (
+      <StaffGuard>
+        <AdminShell />
+      </StaffGuard>
+    ),
     children: [
       { index: true, element: withSuspense(AdminDashboardPage) },
       { path: 'products', element: withSuspense(AdminProductsPage) },

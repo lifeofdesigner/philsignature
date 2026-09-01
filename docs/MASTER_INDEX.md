@@ -61,6 +61,16 @@ Welcome to the central architectural, technical, and engineering documentation r
 
 ---
 
+## 🔒 Security Documentation Suite
+- [Password Security Policy](security/password-policy.md) — Complexity criteria, Argon2id/Bcrypt hashing, rate limiting.
+- [Session Policy](security/session-policy.md) — JWT lifetime, rotating refresh tokens, silent refresh, idle timeouts.
+- [Client Login Flow](security/login-flow.md) — 5-tier sequence diagram, error handling, audit logging.
+- [Account Recovery Flow](security/recovery-flow.md) — Cryptographic reset tokens, email dispatch, out-of-band updates.
+- [RBAC Architecture](security/rbac-flow.md) — Customer, Staff, and Super Admin roles and boundaries.
+- [Permission Engine](security/permission-flow.md) — Decoupled capability checks without hardcoded role strings.
+
+---
+
 ## 🗺️ Implementation Phases
 - [Phase 1: Foundation & Tooling](implementation/PHASE_1_FOUNDATION.md)
 - [Phase 2: Database Schema & Seeds](implementation/PHASE_2_DATABASE_SCHEMA.md)

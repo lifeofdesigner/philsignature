@@ -380,3 +380,4 @@ CREATE TABLE activity_logs (
 
 CREATE INDEX idx_activity_logs_user ON activity_logs(user_id);
 CREATE INDEX idx_activity_logs_entity ON activity_logs(entity_type, entity_id);
+

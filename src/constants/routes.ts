@@ -17,6 +17,7 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   ACCOUNT: {
     ROOT: '/account',
+    DASHBOARD: '/account',
     ORDERS: '/account/orders',
     ADDRESSES: '/account/addresses',
     PROFILE: '/account/profile',
@@ -25,6 +26,7 @@ export const ROUTES = {
   // Admin
   ADMIN: {
     ROOT: '/admin',
+    DASHBOARD: '/admin',
     PRODUCTS: '/admin/products',
     COLLECTIONS: '/admin/collections',
     CATEGORIES: '/admin/categories',

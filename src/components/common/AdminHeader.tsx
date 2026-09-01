@@ -9,7 +9,7 @@ interface AdminHeaderProps {
 export const AdminHeader: React.FC<AdminHeaderProps> = ({
   onToggleSidebar,
 }) => {
-  const { user } = useAuth();
+  const { profile } = useAuth();
 
   return (
     <header className="h-16 bg-luxury-charcoal/80 backdrop-blur-md border-b border-luxury-border/60 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
@@ -46,7 +46,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           </div>
           <div className="hidden sm:flex flex-col">
             <span className="text-xs font-medium text-white leading-tight">
-              {user?.first_name || 'Administrator'}
+              {profile?.first_name || 'Administrator'}
             </span>
             <span className="text-[9px] uppercase tracking-luxury text-luxury-gold">
               Super Admin
