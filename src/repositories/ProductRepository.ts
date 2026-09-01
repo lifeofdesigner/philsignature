@@ -35,7 +35,7 @@ export class ProductRepository extends BaseRepository {
         .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
         .eq('status', 'published')
         .eq('is_featured', true)
-        .order('display_order', { ascending: true, nullsFirst: false })
+        .order('created_at', { ascending: false })
         .limit(limit);
 
       if (error) this.handleError(error, 'Failed to fetch featured fragrances');
