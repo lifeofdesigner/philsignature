@@ -57,3 +57,4 @@ Supabase Auth & PostgreSQL profiles
 - `docs/security/recovery-flow.md`
 - `docs/security/rbac-flow.md`
 - `docs/security/permission-flow.md`
+

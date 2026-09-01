@@ -22,3 +22,4 @@ The platform defines 3 explicit roles stored within `public.profiles.role`:
 ## Role Guard Protection
 All routes within `/admin/*` are shielded by `<StaffGuard>` and validated against `PermissionEngine.canAccessAdmin()`.
 Attempting unauthorized entry triggers an instant redirect to `/unauthorized`.
+

@@ -25,3 +25,4 @@ All passwords must satisfy the following criteria:
 ## Brute-Force & Rate Limiting Controls
 - Maximum 5 consecutive failed login attempts before a dynamic 60-second backoff penalty is applied.
 - IP-level and account-level throttling is handled at the Supabase Auth edge.
+

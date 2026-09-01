@@ -82,3 +82,8 @@ Welcome to the central architectural, technical, and engineering documentation r
 - [Phase 8: Admin Visual CMS & Media](implementation/PHASE_8_ADMIN_CMS_MEDIA_SETTINGS.md)
 - [Phase 9: Production Verification](implementation/PHASE_9_VERIFICATION_PRODUCTION.md)
 
+---
+
+## 📋 Architectural Reviews & Audits
+- [Phase 3 Architecture Review & Readiness Audit](reviews/PHASE_3_ARCHITECTURE_REVIEW.md) — Comprehensive 12-point audit verifying 5-tier layer isolation, security, RBAC, database readiness, and performance.
+

@@ -39,3 +39,4 @@ sequenceDiagram
 ## Error Handling
 - **Invalid Credentials**: Returns standard generic message (*"Invalid credentials. Please verify and retry."*) to prevent account enumeration attacks.
 - **Deactivated Profile**: Immediately revokes the newly issued session and displays an account notice.
+

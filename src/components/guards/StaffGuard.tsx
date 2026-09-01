@@ -42,3 +42,4 @@ export const AdminGuard: React.FC<{ children: React.ReactNode }> = ({ children }
 
   return <>{children}</>;
 };
+

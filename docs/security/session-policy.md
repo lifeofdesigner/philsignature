@@ -23,3 +23,4 @@ Session management in PHILZ SIGNATURE operates on short-lived cryptographic JSON
    - On page load, `authService.getActiveSession()` reads the persistent session from secure local storage and re-establishes user state and profile.
 3. **Secure Termination (Logout)**:
    - Calling `logout()` notifies Supabase Auth, invalidates the refresh token server-side, cleans client memory, and redirects the patron to public storefront routes.
+

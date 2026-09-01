@@ -34,3 +34,4 @@ sequenceDiagram
     Service->>Repo: recordActivity(user.id, 'PASSWORD_UPDATE')
     ResetUI-->>Client: Redirects to /login with success notification
 ```
+
