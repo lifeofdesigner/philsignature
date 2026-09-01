@@ -1,4 +1,5 @@
 import { couponRepository, type CouponRepository } from '@/repositories/CouponRepository';
+import { couponSchema } from '@/schemas/coupon.schema';
 import { ValidationError } from '@/errors/ValidationError';
 import type { Coupon } from '@/types/database';
 
@@ -69,6 +70,30 @@ export class CouponService {
   async recordCouponUsage(couponId: string): Promise<void> {
     if (!couponId) throw new ValidationError('Coupon ID required to record usage');
     return this.repo.incrementUsage(couponId);
+  }
+
+  async getAllCouponsAdmin(): Promise<Coupon[]> {
+    return this.repo.findAllAdmin();
+  }
+
+  async createCoupon(rawInput: unknown): Promise<Coupon> {
+    const parseResult = couponSchema.safeParse(rawInput);
+    if (!parseResult.success) {
+      throw new ValidationError('Invalid coupon data', parseResult.error.format());
+    }
+    return this.repo.create(parseResult.data);
+  }
+
+  async updateCoupon(id: string, rawInput: unknown): Promise<Coupon> {
+    const parseResult = couponSchema.partial().safeParse(rawInput);
+    if (!parseResult.success) {
+      throw new ValidationError('Invalid coupon update data', parseResult.error.format());
+    }
+    return this.repo.update(id, parseResult.data);
+  }
+
+  async deleteCoupon(id: string): Promise<void> {
+    return this.repo.delete(id);
   }
 }
 
