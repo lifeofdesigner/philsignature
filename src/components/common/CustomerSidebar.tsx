@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
+  LayoutDashboard,
   ShoppingBag,
   Heart,
   MapPin,
@@ -9,13 +10,14 @@ import {
   Clock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/hooks/useAuth';
 
 export const customerNavItems = [
-  { title: 'My Orders', href: '/account/orders', icon: ShoppingBag },
-  { title: 'Track Order', href: '/track-order', icon: Clock },
-  { title: 'Saved Wishlist', href: '/wishlist', icon: Heart },
-  { title: 'Address Book', href: '/account/addresses', icon: MapPin },
+  { title: 'Sanctuary Overview', href: '/account', icon: LayoutDashboard, exact: true },
+  { title: 'My Acquisitions', href: '/account/orders', icon: ShoppingBag },
+  { title: 'Track Consignment', href: '/track-order', icon: Clock },
+  { title: 'Private Wishlist', href: '/wishlist', icon: Heart },
+  { title: 'Delivery Sanctuaries', href: '/account/addresses', icon: MapPin },
   { title: 'Profile & Security', href: '/account/profile', icon: User },
 ];
 
@@ -47,6 +49,7 @@ export const CustomerSidebar: React.FC = () => {
             <NavLink
               key={item.href}
               to={item.href}
+              end={Boolean(item.exact)}
               className={({ isActive }) =>
                 cn(
                   'flex items-center gap-3 px-3.5 py-2.5 text-xs uppercase tracking-luxury transition-colors rounded-sm font-medium',
