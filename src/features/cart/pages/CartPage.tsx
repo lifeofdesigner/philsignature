@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,7 @@ import { ROUTES } from '@/constants/routes';
 import { useCart } from '@/hooks/useCart';
 
 export const CartPage: React.FC = () => {
+  const navigate = useNavigate();
   const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
 
   const formattedSubtotal = new Intl.NumberFormat('en-NG', {
@@ -30,15 +31,15 @@ export const CartPage: React.FC = () => {
         {items.length === 0 ? (
           <EmptyState
             icon={<ShoppingBag className="h-5 w-5" />}
-            title="Your Bag is Currently Untouched"
-            description="You have not yet added any extrait de parfum flacons or home diffusers to your order."
-            actionLabel="Explore Fragrance Salon"
-            onAction={() => window.location.assign(ROUTES.SHOP)}
+            title="Your Cart is Empty"
+            description="You have not added any perfumes to your cart yet. Browse our shop to get started."
+            actionLabel="Shop Now"
+            onAction={() => navigate(ROUTES.SHOP)}
           />
         ) : (
           <div className="space-y-8">
             <div className="flex items-center justify-between border-b border-luxury-border pb-3 text-xs text-luxury-muted">
-              <span>{items.length} Unique Allocations</span>
+              <span>{items.length} {items.length === 1 ? 'Item' : 'Items'} in Cart</span>
               <button
                 onClick={clearCart}
                 className="text-luxury-muted hover:text-red-400 transition-colors"
@@ -139,7 +140,7 @@ export const CartPage: React.FC = () => {
               </div>
 
               <p className="text-xs text-luxury-muted font-light">
-                Taxes, insurance, and complimentary express delivery calculated at checkout.
+                Delivery fee will be calculated at checkout.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">

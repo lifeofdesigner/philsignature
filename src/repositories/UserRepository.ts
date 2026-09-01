@@ -2,6 +2,37 @@ import { BaseRepository } from './BaseRepository';
 import type { Profile } from '@/types/database';
 
 export class UserRepository extends BaseRepository {
+  async findAllCustomers(): Promise<Profile[]> {
+    try {
+      const { data, error } = await this.client
+        .from('profiles')
+        .select('*')
+        .eq('role', 'customer')
+        .order('created_at', { ascending: false });
+
+      if (error) this.handleError(error, 'Failed to fetch customers');
+      return (data as Profile[]) || [];
+    } catch (err) {
+      this.handleError(err, 'Error fetching customers');
+    }
+  }
+
+  async setActiveStatus(userId: string, isActive: boolean): Promise<Profile> {
+    try {
+      const { data, error } = await this.client
+        .from('profiles')
+        .update({ is_active: isActive, updated_at: new Date().toISOString() })
+        .eq('id', userId)
+        .select()
+        .single();
+
+      if (error) this.handleError(error, `Failed to update account status for ${userId}`);
+      return data as Profile;
+    } catch (err) {
+      this.handleError(err, `Error updating account status: ${userId}`);
+    }
+  }
+
   async getProfile(userId: string): Promise<Profile | null> {
     try {
       const { data, error } = await this.client

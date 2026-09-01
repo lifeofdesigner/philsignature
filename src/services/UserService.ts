@@ -11,6 +11,14 @@ export class UserService {
   async updateProfile(userId: string, data: Partial<Profile>): Promise<Profile> {
     return this.repo.updateProfile(userId, data);
   }
+
+  async getAllCustomers(): Promise<Profile[]> {
+    return this.repo.findAllCustomers();
+  }
+
+  async setCustomerActiveStatus(userId: string, isActive: boolean): Promise<Profile> {
+    return this.repo.setActiveStatus(userId, isActive);
+  }
 }
 
 export const userService = new UserService();
