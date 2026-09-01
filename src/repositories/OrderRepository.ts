@@ -12,6 +12,36 @@ export interface OrderFinancialSummary {
 }
 
 export class OrderRepository extends BaseRepository {
+  async findAllAdmin(): Promise<Order[]> {
+    try {
+      const { data, error } = await this.client
+        .from('orders')
+        .select('*, items:order_items(*), timeline:order_timeline(*)')
+        .order('created_at', { ascending: false });
+
+      if (error) this.handleError(error, 'Failed to fetch orders');
+      return (data as Order[]) || [];
+    } catch (err) {
+      this.handleError(err, 'Error fetching orders');
+    }
+  }
+
+  async updateFulfillmentStatus(orderId: string, status: Order['fulfillment_status']): Promise<Order> {
+    try {
+      const { data, error } = await this.client
+        .from('orders')
+        .update({ fulfillment_status: status, updated_at: new Date().toISOString() })
+        .eq('id', orderId)
+        .select()
+        .single();
+
+      if (error) this.handleError(error, `Failed to update fulfillment status for order ${orderId}`);
+      return data as Order;
+    } catch (err) {
+      this.handleError(err, `Error updating order fulfillment status: ${orderId}`);
+    }
+  }
+
   async findById(id: string): Promise<Order | null> {
     try {
       const { data, error } = await this.client

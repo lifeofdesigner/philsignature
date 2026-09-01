@@ -69,6 +69,26 @@ export class OrderService {
     return this.repo.findById(id);
   }
 
+  async getAllOrdersAdmin(): Promise<Order[]> {
+    return this.repo.findAllAdmin();
+  }
+
+  async updateFulfillmentStatus(
+    orderId: string,
+    status: Order['fulfillment_status'],
+    note?: string
+  ): Promise<Order> {
+    if (!orderId) throw new ValidationError('Order ID is required');
+    const updated = await this.repo.updateFulfillmentStatus(orderId, status);
+    await this.repo.addTimeline(
+      orderId,
+      status,
+      `Dispatch status updated: ${status}`,
+      note || `Consignment status changed to "${status}" by atelier staff.`
+    );
+    return updated;
+  }
+
   async placeOrder(params: PlaceOrderParams): Promise<Order> {
     const parseResult = createOrderSchema.safeParse(params);
     if (!parseResult.success) {
