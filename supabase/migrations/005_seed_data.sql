@@ -37,7 +37,7 @@ INSERT INTO products (
 ) VALUES
 -- 1. Beyond You
 (
-    'p1111111-1111-1111-1111-111111111111',
+    'a1111111-1111-1111-1111-111111111111',
     'Beyond You',
     'beyond-you',
     'An intoxicating testament to sovereign presence and quiet audacity.',
@@ -64,7 +64,7 @@ INSERT INTO products (
 
 -- 2. Nomad
 (
-    'p2222222-2222-2222-2222-222222222222',
+    'a2222222-2222-2222-2222-222222222222',
     'Nomad',
     'nomad',
     'The spirit of boundless journey distilled into smoldering warmth.',
@@ -91,7 +91,7 @@ INSERT INTO products (
 
 -- 3. Fierce Elixir
 (
-    'p3333333-3333-3333-3333-333333333333',
+    'a3333333-3333-3333-3333-333333333333',
     'Fierce Elixir',
     'fierce-elixir',
     'Sensual intensity unleashed through spiced rum and dark woods.',
@@ -118,7 +118,7 @@ INSERT INTO products (
 
 -- 4. Hera
 (
-    'p4444444-4444-4444-4444-444444444444',
+    'a4444444-4444-4444-4444-444444444444',
     'Hera',
     'hera',
     'Regal white florals draped in golden amber and silken sandalwood.',
@@ -145,7 +145,7 @@ INSERT INTO products (
 
 -- 5. Promise
 (
-    'p5555555-5555-5555-5555-555555555555',
+    'a5555555-5555-5555-5555-555555555555',
     'Promise',
     'promise',
     'An unbreakable vow expressed in crisp green apple and Taif roses.',
@@ -172,7 +172,7 @@ INSERT INTO products (
 
 -- 6. Guidance
 (
-    'p6666666-6666-6666-6666-666666666666',
+    'a6666666-6666-6666-6666-666666666666',
     'Guidance',
     'guidance',
     'An ethereal tower of ivory incense, toasted hazelnut, and sweet osmanthus.',
@@ -199,7 +199,7 @@ INSERT INTO products (
 
 -- 7. Oud en Botella
 (
-    'p7777777-7777-7777-7777-777777777777',
+    'a7777777-7777-7777-7777-777777777777',
     'Oud en Botella',
     'oud-en-botella',
     'The crowning jewel: 25-year-old wild Assam oud bottled in pure potency.',
@@ -230,13 +230,13 @@ ON CONFLICT (id) DO NOTHING;
 -- ------------------------------------------------------------------------------
 INSERT INTO product_images (product_id, image_url, alt_text, display_order, is_primary)
 VALUES
-    ('p1111111-1111-1111-1111-111111111111', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85', 'Beyond You Flacon Frontal View', 1, true),
-    ('p2222222-2222-2222-2222-222222222222', 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=85', 'Nomad Luxury Extrait Flacon', 1, true),
-    ('p3333333-3333-3333-3333-333333333333', 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1000&q=85', 'Fierce Elixir Velvet Presentation', 1, true),
-    ('p4444444-4444-4444-4444-444444444444', 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=85', 'Hera Crystal Flacon Portrait', 1, true),
-    ('p5555555-5555-5555-5555-555555555555', 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1000&q=85', 'Promise Signature Bottle Angle', 1, true),
-    ('p6666666-6666-6666-6666-666666666666', 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=85', 'Guidance Extrait Presentation', 1, true),
-    ('p7777777-7777-7777-7777-777777777777', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85', 'Oud en Botella Pure Vintage Agarwood', 1, true)
+    ('a1111111-1111-1111-1111-111111111111', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85', 'Beyond You Flacon Frontal View', 1, true),
+    ('a2222222-2222-2222-2222-222222222222', 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=85', 'Nomad Luxury Extrait Flacon', 1, true),
+    ('a3333333-3333-3333-3333-333333333333', 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1000&q=85', 'Fierce Elixir Velvet Presentation', 1, true),
+    ('a4444444-4444-4444-4444-444444444444', 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=85', 'Hera Crystal Flacon Portrait', 1, true),
+    ('a5555555-5555-5555-5555-555555555555', 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1000&q=85', 'Promise Signature Bottle Angle', 1, true),
+    ('a6666666-6666-6666-6666-666666666666', 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=85', 'Guidance Extrait Presentation', 1, true),
+    ('a7777777-7777-7777-7777-777777777777', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85', 'Oud en Botella Pure Vintage Agarwood', 1, true)
 ON CONFLICT DO NOTHING;
 
 -- ------------------------------------------------------------------------------
