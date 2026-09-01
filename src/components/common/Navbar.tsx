@@ -3,21 +3,26 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, User, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useWishlist } from '@/hooks/useWishlist';
+import { useCart } from '@/hooks/useCart';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  const { count: wishlistCount } = useWishlist();
+  const { totalCount: cartCount } = useCart();
+
   const navLinks = [
     { name: 'Collections', href: '/collections' },
-    { name: 'Extraits de Parfum', href: '/shop?category=extrait' },
-    { name: 'Private Reserve', href: '/shop?collection=private-reserve' },
-    { name: 'Home Scents', href: '/shop?category=home-fragrance' },
+    { name: 'Extraits de Parfum', href: '/shop?family=all' },
+    { name: 'Woody & Oud', href: '/shop?family=Woody' },
+    { name: 'Oriental & Amber', href: '/shop?family=Oriental' },
     { name: 'Brand Story', href: '/about' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-luxury-black/90 backdrop-blur-md border-b border-luxury-border/60 transition-all">
+    <header className="sticky top-0 z-40 w-full bg-luxury-black/95 backdrop-blur-md border-b border-luxury-border/60 transition-all">
       <div className="container mx-auto px-4 sm:px-8 h-20 flex items-center justify-between">
         {/* Mobile Menu Button */}
         <button
@@ -80,6 +85,7 @@ export const Navbar: React.FC = () => {
             to="/shop"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors"
             title="Search Catalog"
+            aria-label="Search catalog"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -89,11 +95,14 @@ export const Navbar: React.FC = () => {
             to="/wishlist"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors relative"
             title="Wishlist"
+            aria-label="View fragrance wishlist"
           >
             <Heart className="h-4 w-4" />
-            <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-luxury-gold text-luxury-black text-[9px] font-bold flex items-center justify-center">
-              0
-            </span>
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-luxury-gold text-luxury-black text-[9px] font-bold flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
 
           {/* Account Icon */}
@@ -101,6 +110,7 @@ export const Navbar: React.FC = () => {
             to="/account"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors"
             title="My Account"
+            aria-label="Customer account portal"
           >
             <User className="h-4 w-4" />
           </Link>
@@ -110,11 +120,14 @@ export const Navbar: React.FC = () => {
             to="/cart"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors relative"
             title="Shopping Bag"
+            aria-label="View shopping bag"
           >
             <ShoppingBag className="h-4 w-4" />
-            <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-luxury-gold text-luxury-black text-[9px] font-bold flex items-center justify-center">
-              0
-            </span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-luxury-gold text-luxury-black text-[9px] font-bold flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
       </div>
@@ -144,4 +157,3 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
-

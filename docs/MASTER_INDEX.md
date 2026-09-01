@@ -75,7 +75,7 @@ Welcome to the central architectural, technical, and engineering documentation r
 - [Phase 1: Foundation & Tooling](implementation/PHASE_1_FOUNDATION.md)
 - [Phase 2: Database Schema & Seeds](implementation/PHASE_2_DATABASE_SCHEMA.md)
 - [Phase 3: Auth, RBAC & Bootstrap](implementation/PHASE_3_AUTH_RBAC_BOOTSTRAP.md)
-- [Phase 4: Storefront & Catalog Implementation Plan](implementation/PHASE_4_IMPLEMENTATION_PLAN.md)
+- [Phase 4: Storefront & Catalog Implementation](implementation/PHASE_4_STOREFRONT_CATALOG.md) | [Plan & Contracts](implementation/PHASE_4_IMPLEMENTATION_PLAN.md)
 - [Phase 5: Checkout & Payments](implementation/PHASE_5_CHECKOUT_PAYMENTS_ORDERS.md)
 - [Phase 6: Customer Portal](implementation/PHASE_6_CUSTOMER_PORTAL.md)
 - [Phase 7: Admin Core E-Commerce](implementation/PHASE_7_ADMIN_CORE_ECOMMERCE.md)

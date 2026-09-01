@@ -1,79 +1,52 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight, Compass } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/components/feedback/EmptyState';
-import { ROUTES } from '@/constants/routes';
+import { useHomeData } from '../hooks/useHomeData';
+import { HeroBillboard } from '../components/HeroBillboard';
+import { CollectionsShowcase } from '../components/CollectionsShowcase';
+import { FeaturedProductsGrid } from '../components/FeaturedProductsGrid';
+import { BrandStorySection } from '../components/BrandStorySection';
+import { ClientTestimonials } from '../components/ClientTestimonials';
+import { NewsletterSection } from '../components/NewsletterSection';
+import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
+import { ErrorState } from '@/components/feedback/ErrorState';
 
 export const HomePage: React.FC = () => {
-  const featuredProducts: unknown[] = [];
+  const { data, isLoading, isError, error, refetch } = useHomeData();
+
+  if (isLoading) {
+    return <PageSkeleton />;
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="container mx-auto px-4 py-20">
+        <ErrorState
+          title="Boutique Connection Interrupted"
+          message={error instanceof Error ? error.message : 'Unable to synchronize with the fragrance catalog.'}
+          onRetry={() => refetch()}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-24 pb-24">
-      {/* Luxury Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center text-center px-4 bg-radial-luxury overflow-hidden">
-        <div className="relative z-10 max-w-3xl mx-auto space-y-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 border border-luxury-gold/30 bg-luxury-charcoal/50 text-luxury-gold text-[10px] uppercase tracking-luxury-wide">
-            <Sparkles className="h-3 w-3" />
-            <span>The Private Reserve Collection</span>
-          </div>
-          <h1 className="font-serif text-5xl sm:text-7xl font-light tracking-wide text-white leading-tight">
-            Transcendence <br />
-            <span className="italic font-normal text-gold-gradient">
-              in Every Note
-            </span>
-          </h1>
-          <p className="text-sm sm:text-base text-luxury-sand font-light leading-relaxed max-w-xl mx-auto">
-            Handcrafted extraits de parfum, artisanal home scents, and rare oud elixirs born from the rarest botanical essences.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link to={ROUTES.SHOP}>
-              <Button variant="luxury" size="lg">
-                Explore Creations
-              </Button>
-            </Link>
-            <Link to={ROUTES.COLLECTIONS}>
-              <Button variant="outline" size="lg">
-                View Collections
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-black">
+      {/* 1. Hero Billboard */}
+      <HeroBillboard hero={data.hero} />
 
-      {/* Featured Products Container */}
-      <section className="container mx-auto px-4 sm:px-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 pb-4 border-b border-luxury-border/60">
-          <div>
-            <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-              Curated Releases
-            </span>
-            <h2 className="font-serif text-3xl text-white font-normal mt-1">
-              The Signature Extraits
-            </h2>
-          </div>
-          <Link
-            to={ROUTES.SHOP}
-            className="text-xs uppercase tracking-luxury text-luxury-gold hover:underline mt-4 sm:mt-0 flex items-center gap-1.5"
-          >
-            <span>View Full Salon</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
+      {/* 2. Collections Showcase */}
+      <CollectionsShowcase collections={data.collections} />
 
-        {featuredProducts.length === 0 ? (
-          <EmptyState
-            icon={<Compass className="h-5 w-5" />}
-            title="Curating the Private Reserve"
-            description="Our perfumers are preparing the live catalog from our Supabase atelier."
-            actionLabel="Browse Salon"
-            onAction={() => window.location.assign(ROUTES.SHOP)}
-          />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" />
-        )}
-      </section>
+      {/* 3. Featured Extraits */}
+      <FeaturedProductsGrid products={data.featuredProducts} />
+
+      {/* 4. Brand Heritage Story */}
+      <BrandStorySection story={data.story} />
+
+      {/* 5. Client Testimonials */}
+      <ClientTestimonials />
+
+      {/* 6. Newsletter Invitation */}
+      <NewsletterSection />
     </div>
   );
 };
-

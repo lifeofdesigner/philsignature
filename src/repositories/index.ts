@@ -3,5 +3,7 @@ export * from './AuthRepository';
 export * from './ProductRepository';
 export * from './OrderRepository';
 export * from './CategoryRepository';
+export * from './CollectionRepository';
+export * from './WishlistRepository';
 export * from './CMSRepository';
 export * from './UserRepository';

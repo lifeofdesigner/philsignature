@@ -1,45 +1,132 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SlidersHorizontal } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useShopCatalog } from '../hooks/useShopCatalog';
+import { CatalogSearchBar } from '../components/CatalogSearchBar';
+import { ProductSortDropdown } from '../components/ProductSortDropdown';
+import { ProductFilterDrawer } from '../components/ProductFilterDrawer';
+import { ProductGrid } from '../components/ProductGrid';
+import { CatalogPagination } from '../components/CatalogPagination';
+import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
-import type { Product } from '@/types/database';
 
 export const ShopPage: React.FC = () => {
-  const [products] = useState<Product[]>([]);
+  const {
+    products,
+    allFilteredCount,
+    totalPages,
+    currentPage,
+    collections,
+    isLoading,
+    isError,
+    error,
+    family,
+    collectionId,
+    inStockOnly,
+    searchQuery,
+    sortBy,
+    isFilterOpen,
+    hasActiveFilters,
+    setFamily,
+    setCollectionId,
+    setInStockOnly,
+    setSearchQuery,
+    setSortBy,
+    setPage,
+    setIsFilterOpen,
+    resetFilters,
+    refetch,
+  } = useShopCatalog();
 
   return (
-    <div className="container mx-auto px-4 sm:px-8 py-12">
-      <div className="text-center max-w-xl mx-auto mb-12">
-        <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-          Haute Parfumerie
-        </span>
-        <h1 className="font-serif text-4xl text-white font-normal mt-2">
-          The Fragrance Salon
-        </h1>
-        <p className="text-xs text-luxury-muted mt-3 font-light leading-relaxed">
-          Explore artisanal compositions, rare extraits, and sensory home diffusers handcrafted by master perfumers.
-        </p>
-      </div>
+    <div className="min-h-screen bg-black py-12 sm:py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        {/* Header Title */}
+        <div className="text-center max-w-2xl mx-auto space-y-3">
+          <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
+            Haute Parfumerie
+          </span>
+          <h1 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
+            The Fragrance Compendium
+          </h1>
+          <p className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
+            Explore our artisanal extraits de parfum, sovereign oud distillations, and bespoke discovery sets.
+          </p>
+        </div>
 
-      <div className="flex items-center justify-between border-y border-luxury-border/60 py-3 mb-10">
-        <Button variant="outline" size="sm" className="gap-2">
-          <SlidersHorizontal className="h-3.5 w-3.5" />
-          <span>Filters & Families</span>
-        </Button>
-        <span className="text-xs text-luxury-muted font-light">
-          {products.length} Compositions
-        </span>
-      </div>
+        {/* Top Controls: Search, Filter Toggle, Sort */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-luxury-card border border-luxury-border">
+          <CatalogSearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            placeholder="Search creations or olfactory notes..."
+          />
 
-      {products.length === 0 ? (
-        <EmptyState
-          title="No fragrances loaded"
-          description="Connecting to the live Supabase catalog in Phase 4."
-        />
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" />
-      )}
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+            <button
+              type="button"
+              onClick={() => setIsFilterOpen(true)}
+              className="lg:hidden flex items-center gap-2 text-xs py-2 px-3 border border-luxury-border bg-black text-luxury-sand hover:text-white"
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5 text-luxury-gold" />
+              <span>Filters {hasActiveFilters && '•'}</span>
+            </button>
+
+            <ProductSortDropdown value={sortBy} onChange={setSortBy} />
+          </div>
+        </div>
+
+        {/* Main Body: Filter Drawer + Product Grid */}
+        <div className="flex items-start gap-8">
+          {/* Filter Sidebar / Drawer */}
+          <ProductFilterDrawer
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+            family={family}
+            onFamilyChange={setFamily}
+            collectionId={collectionId}
+            onCollectionChange={setCollectionId}
+            collections={collections}
+            inStockOnly={inStockOnly}
+            onInStockChange={setInStockOnly}
+            hasActiveFilters={hasActiveFilters}
+            onReset={resetFilters}
+          />
+
+          {/* Catalog Listing Area */}
+          <div className="flex-1 space-y-8">
+            {isError ? (
+              <ErrorState
+                title="Catalog Unavailable"
+                message={error instanceof Error ? error.message : 'Unable to load fragrances.'}
+                onRetry={() => refetch()}
+              />
+            ) : !isLoading && products.length === 0 ? (
+              <EmptyState
+                title="No Fragrances Found"
+                description="No flacons match your chosen olfactory filters or search terms."
+                actionLabel={hasActiveFilters ? 'Reset Filters' : undefined}
+                onAction={hasActiveFilters ? resetFilters : undefined}
+              />
+            ) : (
+              <>
+                <div className="text-[11px] uppercase tracking-wider text-luxury-muted flex items-center justify-between">
+                  <span>
+                    Showing {products.length} of {allFilteredCount} Creations
+                  </span>
+                </div>
+
+                <ProductGrid products={products} isLoading={isLoading} />
+
+                <CatalogPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
-

@@ -1,32 +1,45 @@
-import React from 'react';
-import { Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { X, Sparkles } from 'lucide-react';
+import { cmsService, type CmsAnnouncementContent } from '@/services/CMSService';
 
-interface AnnouncementBarProps {
-  message?: string;
-  linkText?: string;
-  href?: string;
-}
+export const AnnouncementBar: React.FC = () => {
+  const [announcement, setAnnouncement] = useState<CmsAnnouncementContent | null>(null);
+  const [isDismissed, setIsDismissed] = useState(false);
 
-export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({
-  message = 'COMPLIMENTARY NATIONWIDE EXPRESS DELIVERY ON ORDERS OVER ₦150,000',
-  linkText = 'EXPLORE EXTRAITS',
-  href = '/shop',
-}) => {
+  useEffect(() => {
+    let isMounted = true;
+    cmsService.getAnnouncementSection().then((data) => {
+      if (isMounted) setAnnouncement(data);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!announcement || !announcement.enabled || isDismissed) {
+    return null;
+  }
+
   return (
-    <div className="bg-luxury-charcoal border-b border-luxury-border/60 py-2 px-4 text-center">
-      <div className="container mx-auto flex items-center justify-center gap-2 text-[10px] uppercase tracking-luxury text-luxury-sand font-medium">
-        <Sparkles className="h-3 w-3 text-luxury-gold shrink-0" />
-        <span>{message}</span>
-        {linkText && href && (
-          <a
-            href={href}
-            className="text-luxury-gold underline underline-offset-4 hover:text-luxury-gold-light ml-1 font-semibold"
-          >
-            {linkText}
-          </a>
-        )}
-      </div>
+    <div className="bg-luxury-gold text-black px-4 py-2 text-center text-[10px] sm:text-xs tracking-luxury-wide font-medium relative flex items-center justify-center gap-2">
+      <Sparkles className="h-3 w-3 shrink-0" />
+      <span className="truncate">{announcement.text}</span>
+      {announcement.link_text && announcement.link_url && (
+        <Link
+          to={announcement.link_url}
+          className="underline underline-offset-2 ml-1 font-bold hover:text-luxury-charcoal transition-colors shrink-0"
+        >
+          {announcement.link_text}
+        </Link>
+      )}
+      <button
+        onClick={() => setIsDismissed(true)}
+        className="absolute right-3 p-1 hover:text-luxury-charcoal transition-colors"
+        aria-label="Dismiss announcement banner"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
     </div>
   );
 };
-
