@@ -4,8 +4,19 @@ import type { MediaBucket, MediaItem } from '@/types/database';
 
 const BUCKET_RULES: Record<MediaBucket, { maxSizeMb: number; allowedTypes: string[] }> = {
   products: { maxSizeMb: 15, allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'video/mp4'] },
-  banners: { maxSizeMb: 20, allowedTypes: ['image/jpeg', 'image/png', 'image/webp'] },
-  cms: { maxSizeMb: 20, allowedTypes: ['image/jpeg', 'image/png', 'image/webp'] },
+  banners: { maxSizeMb: 40, allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'video/mp4', 'video/webm'] },
+  cms: {
+    maxSizeMb: 20,
+    allowedTypes: [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/x-icon',
+      'image/vnd.microsoft.icon',
+      'image/svg+xml',
+      'image/gif',
+    ],
+  },
   avatars: { maxSizeMb: 5, allowedTypes: ['image/jpeg', 'image/png', 'image/webp'] },
 };
 

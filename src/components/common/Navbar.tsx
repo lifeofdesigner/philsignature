@@ -8,6 +8,8 @@ import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useStoreMenu } from '@/features/cms/hooks/useStoreMenu';
+import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
+import { useTheme } from '@/providers/ThemeProvider';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -25,7 +27,17 @@ export const Navbar: React.FC = () => {
   const { totalCount: cartCount } = useCart();
   const { items: dynamicNavItems } = useStoreMenu();
   const { user, profile, logout, canAccessAdmin } = useAuth();
+  const { appearance } = useStoreAppearance();
+  const { theme } = useTheme();
   const navigate = useNavigate();
+
+  const isDarkChrome = theme !== 'light';
+  const logoUrl = (isDarkChrome ? appearance.logo_dark_url : appearance.logo_light_url) || appearance.logo_url;
+  const [logoLoadError, setLogoLoadError] = useState(false);
+
+  useEffect(() => {
+    setLogoLoadError(false);
+  }, [logoUrl]);
 
   const handleLogout = async () => {
     try {
@@ -97,12 +109,34 @@ export const Navbar: React.FC = () => {
           to="/"
           className="flex flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-2"
         >
-          <span className="font-serif text-base sm:text-2xl lg:text-3xl tracking-[0.16em] sm:tracking-[0.24em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors whitespace-nowrap">
-            PHILZ SIGNATURE
-          </span>
-          <span className="text-[7px] sm:text-[8px] lg:text-[8.5px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5">
-            HAUTE PARFUMERIE
-          </span>
+          {logoUrl && !logoLoadError ? (
+            <picture className="flex items-center justify-center">
+              {appearance.logo_mobile_url && (
+                <source media="(max-width: 640px)" srcSet={appearance.logo_mobile_url} />
+              )}
+              {isDarkChrome && appearance.logo_dark_url && (
+                <source srcSet={appearance.logo_dark_url} />
+              )}
+              {!isDarkChrome && appearance.logo_light_url && (
+                <source srcSet={appearance.logo_light_url} />
+              )}
+              <img
+                src={logoUrl}
+                alt="Philz Signature Logo"
+                onError={() => setLogoLoadError(true)}
+                className="h-8 sm:h-10 lg:h-12 w-auto max-h-12 max-w-[180px] sm:max-w-[240px] object-contain group-hover:opacity-90 transition-opacity"
+              />
+            </picture>
+          ) : (
+            <>
+              <span className="font-serif text-base sm:text-2xl lg:text-3xl tracking-[0.16em] sm:tracking-[0.24em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors whitespace-nowrap">
+                PHILZ SIGNATURE
+              </span>
+              <span className="text-[7px] sm:text-[8px] lg:text-[8.5px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5">
+                HAUTE PARFUMERIE
+              </span>
+            </>
+          )}
         </Link>
 
         {/* Right Side: Actions (Desktop & Mobile Optimized) */}

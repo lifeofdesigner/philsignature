@@ -23,6 +23,7 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
 import type { UserRole } from '@/types/database';
 import { canAccessAdminPath, ROLE_LABELS } from '@/lib/permissions';
 
@@ -55,10 +56,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onClose,
 }) => {
   const { profile, role, logout } = useAuth();
+  const { appearance } = useStoreAppearance();
   const navigate = useNavigate();
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const visibleNavItems = adminNavItems.filter((item) => canAccessAdminPath(currentRole, item.href));
-
+  const logoUrl = appearance.logo_dark_url || appearance.logo_url;
   const handleLogout = async () => {
     try {
       await logout();
@@ -87,14 +89,23 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       >
         {/* Brand Header */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-luxury-border/60">
-          <div className="flex flex-col">
-            <span className="font-serif text-lg tracking-widest text-white uppercase font-medium">
-              PHILZ SIGNATURE
-            </span>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-[9px] uppercase tracking-luxury text-luxury-gold font-medium">
-                {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole as UserRole] : 'ADMIN WORKSPACE'}
+          <div className="flex items-center gap-3 min-w-0">
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt="Store Logo"
+                className="h-8 max-h-8 w-auto max-w-[120px] object-contain shrink-0"
+              />
+            ) : null}
+            <div className="flex flex-col min-w-0">
+              <span className="font-serif text-sm tracking-widest text-white uppercase font-medium truncate">
+                PHILZ SIGNATURE
               </span>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="text-[9px] uppercase tracking-luxury text-luxury-gold font-medium truncate">
+                  {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole as UserRole] : 'ADMIN WORKSPACE'}
+                </span>
+              </div>
             </div>
           </div>
         </div>

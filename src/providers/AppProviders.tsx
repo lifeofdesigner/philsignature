@@ -1,6 +1,7 @@
 import React from 'react';
 import { QueryProvider } from './QueryProvider';
 import { ThemeProvider } from './ThemeProvider';
+import { AppearanceThemeSync } from './AppearanceThemeSync';
 import { AuthProvider } from './AuthProvider';
 import { ToastProvider } from './ToastProvider';
 import { ModalProvider } from './ModalProvider';
@@ -12,6 +13,7 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({
   return (
     <QueryProvider>
       <ThemeProvider defaultTheme="system">
+        <AppearanceThemeSync />
         <AuthProvider>
           <LoadingProvider>
             <ModalProvider>

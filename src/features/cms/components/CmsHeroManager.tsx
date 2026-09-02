@@ -1,9 +1,12 @@
-import React from 'react';
-import { Plus, Trash2, ArrowUp, ArrowDown, Copy, Save, Loader2, Video, Image as ImageIcon } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { Plus, Trash2, ArrowUp, ArrowDown, Copy, Save, Loader2, Video, Image as ImageIcon, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { mediaService } from '@/services/MediaService';
+import { useAuth } from '@/hooks/useAuth';
 import type { CmsHeroContent, CmsHeroSlide } from '@/services/CMSService';
 
 interface CmsHeroManagerProps {
@@ -13,13 +16,18 @@ interface CmsHeroManagerProps {
   isSaving: boolean;
 }
 
+type SlideUploadField = 'desktop_image' | 'mobile_image' | 'video_url';
+
 export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
   hero,
   onChange,
   onSave,
   isSaving,
 }) => {
+  const { user } = useAuth();
   const slides = hero.slides || [];
+  const [uploadingKey, setUploadingKey] = useState<string | null>(null);
+  const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
   const handleUpdateSlide = (id: string, updates: Partial<CmsHeroSlide>) => {
     const updatedSlides = slides.map((slide) =>
@@ -73,6 +81,24 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
     updated[index] = updated[targetIndex];
     updated[targetIndex] = temp;
     onChange({ ...hero, slides: updated.map((s, idx) => ({ ...s, order: idx + 1 })) });
+  };
+
+  const handleUploadSlideFile = async (slideId: string, field: SlideUploadField, file: File) => {
+    const key = `${slideId}-${field}`;
+    setUploadingKey(key);
+    try {
+      const bucket = field === 'video_url' ? 'banners' : 'banners';
+      const uploaded = await mediaService.uploadFile(bucket, file, user?.id);
+      const publicUrl = mediaService.getPublicUrl(uploaded.bucket, uploaded.path);
+      handleUpdateSlide(slideId, { [field]: publicUrl } as Partial<CmsHeroSlide>);
+      toast.success('Upload complete.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upload failed.');
+    } finally {
+      setUploadingKey(null);
+      const input = fileInputRefs.current[key];
+      if (input) input.value = '';
+    }
   };
 
   return (
@@ -262,40 +288,87 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-xs text-luxury-sand">
-                  <ImageIcon className="h-3.5 w-3.5 text-luxury-gold" />
-                  <span>Desktop High-Res Image URL</span>
-                </div>
-                <Input
-                  value={slide.desktop_image}
-                  onChange={(e) => handleUpdateSlide(slide.id, { desktop_image: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
-                />
-              </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-xs text-luxury-sand">
-                  <ImageIcon className="h-3.5 w-3.5 text-luxury-gold" />
-                  <span>Mobile Cropped Image URL</span>
-                </div>
-                <Input
-                  value={slide.mobile_image || ''}
-                  onChange={(e) => handleUpdateSlide(slide.id, { mobile_image: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
-                />
-              </div>
+              {(['desktop_image', 'mobile_image'] as const).map((field) => {
+                const key = `${slide.id}-${field}`;
+                const currentUrl = slide[field] as string | undefined;
+                const isUploading = uploadingKey === key;
+                return (
+                  <div className="space-y-1.5" key={field}>
+                    <div className="flex items-center gap-1.5 text-xs text-luxury-sand">
+                      <ImageIcon className="h-3.5 w-3.5 text-luxury-gold" />
+                      <span>{field === 'desktop_image' ? 'Desktop Image' : 'Mobile Image'}</span>
+                    </div>
+                    <div className="flex items-center gap-3 bg-luxury-charcoal/40 border border-luxury-border p-2">
+                      <div className="h-12 w-16 shrink-0 bg-luxury-black border border-luxury-border overflow-hidden flex items-center justify-center">
+                        {currentUrl ? (
+                          <img src={currentUrl} alt={field} className="h-full w-full object-cover" />
+                        ) : (
+                          <ImageIcon className="h-4 w-4 text-luxury-muted" />
+                        )}
+                      </div>
+                      <input
+                        ref={(el) => { fileInputRefs.current[key] = el; }}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        id={`hero-upload-${key}`}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleUploadSlideFile(slide.id, field, file);
+                        }}
+                      />
+                      <label
+                        htmlFor={`hero-upload-${key}`}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-[10px] uppercase tracking-luxury-wide font-medium cursor-pointer"
+                      >
+                        {isUploading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Upload className="h-3 w-3" />}
+                        <span>{isUploading ? 'Uploading...' : currentUrl ? 'Replace' : 'Upload'}</span>
+                      </label>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs text-luxury-sand">
                 <Video className="h-3.5 w-3.5 text-luxury-gold" />
-                <span>Background Video MP4 / WebM URL (Optional)</span>
+                <span>Background Video (Optional)</span>
               </div>
-              <Input
-                value={slide.video_url || ''}
-                onChange={(e) => handleUpdateSlide(slide.id, { video_url: e.target.value })}
-                placeholder="https://domain.com/videos/luxury-campaign.mp4"
-              />
+              <div className="flex items-center gap-3 bg-luxury-charcoal/40 border border-luxury-border p-2">
+                <span className="text-[11px] font-mono text-luxury-muted truncate flex-1">
+                  {slide.video_url || 'No video uploaded'}
+                </span>
+                <input
+                  ref={(el) => { fileInputRefs.current[`${slide.id}-video_url`] = el; }}
+                  type="file"
+                  accept="video/mp4,video/webm"
+                  className="hidden"
+                  id={`hero-upload-${slide.id}-video_url`}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleUploadSlideFile(slide.id, 'video_url', file);
+                  }}
+                />
+                <label
+                  htmlFor={`hero-upload-${slide.id}-video_url`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-[10px] uppercase tracking-luxury-wide font-medium cursor-pointer shrink-0"
+                >
+                  {uploadingKey === `${slide.id}-video_url` ? <Loader2 className="h-3 w-3 animate-spin" /> : <Upload className="h-3 w-3" />}
+                  <span>{uploadingKey === `${slide.id}-video_url` ? 'Uploading...' : slide.video_url ? 'Replace' : 'Upload'}</span>
+                </label>
+                {slide.video_url && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 w-7 p-0 shrink-0 text-red-400 hover:text-red-300"
+                    onClick={() => handleUpdateSlide(slide.id, { video_url: undefined })}
+                    title="Remove Video"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                )}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-luxury-border/40">

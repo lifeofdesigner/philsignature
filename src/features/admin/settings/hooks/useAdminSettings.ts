@@ -7,8 +7,13 @@ const QUERY_KEY = ['admin-settings-general'];
 export interface GeneralSettingsForm {
   store_name: string;
   store_slogan: string;
+  footer_text: string;
+  copyright_text: string;
   concierge_email: string;
   concierge_phone: string;
+  concierge_whatsapp: string;
+  store_address: string;
+  google_maps_url: string;
   currency_code: string;
   currency_symbol: string;
 }
@@ -16,8 +21,13 @@ export interface GeneralSettingsForm {
 export const DEFAULT_GENERAL_SETTINGS: GeneralSettingsForm = {
   store_name: '',
   store_slogan: '',
+  footer_text: '',
+  copyright_text: '',
   concierge_email: '',
   concierge_phone: '',
+  concierge_whatsapp: '',
+  store_address: '',
+  google_maps_url: '',
   currency_code: '',
   currency_symbol: '',
 };

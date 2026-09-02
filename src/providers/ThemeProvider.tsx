@@ -30,26 +30,25 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
     const saved = localStorage.getItem('ps-theme') as Theme;
     if (saved) return saved;
-    if (defaultTheme === 'system' || !defaultTheme) {
-      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-      }
-      return 'dark';
-    }
-    return defaultTheme;
+    return defaultTheme || 'system';
   });
 
   useEffect(() => {
     const root = window.document.documentElement;
+
+    const applySystemTheme = () => {
+      const hour = new Date().getHours();
+      const isDaytime = hour >= 6 && hour < 18;
+      root.classList.remove('light', 'dark');
+      root.classList.add(isDaytime ? 'light' : 'dark');
+    };
+
     root.classList.remove('light', 'dark');
 
     if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches
-        ? 'dark'
-        : 'light';
-      root.classList.add(systemTheme);
-      return;
+      applySystemTheme();
+      const interval = window.setInterval(applySystemTheme, 15 * 60 * 1000);
+      return () => window.clearInterval(interval);
     }
 
     root.classList.add(theme);

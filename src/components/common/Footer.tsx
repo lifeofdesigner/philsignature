@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, Truck, RefreshCw, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
 
 export const Footer: React.FC = () => {
+  const { appearance } = useStoreAppearance();
+  const [logoError, setLogoError] = useState(false);
+  const logoUrl = appearance.logo_light_url || appearance.logo_url;
+
   return (
     <footer className="bg-luxury-black border-t border-luxury-border text-luxury-cream mt-auto">
       {/* Brand Value Pillars */}
@@ -72,10 +77,19 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
         {/* Brand Column */}
         <div className="lg:col-span-2 space-y-4">
-          <Link to="/" className="inline-block">
-            <span className="font-serif text-2xl tracking-[0.2em] text-luxury-cream uppercase font-normal">
-              PHILZ SIGNATURE
-            </span>
+          <Link to="/" className="inline-block group">
+            {logoUrl && !logoError ? (
+              <img
+                src={logoUrl}
+                alt="Philz Signature Logo"
+                onError={() => setLogoError(true)}
+                className="h-10 sm:h-12 w-auto max-w-[200px] object-contain group-hover:opacity-90 transition-opacity"
+              />
+            ) : (
+              <span className="font-serif text-2xl tracking-[0.2em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors">
+                PHILZ SIGNATURE
+              </span>
+            )}
           </Link>
           <p className="text-xs text-luxury-muted leading-relaxed max-w-sm font-light">
             Luxury perfumes handcrafted with high-concentration fragrance oils for lasting elegance and bold confidence.

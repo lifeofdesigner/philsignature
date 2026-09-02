@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { Shield, Search, Loader2 } from 'lucide-react';
+import { Shield, Search, Loader2, ChevronDown, Check, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/feedback/EmptyState';
@@ -8,6 +8,77 @@ import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminUsers } from '../hooks/useAdminUsers';
 import { useAuth } from '@/hooks/useAuth';
 import type { UserRole } from '@/types/database';
+import { ROLE_LABELS, ROLE_DESCRIPTIONS, ROLE_PERMISSIONS, type Permission } from '@/lib/permissions';
+
+const ROLE_ORDER: UserRole[] = [
+  'super_admin',
+  'administrator',
+  'manager',
+  'content_editor',
+  'inventory_staff',
+  'order_staff',
+  'customer_support',
+  'staff',
+  'customer',
+];
+
+const PERMISSION_GROUPS: { label: string; permissions: { key: Permission; label: string }[] }[] = [
+  {
+    label: 'Website Content',
+    permissions: [
+      { key: 'cms:read', label: 'View website content' },
+      { key: 'cms:write', label: 'Edit website content' },
+      { key: 'cms:publish', label: 'Publish content live' },
+      { key: 'cms:hero', label: 'Edit homepage slider' },
+      { key: 'cms:menu', label: 'Edit navigation menus' },
+      { key: 'cms:homepage', label: 'Rearrange homepage sections' },
+      { key: 'cms:appearance', label: 'Change colors & branding' },
+    ],
+  },
+  {
+    label: 'Catalog & Inventory',
+    permissions: [
+      { key: 'products:read', label: 'View products' },
+      { key: 'products:write', label: 'Add & edit products' },
+      { key: 'products:delete', label: 'Delete products' },
+      { key: 'inventory:manage', label: 'Manage stock levels' },
+      { key: 'categories:manage', label: 'Manage categories' },
+      { key: 'collections:manage', label: 'Manage collections' },
+      { key: 'media:manage', label: 'Manage media library' },
+    ],
+  },
+  {
+    label: 'Sales & Orders',
+    permissions: [
+      { key: 'orders:read', label: 'View orders' },
+      { key: 'orders:write', label: 'Edit orders' },
+      { key: 'orders:shipping', label: 'Update fulfillment status' },
+      { key: 'shipping:manage', label: 'Manage shipping methods' },
+      { key: 'payments:view', label: 'View payment settings' },
+      { key: 'analytics:view', label: 'View sales analytics' },
+    ],
+  },
+  {
+    label: 'Customers & Community',
+    permissions: [
+      { key: 'customers:read', label: 'View customers' },
+      { key: 'customers:write', label: 'Edit customer accounts' },
+      { key: 'reviews:manage', label: 'Moderate reviews' },
+      { key: 'coupons:manage', label: 'Manage discount codes' },
+    ],
+  },
+  {
+    label: 'Administration & Security',
+    permissions: [
+      { key: 'users:read', label: 'View staff & customers' },
+      { key: 'users:manage', label: 'Manage staff accounts' },
+      { key: 'roles:manage', label: 'Assign roles' },
+      { key: 'settings:manage', label: 'Change store settings' },
+      { key: 'security:manage', label: 'Manage security settings' },
+      { key: 'delete:anything', label: 'Delete any record' },
+    ],
+  },
+];
 
 const formatDate = (isoString: string) =>
   new Date(isoString).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -16,6 +87,7 @@ export const AdminUsersPage: React.FC = () => {
   const { user: currentUser } = useAuth();
   const { users, isLoading, isError, setRole, isSettingRoleId, setActiveStatus, isSettingActiveId } = useAdminUsers();
   const [search, setSearch] = useState('');
+  const [showMatrix, setShowMatrix] = useState(false);
 
   const filteredUsers = useMemo(() => {
     const query = search.toLowerCase().trim();
@@ -123,15 +195,9 @@ export const AdminUsersPage: React.FC = () => {
                         onChange={(e) => handleRoleChange(u.id, name, e.target.value as UserRole)}
                         className="bg-luxury-card border border-luxury-border text-[11px] text-luxury-cream px-2 py-1 rounded-sm focus:ring-1 focus:ring-luxury-gold focus:outline-none cursor-pointer"
                       >
-                        <option value="super_admin">Super Administrator</option>
-                        <option value="administrator">Administrator</option>
-                        <option value="manager">Store Manager</option>
-                        <option value="content_editor">Content Editor</option>
-                        <option value="inventory_staff">Inventory Specialist</option>
-                        <option value="order_staff">Fulfillment Staff</option>
-                        <option value="customer_support">Customer Support</option>
-                        <option value="staff">General Staff</option>
-                        <option value="customer">Customer</option>
+                        {ROLE_ORDER.map((role) => (
+                          <option key={role} value={role}>{ROLE_LABELS[role]}</option>
+                        ))}
                       </select>
                     </td>
                     <td className="p-4">
@@ -172,6 +238,86 @@ export const AdminUsersPage: React.FC = () => {
           </table>
         </div>
       )}
+
+      <div className="bg-luxury-card border border-luxury-border">
+        <button
+          type="button"
+          onClick={() => setShowMatrix((p) => !p)}
+          className="w-full flex items-center justify-between p-4 cursor-pointer"
+        >
+          <div className="text-left">
+            <h3 className="font-serif text-lg text-white font-normal">What Each Role Can Do</h3>
+            <p className="text-xs text-luxury-muted font-light mt-0.5">
+              A plain-English breakdown of what every role is allowed to access.
+            </p>
+          </div>
+          <ChevronDown className={`h-4 w-4 text-luxury-muted transition-transform ${showMatrix ? 'rotate-180' : ''}`} />
+        </button>
+
+        {showMatrix && (
+          <div className="border-t border-luxury-border/60 p-4 space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {ROLE_ORDER.filter((r) => r !== 'customer').map((role) => (
+                <div key={role} className="bg-luxury-charcoal/40 border border-luxury-border p-3">
+                  <p className="text-xs font-medium text-luxury-gold">{ROLE_LABELS[role]}</p>
+                  <p className="text-[11px] text-luxury-muted mt-1 leading-relaxed">{ROLE_DESCRIPTIONS[role]}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr>
+                    <th className="sticky left-0 bg-luxury-card p-2 text-left text-[10px] uppercase tracking-wider text-luxury-muted font-medium border-b border-luxury-border">
+                      Permission
+                    </th>
+                    {ROLE_ORDER.filter((r) => r !== 'customer').map((role) => (
+                      <th
+                        key={role}
+                        className="p-2 text-center text-[9px] uppercase tracking-wider text-luxury-muted font-medium border-b border-luxury-border whitespace-nowrap"
+                      >
+                        {ROLE_LABELS[role]}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {PERMISSION_GROUPS.map((group) => (
+                    <React.Fragment key={group.label}>
+                      <tr>
+                        <td
+                          colSpan={ROLE_ORDER.length}
+                          className="pt-4 pb-1 px-2 text-[10px] uppercase tracking-wider text-luxury-gold font-medium"
+                        >
+                          {group.label}
+                        </td>
+                      </tr>
+                      {group.permissions.map(({ key, label }) => (
+                        <tr key={key} className="border-b border-luxury-border/40 hover:bg-luxury-charcoal/30">
+                          <td className="sticky left-0 bg-luxury-card p-2 text-luxury-cream whitespace-nowrap">{label}</td>
+                          {ROLE_ORDER.filter((r) => r !== 'customer').map((role) => {
+                            const granted = ROLE_PERMISSIONS[role].includes(key);
+                            return (
+                              <td key={role} className="p-2 text-center">
+                                {granted ? (
+                                  <Check className="h-3.5 w-3.5 text-emerald-400 inline-block" />
+                                ) : (
+                                  <X className="h-3.5 w-3.5 text-luxury-muted/30 inline-block" />
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

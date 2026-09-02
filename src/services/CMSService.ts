@@ -128,6 +128,24 @@ export interface CmsAppearanceConfig {
   site_width: 'standard' | 'wide' | 'fluid';
   logo_url?: string;
   favicon_url?: string;
+  // Additional brand image variants (Website Builder: Brand Settings)
+  logo_light_url?: string;
+  logo_dark_url?: string;
+  logo_mobile_url?: string;
+  apple_touch_icon_url?: string;
+  email_logo_url?: string;
+  social_share_image_url?: string;
+  loading_logo_url?: string;
+  // Extended semantic color palette (Website Builder: Theme Settings)
+  background_color?: string;
+  surface_color?: string;
+  button_color?: string;
+  text_color?: string;
+  border_color?: string;
+  success_color?: string;
+  warning_color?: string;
+  danger_color?: string;
+  info_color?: string;
 }
 
 // Policy & Static Pages Models

@@ -1,7 +1,10 @@
-import React from 'react';
-import { Palette, Save, Loader2, Image as ImageIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { Palette, Save, Loader2, Upload, ImageOff } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { mediaService } from '@/services/MediaService';
+import { useAuth } from '@/hooks/useAuth';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 
 interface CmsAppearanceManagerProps {
@@ -17,6 +20,22 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
   onSave,
   isSaving,
 }) => {
+  const { user } = useAuth();
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
+
+  const handleUpload = async (field: keyof CmsAppearanceConfig, file: File) => {
+    setUploadingField(field as string);
+    try {
+      const uploaded = await mediaService.uploadFile('cms', file, user?.id);
+      const publicUrl = mediaService.getPublicUrl(uploaded.bucket, uploaded.path);
+      onChange({ ...appearance, [field]: publicUrl });
+      toast.success('Picture uploaded. Click "Save Appearance Settings" to save changes.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to upload picture.');
+    } finally {
+      setUploadingField(null);
+    }
+  };
   return (
     <div className="space-y-6">
       <div className="bg-luxury-card border border-luxury-border rounded-sm p-6 space-y-2">
@@ -108,29 +127,59 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
         <h4 className="font-serif text-sm text-luxury-cream font-medium border-b border-luxury-border/60 pb-2 pt-2">
           Brand Assets & Icons
         </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-luxury-sand">
-              <ImageIcon className="h-3.5 w-3.5 text-luxury-gold" />
-              <span>Custom Logo Image URL (Optional)</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { field: 'logo_url' as const, label: 'Main Logo', current: appearance.logo_url, help: 'Primary logo for store headers' },
+            { field: 'logo_light_url' as const, label: 'Light Theme Logo', current: appearance.logo_light_url, help: 'Used on light background mode' },
+            { field: 'logo_dark_url' as const, label: 'Dark Theme Logo', current: appearance.logo_dark_url, help: 'Used on dark background mode' },
+            { field: 'logo_mobile_url' as const, label: 'Mobile Screen Logo', current: appearance.logo_mobile_url, help: 'Optimized for mobile headers' },
+            { field: 'favicon_url' as const, label: 'Browser Icon (Favicon)', current: appearance.favicon_url, help: 'Icon displayed in browser tabs' },
+            { field: 'apple_touch_icon_url' as const, label: 'Apple Touch Icon', current: appearance.apple_touch_icon_url, help: 'Saved shortcut icon on mobile devices' },
+          ].map((item) => (
+            <div key={item.field} className="p-3 bg-luxury-charcoal/40 border border-luxury-border rounded-sm space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-luxury-cream">{item.label}</span>
+                {item.current && (
+                  <span className="text-[10px] text-green-400 font-mono">Active</span>
+                )}
+              </div>
+              <p className="text-[10px] text-luxury-muted leading-tight">{item.help}</p>
+              
+              <div className="flex items-center gap-3 pt-1">
+                <div className="h-12 w-12 bg-luxury-black border border-luxury-border rounded-sm flex items-center justify-center overflow-hidden shrink-0">
+                  {item.current ? (
+                    <img src={item.current} alt={item.label} className="h-full w-full object-contain p-1" />
+                  ) : (
+                    <ImageOff className="h-4 w-4 text-luxury-muted" />
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <input
+                    type="file"
+                    accept="image/*,.ico,.svg"
+                    id={`cms-asset-${item.field}`}
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleUpload(item.field, file);
+                    }}
+                  />
+                  <label
+                    htmlFor={`cms-asset-${item.field}`}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-[10px] uppercase tracking-luxury font-medium rounded-sm transition-colors cursor-pointer"
+                  >
+                    {uploadingField === item.field ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Upload className="h-3 w-3" />
+                    )}
+                    <span>{uploadingField === item.field ? 'Uploading...' : item.current ? 'Change' : 'Upload'}</span>
+                  </label>
+                </div>
+              </div>
             </div>
-            <Input
-              value={appearance.logo_url || ''}
-              onChange={(e) => onChange({ ...appearance, logo_url: e.target.value })}
-              placeholder="https://.../logo.png (leave blank for typography logo)"
-            />
-          </div>
-          <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-luxury-sand">
-              <ImageIcon className="h-3.5 w-3.5 text-luxury-gold" />
-              <span>Favicon Image URL (Optional)</span>
-            </div>
-            <Input
-              value={appearance.favicon_url || ''}
-              onChange={(e) => onChange({ ...appearance, favicon_url: e.target.value })}
-              placeholder="https://.../favicon.ico"
-            />
-          </div>
+          ))}
         </div>
       </div>
 
