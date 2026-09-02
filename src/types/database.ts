@@ -214,16 +214,16 @@ export interface Review {
   id: string;
   product_id: string;
   customer_id: string | null;
-  customer_name: string;
-  customer_email: string;
   rating: number; // 1-5
   title: string | null;
   comment: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'submitted' | 'approved' | 'rejected';
   is_verified_purchase: boolean;
-  is_featured: boolean;
   created_at: string;
   updated_at: string;
+  // Joins
+  customer?: Pick<Profile, 'first_name' | 'last_name' | 'email'>;
+  product?: Pick<Product, 'name' | 'slug'>;
 }
 
 export interface WishlistItem {
