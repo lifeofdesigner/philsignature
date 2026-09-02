@@ -54,9 +54,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { user, logout } = useAuth();
+  const { profile, role, logout } = useAuth();
   const navigate = useNavigate();
-  const currentRole = (user?.role || undefined) as UserRole | undefined;
+  const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const visibleNavItems = adminNavItems.filter((item) => canAccessAdminPath(currentRole, item.href));
 
   const handleLogout = async () => {
