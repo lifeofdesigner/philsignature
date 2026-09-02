@@ -110,191 +110,137 @@ export const Navbar: React.FC = () => {
   return (
     <motion.header
       className={cn(
-        'sticky top-0 z-40 w-full transition-all duration-300 px-2 sm:px-4 lg:px-6 py-1.5 sm:py-2.5 pointer-events-none'
+        'fixed top-0 left-0 right-0 z-40 w-full transition-all duration-400',
+        isScrolled
+          ? 'bg-luxury-black/92 backdrop-blur-xl border-b border-luxury-gold/25 py-2.5 sm:py-3 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+          : 'bg-gradient-to-b from-black/85 via-black/35 to-transparent backdrop-blur-[2px] border-b border-white/10 py-3 sm:py-5'
       )}
     >
-      {/* Floating Dynamic Island Luxury Capsule */}
-      <div
-        className={cn(
-          'mx-auto max-w-7xl rounded-2xl sm:rounded-full border transition-all duration-300 px-3 sm:px-6 relative overflow-hidden pointer-events-auto',
-          isScrolled
-            ? 'bg-luxury-black/90 backdrop-blur-2xl border-luxury-gold/40 shadow-[0_16px_48px_rgba(0,0,0,0.85),0_0_25px_rgba(197,168,128,0.18)] py-1.5 sm:py-2'
-            : 'bg-luxury-black/80 backdrop-blur-xl border-luxury-border/70 shadow-[0_10px_35px_rgba(0,0,0,0.6)] py-2 sm:py-2.5'
-        )}
-      >
-        {/* Luminous Golden Shimmer Accent Lines */}
-        <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-luxury-gold/50 to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
-
-        <div className="flex items-center justify-between min-h-[3.75rem] sm:min-h-[4.25rem]">
-          {/* Left Side: Mobile Menu Button or Desktop Navigation */}
-          <div className="flex items-center">
-            <motion.button
-              type="button"
-              whileTap={{ scale: 0.92 }}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden h-10 w-10 flex items-center justify-center text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-luxury-gold/10"
-              aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {mobileMenuOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <X className="h-5 w-5" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <Menu className="h-5 w-5" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
-
-            {/* Desktop Left Nav with Framer Motion Sliding Pill */}
-            <nav
-              className="hidden lg:flex items-center space-x-1"
-              onMouseLeave={() => setHoveredNav(null)}
-            >
-              {navLinks.slice(0, 3).map((link) => {
-                const isActive = location.pathname === link.href;
-                return (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    onMouseEnter={() => setHoveredNav(link.name)}
-                    className={cn(
-                      'relative px-3.5 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
-                      isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream/80 hover:text-luxury-cream'
-                    )}
-                  >
-                    {/* Sliding Hover Capsule */}
-                    {hoveredNav === link.name && (
-                      <motion.span
-                        layoutId="navbar-hover-capsule"
-                        className="absolute inset-0 rounded-full bg-luxury-gold/15 border border-luxury-gold/30 backdrop-blur-xs -z-10 shadow-xs"
-                        transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-                      />
-                    )}
-                    {/* Active Route Dot */}
-                    {isActive && (
-                      <motion.span
-                        layoutId="navbar-active-dot"
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
-                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                      />
-                    )}
-                    <span>{link.name}</span>
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-
-        {/* Center: Luxury Logo & Brand Name */}
-        <Link
-          to="/"
-          className="flex flex-row sm:flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-2 gap-2.5 sm:gap-1 text-decoration-none"
-        >
-          {logoUrl && !logoLoadError ? (
-            <motion.picture
-              className="flex items-center justify-center shrink-0"
-              whileHover={{ scale: 1.04 }}
-              transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-            >
-              {appearance.logo_mobile_url && (
-                <source media="(max-width: 640px)" srcSet={appearance.logo_mobile_url} />
-              )}
-              {isDarkChrome && appearance.logo_dark_url && (
-                <source srcSet={appearance.logo_dark_url} />
-              )}
-              {!isDarkChrome && appearance.logo_light_url && (
-                <source srcSet={appearance.logo_light_url} />
-              )}
-              <img
-                src={logoUrl}
-                alt="Philz Signature Logo"
-                onError={() => setLogoLoadError(true)}
-                className="brand-navbar-logo w-auto max-w-[260px] sm:max-w-[420px] object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
-              />
-              <style>{`
-                .brand-navbar-logo {
-                  height: ${mobileLogoHeight}px !important;
-                  max-height: 140px !important;
-                }
-                @media (min-width: 640px) {
-                  .brand-navbar-logo {
-                    height: ${desktopLogoHeight}px !important;
-                    max-height: 180px !important;
-                  }
-                }
-              `}</style>
-            </motion.picture>
-          ) : null}
-
-          {/* Business Name: Beside logo on mobile, Under logo on desktop */}
-          {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
-            <div className="flex flex-col items-start sm:items-center select-none text-left sm:text-center leading-none">
-              <span className="font-serif text-xs sm:text-sm lg:text-base tracking-[0.16em] sm:tracking-[0.22em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap">
-                {settings.store_name || 'PHILZ SIGNATURE'}
-              </span>
-              <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.24em] sm:tracking-[0.3em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap opacity-90">
-                {settings.store_slogan || 'DIFFUSER CANDLES | PERFUME OIL'}
-              </span>
-            </div>
-          )}
-        </Link>
-
-        {/* Right Side: Actions (Desktop & Mobile Optimized) */}
-        <div className="flex items-center space-x-1 sm:space-x-1.5">
-          {/* Desktop Extra Links with Framer Motion Sliding Pill */}
-          <nav
-            className="hidden lg:flex items-center space-x-1 mr-2"
-            onMouseLeave={() => setHoveredNav(null)}
+      <div className="container mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between">
+        {/* Left Side: Brand Crest & Wordmark */}
+        <div className="flex items-center gap-3">
+          {/* Mobile Menu Toggle Button */}
+          <motion.button
+            type="button"
+            whileTap={{ scale: 0.92 }}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden h-10 w-10 -ml-2 flex items-center justify-center text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10"
+            aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
           >
-            {navLinks.slice(3).map((link) => {
-              const isActive = location.pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  onMouseEnter={() => setHoveredNav(link.name)}
-                  className={cn(
-                    'relative px-3.5 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
-                    isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream/80 hover:text-luxury-cream'
-                  )}
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
                 >
-                  {/* Sliding Hover Capsule */}
-                  {hoveredNav === link.name && (
-                    <motion.span
-                      layoutId="navbar-hover-capsule"
-                      className="absolute inset-0 rounded-full bg-luxury-gold/10 border border-luxury-gold/25 backdrop-blur-xs -z-10 shadow-xs"
-                      transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-                    />
-                  )}
-                  {/* Active Route Dot */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="navbar-active-dot"
-                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
-                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    />
-                  )}
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+                  <X className="h-5 w-5" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Menu className="h-5 w-5" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
+
+          {/* Luxury Logo & Typography */}
+          <Link
+            to="/"
+            className="flex items-center gap-2.5 group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold"
+          >
+            {logoUrl && !logoLoadError ? (
+              <motion.picture
+                className="flex items-center justify-center shrink-0"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+              >
+                {appearance.logo_mobile_url && (
+                  <source media="(max-width: 640px)" srcSet={appearance.logo_mobile_url} />
+                )}
+                {isDarkChrome && appearance.logo_dark_url && (
+                  <source srcSet={appearance.logo_dark_url} />
+                )}
+                {!isDarkChrome && appearance.logo_light_url && (
+                  <source srcSet={appearance.logo_light_url} />
+                )}
+                <img
+                  src={logoUrl}
+                  alt="Philz Signature Logo"
+                  onError={() => setLogoLoadError(true)}
+                  style={{ height: `${isScrolled ? mobileLogoHeight : desktopLogoHeight}px` }}
+                  className="w-auto max-w-[140px] object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+                />
+              </motion.picture>
+            ) : null}
+
+            {/* Brand Name Typography */}
+            {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
+              <div className="flex flex-col select-none leading-none">
+                <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.2em] sm:tracking-[0.24em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-sm">
+                  {settings.store_name || 'PHILZ SIGNATURE'}
+                </span>
+                <span className="text-[6.5px] sm:text-[7.5px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap opacity-90">
+                  {settings.store_slogan || 'HAUTE PARFUMERIE'}
+                </span>
+              </div>
+            )}
+          </Link>
+        </div>
+
+        {/* Center: Desktop Navigation Links */}
+        <nav
+          className="hidden lg:flex items-center space-x-1"
+          onMouseLeave={() => setHoveredNav(null)}
+        >
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.href;
+            return (
+              <Link
+                key={link.name}
+                to={link.href}
+                onMouseEnter={() => setHoveredNav(link.name)}
+                className={cn(
+                  'relative px-4 py-2 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
+                  isActive ? 'text-luxury-gold font-semibold' : 'text-white/85 hover:text-white'
+                )}
+              >
+                {/* Sliding Hover Capsule */}
+                {hoveredNav === link.name && (
+                  <motion.span
+                    layoutId="navbar-hover-capsule"
+                    className="absolute inset-0 rounded-full bg-white/10 border border-white/20 backdrop-blur-xs -z-10 shadow-xs"
+                    transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                  />
+                )}
+                {/* Active Route Dot */}
+                {isActive && (
+                  <motion.span
+                    layoutId="navbar-active-dot"
+                    className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  />
+                )}
+                <span>{link.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Right Side: Currency, Theme, Search, User & Cart */}
+        <div className="flex items-center space-x-1 sm:space-x-2">
+          {/* Currency Indicator (ÁRUM Framer Style) */}
+          <div className="hidden xl:flex items-center text-xs font-mono text-white/70 tracking-wider pr-1 cursor-default select-none">
+            <span>NGN ₦</span>
+          </div>
 
           {/* Theme Switcher */}
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
@@ -305,7 +251,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
             <Link
               to="/shop"
-              className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
               title="Search Perfumes"
               aria-label="Search perfumes"
             >
@@ -317,7 +263,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block">
             <Link
               to="/wishlist"
-              className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors relative"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative"
               title="Wishlist"
               aria-label="View saved perfumes"
             >
@@ -326,7 +272,7 @@ export const Navbar: React.FC = () => {
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-luxury-gold text-black text-[9px] font-bold flex items-center justify-center shadow-xs"
+                  className="absolute top-1 right-1 h-3.5 w-3.5 rounded-full bg-luxury-gold text-black text-[8px] font-bold flex items-center justify-center shadow-xs"
                 >
                   {wishlistCount}
                 </motion.span>
@@ -342,12 +288,12 @@ export const Navbar: React.FC = () => {
                   type="button"
                   whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.92 }}
-                  className="hidden sm:flex h-10 w-10 rounded-full items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors relative cursor-pointer"
+                  className="hidden sm:flex h-9 w-9 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative cursor-pointer"
                   title="My Account"
                   aria-label="Customer account portal"
                 >
                   <User className="h-4 w-4" />
-                  <span className="absolute bottom-2 right-2 h-2 w-2 rounded-full bg-luxury-gold ring-2 ring-black" />
+                  <span className="absolute bottom-1.5 right-1.5 h-2 w-2 rounded-full bg-luxury-gold ring-2 ring-black" />
                 </motion.button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 p-2 space-y-1 bg-luxury-card/95 backdrop-blur-xl border border-luxury-border shadow-2xl">
@@ -397,7 +343,7 @@ export const Navbar: React.FC = () => {
             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block">
               <Link
                 to="/login"
-                className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors"
+                className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
                 title="Sign In"
                 aria-label="Sign in to your account"
               >
@@ -406,30 +352,20 @@ export const Navbar: React.FC = () => {
             </motion.div>
           )}
 
-          {/* Cart Icon with Spring Bounce */}
-          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+          {/* Minimalist Cart Pill (ÁRUM Framer Style) */}
+          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
             <Link
               to="/cart"
-              className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors relative"
+              className="px-3.5 py-1.5 rounded-full border border-white/30 hover:border-luxury-gold hover:bg-luxury-gold hover:text-black transition-all text-xs font-medium text-white flex items-center gap-1.5 shadow-sm backdrop-blur-xs"
               title="Shopping Cart"
               aria-label="View shopping cart"
             >
-              <ShoppingBag className="h-4 w-4" />
-              {cartCount > 0 && (
-                <motion.span
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-                  className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-luxury-gold text-black text-[9px] font-bold flex items-center justify-center shadow-xs"
-                >
-                  {cartCount}
-                </motion.span>
-              )}
+              <span>Cart</span>
+              <span className="font-mono font-semibold">({cartCount})</span>
             </Link>
           </motion.div>
         </div>
       </div>
-    </div>
 
       {/* Mobile Animated Luxury Drawer Menu */}
       <AnimatePresence>

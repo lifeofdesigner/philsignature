@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Sparkles, Pause, Play } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import type { CmsHeroContent, CmsHeroSlide } from '@/services/CMSService';
 
 export interface HeroBillboardProps {
@@ -128,7 +127,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className="relative min-h-[85vh] sm:min-h-[88vh] flex items-center justify-center overflow-hidden bg-luxury-black border-b border-luxury-border focus:outline-none select-none"
+      className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-end overflow-hidden bg-black focus:outline-none select-none"
     >
       {/* Background Slides with AnimatePresence */}
       <AnimatePresence initial={false} mode="sync">
@@ -137,7 +136,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-0 z-0"
         >
           {currentSlide.video_url ? (
@@ -147,7 +146,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover object-center opacity-40 dark:opacity-50"
+              className="w-full h-full object-cover object-center"
             />
           ) : (
             <picture className="w-full h-full block">
@@ -156,109 +155,150 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               )}
               <motion.img
                 key={`img-${currentSlide.id}`}
-                initial={{ scale: 1.05 }}
-                animate={{ scale: isPaused ? 1 : 1.05 }}
+                initial={{ scale: 1.06 }}
+                animate={{ scale: isPaused ? 1.02 : 1.06 }}
                 transition={{ duration: intervalMs / 1000 + 1, ease: 'linear' }}
                 src={currentSlide.desktop_image}
                 alt={currentSlide.headline}
-                className="w-full h-full object-cover object-center opacity-30 dark:opacity-40"
+                className="w-full h-full object-cover object-center"
                 loading="eager"
                 fetchPriority="high"
               />
             </picture>
           )}
 
-          {/* Theme Vignette Overlays for Flawless Readability */}
-          <div
-            className="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/75 to-luxury-black/35"
-            style={{
-              backgroundColor: currentSlide.overlay_color || undefined,
-              opacity: currentSlide.overlay_opacity ?? undefined,
-            }}
-          />
-          <div className="absolute inset-0 bg-radial-vignette opacity-60 dark:opacity-75 pointer-events-none" />
+          {/* Theme Vignette Overlays for Flawless Readability (ÁRUM Framer Styling) */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-black/60 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent pointer-events-none" />
         </motion.div>
       </AnimatePresence>
 
-      {/* Editorial Content with Staggered Entrance */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24 text-center max-w-4xl space-y-6">
+      {/* Main Editorial Content & Floating Product Card Row (ÁRUM Framer Architecture) */}
+      <div className="relative z-20 container mx-auto px-6 sm:px-12 lg:px-16 pb-16 sm:pb-24 pt-32 w-full flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+        {/* Bottom-Left Editorial Typography */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={`content-${currentSlide.id}`}
-            initial={{ opacity: 0, y: direction * 14 }}
+            initial={{ opacity: 0, y: direction * 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -direction * 14 }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-5 sm:space-y-6"
+            exit={{ opacity: 0, y: -direction * 16 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-xl text-left space-y-5"
           >
             {/* Badge */}
             {currentSlide.badge && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+              <motion.span
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 border border-luxury-gold/40 bg-luxury-charcoal/90 text-luxury-gold text-[10px] sm:text-xs uppercase tracking-luxury-wide font-medium backdrop-blur-sm shadow-sm rounded-xs"
+                className="inline-block text-[11px] sm:text-xs uppercase tracking-luxury-wide font-medium text-luxury-gold"
               >
-                <Sparkles className="h-3 w-3" />
-                <span>{currentSlide.badge}</span>
-              </motion.div>
+                ✦ {currentSlide.badge}
+              </motion.span>
             )}
 
-            {/* Headline */}
+            {/* Editorial Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl text-luxury-cream font-normal tracking-tight leading-[1.15]"
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight leading-[1.12] drop-shadow-md"
             >
               {currentSlide.headline}
             </motion.h1>
 
             {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xs sm:text-sm md:text-base lg:text-lg text-luxury-sand font-light max-w-2xl mx-auto leading-relaxed px-2"
-            >
-              {currentSlide.subtitle}
-            </motion.p>
+            {currentSlide.subtitle && (
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="text-xs sm:text-sm lg:text-base text-white/80 font-light max-w-lg leading-relaxed drop-shadow-sm"
+              >
+                {currentSlide.subtitle}
+              </motion.p>
+            )}
 
-            {/* CTA Buttons */}
+            {/* Minimalist Frosted Glass Action Button (ÁRUM Framer Style) */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 pt-2 sm:pt-4"
+              className="pt-2 flex items-center gap-4"
             >
-              {currentSlide.primary_cta_text && (
-                <Link to={currentSlide.primary_cta_url} className="w-full sm:w-auto">
-                  <Button variant="luxury" size="lg" className="w-full sm:w-auto gap-2 text-xs min-h-[44px]">
-                    <span>{currentSlide.primary_cta_text}</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Button>
-                </Link>
-              )}
-              {currentSlide.secondary_cta_text && (
-                <Link to={currentSlide.secondary_cta_url || '/collections'} className="w-full sm:w-auto">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto text-xs min-h-[44px]">
-                    <span>{currentSlide.secondary_cta_text}</span>
-                  </Button>
-                </Link>
-              )}
+              <Link to={currentSlide.primary_cta_url || '/shop'}>
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="px-7 py-3 rounded-xs border border-white/40 bg-white/10 hover:bg-white hover:text-black hover:border-white backdrop-blur-md text-white text-xs font-semibold uppercase tracking-luxury transition-all duration-300 shadow-lg cursor-pointer"
+                >
+                  {currentSlide.primary_cta_text || 'Shop Now'}
+                </motion.button>
+              </Link>
             </motion.div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Bottom-Right Floating Product Spotlight Card (Signature ÁRUM Framer Feature) */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`product-card-${currentSlide.id}`}
+            initial={{ opacity: 0, x: 20, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 20, scale: 0.95 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="w-full sm:w-auto self-stretch sm:self-auto"
+          >
+            <Link
+              to={currentSlide.featured_product_url || currentSlide.primary_cta_url || '/shop'}
+              className="group block bg-[#f6f4ef] text-black p-3.5 sm:p-4 rounded-xs shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/40 hover:border-luxury-gold transition-all duration-300 w-full sm:w-72 md:w-80 cursor-pointer"
+            >
+              <div className="flex items-center gap-3.5">
+                {/* Product Thumbnail */}
+                <div className="w-14 h-16 sm:w-16 sm:h-20 bg-[#eae6dc] rounded-xs overflow-hidden flex items-center justify-center p-1.5 shrink-0 border border-black/5">
+                  <img
+                    src={
+                      currentSlide.featured_product_image ||
+                      'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=90'
+                    }
+                    alt={currentSlide.featured_product_title || 'Featured Creation'}
+                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+
+                {/* Product Details */}
+                <div className="flex-1 min-w-0 pr-1">
+                  <span className="text-[10px] text-gray-500 font-mono uppercase tracking-wider block truncate">
+                    {currentSlide.featured_product_subtitle || 'Haute Parfumerie • 100ml'}
+                  </span>
+                  <h4 className="font-serif text-sm sm:text-base font-semibold text-black truncate group-hover:text-[#A17836] transition-colors">
+                    {currentSlide.featured_product_title || 'Oud Royal Extrait'}
+                  </h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs sm:text-sm font-semibold text-black font-mono">
+                      {currentSlide.featured_product_price || '₦185,000'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Arrow Action Icon */}
+                <div className="h-8 w-8 rounded-full bg-black/5 group-hover:bg-[#A17836] group-hover:text-white flex items-center justify-center transition-colors shrink-0">
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </div>
+              </div>
+            </Link>
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Desktop & Tablet Previous/Next Minimal Chevron Buttons */}
+      {/* Subtle Slide Navigation Arrows */}
       {slideCount > 1 && (
         <>
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous fragrance slide"
-            className="hidden sm:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full bg-luxury-black/60 border border-luxury-border/80 text-luxury-cream hover:text-luxury-gold hover:border-luxury-gold/50 backdrop-blur-md transition-all cursor-pointer shadow-lg group"
+            className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/40 border border-white/20 text-white hover:text-luxury-gold hover:border-luxury-gold/50 backdrop-blur-md transition-all cursor-pointer shadow-lg group"
           >
             <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
           </button>
@@ -267,18 +307,17 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
             type="button"
             onClick={handleNext}
             aria-label="Next fragrance slide"
-            className="hidden sm:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full bg-luxury-black/60 border border-luxury-border/80 text-luxury-cream hover:text-luxury-gold hover:border-luxury-gold/50 backdrop-blur-md transition-all cursor-pointer shadow-lg group"
+            className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/40 border border-white/20 text-white hover:text-luxury-gold hover:border-luxury-gold/50 backdrop-blur-md transition-all cursor-pointer shadow-lg group"
           >
             <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
           </button>
         </>
       )}
 
-      {/* Bottom Luxury Slider Controls & Progress Dashboard */}
+      {/* Bottom Minimalist Slide Indicator Dots & Pause Button */}
       {slideCount > 1 && (
-        <div className="absolute bottom-6 sm:bottom-8 left-0 right-0 z-20 flex items-center justify-center gap-6 px-4">
-          {/* Slide Indicator Bars with Animated Fill */}
-          <div className="flex items-center gap-2 sm:gap-3">
+        <div className="absolute bottom-5 left-0 right-0 z-20 flex items-center justify-center gap-4 px-4 pointer-events-auto">
+          <div className="flex items-center gap-2">
             {activeSlides.map((slide, idx) => {
               const isActive = idx === currentIndex;
               return (
@@ -287,12 +326,12 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
                   type="button"
                   onClick={() => handleGoTo(idx)}
                   aria-label={`Go to slide ${idx + 1}: ${slide.headline}`}
-                  className="relative h-1 sm:h-1.5 w-8 sm:w-12 bg-luxury-border/80 rounded-full overflow-hidden cursor-pointer transition-all"
+                  className="relative h-1 w-8 sm:w-10 bg-white/30 rounded-full overflow-hidden cursor-pointer transition-all"
                 >
                   {isActive ? (
                     <motion.div
                       layoutId="activeSlideBar"
-                      className="absolute inset-0 bg-luxury-gold"
+                      className="absolute inset-0 bg-white"
                       initial={{ width: '0%' }}
                       animate={{ width: '100%' }}
                       transition={{
@@ -306,22 +345,14 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
             })}
           </div>
 
-          {/* Minimalist Slide Counter */}
-          <div className="flex items-center gap-2 text-[11px] font-mono tracking-widest text-luxury-muted">
-            <span className="text-luxury-gold font-semibold">0{currentIndex + 1}</span>
-            <span>/</span>
-            <span>0{slideCount}</span>
-          </div>
-
-          {/* Pause / Play Indicator Button */}
           {autoplayEnabled && (
             <button
               type="button"
               onClick={() => setIsPaused((p) => !p)}
               aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
-              className="p-1 text-luxury-muted hover:text-luxury-gold transition-colors cursor-pointer"
+              className="p-1 text-white/50 hover:text-white transition-colors cursor-pointer"
             >
-              {isPaused ? <Play className="h-3.5 w-3.5" /> : <Pause className="h-3.5 w-3.5" />}
+              {isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
             </button>
           )}
         </div>

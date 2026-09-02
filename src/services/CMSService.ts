@@ -19,6 +19,12 @@ export interface CmsHeroSlide {
   overlay_color?: string;
   overlay_opacity?: number;
   animation_style?: 'crossfade' | 'slide' | 'zoom';
+  // ÁRUM Framer Style: Floating Featured Product Spotlight
+  featured_product_title?: string;
+  featured_product_subtitle?: string;
+  featured_product_price?: string;
+  featured_product_image?: string;
+  featured_product_url?: string;
   is_active: boolean;
   order: number;
   status?: CmsPublishStatus;
