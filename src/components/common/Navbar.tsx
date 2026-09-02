@@ -122,13 +122,13 @@ export const Navbar: React.FC = () => {
           </nav>
         </div>
 
-        {/* Center: Luxury Logo */}
+        {/* Center: Luxury Logo & Brand Name */}
         <Link
           to="/"
-          className="flex flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-2"
+          className="flex flex-row sm:flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-2 gap-2.5 sm:gap-1"
         >
           {logoUrl && !logoLoadError ? (
-            <picture className="flex items-center justify-center">
+            <picture className="flex items-center justify-center shrink-0">
               {appearance.logo_mobile_url && (
                 <source media="(max-width: 640px)" srcSet={appearance.logo_mobile_url} />
               )}
@@ -157,18 +157,15 @@ export const Navbar: React.FC = () => {
                 }
               `}</style>
             </picture>
-          ) : (
-            <div className="flex flex-col items-center select-none text-center">
-              <span
-                style={{ fontSize: `${Math.max(16, Math.round(desktopLogoHeight * 0.45))}px` }}
-                className="font-serif tracking-[0.16em] sm:tracking-[0.24em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-all whitespace-nowrap"
-              >
+          ) : null}
+
+          {/* Business Name: Beside logo on mobile, Under logo on desktop */}
+          {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
+            <div className="flex flex-col items-start sm:items-center select-none text-left sm:text-center leading-none">
+              <span className="font-serif text-xs sm:text-base lg:text-lg tracking-[0.14em] sm:tracking-[0.22em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors whitespace-nowrap">
                 {settings.store_name || 'PHILZ SIGNATURE'}
               </span>
-              <span
-                style={{ fontSize: `${Math.max(7, Math.round(desktopLogoHeight * 0.16))}px` }}
-                className="tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 transition-all"
-              >
+              <span className="text-[7px] sm:text-[8px] lg:text-[8.5px] tracking-[0.24em] sm:tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap">
                 {settings.store_slogan || 'HAUTE PARFUMERIE'}
               </span>
             </div>

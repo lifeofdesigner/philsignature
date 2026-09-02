@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Sliders, Check } from 'lucide-react';
+import { Sliders, Check, Type } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 
 interface LogoSizeControlProps {
@@ -83,16 +84,32 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
     }
   };
 
+  const showBusinessName = appearance.show_business_name !== false;
+
+  const handleToggleBusinessName = async (show: boolean) => {
+    const updated: CmsAppearanceConfig = {
+      ...appearance,
+      show_business_name: show,
+    };
+    onChange(updated);
+    setIsSaving(true);
+    try {
+      await onCommit(updated);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="bg-luxury-card border border-luxury-border p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-luxury-border/60 pb-3">
         <div>
           <div className="flex items-center gap-2">
             <Sliders className="h-4 w-4 text-luxury-gold" />
-            <h3 className="font-serif text-lg text-white font-normal">Logo Sizing & Scale</h3>
+            <h3 className="font-serif text-lg text-white font-normal">Logo & Header Branding</h3>
           </div>
           <p className="text-xs text-luxury-muted mt-0.5">
-            Scale your brand logo from discreet Small up to Grand / Biggest across desktop and mobile.
+            Scale your brand logo and manage business name layout across desktop and mobile views.
           </p>
         </div>
         {isSaving && (
@@ -102,9 +119,32 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
         )}
       </div>
 
+      {/* Business Name Visibility & Layout */}
+      <div className="flex items-center justify-between p-4 bg-luxury-charcoal/40 border border-luxury-border rounded-sm">
+        <div className="space-y-0.5 pr-4">
+          <label className="text-xs font-medium text-white flex items-center gap-2">
+            <Type className="h-3.5 w-3.5 text-luxury-gold" />
+            <span>Show Business Name in Header</span>
+            {showBusinessName && (
+              <span className="text-[9px] px-1.5 py-0.5 bg-luxury-gold/20 text-luxury-gold rounded font-medium uppercase tracking-wider">
+                Visible
+              </span>
+            )}
+          </label>
+          <p className="text-[11px] text-luxury-muted">
+            Shows business name <strong className="text-luxury-sand">beside</strong> the logo on mobile and <strong className="text-luxury-sand">under</strong> the logo on desktop. Toggle off to display only the logo emblem.
+          </p>
+        </div>
+        <Switch
+          checked={showBusinessName}
+          onCheckedChange={handleToggleBusinessName}
+          disabled={isSaving}
+        />
+      </div>
+
       {/* Preset Buttons */}
       <div className="space-y-2">
-        <label className="text-xs font-medium text-luxury-sand">Size Presets</label>
+        <label className="text-xs font-medium text-luxury-sand">Logo Size Presets</label>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
           {PRESETS.map((preset) => {
             const isSelected = currentPreset === preset.id || currentHeight === preset.height;
@@ -170,7 +210,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
           </span>
         </div>
 
-        <div className="bg-luxury-black/95 border border-luxury-border p-6 rounded-sm flex items-center justify-center overflow-hidden min-h-[140px] transition-all">
+        <div className="bg-luxury-black/95 border border-luxury-border p-6 rounded-sm flex flex-col items-center justify-center overflow-hidden min-h-[160px] gap-2 transition-all">
           {logoUrl ? (
             <img
               src={logoUrl}
@@ -178,18 +218,14 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
               style={{ height: `${currentHeight}px`, maxHeight: '160px' }}
               className="w-auto max-w-full object-contain transition-all duration-300"
             />
-          ) : (
-            <div className="flex flex-col items-center select-none text-center">
-              <span
-                style={{ fontSize: `${Math.max(14, Math.round(currentHeight * 0.45))}px` }}
-                className="font-serif tracking-[0.2em] text-luxury-cream uppercase font-normal transition-all"
-              >
+          ) : null}
+
+          {showBusinessName && (
+            <div className="flex flex-col items-center select-none text-center leading-none mt-1">
+              <span className="font-serif text-sm sm:text-base tracking-[0.2em] text-luxury-cream uppercase font-normal">
                 PHILZ SIGNATURE
               </span>
-              <span
-                style={{ fontSize: `${Math.max(8, Math.round(currentHeight * 0.16))}px` }}
-                className="tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 transition-all"
-              >
+              <span className="text-[8px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5">
                 HAUTE PARFUMERIE
               </span>
             </div>
