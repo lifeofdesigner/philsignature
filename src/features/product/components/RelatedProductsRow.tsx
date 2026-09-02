@@ -19,7 +19,7 @@ export const RelatedProductsRow: React.FC<RelatedProductsRowProps> = ({
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
           More Perfumes
         </span>
-        <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal">
+        <h2 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal">
           {currentFamily ? `More from the ${currentFamily} Family` : 'You May Also Like'}
         </h2>
       </div>

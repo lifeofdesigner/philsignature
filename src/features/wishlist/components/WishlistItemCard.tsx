@@ -29,7 +29,7 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
   return (
     <div className="flex flex-row items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-colors rounded-sm">
       {/* Product Image */}
-      <Link to={`/product/${product.slug}`} className="relative aspect-[3/4] w-20 sm:w-28 shrink-0 overflow-hidden bg-black rounded-sm">
+      <Link to={`/product/${product.slug}`} className="relative aspect-[3/4] w-20 sm:w-28 shrink-0 overflow-hidden bg-luxury-card rounded-sm">
         <img
           src={primaryImage}
           alt={product.name}
@@ -42,11 +42,11 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
         <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
           {product.concentration || 'Perfume'} • {product.volume_ml || 100}ml
         </span>
-        <h3 className="font-serif text-base sm:text-xl text-white font-normal hover:text-luxury-gold transition-colors truncate">
+        <h3 className="font-serif text-base sm:text-xl text-luxury-cream font-normal hover:text-luxury-gold transition-colors truncate">
           <Link to={`/product/${product.slug}`}>{product.name}</Link>
         </h3>
         {product.fragrance_family && (
-          <span className="inline-block px-2 py-0.5 text-[8px] sm:text-[9px] uppercase tracking-wider bg-black border border-luxury-border text-luxury-sand">
+          <span className="inline-block px-2 py-0.5 text-[8px] sm:text-[9px] uppercase tracking-wider bg-luxury-card border border-luxury-border text-luxury-sand rounded-sm">
             {product.fragrance_family} Family
           </span>
         )}

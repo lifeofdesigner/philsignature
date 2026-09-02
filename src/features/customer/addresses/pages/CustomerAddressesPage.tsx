@@ -92,7 +92,7 @@ export const CustomerAddressesPage: React.FC = () => {
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
             My Addresses
           </span>
-          <h1 className="font-serif text-2xl text-white font-normal mt-1">
+          <h1 className="font-serif text-2xl text-luxury-cream font-normal mt-1">
             Saved Delivery Addresses
           </h1>
           <p className="text-xs text-luxury-muted mt-1">
@@ -103,7 +103,7 @@ export const CustomerAddressesPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-colors rounded cursor-pointer"
+          className="min-h-[40px] inline-flex items-center gap-1.5 px-5 py-2.5 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-luxury-wide transition-colors rounded-sm cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Address</span>
@@ -123,15 +123,15 @@ export const CustomerAddressesPage: React.FC = () => {
           {addresses.map((addr) => (
             <div
               key={addr.id}
-              className="bg-luxury-card border border-luxury-border p-5 rounded space-y-3 relative hover:border-luxury-gold/40 transition-colors"
+              className="bg-luxury-card border border-luxury-border p-5 rounded-sm shadow-xs space-y-3 relative hover:border-luxury-gold/40 transition-colors"
             >
               <div className="flex items-center justify-between">
-                <span className="font-serif text-sm text-white font-medium">
+                <span className="font-serif text-sm text-luxury-cream font-medium">
                   {addr.company || 'Delivery Address'}
                 </span>
                 <div className="flex items-center gap-2">
                   {addr.is_default && (
-                    <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider text-luxury-gold border border-luxury-gold/40 px-2 py-0.5 rounded">
+                    <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider text-luxury-gold border border-luxury-gold/40 px-2 py-0.5 rounded-sm">
                       <CheckCircle className="h-2.5 w-2.5" />
                       Default
                     </span>
@@ -139,7 +139,7 @@ export const CustomerAddressesPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => deleteAddressMutation.mutate(addr.id)}
-                    className="text-luxury-muted hover:text-red-400 transition-colors p-1 cursor-pointer"
+                    className="text-luxury-muted hover:text-red-500 transition-colors p-1 cursor-pointer"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
@@ -147,7 +147,7 @@ export const CustomerAddressesPage: React.FC = () => {
               </div>
 
               <div className="text-xs text-luxury-muted space-y-1">
-                <p className="text-white font-medium">{addr.first_name} {addr.last_name} • {addr.phone}</p>
+                <p className="text-luxury-cream font-medium">{addr.first_name} {addr.last_name} • {addr.phone}</p>
                 <p>{addr.address_line1}</p>
                 <p>{addr.city}, {addr.state} {addr.postal_code ? `• ${addr.postal_code}` : ''}</p>
                 <p className="text-[11px] text-luxury-gold">{addr.country}</p>
@@ -160,20 +160,20 @@ export const CustomerAddressesPage: React.FC = () => {
       {/* Add Address Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-luxury-card border border-luxury-border w-full max-w-lg p-6 rounded space-y-5 shadow-2xl relative">
+          <div className="bg-luxury-card border border-luxury-border w-full max-w-lg p-6 sm:p-8 rounded-sm space-y-5 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-luxury-border pb-3">
-              <h3 className="font-serif text-lg text-white font-normal">Add New Address</h3>
+              <h3 className="font-serif text-lg text-luxury-cream font-normal">Add New Address</h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="text-luxury-muted hover:text-white transition-colors cursor-pointer"
+                className="text-luxury-muted hover:text-luxury-cream transition-colors cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
             {formError && (
-              <div className="p-3 bg-red-950/40 border border-red-800/60 rounded text-xs text-red-200">
+              <div className="p-3 bg-red-50 border border-red-200 rounded-sm text-xs text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-200">
                 {formError}
               </div>
             )}
@@ -181,80 +181,80 @@ export const CustomerAddressesPage: React.FC = () => {
             <div className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">First Name *</label>
+                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">First Name *</label>
                   <input
                     type="text"
                     value={formData.first_name}
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
                     required
-                    className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                    className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">Last Name *</label>
+                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">Last Name *</label>
                   <input
                     type="text"
                     value={formData.last_name}
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
                     required
-                    className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                    className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">Phone Number *</label>
+                <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">Phone Number *</label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
-                  className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                  className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">Street Address *</label>
+                <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">Street Address *</label>
                 <input
                   type="text"
                   value={formData.address_line1}
                   onChange={(e) => setFormData({ ...formData, address_line1: e.target.value })}
                   required
                   placeholder="Street, Suite, Villa"
-                  className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                  className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none placeholder:text-luxury-muted"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">City *</label>
+                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">City *</label>
                   <input
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     required
-                    className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                    className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">State *</label>
+                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">State *</label>
                   <select
                     value={formData.state}
                     onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                    className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                    className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none"
                   >
                     {NIGERIAN_STATES.map((st) => (
-                      <option key={st} value={st}>{st}</option>
+                      <option key={st} value={st} className="bg-luxury-card text-luxury-cream">{st}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1">Postal Code</label>
+                  <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">Postal Code</label>
                   <input
                     type="text"
                     value={formData.postal_code}
                     onChange={(e) => setFormData({ ...formData, postal_code: e.target.value })}
-                    className="w-full bg-luxury-black border border-luxury-border p-2.5 text-white rounded focus:border-luxury-gold focus:outline-none"
+                    className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none placeholder:text-luxury-muted"
                   />
                 </div>
               </div>
@@ -274,7 +274,7 @@ export const CustomerAddressesPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 border border-luxury-border text-luxury-muted hover:text-white text-xs uppercase tracking-wider rounded cursor-pointer"
+                className="px-4 py-2 border border-luxury-border text-luxury-muted hover:text-luxury-cream text-xs uppercase tracking-wider rounded-sm cursor-pointer"
               >
                 Cancel
               </button>
@@ -282,7 +282,7 @@ export const CustomerAddressesPage: React.FC = () => {
                 type="button"
                 onClick={() => addAddressMutation.mutate()}
                 disabled={addAddressMutation.isPending}
-                className="inline-flex items-center gap-2 px-6 py-2 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-wider rounded cursor-pointer disabled:opacity-50"
+                className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-wider rounded-sm cursor-pointer disabled:opacity-50"
               >
                 {addAddressMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 <span>Save Address</span>

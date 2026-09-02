@@ -16,12 +16,12 @@ export const OlfactoryPyramid: React.FC<OlfactoryPyramidProps> = ({
   if (!hasNotes) return null;
 
   return (
-    <div className="space-y-6 bg-luxury-card border border-luxury-border p-6 sm:p-8">
+    <div className="space-y-6 bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-6 sm:p-8">
       <div className="border-b border-luxury-border/60 pb-4">
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium block">
           Fragrance Breakdown
         </span>
-        <h3 className="font-serif text-2xl text-white font-normal mt-1">
+        <h3 className="font-serif text-2xl text-luxury-cream font-normal mt-1">
           Fragrance Notes
         </h3>
         <p className="text-xs text-luxury-muted font-light mt-1">
@@ -43,7 +43,7 @@ export const OlfactoryPyramid: React.FC<OlfactoryPyramidProps> = ({
               {topNotes.map((note, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-black border border-luxury-border/80 text-luxury-cream text-xs font-light tracking-wide"
+                  className="px-3 py-1 bg-luxury-charcoal border border-luxury-border text-luxury-cream text-xs font-light tracking-wide rounded-sm"
                 >
                   {note}
                 </span>
@@ -65,7 +65,7 @@ export const OlfactoryPyramid: React.FC<OlfactoryPyramidProps> = ({
               {middleNotes.map((note, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-black border border-luxury-border/80 text-luxury-cream text-xs font-light tracking-wide"
+                  className="px-3 py-1 bg-luxury-charcoal border border-luxury-border text-luxury-cream text-xs font-light tracking-wide rounded-sm"
                 >
                   {note}
                 </span>
@@ -87,7 +87,7 @@ export const OlfactoryPyramid: React.FC<OlfactoryPyramidProps> = ({
               {baseNotes.map((note, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-black border border-luxury-border/80 text-luxury-cream text-xs font-light tracking-wide"
+                  className="px-3 py-1 bg-luxury-charcoal border border-luxury-border text-luxury-cream text-xs font-light tracking-wide rounded-sm"
                 >
                   {note}
                 </span>

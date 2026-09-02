@@ -35,7 +35,7 @@ export const ForgotPasswordPage: React.FC = () => {
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
           Account Help
         </span>
-        <h1 className="font-serif text-3xl text-white font-normal">
+        <h1 className="font-serif text-3xl text-luxury-cream font-normal">
           Forgot Password
         </h1>
         <p className="text-xs text-luxury-muted font-light">
@@ -43,24 +43,24 @@ export const ForgotPasswordPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="bg-luxury-card border border-luxury-border p-8 space-y-6">
+      <div className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-8 space-y-6">
         {error && (
-          <div className="flex items-start gap-2.5 p-3.5 bg-red-950/40 border border-red-800/60 text-red-200 text-xs font-light">
-            <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5 p-3.5 bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-200 text-xs font-light rounded-sm">
+            <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
         {isSent ? (
           <div className="text-center space-y-4 py-4">
-            <div className="h-12 w-12 rounded-full border border-emerald-500/40 bg-emerald-950/30 flex items-center justify-center mx-auto text-emerald-400">
+            <div className="h-12 w-12 rounded-full border border-emerald-500/40 bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="h-6 w-6" />
             </div>
-            <h3 className="font-serif text-lg text-white font-normal">
+            <h3 className="font-serif text-lg text-luxury-cream font-normal">
               Reset Link Sent
             </h3>
             <p className="text-xs text-luxury-sand leading-relaxed">
-              If an account exists for <strong className="text-white">{email}</strong>, you will receive password reset instructions in your email shortly.
+              If an account exists for <strong className="text-luxury-cream">{email}</strong>, you will receive password reset instructions in your email shortly.
             </p>
             <div className="pt-2">
               <Link to={ROUTES.LOGIN}>

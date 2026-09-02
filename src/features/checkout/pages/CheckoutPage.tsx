@@ -67,10 +67,10 @@ export const CheckoutPage: React.FC = () => {
 
         {/* Global Checkout Error Banner */}
         {checkout.checkoutError && (
-          <div className="mb-8 p-4 bg-red-950/40 border border-red-800/60 rounded flex items-start gap-3 text-xs text-red-200 animate-fadeIn">
-            <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-200 rounded-sm flex items-start gap-3 text-xs animate-fadeIn">
+            <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
             <div>
-              <p className="font-medium text-white mb-0.5">Transaction Unsuccessful</p>
+              <p className="font-medium text-red-900 dark:text-white mb-0.5">Transaction Unsuccessful</p>
               <p>{checkout.checkoutError}</p>
             </div>
           </div>
@@ -79,7 +79,7 @@ export const CheckoutPage: React.FC = () => {
         {/* Main 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Active Step Panel */}
-          <div className="lg:col-span-7 bg-luxury-card/30 border border-luxury-border p-6 sm:p-8 rounded">
+          <div className="lg:col-span-7 bg-luxury-card border border-luxury-border p-6 sm:p-8 rounded-sm shadow-xs">
             {checkout.currentStep === 'address' && (
               <AddressStep
                 addressForm={checkout.addressForm}

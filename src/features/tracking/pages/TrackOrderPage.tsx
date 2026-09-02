@@ -57,7 +57,7 @@ export const TrackOrderPage: React.FC = () => {
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
             Order Tracking
           </span>
-          <h1 className="font-serif text-3xl text-white font-normal">
+          <h1 className="font-serif text-3xl text-luxury-cream font-normal">
             Track Your Order
           </h1>
           <p className="text-xs text-luxury-muted font-light leading-relaxed">
@@ -66,10 +66,10 @@ export const TrackOrderPage: React.FC = () => {
         </div>
 
         {/* Search Query Form */}
-        <div className="bg-luxury-card border border-luxury-border p-6 rounded shadow-xl mb-8">
+        <div className="bg-luxury-card border border-luxury-border p-6 sm:p-8 rounded-sm shadow-xs mb-8">
           <form onSubmit={handleSearch} className="space-y-4">
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 Order Number *
               </label>
               <input
@@ -78,11 +78,11 @@ export const TrackOrderPage: React.FC = () => {
                 value={orderNumberInput}
                 onChange={(e) => setOrderNumberInput(e.target.value.toUpperCase())}
                 required
-                className="w-full bg-luxury-black border border-luxury-border p-3 text-xs text-white placeholder:text-luxury-muted/40 font-mono tracking-wider focus:outline-none focus:border-luxury-gold transition-colors rounded"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-3 text-xs text-luxury-cream placeholder:text-luxury-muted font-mono tracking-wider focus:outline-none focus:border-luxury-gold focus-visible:ring-1 focus-visible:ring-luxury-gold transition-colors rounded-sm"
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 Email Address (Optional)
               </label>
               <input
@@ -90,13 +90,13 @@ export const TrackOrderPage: React.FC = () => {
                 placeholder="your@email.com"
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
-                className="w-full bg-luxury-black border border-luxury-border p-3 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors rounded"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-3 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold focus-visible:ring-1 focus-visible:ring-luxury-gold transition-colors rounded-sm"
               />
             </div>
             <button
               type="submit"
               disabled={isLoading || !orderNumberInput.trim()}
-              className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-colors cursor-pointer rounded disabled:opacity-50"
+              className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 py-3 px-6 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer rounded-sm disabled:opacity-50"
             >
               {isLoading ? (
                 <>
@@ -119,7 +119,7 @@ export const TrackOrderPage: React.FC = () => {
             {order ? (
               <div className="space-y-6 animate-fadeIn">
                 {/* Status Card */}
-                <div className="bg-luxury-card border border-luxury-gold/30 p-6 rounded space-y-4">
+                <div className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-6 space-y-4">
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-luxury-border pb-4">
                     <div>
                       <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Order Number</span>
@@ -127,7 +127,7 @@ export const TrackOrderPage: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Delivery Status</span>
-                      <span className="text-xs text-white uppercase tracking-wider font-medium px-2 py-0.5 border border-luxury-border rounded bg-luxury-black">
+                      <span className="text-xs text-luxury-cream uppercase tracking-wider font-medium px-2 py-0.5 border border-luxury-border rounded-sm bg-luxury-charcoal">
                         {order.fulfillment_status}
                       </span>
                     </div>
@@ -136,18 +136,18 @@ export const TrackOrderPage: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4 text-xs text-luxury-muted">
                     <div>
                       <span className="text-[10px] uppercase text-luxury-muted tracking-wider block">Order Date</span>
-                      <span className="text-white">{formatDate(order.created_at)}</span>
+                      <span className="text-luxury-cream">{formatDate(order.created_at)}</span>
                     </div>
                     <div>
                       <span className="text-[10px] uppercase text-luxury-muted tracking-wider block">Payment</span>
-                      <span className="text-white capitalize">{order.payment_method} ({order.financial_status})</span>
+                      <span className="text-luxury-cream capitalize">{order.payment_method} ({order.financial_status})</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Timeline Milestones */}
-                <div className="bg-luxury-card border border-luxury-border p-6 rounded space-y-4">
-                  <h3 className="font-serif text-sm text-white font-medium flex items-center gap-2">
+                <div className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-6 space-y-4">
+                  <h3 className="font-serif text-sm text-luxury-cream font-medium flex items-center gap-2">
                     <Truck className="h-4 w-4 text-luxury-gold" />
                     <span>Delivery Progress</span>
                   </h3>
@@ -156,12 +156,12 @@ export const TrackOrderPage: React.FC = () => {
                     <div className="relative pl-6 space-y-6 border-l border-luxury-gold/30 ml-2 mt-4">
                       {order.timeline.map((entry, idx) => (
                         <div key={entry.id || idx} className="relative">
-                          <div className="absolute -left-[31px] top-0.5 w-3.5 h-3.5 rounded-full bg-luxury-black border-2 border-luxury-gold flex items-center justify-center">
+                          <div className="absolute -left-[31px] top-0.5 w-3.5 h-3.5 rounded-full bg-luxury-card border-2 border-luxury-gold flex items-center justify-center">
                             <div className="w-1 h-1 rounded-full bg-luxury-gold" />
                           </div>
                           <div>
                             <div className="flex items-baseline justify-between gap-2">
-                              <h4 className="text-xs font-medium text-white">{entry.title}</h4>
+                              <h4 className="text-xs font-medium text-luxury-cream">{entry.title}</h4>
                               <span className="text-[10px] text-luxury-muted">{formatDate(entry.created_at)}</span>
                             </div>
                             <p className="text-xs text-luxury-muted mt-0.5">{entry.description}</p>
@@ -175,8 +175,8 @@ export const TrackOrderPage: React.FC = () => {
                 </div>
 
                 {/* Products */}
-                <div className="bg-luxury-card border border-luxury-border p-6 rounded space-y-3">
-                  <h3 className="font-serif text-sm text-white font-medium flex items-center gap-2">
+                <div className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-6 space-y-3">
+                  <h3 className="font-serif text-sm text-luxury-cream font-medium flex items-center gap-2">
                     <PackageCheck className="h-4 w-4 text-luxury-gold" />
                     <span>Items in this Order</span>
                   </h3>
@@ -188,21 +188,21 @@ export const TrackOrderPage: React.FC = () => {
                             <img
                               src={item.product_image_url}
                               alt={item.product_name}
-                              className="w-8 h-10 object-cover rounded bg-luxury-black border border-luxury-border"
+                              className="w-8 h-10 object-cover rounded-sm bg-luxury-card border border-luxury-border"
                             />
                           )}
-                          <span className="text-white">{item.product_name}</span>
+                          <span className="text-luxury-cream">{item.product_name}</span>
                           <span className="text-luxury-muted">×{item.quantity}</span>
                         </div>
-                        <span className="text-luxury-gold">{formatCurrency(item.subtotal)}</span>
+                        <span className="text-luxury-gold font-medium">{formatCurrency(item.subtotal)}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="bg-luxury-card border border-luxury-border p-8 text-center rounded space-y-2 animate-fadeIn">
-                <p className="font-serif text-base text-white font-normal">Order Not Found</p>
+              <div className="bg-luxury-card border border-luxury-border p-8 text-center rounded-sm shadow-xs space-y-2 animate-fadeIn">
+                <p className="font-serif text-base text-luxury-cream font-normal">Order Not Found</p>
                 <p className="text-xs text-luxury-muted">
                   We could not find any order with number "{searchQuery.order}". Please check the number and try again.
                 </p>

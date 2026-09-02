@@ -70,7 +70,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
           <button
             type="button"
             onClick={() => setIsFullscreen(false)}
-            className="absolute top-6 right-6 p-2 text-luxury-sand hover:text-white"
+            className="absolute top-6 right-6 p-2 text-luxury-sand hover:text-luxury-gold cursor-pointer transition-colors"
             aria-label="Close fullscreen inspection"
           >
             <X className="h-6 w-6" />

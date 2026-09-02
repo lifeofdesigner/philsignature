@@ -26,7 +26,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           <button
             type="button"
             onClick={() => toggle('details')}
-            className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-white hover:text-luxury-gold transition-colors"
+            className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer"
           >
             <span className="flex items-center gap-2">
               <Sparkles className="h-3.5 w-3.5 text-luxury-gold" />
@@ -49,7 +49,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         <button
           type="button"
           onClick={() => toggle('ritual')}
-          className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-white hover:text-luxury-gold transition-colors"
+          className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-2">
             <Droplets className="h-3.5 w-3.5 text-luxury-gold" />
@@ -74,7 +74,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         <button
           type="button"
           onClick={() => toggle('ingredients')}
-          className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-white hover:text-luxury-gold transition-colors"
+          className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-2">
             <RefreshCw className="h-3.5 w-3.5 text-luxury-gold" />

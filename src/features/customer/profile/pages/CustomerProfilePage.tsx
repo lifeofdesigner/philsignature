@@ -103,7 +103,7 @@ export const CustomerProfilePage: React.FC = () => {
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
           My Account
         </span>
-        <h1 className="font-serif text-2xl sm:text-3xl text-white font-normal mt-1">
+        <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mt-1">
           Profile & Password
         </h1>
         <p className="text-xs text-luxury-muted mt-1.5 font-light">
@@ -112,11 +112,11 @@ export const CustomerProfilePage: React.FC = () => {
       </div>
 
       {/* 1. Personal Details Form */}
-      <section className="bg-luxury-card/40 border border-luxury-border p-6 rounded space-y-6">
+      <section className="bg-luxury-card border border-luxury-border p-6 sm:p-8 rounded-sm shadow-xs space-y-6">
         <div className="flex items-center justify-between border-b border-luxury-border/60 pb-4">
           <div className="flex items-center gap-2.5">
             <User className="h-4 w-4 text-luxury-gold" />
-            <h2 className="font-serif text-base text-white">Personal Information</h2>
+            <h2 className="font-serif text-base text-luxury-cream">Personal Information</h2>
           </div>
           <span className="text-[10px] uppercase tracking-wider text-luxury-muted">
             Account Details
@@ -124,15 +124,15 @@ export const CustomerProfilePage: React.FC = () => {
         </div>
 
         {profileSuccess && (
-          <div className="p-3 bg-emerald-950/40 border border-emerald-800/60 rounded flex items-center gap-2 text-xs text-emerald-300 animate-fadeIn">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-sm flex items-center gap-2 text-xs text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300 animate-fadeIn">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
             <span>{profileSuccess}</span>
           </div>
         )}
 
         {profileError && (
-          <div className="p-3 bg-red-950/40 border border-red-800/60 rounded flex items-center gap-2 text-xs text-red-300 animate-fadeIn">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <div className="p-3 bg-red-50 border border-red-200 rounded-sm flex items-center gap-2 text-xs text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-300 animate-fadeIn">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-500 dark:text-red-400" />
             <span>{profileError}</span>
           </div>
         )}
@@ -140,7 +140,7 @@ export const CustomerProfilePage: React.FC = () => {
         <form onSubmit={handleProfileSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 First Name *
               </label>
               <input
@@ -148,11 +148,11 @@ export const CustomerProfilePage: React.FC = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 required
-                className="w-full bg-luxury-black border border-luxury-border p-2.5 text-xs text-white rounded focus:border-luxury-gold focus:outline-none transition-colors"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-xs text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none transition-colors"
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 Last Name *
               </label>
               <input
@@ -160,14 +160,14 @@ export const CustomerProfilePage: React.FC = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required
-                className="w-full bg-luxury-black border border-luxury-border p-2.5 text-xs text-white rounded focus:border-luxury-gold focus:outline-none transition-colors"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-xs text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none transition-colors"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 Email Address
               </label>
               <div className="relative">
@@ -175,16 +175,16 @@ export const CustomerProfilePage: React.FC = () => {
                   type="email"
                   value={profile?.email || user?.email || ''}
                   disabled
-                  className="w-full bg-luxury-black/60 border border-luxury-border/40 p-2.5 text-xs text-luxury-muted rounded cursor-not-allowed pr-24"
+                  className="w-full h-11 min-h-[44px] bg-luxury-charcoal border border-luxury-border/40 p-2.5 text-xs text-luxury-muted rounded-sm cursor-not-allowed pr-24"
                 />
-                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] uppercase tracking-wider text-emerald-400 font-medium">
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-medium">
                   Verified
                 </span>
               </div>
             </div>
 
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 Telephone Number
               </label>
               <input
@@ -192,7 +192,7 @@ export const CustomerProfilePage: React.FC = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+234 800 000 0000"
-                className="w-full bg-luxury-black border border-luxury-border p-2.5 text-xs text-white rounded focus:border-luxury-gold focus:outline-none transition-colors"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-xs text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none transition-colors placeholder:text-luxury-muted"
               />
             </div>
           </div>
@@ -201,7 +201,7 @@ export const CustomerProfilePage: React.FC = () => {
             <button
               type="submit"
               disabled={updateProfileMutation.isPending}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs uppercase tracking-luxury-wide font-medium rounded transition-colors cursor-pointer disabled:opacity-50"
+              className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs uppercase tracking-luxury-wide font-semibold rounded-sm transition-colors cursor-pointer disabled:opacity-50"
             >
               {updateProfileMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Save Changes</span>
@@ -211,11 +211,11 @@ export const CustomerProfilePage: React.FC = () => {
       </section>
 
       {/* 2. Security & Credentials Section */}
-      <section className="bg-luxury-card/40 border border-luxury-border p-6 rounded space-y-6">
+      <section className="bg-luxury-card border border-luxury-border p-6 sm:p-8 rounded-sm shadow-xs space-y-6">
         <div className="flex items-center justify-between border-b border-luxury-border/60 pb-4">
           <div className="flex items-center gap-2.5">
             <Lock className="h-4 w-4 text-luxury-gold" />
-            <h2 className="font-serif text-base text-white">Security & Password</h2>
+            <h2 className="font-serif text-base text-luxury-cream">Security & Password</h2>
           </div>
           <span className="text-[10px] uppercase tracking-wider text-luxury-muted">
             Password Settings
@@ -223,15 +223,15 @@ export const CustomerProfilePage: React.FC = () => {
         </div>
 
         {passwordSuccess && (
-          <div className="p-3 bg-emerald-950/40 border border-emerald-800/60 rounded flex items-center gap-2 text-xs text-emerald-300 animate-fadeIn">
-            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-sm flex items-center gap-2 text-xs text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300 animate-fadeIn">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
             <span>{passwordSuccess}</span>
           </div>
         )}
 
         {passwordError && (
-          <div className="p-3 bg-red-950/40 border border-red-800/60 rounded flex items-center gap-2 text-xs text-red-300 animate-fadeIn">
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-400" />
+          <div className="p-3 bg-red-50 border border-red-200 rounded-sm flex items-center gap-2 text-xs text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-300 animate-fadeIn">
+            <AlertCircle className="h-4 w-4 shrink-0 text-red-500 dark:text-red-400" />
             <span>{passwordError}</span>
           </div>
         )}
@@ -239,7 +239,7 @@ export const CustomerProfilePage: React.FC = () => {
         <form onSubmit={handlePasswordSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 New Password *
               </label>
               <input
@@ -248,11 +248,11 @@ export const CustomerProfilePage: React.FC = () => {
                 onChange={(e) => setNewPassword(e.target.value)}
                 required
                 placeholder="Minimum 8 characters"
-                className="w-full bg-luxury-black border border-luxury-border p-2.5 text-xs text-white rounded focus:border-luxury-gold focus:outline-none transition-colors"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-xs text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none transition-colors placeholder:text-luxury-muted"
               />
             </div>
             <div>
-              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5">
+              <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1.5 font-medium">
                 Confirm New Password *
               </label>
               <input
@@ -261,7 +261,7 @@ export const CustomerProfilePage: React.FC = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 placeholder="Repeat password"
-                className="w-full bg-luxury-black border border-luxury-border p-2.5 text-xs text-white rounded focus:border-luxury-gold focus:outline-none transition-colors"
+                className="w-full h-11 min-h-[44px] bg-luxury-card border border-luxury-border p-2.5 text-xs text-luxury-cream rounded-sm focus:border-luxury-gold focus:outline-none transition-colors placeholder:text-luxury-muted"
               />
             </div>
           </div>
@@ -270,7 +270,7 @@ export const CustomerProfilePage: React.FC = () => {
             <button
               type="submit"
               disabled={updatePasswordMutation.isPending || !newPassword}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-border hover:bg-luxury-gold hover:text-luxury-black text-white text-xs uppercase tracking-luxury-wide font-medium rounded transition-colors cursor-pointer disabled:opacity-40"
+              className="min-h-[44px] inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-charcoal hover:bg-luxury-gold hover:text-black text-luxury-cream text-xs uppercase tracking-luxury-wide font-semibold rounded-sm transition-colors cursor-pointer disabled:opacity-40"
             >
               {updatePasswordMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               <span>Update Password</span>
@@ -280,23 +280,23 @@ export const CustomerProfilePage: React.FC = () => {
       </section>
 
       {/* 3. Account Details Card */}
-      <section className="bg-luxury-card/30 border border-luxury-border/60 p-5 rounded">
+      <section className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-5">
         <div className="flex items-center gap-2 text-xs text-luxury-gold mb-3">
           <ShieldCheck className="h-4 w-4" />
-          <span className="font-medium uppercase tracking-wider text-[11px]">Account Information</span>
+          <span className="font-semibold uppercase tracking-wider text-[11px]">Account Information</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-luxury-muted">
           <div>
             <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account ID</span>
-            <span className="font-mono text-[11px] text-white truncate block">{user?.id || '—'}</span>
+            <span className="font-mono text-[11px] text-luxury-cream truncate block">{user?.id || '—'}</span>
           </div>
           <div>
             <span className="text-[10px] uppercase tracking-wider block mb-0.5">Member Since</span>
-            <span className="text-white block">{formatDate(profile?.created_at || user?.created_at)}</span>
+            <span className="text-luxury-cream block">{formatDate(profile?.created_at || user?.created_at)}</span>
           </div>
           <div>
             <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account Role</span>
-            <span className="text-luxury-gold uppercase tracking-wider text-[10px] font-medium block">
+            <span className="text-luxury-gold uppercase tracking-wider text-[10px] font-semibold block">
               {profile?.role || 'Customer'}
             </span>
           </div>

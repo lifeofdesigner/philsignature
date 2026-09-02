@@ -65,7 +65,7 @@ export const ShopPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsFilterOpen(true)}
-              className="lg:hidden flex items-center gap-2 text-xs py-2 px-3 border border-luxury-border bg-black text-luxury-sand hover:text-white"
+              className="lg:hidden min-h-[44px] flex items-center gap-2 text-xs py-2 px-3.5 border border-luxury-border bg-luxury-card text-luxury-sand hover:text-luxury-cream rounded-sm cursor-pointer"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-luxury-gold" />
               <span>Filters {hasActiveFilters && '•'}</span>

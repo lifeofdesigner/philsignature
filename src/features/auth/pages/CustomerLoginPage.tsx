@@ -44,7 +44,7 @@ export const CustomerLoginPage: React.FC = () => {
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
           Welcome Back
         </span>
-        <h1 className="font-serif text-3xl text-white font-normal">
+        <h1 className="font-serif text-3xl text-luxury-cream font-normal">
           Sign In
         </h1>
         <p className="text-xs text-luxury-muted font-light">
@@ -52,10 +52,10 @@ export const CustomerLoginPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="bg-luxury-card border border-luxury-border p-8 space-y-6">
+      <div className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-8 space-y-6">
         {error && (
-          <div className="flex items-start gap-2.5 p-3.5 bg-red-950/40 border border-red-800/60 text-red-200 text-xs font-light">
-            <AlertCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5 p-3.5 bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-200 text-xs font-light rounded-sm">
+            <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}

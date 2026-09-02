@@ -25,13 +25,13 @@ export const CollectionsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black py-16 sm:py-20">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-16 sm:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
             Perfume Collections
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
             Our Collections
           </h1>
           <p className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">

@@ -19,7 +19,7 @@ export const CatalogPagination: React.FC<CatalogPaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
-        className="p-2 border border-luxury-border bg-luxury-card text-luxury-sand disabled:opacity-30 disabled:pointer-events-none hover:text-luxury-gold hover:border-luxury-gold transition-colors"
+        className="h-10 w-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-sm border border-luxury-border bg-luxury-card text-luxury-sand disabled:opacity-30 disabled:pointer-events-none hover:text-luxury-gold hover:border-luxury-gold transition-colors cursor-pointer"
         aria-label="Previous catalog page"
       >
         <ChevronLeft className="h-4 w-4" />
@@ -32,10 +32,10 @@ export const CatalogPagination: React.FC<CatalogPaginationProps> = ({
           <button
             key={pageNum}
             onClick={() => onPageChange(pageNum)}
-            className={`h-9 w-9 text-xs font-mono transition-colors border ${
+            className={`h-10 w-10 min-h-[40px] min-w-[40px] rounded-sm text-xs font-mono transition-colors border cursor-pointer ${
               isActive
                 ? 'bg-luxury-gold text-black border-luxury-gold font-bold'
-                : 'bg-luxury-card text-luxury-sand border-luxury-border hover:border-luxury-gold/60 hover:text-white'
+                : 'bg-luxury-card text-luxury-sand border-luxury-border hover:border-luxury-gold/60 hover:text-luxury-cream'
             }`}
             aria-current={isActive ? 'page' : undefined}
           >
@@ -47,7 +47,7 @@ export const CatalogPagination: React.FC<CatalogPaginationProps> = ({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
-        className="p-2 border border-luxury-border bg-luxury-card text-luxury-sand disabled:opacity-30 disabled:pointer-events-none hover:text-luxury-gold hover:border-luxury-gold transition-colors"
+        className="h-10 w-10 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-sm border border-luxury-border bg-luxury-card text-luxury-sand disabled:opacity-30 disabled:pointer-events-none hover:text-luxury-gold hover:border-luxury-gold transition-colors cursor-pointer"
         aria-label="Next catalog page"
       >
         <ChevronRight className="h-4 w-4" />

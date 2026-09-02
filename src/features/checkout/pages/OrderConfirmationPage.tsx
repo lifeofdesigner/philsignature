@@ -59,7 +59,7 @@ export const OrderConfirmationPage: React.FC = () => {
           <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-gold font-medium block mb-1">
             {isPaid ? 'Payment Confirmed' : 'Order Placed — Waiting for Payment'}
           </span>
-          <h1 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-2">
+          <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
             Thank You for Your Order!
           </h1>
           <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed">
@@ -68,7 +68,7 @@ export const OrderConfirmationPage: React.FC = () => {
               : 'Your order has been saved. Please complete your bank transfer using your order number as the reference.'}
           </p>
 
-          <div className="mt-6 inline-flex items-center gap-3 bg-luxury-black border border-luxury-border px-5 py-2.5 rounded text-xs">
+          <div className="mt-6 inline-flex items-center gap-3 bg-luxury-card border border-luxury-border px-5 py-2.5 rounded-sm text-xs">
             <span className="text-luxury-muted">Order Number:</span>
             <span className="text-luxury-gold font-mono font-bold tracking-wider">{order.order_number}</span>
           </div>
@@ -84,17 +84,17 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-luxury-card/60 border border-luxury-border p-6 rounded space-y-6 mb-8">
+        <div className="bg-luxury-card border border-luxury-border rounded-sm p-6 space-y-6 mb-8">
           <div className="flex items-center justify-between border-b border-luxury-border pb-4">
-            <h3 className="font-serif text-base text-white font-normal flex items-center gap-2">
+            <h3 className="font-serif text-base text-luxury-cream font-normal flex items-center gap-2">
               <PackageCheck className="h-4 w-4 text-luxury-gold" />
               <span>Order Details</span>
             </h3>
             <span
-              className={`text-[10px] uppercase tracking-wider px-2.5 py-0.5 border rounded ${
+              className={`text-[10px] uppercase tracking-wider px-2.5 py-0.5 border rounded-sm font-medium ${
                 isPaid
-                  ? 'text-green-400 border-green-500/30 bg-green-500/10'
-                  : 'text-amber-400 border-amber-500/30 bg-amber-500/10'
+                  ? 'text-emerald-700 border-emerald-300 bg-emerald-50 dark:text-emerald-300 dark:border-emerald-800/40 dark:bg-emerald-950/60'
+                  : 'text-amber-800 border-amber-300 bg-amber-50 dark:text-amber-300 dark:border-amber-800/40 dark:bg-amber-950/60'
               }`}
             >
               {isPaid ? 'Paid' : 'Payment Pending'}
@@ -110,15 +110,15 @@ export const OrderConfirmationPage: React.FC = () => {
                     <img
                       src={item.product_image_url}
                       alt={item.product_name}
-                      className="w-10 h-12 object-cover rounded bg-luxury-black border border-luxury-border"
+                      className="w-10 h-12 object-cover rounded-sm bg-luxury-card border border-luxury-border"
                     />
                   )}
                   <div>
-                    <h4 className="font-serif text-white">{item.product_name}</h4>
+                    <h4 className="font-serif text-luxury-cream">{item.product_name}</h4>
                     <p className="text-[10px] text-luxury-muted">Qty: {item.quantity} • 100ml</p>
                   </div>
                 </div>
-                <span className="text-white font-medium">{formatCurrency(item.subtotal)}</span>
+                <span className="text-luxury-cream font-medium">{formatCurrency(item.subtotal)}</span>
               </div>
             ))}
           </div>
@@ -127,11 +127,11 @@ export const OrderConfirmationPage: React.FC = () => {
           <div className="border-t border-luxury-border pt-4 space-y-2 text-xs">
             <div className="flex justify-between text-luxury-muted">
               <span>Subtotal</span>
-              <span className="text-white">{formatCurrency(order.subtotal)}</span>
+              <span className="text-luxury-cream">{formatCurrency(order.subtotal)}</span>
             </div>
             <div className="flex justify-between text-luxury-muted">
               <span>Delivery Fee</span>
-              <span className="text-white">
+              <span className="text-luxury-cream">
                 {order.shipping_amount === 0 ? 'FREE' : formatCurrency(order.shipping_amount)}
               </span>
             </div>
@@ -142,7 +142,7 @@ export const OrderConfirmationPage: React.FC = () => {
               </div>
             )}
             <div className="border-t border-luxury-border pt-3 flex justify-between items-baseline">
-              <span className="font-serif text-sm text-white">Total Amount</span>
+              <span className="font-serif text-sm text-luxury-cream">Total Amount</span>
               <span className="font-serif text-base text-luxury-gold font-bold">
                 {formatCurrency(order.total_amount)}
               </span>
@@ -152,21 +152,21 @@ export const OrderConfirmationPage: React.FC = () => {
 
         {/* Shipping & Recipient Info */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mb-8">
-          <div className="bg-luxury-card/40 border border-luxury-border p-5 rounded">
+          <div className="bg-luxury-card border border-luxury-border rounded-sm p-5">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted block mb-1 font-medium">
               Delivery Address
             </span>
-            <p className="text-white font-medium">{shippingAddr.first_name} {shippingAddr.last_name}</p>
+            <p className="text-luxury-cream font-medium">{shippingAddr.first_name} {shippingAddr.last_name}</p>
             <p className="text-luxury-muted">{shippingAddr.address_line1 || shippingAddr.street_address}</p>
             <p className="text-luxury-muted">{shippingAddr.city}, {shippingAddr.state}</p>
             <p className="text-luxury-muted">{shippingAddr.country}</p>
           </div>
 
-          <div className="bg-luxury-card/40 border border-luxury-border p-5 rounded">
+          <div className="bg-luxury-card border border-luxury-border rounded-sm p-5">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted block mb-1 font-medium">
               Payment Info
             </span>
-            <p className="text-white font-medium uppercase tracking-wider">{order.payment_method}</p>
+            <p className="text-luxury-cream font-medium uppercase tracking-wider">{order.payment_method}</p>
             {order.payment_reference && (
               <p className="text-luxury-muted text-[11px] font-mono mt-0.5">Ref: {order.payment_reference}</p>
             )}
@@ -182,7 +182,7 @@ export const OrderConfirmationPage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate(`/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`)}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-black text-xs uppercase tracking-luxury-wide transition-colors cursor-pointer"
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-black rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
           >
             <Truck className="h-4 w-4" />
             <span>Track My Order</span>
@@ -191,7 +191,7 @@ export const OrderConfirmationPage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/shop')}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-colors cursor-pointer"
+            className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
           >
             <span>Continue Shopping</span>
             <ArrowRight className="h-4 w-4" />
