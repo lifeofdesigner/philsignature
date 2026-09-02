@@ -70,17 +70,17 @@ export const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
               <div
                 className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-serif transition-all duration-300 border ${
                   isActive
-                    ? 'bg-luxury-gold text-luxury-black border-luxury-gold shadow-lg shadow-luxury-gold/20'
+                    ? 'bg-luxury-gold text-black font-semibold border-luxury-gold shadow-md shadow-luxury-gold/20'
                     : isPassed
-                    ? 'bg-luxury-black text-luxury-gold border-luxury-gold'
-                    : 'bg-luxury-black/90 text-luxury-muted border-luxury-border'
+                    ? 'bg-luxury-card text-luxury-gold border-luxury-gold shadow-xs'
+                    : 'bg-luxury-card text-luxury-muted border-luxury-border'
                 }`}
               >
                 {isPassed ? <Check className="h-4 w-4 stroke-[2.5]" /> : step.icon}
               </div>
               <span
                 className={`mt-2 text-[10px] tracking-luxury-wide uppercase whitespace-nowrap transition-colors duration-200 ${
-                  isActive ? 'text-luxury-gold font-medium' : isPassed ? 'text-white' : 'text-luxury-muted'
+                  isActive ? 'text-luxury-gold font-medium' : isPassed ? 'text-luxury-cream font-medium' : 'text-luxury-muted'
                 }`}
               >
                 {step.label}

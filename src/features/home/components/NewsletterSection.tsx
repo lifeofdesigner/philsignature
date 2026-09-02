@@ -29,9 +29,9 @@ export const NewsletterSection: React.FC = () => {
         </div>
 
         {isSubmitted ? (
-          <div className="p-4 bg-luxury-black border border-luxury-gold/50 flex items-center justify-center gap-2 text-xs text-luxury-gold">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-            <span>You are now subscribed. Thank you!</span>
+          <div className="p-4 bg-luxury-card border border-luxury-gold/50 rounded-sm shadow-xs flex items-center justify-center gap-2 text-xs text-luxury-gold">
+            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+            <span className="font-medium">You are now subscribed. Thank you!</span>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
@@ -41,9 +41,9 @@ export const NewsletterSection: React.FC = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-black text-xs text-white"
+              className="min-h-[44px] bg-luxury-card border border-luxury-border text-xs text-luxury-cream placeholder:text-luxury-muted focus:border-luxury-gold rounded-sm shadow-xs"
             />
-            <Button variant="luxury" size="default" className="shrink-0 gap-2 text-xs">
+            <Button variant="luxury" size="default" className="min-h-[44px] shrink-0 gap-2 text-xs font-semibold tracking-wider">
               <Mail className="h-3.5 w-3.5" />
               <span>Subscribe</span>
             </Button>

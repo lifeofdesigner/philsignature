@@ -40,12 +40,12 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   };
 
   return (
-    <div className="bg-luxury-card border border-luxury-border p-6 rounded sticky top-28 space-y-6">
+    <div className="bg-luxury-card border border-luxury-border p-6 rounded-sm shadow-xs sticky top-28 space-y-6">
       <div className="flex items-center justify-between border-b border-luxury-border pb-4">
-        <h3 className="font-serif text-base text-white font-normal">
+        <h3 className="font-serif text-base text-luxury-cream font-normal">
           Order Summary
         </h3>
-        <span className="text-[11px] text-luxury-gold uppercase tracking-wider">
+        <span className="text-[11px] text-luxury-gold uppercase tracking-wider font-semibold">
           {items.length} {items.length === 1 ? 'Item' : 'Items'}
         </span>
       </div>
@@ -60,7 +60,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
 
           return (
             <div key={item.id} className="flex items-center gap-3 text-xs">
-              <div className="relative w-12 h-14 bg-luxury-black border border-luxury-border shrink-0 overflow-hidden rounded">
+              <div className="relative w-12 h-14 bg-luxury-charcoal border border-luxury-border shrink-0 overflow-hidden rounded-sm">
                 {imgUrl ? (
                   <img
                     src={imgUrl}
@@ -68,18 +68,18 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-luxury-card" />
+                  <div className="w-full h-full bg-luxury-charcoal" />
                 )}
-                <span className="absolute -top-1 -right-1 bg-luxury-gold text-luxury-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-luxury-gold text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {item.quantity}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <h4 className="font-serif text-white truncate font-normal">{item.product.name}</h4>
+                <h4 className="font-serif text-luxury-cream truncate font-normal">{item.product.name}</h4>
                 <p className="text-[10px] text-luxury-muted">100ml • Qty {item.quantity}</p>
               </div>
               <div className="text-right">
-                <span className="text-white font-medium">
+                <span className="text-luxury-cream font-medium">
                   {formatCurrency(item.price * item.quantity)}
                 </span>
               </div>
@@ -90,11 +90,11 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
 
       {/* Discount Code Input */}
       <div className="border-t border-luxury-border pt-4">
-        <label className="block text-[10px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+        <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1.5">
           Discount Code
         </label>
         {appliedCoupon ? (
-          <div className="flex items-center justify-between p-2.5 bg-luxury-gold/10 border border-luxury-gold/30 rounded text-xs">
+          <div className="flex items-center justify-between p-2.5 bg-luxury-gold/10 border border-luxury-gold/30 rounded-sm text-xs">
             <div className="flex items-center gap-2 text-luxury-gold">
               <Sparkles className="h-3.5 w-3.5" />
               <span className="font-mono font-medium">{appliedCoupon.code}</span>
@@ -103,7 +103,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
             <button
               type="button"
               onClick={onRemoveCoupon}
-              className="text-luxury-muted hover:text-white transition-colors cursor-pointer"
+              className="text-luxury-muted hover:text-luxury-cream transition-colors cursor-pointer"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -112,27 +112,27 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           <div className="space-y-1.5">
             <div className="flex gap-2">
               <div className="relative flex-1">
-                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-luxury-muted/60" />
+                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-luxury-muted" />
                 <input
                   type="text"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                   onKeyDown={(e) => e.key === 'Enter' && onApplyCoupon()}
                   placeholder="e.g. SIGNATURE10"
-                  className="w-full bg-luxury-black border border-luxury-border pl-8 pr-3 py-2 text-xs text-white placeholder:text-luxury-muted/40 uppercase tracking-wider focus:outline-none focus:border-luxury-gold transition-colors rounded"
+                  className="w-full min-h-[40px] bg-luxury-card border border-luxury-border pl-8 pr-3 py-2 text-xs text-luxury-cream placeholder:text-luxury-muted uppercase tracking-wider focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
                 />
               </div>
               <button
                 type="button"
                 onClick={onApplyCoupon}
                 disabled={isApplyingCoupon || !couponCode.trim()}
-                className="px-4 py-2 bg-luxury-border hover:bg-luxury-gold hover:text-luxury-black text-white text-xs uppercase tracking-wider transition-colors disabled:opacity-40 cursor-pointer rounded"
+                className="min-h-[40px] px-4 py-2 bg-luxury-gold hover:bg-luxury-gold-light text-black font-semibold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 cursor-pointer rounded-sm shadow-xs"
               >
                 {isApplyingCoupon ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : 'Apply'}
               </button>
             </div>
             {couponError && (
-              <p className="text-[11px] text-red-400 mt-1">{couponError}</p>
+              <p className="text-[11px] text-red-500 dark:text-red-400 mt-1">{couponError}</p>
             )}
           </div>
         )}
@@ -142,12 +142,12 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
       <div className="border-t border-luxury-border pt-4 space-y-2.5 text-xs">
         <div className="flex justify-between text-luxury-muted">
           <span>Subtotal</span>
-          <span className="text-white">{formatCurrency(subtotal)}</span>
+          <span className="text-luxury-cream font-medium">{formatCurrency(subtotal)}</span>
         </div>
 
         <div className="flex justify-between text-luxury-muted">
           <span>Delivery Fee</span>
-          <span className="text-white">
+          <span className="text-luxury-cream font-medium">
             {shippingCost === 0 ? (
               <span className="text-luxury-gold">FREE</span>
             ) : (
@@ -164,7 +164,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
         )}
 
         <div className="border-t border-luxury-border pt-3 flex justify-between items-baseline">
-          <span className="font-serif text-sm text-white">Total Amount</span>
+          <span className="font-serif text-sm text-luxury-cream">Total Amount</span>
           <span className="font-serif text-lg text-luxury-gold font-normal">
             {formatCurrency(totalAmount)}
           </span>

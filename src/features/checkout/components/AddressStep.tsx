@@ -64,9 +64,9 @@ export const AddressStep: React.FC<AddressStepProps> = ({
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-white">{addr.company || 'Delivery Address'}</span>
+                    <span className="text-xs font-medium text-luxury-cream">{addr.company || 'Delivery Address'}</span>
                     {addr.is_default && (
-                      <span className="text-[9px] uppercase tracking-wider text-luxury-gold border border-luxury-gold/40 px-1.5 py-0.5">
+                      <span className="text-[9px] uppercase tracking-wider text-luxury-gold border border-luxury-gold/40 px-1.5 py-0.5 rounded-xs">
                         Default
                       </span>
                     )}
@@ -82,13 +82,13 @@ export const AddressStep: React.FC<AddressStepProps> = ({
 
       {/* Manual Address Form */}
       <div className="space-y-5">
-        <h3 className="font-serif text-lg text-white font-normal">
+        <h3 className="font-serif text-lg text-luxury-cream font-normal">
           Delivery Address
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               First Name *
             </label>
             <input
@@ -98,11 +98,11 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               onChange={handleChange}
               placeholder="e.g. John"
               required
-              className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               Last Name *
             </label>
             <input
@@ -112,14 +112,14 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               onChange={handleChange}
               placeholder="e.g. Adeleke"
               required
-              className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               Email Address (For Order Confirmation) *
             </label>
             <input
@@ -129,11 +129,11 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               onChange={handleChange}
               placeholder="e.g. name@gmail.com"
               required
-              className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               Phone Number *
             </label>
             <input
@@ -143,13 +143,13 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               onChange={handleChange}
               placeholder="e.g. 08012345678"
               required
-              className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none border-luxury-border focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+          <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
             Street Address *
           </label>
           <input
@@ -159,13 +159,13 @@ export const AddressStep: React.FC<AddressStepProps> = ({
             onChange={handleChange}
             placeholder="e.g. 15 Admiralty Way, Lekki Phase 1"
             required
-            className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
+            className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               City *
             </label>
             <input
@@ -175,28 +175,28 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               onChange={handleChange}
               placeholder="Victoria Island"
               required
-              className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             />
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               State / Region *
             </label>
             <select
               name="state"
               value={addressForm.state}
               onChange={handleChange}
-              className="w-full bg-luxury-black border border-luxury-border px-3 py-2.5 text-xs text-white focus:outline-none focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3 py-2.5 text-xs text-luxury-cream focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             >
               {NIGERIAN_STATES.map((st) => (
-                <option key={st} value={st} className="bg-luxury-black text-white">
+                <option key={st} value={st} className="bg-luxury-card text-luxury-cream">
                   {st}
                 </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
+            <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
               Postal Code (Optional)
             </label>
             <input
@@ -205,7 +205,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               value={addressForm.postalCode}
               onChange={handleChange}
               placeholder="101241"
-              className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
+              className="w-full min-h-[44px] bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold rounded-sm transition-colors"
             />
           </div>
         </div>
@@ -216,7 +216,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
           type="button"
           disabled={!isComplete}
           onClick={onProceed}
-          className="inline-flex items-center gap-2 px-8 py-3.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="min-h-[44px] inline-flex items-center gap-2 px-8 py-3.5 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-luxury-wide rounded-sm transition-all shadow-md shadow-luxury-gold/15 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <span>Continue to Delivery Method</span>
           <ArrowRight className="h-4 w-4" />

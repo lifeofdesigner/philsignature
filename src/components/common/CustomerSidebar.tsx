@@ -28,24 +28,24 @@ export const CustomerSidebar: React.FC = () => {
   return (
     <aside className="w-full lg:w-64 space-y-4 lg:space-y-6">
       {/* Customer Crest Card */}
-      <div className="bg-luxury-card border border-luxury-border p-4 sm:p-6 flex lg:flex-col items-center lg:text-center gap-4 lg:gap-0">
-        <div className="h-12 w-12 lg:h-16 lg:w-16 rounded-full border border-luxury-gold/40 bg-luxury-black flex items-center justify-center text-luxury-gold lg:mb-3 shrink-0">
-          <span className="font-serif text-lg lg:text-xl">
+      <div className="bg-luxury-card border border-luxury-border p-4 sm:p-6 flex lg:flex-col items-center lg:text-center gap-4 lg:gap-0 rounded-sm shadow-xs">
+        <div className="h-12 w-12 lg:h-16 lg:w-16 rounded-full border border-luxury-gold/40 bg-luxury-charcoal flex items-center justify-center text-luxury-gold lg:mb-3 shrink-0">
+          <span className="font-serif text-lg lg:text-xl font-medium">
             {profile?.first_name?.charAt(0) || 'P'}
           </span>
         </div>
         <div className="text-left lg:text-center min-w-0 flex-1">
-          <h3 className="font-serif text-base lg:text-lg text-white font-normal truncate">
+          <h3 className="font-serif text-base lg:text-lg text-luxury-cream font-normal truncate">
             {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Valued Customer'}
           </h3>
-          <p className="text-[10px] lg:text-[11px] uppercase tracking-luxury text-luxury-gold mt-0.5 lg:mt-1">
+          <p className="text-[10px] lg:text-[11px] uppercase tracking-luxury text-luxury-gold mt-0.5 lg:mt-1 font-medium">
             Customer Account
           </p>
         </div>
       </div>
 
       {/* Navigation Links (Horizontal scroll on mobile, vertical stack on desktop) */}
-      <nav className="bg-luxury-card border border-luxury-border p-1.5 sm:p-2 flex lg:flex-col overflow-x-auto lg:overflow-x-visible scrollbar-none gap-1">
+      <nav className="bg-luxury-card border border-luxury-border p-1.5 sm:p-2 flex lg:flex-col overflow-x-auto lg:overflow-x-visible scrollbar-none gap-1 rounded-sm shadow-xs">
         {customerNavItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -58,7 +58,7 @@ export const CustomerSidebar: React.FC = () => {
                   'flex items-center gap-2 lg:gap-3 px-3.5 py-2 text-xs uppercase tracking-luxury transition-colors rounded-sm font-medium whitespace-nowrap shrink-0',
                   isActive
                     ? 'bg-luxury-gold text-black lg:bg-luxury-gold/15 lg:text-luxury-gold lg:border-l-2 lg:border-luxury-gold font-semibold'
-                    : 'text-luxury-muted hover:text-white hover:bg-luxury-border/30'
+                    : 'text-luxury-muted hover:text-luxury-cream hover:bg-luxury-border/30'
                 )
               }
             >

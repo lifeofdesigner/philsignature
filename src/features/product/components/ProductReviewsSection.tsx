@@ -20,7 +20,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
             Customer Feedback
           </span>
-          <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal">
+          <h2 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal">
             Customer Reviews & Ratings
           </h2>
         </div>
@@ -31,7 +31,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
               <Star key={i} className="h-4 w-4 fill-current" />
             ))}
           </div>
-          <span className="font-serif text-lg text-white font-normal">
+          <span className="font-serif text-lg text-luxury-cream font-normal">
             {rating.toFixed(1)}
           </span>
           <span className="text-xs text-luxury-muted">
@@ -41,7 +41,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
       </div>
 
       {reviews.length === 0 ? (
-        <div className="p-8 bg-luxury-card border border-luxury-border text-center space-y-2">
+        <div className="p-8 bg-luxury-card border border-luxury-border rounded-sm shadow-xs text-center space-y-2">
           <p className="text-xs text-luxury-sand font-light">
             No reviews yet for this perfume.
           </p>
@@ -52,7 +52,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {reviews.map((r) => (
-            <div key={r.id} className="p-6 bg-luxury-card border border-luxury-border space-y-4">
+            <div key={r.id} className="p-6 bg-luxury-card border border-luxury-border rounded-sm shadow-xs space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1 text-luxury-gold">
                   {[...Array(r.rating)].map((_, i) => (
@@ -68,7 +68,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
               </div>
 
               {r.title && (
-                <h4 className="font-serif text-sm text-white font-medium">
+                <h4 className="font-serif text-sm text-luxury-cream font-medium">
                   {r.title}
                 </h4>
               )}
@@ -78,7 +78,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
               </p>
 
               {r.is_verified_purchase && (
-                <div className="flex items-center gap-1.5 text-[10px] text-emerald-400">
+                <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400">
                   <ShieldCheck className="h-3 w-3" />
                   <span>Verified Purchase</span>
                 </div>

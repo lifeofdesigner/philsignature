@@ -39,7 +39,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium mb-2">
             Application Notice
           </span>
-          <h1 className="font-serif text-3xl text-white font-normal mb-3">
+          <h1 className="font-serif text-3xl text-luxury-cream font-normal mb-3">
             Something went wrong
           </h1>
           <p className="text-sm text-luxury-muted max-w-md mx-auto leading-relaxed mb-6 font-light">

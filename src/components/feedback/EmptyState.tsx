@@ -30,7 +30,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       <div className="h-12 w-12 rounded-full border border-luxury-border bg-luxury-charcoal flex items-center justify-center mb-4 text-luxury-gold">
         {icon || <Sparkles className="h-5 w-5" />}
       </div>
-      <h3 className="font-serif text-xl text-white font-normal mb-2">{title}</h3>
+      <h3 className="font-serif text-xl text-luxury-cream font-normal mb-2">{title}</h3>
       <p className="text-xs text-luxury-muted leading-relaxed mb-6 font-light">
         {description}
       </p>

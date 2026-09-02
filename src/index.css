@@ -228,9 +228,105 @@
   html:not(.dark) .border-luxury-border\/60,
   html.light .border-luxury-border\/40,
   html:not(.dark) .border-luxury-border\/40,
+  html.light .border-luxury-border\/50,
+  html:not(.dark) .border-luxury-border\/50,
   html.light .border-luxury-border\/80,
   html:not(.dark) .border-luxury-border\/80 {
     border-color: #E5E7EB !important;
+  }
+
+  /* Complete Text Color System Guarantees in Light Theme */
+  html.light p,
+  html:not(.dark) p {
+    color: #374151;
+  }
+
+  html.light .text-luxury-cream,
+  html:not(.dark) .text-luxury-cream {
+    color: #111827 !important;
+  }
+
+  html.light .text-luxury-sand,
+  html:not(.dark) .text-luxury-sand {
+    color: #374151 !important;
+  }
+
+  html.light .text-luxury-muted,
+  html:not(.dark) .text-luxury-muted {
+    color: #6B7280 !important;
+  }
+
+  /* Form Inputs, Textareas, Selects in Light Theme */
+  html.light input:not([type="checkbox"]):not([type="radio"]),
+  html.light textarea,
+  html.light select,
+  html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
+  html:not(.dark) textarea,
+  html:not(.dark) select {
+    color: #111827 !important;
+    background-color: #FFFFFF !important;
+    border-color: #D1D5DB !important;
+  }
+
+  html.light input::placeholder,
+  html.light textarea::placeholder,
+  html:not(.dark) input::placeholder,
+  html:not(.dark) textarea::placeholder {
+    color: #6B7280 !important;
+    opacity: 1 !important;
+  }
+
+  html.light label,
+  html:not(.dark) label {
+    color: #374151 !important;
+  }
+
+  /* Table Headers & Cells in Light Theme */
+  html.light th,
+  html:not(.dark) th {
+    color: #111827 !important;
+    background-color: #F9FAFB !important;
+  }
+
+  html.light td,
+  html:not(.dark) td {
+    color: #1F2937 !important;
+    border-color: #E5E7EB !important;
+  }
+
+  /* Complete Text Color System Guarantees in Dark Theme */
+  html.dark p {
+    color: #D5CCBF;
+  }
+
+  html.dark .text-luxury-cream {
+    color: #FAF8F5 !important;
+  }
+
+  html.dark .text-luxury-sand {
+    color: #D5CCBF !important;
+  }
+
+  html.dark .text-luxury-muted {
+    color: #88847D !important;
+  }
+
+  html.dark input:not([type="checkbox"]):not([type="radio"]),
+  html.dark textarea,
+  html.dark select {
+    color: #FAF8F5 !important;
+    background-color: #181818 !important;
+    border-color: #2A2A2A !important;
+  }
+
+  html.dark input::placeholder,
+  html.dark textarea::placeholder {
+    color: #88847D !important;
+    opacity: 1 !important;
+  }
+
+  html.dark label {
+    color: #D5CCBF !important;
   }
 
   /* Custom Luxury Scrollbar */

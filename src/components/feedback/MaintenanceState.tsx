@@ -19,7 +19,7 @@ export const MaintenanceState: React.FC<MaintenanceStateProps> = ({
       <span className="text-[11px] uppercase tracking-luxury-wide text-luxury-gold font-medium mb-3">
         PHILZ SIGNATURE
       </span>
-      <h1 className="font-serif text-4xl text-white font-normal mb-4">
+      <h1 className="font-serif text-4xl text-luxury-cream font-normal mb-4">
         Under Maintenance
       </h1>
       <p className="text-sm text-luxury-muted max-w-md mx-auto leading-relaxed mb-6 font-light">
