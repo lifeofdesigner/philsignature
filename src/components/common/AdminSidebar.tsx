@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
@@ -18,7 +18,9 @@ import {
   Settings,
   Globe,
   ExternalLink,
+  LogOut,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import type { UserRole } from '@/types/database';
@@ -52,9 +54,20 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const currentRole = (user?.role || undefined) as UserRole | undefined;
   const visibleNavItems = adminNavItems.filter((item) => canAccessAdminPath(currentRole, item.href));
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Signed out successfully.');
+      navigate('/login');
+    } catch {
+      toast.error('Failed to sign out.');
+    }
+  };
 
   return (
     <>
@@ -112,17 +125,26 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           })}
         </nav>
 
-        {/* View Live Store Footer */}
-        <div className="p-3 border-t border-luxury-border/60">
+        {/* View Live Store & Sign Out Footer */}
+        <div className="p-3 border-t border-luxury-border/60 space-y-1">
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-3 py-2 text-xs text-luxury-muted hover:text-luxury-gold transition-colors"
+            className="flex items-center justify-between px-3 py-2 text-xs text-luxury-muted hover:text-luxury-gold transition-colors rounded-sm"
           >
             <span className="uppercase tracking-luxury">Live Storefront</span>
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full flex items-center justify-between px-3 py-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-950/25 rounded-sm transition-colors cursor-pointer"
+          >
+            <span className="uppercase tracking-luxury font-medium">Sign Out</span>
+            <LogOut className="h-3.5 w-3.5" />
+          </button>
         </div>
       </aside>
     </>

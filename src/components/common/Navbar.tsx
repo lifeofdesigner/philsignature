@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingBag, Heart, User, Menu, X, ArrowRight, MapPin, Clock } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Search, ShoppingBag, Heart, User, Menu, X, ArrowRight, MapPin, Clock, LogOut, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
 import { useStoreMenu } from '@/features/cms/hooks/useStoreMenu';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
@@ -15,6 +24,18 @@ export const Navbar: React.FC = () => {
   const { count: wishlistCount } = useWishlist();
   const { totalCount: cartCount } = useCart();
   const { items: dynamicNavItems } = useStoreMenu();
+  const { user, profile, logout, canAccessAdmin } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Signed out successfully.');
+      navigate('/login');
+    } catch {
+      toast.error('Failed to sign out.');
+    }
+  };
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -130,15 +151,73 @@ export const Navbar: React.FC = () => {
             )}
           </Link>
 
-          {/* Account Icon (Desktop only, mobile accesses via bottom nav) */}
-          <Link
-            to="/account"
-            className="hidden sm:flex h-11 w-11 items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors"
-            title="My Account"
-            aria-label="Customer account portal"
-          >
-            <User className="h-4 w-4" />
-          </Link>
+          {/* Account Icon & Dropdown Menu */}
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="hidden sm:flex h-11 w-11 items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors relative cursor-pointer"
+                  title="My Account"
+                  aria-label="Customer account portal"
+                >
+                  <User className="h-4 w-4" />
+                  <span className="absolute bottom-2.5 right-2.5 h-1.5 w-1.5 rounded-full bg-luxury-gold ring-2 ring-black" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 p-2 space-y-1">
+                <div className="px-2.5 py-2 border-b border-luxury-border/60 mb-1">
+                  <p className="text-xs font-serif font-medium text-luxury-cream truncate">
+                    {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
+                  </p>
+                  <p className="text-[10px] text-luxury-muted truncate font-mono mt-0.5">{user.email}</p>
+                </div>
+                <DropdownMenuItem asChild>
+                  <Link to="/account" className="flex items-center gap-2.5 w-full">
+                    <User className="h-3.5 w-3.5 text-luxury-gold" />
+                    <span>My Account</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/account/orders" className="flex items-center gap-2.5 w-full">
+                    <ShoppingBag className="h-3.5 w-3.5 text-luxury-gold" />
+                    <span>My Orders</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/wishlist" className="flex items-center gap-2.5 w-full">
+                    <Heart className="h-3.5 w-3.5 text-luxury-gold" />
+                    <span>My Wishlist</span>
+                  </Link>
+                </DropdownMenuItem>
+                {canAccessAdmin && (
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin" className="flex items-center gap-2.5 w-full text-luxury-gold font-medium">
+                      <Shield className="h-3.5 w-3.5" />
+                      <span>Admin Portal</span>
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="flex items-center gap-2.5 w-full text-red-400 hover:text-red-300 hover:bg-red-950/30 focus:text-red-300 focus:bg-red-950/30 cursor-pointer"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  <span>Sign Out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link
+              to="/login"
+              className="hidden sm:flex h-11 w-11 items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors"
+              title="Sign In"
+              aria-label="Sign in to your account"
+            >
+              <User className="h-4 w-4" />
+            </Link>
+          )}
 
           {/* Cart Icon */}
           <Link
@@ -216,6 +295,83 @@ export const Navbar: React.FC = () => {
                     <span>Contact Us</span>
                   </Link>
                 </div>
+              </div>
+
+              {/* Account & Session Controls */}
+              <div className="space-y-2 pt-2 border-t border-luxury-border/60">
+                <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block mb-2">
+                  Account & Privileges
+                </span>
+                {user ? (
+                  <div className="space-y-2.5">
+                    <div className="p-3 bg-luxury-card border border-luxury-border rounded-sm flex items-center justify-between">
+                      <div className="min-w-0 pr-2">
+                        <p className="text-xs font-serif font-medium text-luxury-cream truncate">
+                          {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
+                        </p>
+                        <p className="text-[10px] text-luxury-muted font-mono truncate">{user.email}</p>
+                      </div>
+                      <Link
+                        to="/account"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-xs text-luxury-gold hover:underline shrink-0 font-medium"
+                      >
+                        Dashboard →
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link
+                        to="/account/orders"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-luxury-card border border-luxury-border rounded-sm text-xs text-luxury-cream hover:border-luxury-gold transition-colors"
+                      >
+                        <ShoppingBag className="h-3.5 w-3.5 text-luxury-gold" />
+                        <span>My Orders</span>
+                      </Link>
+                      {canAccessAdmin ? (
+                        <Link
+                          to="/admin"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-luxury-card border border-luxury-gold/50 rounded-sm text-xs text-luxury-gold hover:border-luxury-gold transition-colors font-medium"
+                        >
+                          <Shield className="h-3.5 w-3.5" />
+                          <span>Admin Portal</span>
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/wishlist"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-luxury-card border border-luxury-border rounded-sm text-xs text-luxury-cream hover:border-luxury-gold transition-colors"
+                        >
+                          <Heart className="h-3.5 w-3.5 text-luxury-gold" />
+                          <span>Wishlist</span>
+                        </Link>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-red-950/20 border border-red-500/20 text-red-400 hover:bg-red-950/40 rounded-sm text-xs font-medium uppercase tracking-luxury transition-colors cursor-pointer"
+                    >
+                      <LogOut className="h-3.5 w-3.5" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-luxury-gold text-black rounded-sm text-xs font-semibold uppercase tracking-luxury transition-transform active:scale-98"
+                  >
+                    <User className="h-3.5 w-3.5" />
+                    <span>Sign In / Register</span>
+                  </Link>
+                )}
               </div>
 
               {/* Theme Toggle & Quick Action */}

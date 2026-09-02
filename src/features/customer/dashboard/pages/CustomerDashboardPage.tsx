@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Heart, MapPin, ArrowRight, Package, Clock, Sparkles } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShoppingBag, Heart, MapPin, ArrowRight, Package, Clock, Sparkles, LogOut } from 'lucide-react';
+import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { useCustomerOrders } from '@/features/checkout/hooks/useOrders';
 import { useWishlist } from '@/features/wishlist/hooks/useWishlist';
@@ -10,7 +11,18 @@ import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import type { CustomerAddress } from '@/types/database';
 
 export const CustomerDashboardPage: React.FC = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Signed out successfully.');
+      navigate('/login');
+    } catch {
+      toast.error('Failed to sign out.');
+    }
+  };
   const { data: orders = [], isLoading: isLoadingOrders } = useCustomerOrders(user?.id);
   const { count: wishlistCount, isLoading: isLoadingWishlist } = useWishlist();
 
@@ -73,12 +85,24 @@ export const CustomerDashboardPage: React.FC = () => {
           </p>
         </div>
 
-        {memberSince && (
-          <div className="text-left md:text-right">
-            <span className="text-[10px] uppercase tracking-wider text-luxury-muted block">Customer Since</span>
-            <span className="font-serif text-sm text-luxury-gold font-medium">{formatDate(memberSince)}</span>
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {memberSince && (
+            <div className="text-left md:text-right hidden sm:block">
+              <span className="text-[10px] uppercase tracking-wider text-luxury-muted block">Customer Since</span>
+              <span className="font-serif text-sm text-luxury-gold font-medium">{formatDate(memberSince)}</span>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-red-400 hover:text-red-300 hover:bg-red-950/30 border border-red-500/20 rounded-sm transition-colors cursor-pointer"
+            title="Sign Out of Account"
+            aria-label="Sign Out"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span className="text-[11px] uppercase tracking-luxury font-medium">Sign Out</span>
+          </button>
+        </div>
       </div>
 
       {/* 2. Key Metrics Cards */}

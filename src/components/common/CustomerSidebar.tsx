@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -9,6 +9,7 @@ import {
   LogOut,
   Clock,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
 import { ThemeToggle } from './ThemeToggle';
@@ -24,6 +25,17 @@ export const customerNavItems = [
 
 export const CustomerSidebar: React.FC = () => {
   const { logout, profile } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success('Signed out successfully.');
+      navigate('/login');
+    } catch {
+      toast.error('Failed to sign out.');
+    }
+  };
 
   return (
     <aside className="w-full lg:w-64 space-y-4 lg:space-y-6">
@@ -73,8 +85,10 @@ export const CustomerSidebar: React.FC = () => {
         </div>
 
         <button
-          onClick={() => logout()}
-          className="flex items-center gap-2 lg:gap-3 px-3.5 py-2 text-xs uppercase tracking-luxury text-red-400 hover:bg-red-950/20 transition-colors text-left whitespace-nowrap shrink-0"
+          type="button"
+          onClick={handleLogout}
+          className="flex items-center gap-2 lg:gap-3 px-3.5 py-2 text-xs uppercase tracking-luxury text-red-400 hover:text-red-300 hover:bg-red-950/20 transition-colors text-left whitespace-nowrap shrink-0 cursor-pointer"
+          title="Sign Out of Account"
         >
           <LogOut className="h-3.5 w-3.5 lg:h-4 lg:w-4 shrink-0" />
           <span>Sign Out</span>
