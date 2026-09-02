@@ -8,6 +8,8 @@ export const AboutPage: React.FC = () => {
   const { data: story, isLoading } = useQuery({
     queryKey: ['about-page-story'],
     queryFn: () => cmsService.getStorySection(),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading || !story) {

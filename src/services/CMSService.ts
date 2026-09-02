@@ -1,5 +1,6 @@
 import { cmsRepository, type CMSRepository } from '@/repositories/CMSRepository';
 import type { CmsContent } from '@/types/database';
+import { broadcastStoreUpdate } from '@/lib/storeSync';
 
 export type CmsPublishStatus = 'draft' | 'published' | 'archived';
 
@@ -521,7 +522,13 @@ export class CMSService {
   }
 
   async updateSectionContent(key: string, section: string, title: string, content: Record<string, unknown>): Promise<CmsContent> {
-    return this.repo.upsertSection(key, section, title, content);
+    const result = await this.repo.upsertSection(key, section, title, content);
+    try {
+      broadcastStoreUpdate('CMS_UPDATED', { key, section });
+    } catch (err) {
+      console.debug('Failed to dispatch store update:', err);
+    }
+    return result;
   }
 }
 

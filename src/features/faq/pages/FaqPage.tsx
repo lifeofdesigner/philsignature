@@ -7,6 +7,8 @@ export const FaqPage: React.FC = () => {
   const { data: faq, isLoading } = useQuery({
     queryKey: ['faq-page-data'],
     queryFn: () => cmsService.getFaqContent(),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading || !faq) {

@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { X, Sparkles } from 'lucide-react';
-import { cmsService, type CmsAnnouncementContent } from '@/services/CMSService';
+import { cmsService } from '@/services/CMSService';
 
 export const AnnouncementBar: React.FC = () => {
-  const [announcement, setAnnouncement] = useState<CmsAnnouncementContent | null>(null);
   const [isDismissed, setIsDismissed] = useState(false);
 
-  useEffect(() => {
-    let isMounted = true;
-    cmsService.getAnnouncementSection().then((data) => {
-      if (isMounted) setAnnouncement(data);
-    });
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { data: announcement } = useQuery({
+    queryKey: ['announcement-bar'],
+    queryFn: () => cmsService.getAnnouncementSection(),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
+  });
 
   if (!announcement || !announcement.enabled || isDismissed) {
     return null;

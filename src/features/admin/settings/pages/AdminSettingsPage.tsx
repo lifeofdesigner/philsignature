@@ -64,7 +64,12 @@ export const AdminSettingsPage: React.FC = () => {
   };
 
   const handleUploadImage = async (field: BrandImageField, file: File) => {
-    await uploadImage({ field, file });
+    try {
+      await uploadImage({ field, file });
+      toast.success('Picture uploaded and updated across the storefront.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to upload picture.');
+    }
   };
 
   const handleColorChange = (field: keyof CmsAppearanceConfig, value: string) => {

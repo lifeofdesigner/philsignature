@@ -11,6 +11,8 @@ export const ContactPage: React.FC = () => {
   const { data: contact, isLoading } = useQuery({
     queryKey: ['contact-page-data'],
     queryFn: () => cmsService.getContactContent(),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading || !contact) {

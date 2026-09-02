@@ -24,6 +24,8 @@ export const PolicyPage: React.FC = () => {
   const { data: policy, isLoading } = useQuery({
     queryKey: ['cms-policy', resolvedSlug],
     queryFn: () => cmsService.getPolicyPage(resolvedSlug),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading || !policy) {

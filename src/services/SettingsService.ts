@@ -1,5 +1,6 @@
 import { settingsRepository, type SettingsRepository } from '@/repositories/SettingsRepository';
 import { ValidationError } from '@/errors/ValidationError';
+import { broadcastStoreUpdate } from '@/lib/storeSync';
 import type { SiteSetting } from '@/types/database';
 
 export class SettingsService {
@@ -16,7 +17,13 @@ export class SettingsService {
 
   async saveSetting(key: string, value: unknown, description?: string): Promise<SiteSetting> {
     if (!key) throw new ValidationError('Setting key is required');
-    return this.repo.upsert(key, value, description);
+    const result = await this.repo.upsert(key, value, description);
+    try {
+      broadcastStoreUpdate('SETTINGS_UPDATED', { key, value });
+    } catch (err) {
+      console.debug('Failed to dispatch settings update:', err);
+    }
+    return result;
   }
 }
 

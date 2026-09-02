@@ -9,6 +9,7 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useStoreMenu } from '@/features/cms/hooks/useStoreMenu';
 import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
+import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { useTheme } from '@/providers/ThemeProvider';
 import {
   DropdownMenu,
@@ -28,6 +29,7 @@ export const Navbar: React.FC = () => {
   const { items: dynamicNavItems } = useStoreMenu();
   const { user, profile, logout, canAccessAdmin } = useAuth();
   const { appearance } = useStoreAppearance();
+  const { settings } = useStoreSettings();
   const { theme } = useTheme();
   const navigate = useNavigate();
 
@@ -158,13 +160,13 @@ export const Navbar: React.FC = () => {
                 style={{ fontSize: `${Math.max(16, Math.round(desktopLogoHeight * 0.45))}px` }}
                 className="font-serif tracking-[0.16em] sm:tracking-[0.24em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-all whitespace-nowrap"
               >
-                PHILZ SIGNATURE
+                {settings.store_name || 'PHILZ SIGNATURE'}
               </span>
               <span
                 style={{ fontSize: `${Math.max(7, Math.round(desktopLogoHeight * 0.16))}px` }}
                 className="tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 transition-all"
               >
-                HAUTE PARFUMERIE
+                {settings.store_slogan || 'HAUTE PARFUMERIE'}
               </span>
             </div>
           )}

@@ -58,7 +58,11 @@ export const useAdminSettings = () => {
           settingsService.saveSetting(key, form[key])
         )
       ),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: ['site-settings'] });
+      queryClient.invalidateQueries({ queryKey: ['store-appearance'] });
+    },
   });
 
   return {

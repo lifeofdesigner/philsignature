@@ -1,14 +1,34 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Truck, RefreshCw, MessageSquare } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowRight, ShieldCheck, Truck, MessageSquare, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
+import { useStoreSettings } from '@/hooks/useStoreSettings';
+import { cmsService } from '@/services/CMSService';
 
 export const Footer: React.FC = () => {
   const { appearance } = useStoreAppearance();
+  const { settings } = useStoreSettings();
+  const { data: footerCms } = useQuery({
+    queryKey: ['footer-cms-config'],
+    queryFn: () => cmsService.getFooterSection(),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
+  });
   const [logoError, setLogoError] = useState(false);
   const logoUrl = appearance.logo_light_url || appearance.logo_url;
+
+  const rawWhatsapp = settings.concierge_whatsapp || footerCms?.whatsapp || '+2348000000000';
+  const cleanWhatsapp = rawWhatsapp.replace(/[^0-9]/g, '');
+  const brandDescription =
+    footerCms?.brand_description ||
+    settings.footer_text ||
+    'Luxury perfumes handcrafted with high-concentration fragrance oils for lasting elegance and bold confidence.';
+  const copyrightText =
+    settings.copyright_text ||
+    `© ${new Date().getFullYear()} ${settings.store_name || 'PHILZ SIGNATURE'}. All rights reserved.`;
 
   return (
     <footer className="bg-luxury-black border-t border-luxury-border text-luxury-cream mt-auto">
@@ -87,16 +107,16 @@ export const Footer: React.FC = () => {
               />
             ) : (
               <span className="font-serif text-2xl tracking-[0.2em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors">
-                PHILZ SIGNATURE
+                {settings.store_name || 'PHILZ SIGNATURE'}
               </span>
             )}
           </Link>
           <p className="text-xs text-luxury-muted leading-relaxed max-w-sm font-light">
-            Luxury perfumes handcrafted with high-concentration fragrance oils for lasting elegance and bold confidence.
+            {brandDescription}
           </p>
           <div className="pt-2">
             <a
-              href="https://wa.me/2348000000000"
+              href={`https://wa.me/${cleanWhatsapp || '2348000000000'}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center text-xs uppercase tracking-luxury text-luxury-gold hover:text-luxury-gold-light gap-2 font-medium"
@@ -194,16 +214,19 @@ export const Footer: React.FC = () => {
       {/* Bottom Copyright */}
       <div className="border-t border-luxury-border/40 pt-6 pb-20 lg:pb-6">
         <div className="container mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-luxury-muted space-y-2 sm:space-y-0 font-light">
-          <p>© {new Date().getFullYear()} PHILZ SIGNATURE. All rights reserved.</p>
-          <div className="flex space-x-6">
-            <Link to="/faq" className="hover:text-luxury-gold transition-colors">
+          <p>{copyrightText}</p>
+          <div className="flex flex-wrap gap-4 sm:gap-6">
+            <Link to="/policy/privacy_policy" className="hover:text-luxury-gold transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/faq" className="hover:text-luxury-gold transition-colors">
+            <Link to="/policy/terms" className="hover:text-luxury-gold transition-colors">
               Terms of Service
             </Link>
-            <Link to="/faq" className="hover:text-luxury-gold transition-colors">
-              Shipping & Returns
+            <Link to="/policy/shipping_policy" className="hover:text-luxury-gold transition-colors">
+              Shipping Policy
+            </Link>
+            <Link to="/policy/returns_policy" className="hover:text-luxury-gold transition-colors">
+              Returns Policy
             </Link>
           </div>
         </div>

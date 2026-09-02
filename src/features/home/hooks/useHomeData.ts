@@ -29,8 +29,9 @@ export const useHomeData = () => {
         story,
       };
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    gcTime: 1000 * 60 * 20, // 20 minutes
+    staleTime: 1000 * 10, // 10 seconds
+    gcTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: true,
     retry: 2,
   });
 

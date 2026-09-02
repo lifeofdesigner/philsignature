@@ -5,7 +5,8 @@ export const useModularHome = () => {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['homepage-modular-layout'],
     queryFn: () => cmsService.getHomepageLayout(),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
   });
 
   const sections: CmsHomepageSection[] = (data?.sections || CMSService.DEFAULT_HOMEPAGE_SECTIONS)

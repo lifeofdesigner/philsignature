@@ -22,8 +22,15 @@ export const useAdminCms = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: CMS_QUERY_KEY });
       queryClient.invalidateQueries({ queryKey: ['home-page-data'] });
+      queryClient.invalidateQueries({ queryKey: ['homepage-modular-layout'] });
       queryClient.invalidateQueries({ queryKey: ['store-navigation-menu'] });
       queryClient.invalidateQueries({ queryKey: ['store-appearance'] });
+      queryClient.invalidateQueries({ queryKey: ['announcement-bar'] });
+      queryClient.invalidateQueries({ queryKey: ['footer-cms-config'] });
+      queryClient.invalidateQueries({ queryKey: ['about-page-story'] });
+      queryClient.invalidateQueries({ queryKey: ['contact-page-data'] });
+      queryClient.invalidateQueries({ queryKey: ['faq-page-data'] });
+      queryClient.invalidateQueries({ queryKey: ['cms-policy'] });
       queryClient.invalidateQueries({ queryKey: [variables.key] });
     },
   });
