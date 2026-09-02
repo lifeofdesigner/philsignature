@@ -35,6 +35,22 @@ export const Navbar: React.FC = () => {
   const logoUrl = (isDarkChrome ? appearance.logo_dark_url : appearance.logo_light_url) || appearance.logo_url;
   const [logoLoadError, setLogoLoadError] = useState(false);
 
+  // Logo size calculation: Supports both preset scale (Small to Biggest) and fine-tuned pixel slider
+  const SIZE_PRESETS: Record<string, { desktop: number; mobile: number }> = {
+    small: { desktop: 32, mobile: 26 },
+    medium: { desktop: 48, mobile: 34 },
+    large: { desktop: 64, mobile: 42 },
+    xl: { desktop: 80, mobile: 52 },
+    huge: { desktop: 100, mobile: 64 },
+  };
+
+  const currentSizePreset = appearance.logo_size && SIZE_PRESETS[appearance.logo_size]
+    ? SIZE_PRESETS[appearance.logo_size]
+    : SIZE_PRESETS.medium;
+
+  const desktopLogoHeight = appearance.logo_height || currentSizePreset.desktop;
+  const mobileLogoHeight = appearance.logo_mobile_height || currentSizePreset.mobile;
+
   useEffect(() => {
     setLogoLoadError(false);
   }, [logoUrl]);
@@ -75,7 +91,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-luxury-black/95 backdrop-blur-md border-b border-luxury-border/60 transition-colors">
-      <div className="container mx-auto px-3 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
+      <div className="container mx-auto px-3 sm:px-6 lg:px-8 min-h-[4.5rem] sm:min-h-[5rem] py-2 flex items-center justify-between transition-all duration-300">
         {/* Left Side: Mobile Menu Button or Desktop Navigation */}
         <div className="flex items-center">
           <button
@@ -124,18 +140,33 @@ export const Navbar: React.FC = () => {
                 src={logoUrl}
                 alt="Philz Signature Logo"
                 onError={() => setLogoLoadError(true)}
-                className="h-8 sm:h-10 lg:h-12 w-auto max-h-12 max-w-[180px] sm:max-w-[240px] object-contain group-hover:opacity-90 transition-opacity"
+                style={{
+                  height: `${mobileLogoHeight}px`,
+                  maxHeight: '120px',
+                }}
+                className="w-auto max-w-[200px] sm:max-w-[340px] sm:[height:var(--desktop-logo-h)] object-contain group-hover:opacity-90 transition-all duration-300"
               />
+              <style>{`
+                :root {
+                  --desktop-logo-h: ${desktopLogoHeight}px;
+                }
+              `}</style>
             </picture>
           ) : (
-            <>
-              <span className="font-serif text-base sm:text-2xl lg:text-3xl tracking-[0.16em] sm:tracking-[0.24em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors whitespace-nowrap">
+            <div className="flex flex-col items-center select-none text-center">
+              <span
+                style={{ fontSize: `${Math.max(16, Math.round(desktopLogoHeight * 0.45))}px` }}
+                className="font-serif tracking-[0.16em] sm:tracking-[0.24em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-all whitespace-nowrap"
+              >
                 PHILZ SIGNATURE
               </span>
-              <span className="text-[7px] sm:text-[8px] lg:text-[8.5px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5">
+              <span
+                style={{ fontSize: `${Math.max(7, Math.round(desktopLogoHeight * 0.16))}px` }}
+                className="tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 transition-all"
+              >
                 HAUTE PARFUMERIE
               </span>
-            </>
+            </div>
           )}
         </Link>
 

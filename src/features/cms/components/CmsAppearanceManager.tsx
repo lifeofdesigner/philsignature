@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { mediaService } from '@/services/MediaService';
 import { useAuth } from '@/hooks/useAuth';
+import { LogoSizeControl } from '@/features/admin/settings/components/LogoSizeControl';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 
 interface CmsAppearanceManagerProps {
@@ -182,6 +183,16 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           ))}
         </div>
       </div>
+
+      {/* Logo Sizing & Dimensions */}
+      <LogoSizeControl
+        appearance={appearance}
+        onChange={onChange}
+        onCommit={async (updated) => {
+          onChange(updated);
+          onSave();
+        }}
+      />
 
       <div className="flex justify-end pt-4">
         <Button variant="luxury" size="default" onClick={onSave} disabled={isSaving} className="gap-2">

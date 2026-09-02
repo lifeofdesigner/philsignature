@@ -7,6 +7,7 @@ import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminSettings, type GeneralSettingsForm } from '../hooks/useAdminSettings';
 import { useAdminBrandTheme, type BrandImageField } from '../hooks/useAdminBrandTheme';
 import { BrandImageUploadField } from '../components/BrandImageUploadField';
+import { LogoSizeControl } from '../components/LogoSizeControl';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 
 const IMAGE_FIELDS: { field: BrandImageField; label: string; helpText: string }[] = [
@@ -216,6 +217,22 @@ export const AdminSettingsPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Logo Sizing & Scale */}
+      {themeForm && (
+        <LogoSizeControl
+          appearance={themeForm}
+          onChange={(updated) => setThemeForm(updated)}
+          onCommit={async (updated) => {
+            try {
+              await saveAppearance(updated);
+              toast.success('Logo scale updated successfully.');
+            } catch (err) {
+              toast.error(err instanceof Error ? err.message : 'Failed to save logo size.');
+            }
+          }}
+        />
+      )}
 
       {/* Website Colors */}
       <div className="bg-luxury-card border border-luxury-border p-6 space-y-4">

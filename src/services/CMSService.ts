@@ -128,6 +128,10 @@ export interface CmsAppearanceConfig {
   site_width: 'standard' | 'wide' | 'fluid';
   logo_url?: string;
   favicon_url?: string;
+  // Logo Sizing Controls (Small to Biggest)
+  logo_size?: 'small' | 'medium' | 'large' | 'xl' | 'huge';
+  logo_height?: number; // Desktop logo height in pixels (30 - 120)
+  logo_mobile_height?: number; // Mobile logo height in pixels (24 - 80)
   // Additional brand image variants (Website Builder: Brand Settings)
   logo_light_url?: string;
   logo_dark_url?: string;
@@ -289,6 +293,9 @@ export class CMSService {
     border_radius: 'sm',
     button_style: 'luxury',
     site_width: 'standard',
+    logo_size: 'medium',
+    logo_height: 48,
+    logo_mobile_height: 36,
   };
 
   private static DEFAULT_FOOTER: CmsFooterContent = {
