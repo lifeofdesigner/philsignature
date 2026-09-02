@@ -117,17 +117,22 @@ export const AdminUsersPage: React.FC = () => {
                     </td>
                     <td className="p-4 text-luxury-muted text-xs">{formatDate(u.created_at)}</td>
                     <td className="p-4">
-                      <span
-                        className={`inline-block px-2 py-0.5 text-[10px] uppercase font-semibold border ${
-                          u.role === 'super_admin'
-                            ? 'bg-amber-950/60 text-amber-300 border-amber-600/60'
-                            : u.role === 'staff'
-                            ? 'bg-blue-950/60 text-blue-300 border-blue-600/60'
-                            : 'bg-zinc-900 text-zinc-300 border-zinc-700'
-                        }`}
+                      <select
+                        value={u.role}
+                        disabled={isSelf || isSettingRoleId === u.id}
+                        onChange={(e) => handleRoleChange(u.id, name, e.target.value as UserRole)}
+                        className="bg-luxury-card border border-luxury-border text-[11px] text-luxury-cream px-2 py-1 rounded-sm focus:ring-1 focus:ring-luxury-gold focus:outline-none cursor-pointer"
                       >
-                        {u.role.replace('_', ' ')}
-                      </span>
+                        <option value="super_admin">Super Administrator</option>
+                        <option value="administrator">Administrator</option>
+                        <option value="manager">Store Manager</option>
+                        <option value="content_editor">Content Editor</option>
+                        <option value="inventory_staff">Inventory Specialist</option>
+                        <option value="order_staff">Fulfillment Staff</option>
+                        <option value="customer_support">Customer Support</option>
+                        <option value="staff">General Staff</option>
+                        <option value="customer">Customer</option>
+                      </select>
                     </td>
                     <td className="p-4">
                       <span
@@ -148,22 +153,7 @@ export const AdminUsersPage: React.FC = () => {
                           <Loader2 className="h-4 w-4 animate-spin text-luxury-muted" />
                         </div>
                       ) : (
-                        <div className="flex items-center justify-end gap-2 flex-wrap">
-                          {u.role !== 'customer' && (
-                            <Button variant="outline" size="sm" className="text-[10px] h-7 px-2" onClick={() => handleRoleChange(u.id, name, 'customer')}>
-                              Set Customer
-                            </Button>
-                          )}
-                          {u.role !== 'staff' && (
-                            <Button variant="outline" size="sm" className="text-[10px] h-7 px-2" onClick={() => handleRoleChange(u.id, name, 'staff')}>
-                              Set Staff
-                            </Button>
-                          )}
-                          {u.role !== 'super_admin' && (
-                            <Button variant="luxury" size="sm" className="text-[10px] h-7 px-2" onClick={() => handleRoleChange(u.id, name, 'super_admin')}>
-                              Promote Admin
-                            </Button>
-                          )}
+                        <div className="flex items-center justify-end gap-2">
                           <Button
                             variant="outline"
                             size="sm"

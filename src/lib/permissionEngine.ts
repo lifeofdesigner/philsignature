@@ -19,14 +19,15 @@ export class PermissionEngine {
 
   static isStaff(user?: UserContext | Profile | UserRole | null): boolean {
     const role = this.extractRole(user);
-    return role === 'staff' || role === 'super_admin';
+    if (!role || role === 'customer') return false;
+    return true; // Any non-customer role is part of the operational team
   }
 
   static isCustomer(user?: UserContext | Profile | UserRole | null): boolean {
     return this.extractRole(user) === 'customer';
   }
 
-  // Capability checks (No role === 'admin' in UI)
+  // Capability checks
   static canAccessAdmin(user?: UserContext | Profile | UserRole | null): boolean {
     return this.isStaff(user);
   }
@@ -36,15 +37,18 @@ export class PermissionEngine {
   }
 
   static canManageProducts(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator' || role === 'manager' || role === 'inventory_staff' || role === 'staff';
   }
 
   static canDeleteProduct(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isSuperAdmin(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator';
   }
 
   static canManageOrders(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator' || role === 'manager' || role === 'order_staff' || role === 'staff';
   }
 
   static canDeleteOrder(user?: UserContext | Profile | UserRole | null): boolean {
@@ -52,7 +56,8 @@ export class PermissionEngine {
   }
 
   static canManageCMS(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator' || role === 'manager' || role === 'content_editor' || role === 'staff';
   }
 
   static canManageUsers(user?: UserContext | Profile | UserRole | null): boolean {
@@ -60,19 +65,23 @@ export class PermissionEngine {
   }
 
   static canEditSettings(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isSuperAdmin(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator';
   }
 
   static canDeleteMedia(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isSuperAdmin(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator';
   }
 
   static canViewAnalytics(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator' || role === 'manager' || role === 'staff';
   }
 
   static canModerateReviews(user?: UserContext | Profile | UserRole | null): boolean {
-    return this.isStaff(user);
+    const role = this.extractRole(user);
+    return role === 'super_admin' || role === 'administrator' || role === 'manager' || role === 'customer_support' || role === 'staff';
   }
 }
 

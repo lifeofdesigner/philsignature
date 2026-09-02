@@ -40,7 +40,11 @@ export const adminNavItems = [
   { title: 'SEO Engine', href: '/admin/seo', icon: Globe },
 ];
 
-interface AdminSidebarProps {
+import { useAuth } from '@/hooks/useAuth';
+import type { UserRole } from '@/types/database';
+import { canAccessAdminPath, ROLE_LABELS } from '@/lib/permissions';
+
+export interface AdminSidebarProps {
   isOpen: boolean;
   onClose?: () => void;
 }
@@ -49,6 +53,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { user } = useAuth();
+  const currentRole = (user?.role || undefined) as UserRole | undefined;
+  const visibleNavItems = adminNavItems.filter((item) => canAccessAdminPath(currentRole, item.href));
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -71,15 +79,17 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <span className="font-serif text-lg tracking-widest text-white uppercase font-medium">
               PHILZ SIGNATURE
             </span>
-            <span className="text-[9px] uppercase tracking-luxury text-luxury-gold">
-              ADMIN WORKSPACE
-            </span>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="text-[9px] uppercase tracking-luxury text-luxury-gold font-medium">
+                {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole as UserRole] : 'ADMIN WORKSPACE'}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Navigation Items */}
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-          {adminNavItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink

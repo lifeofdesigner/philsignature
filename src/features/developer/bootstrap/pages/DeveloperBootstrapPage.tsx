@@ -16,6 +16,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { env } from '@/config/env';
 import { authService } from '@/services/AuthService';
+import { developerAdminService } from '@/services/DeveloperAdminService';
+import { DeveloperUserAdminPanel } from '../components/DeveloperUserAdminPanel';
 import type { Profile, UserRole } from '@/types/database';
 import type { DatabaseHealthSummary } from '@/repositories/AuthRepository';
 
@@ -66,7 +68,12 @@ export const DeveloperBootstrapPage: React.FC = () => {
   const loadUsers = useCallback(async () => {
     setIsLoadingUsers(true);
     try {
-      const list = await authService.listUsers();
+      // This console has no authenticated Supabase session of its own (passphrase
+      // gate only), so the anon-backed authService.listUsers() would see nothing
+      // under RLS. Prefer the admin-client-backed listing when available.
+      const list = developerAdminService.isAvailable()
+        ? await developerAdminService.listUsers()
+        : await authService.listUsers();
       setUsers(list);
     } catch (err) {
       console.error('[DeveloperBootstrap] Error loading user list:', err);
@@ -85,7 +92,11 @@ export const DeveloperBootstrapPage: React.FC = () => {
   const handleRoleChange = async (targetUserId: string, newRole: UserRole) => {
     setRoleActionMessage(null);
     try {
-      await authService.elevateUserRole(targetUserId, newRole, 'developer-bootstrap');
+      if (developerAdminService.isAvailable()) {
+        await developerAdminService.setRole(targetUserId, newRole);
+      } else {
+        await authService.elevateUserRole(targetUserId, newRole, 'developer-bootstrap');
+      }
       setRoleActionMessage(`Successfully modified user role to ${newRole}`);
       await loadUsers();
     } catch (err) {
@@ -446,6 +457,15 @@ export const DeveloperBootstrapPage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* SECTION 5: Create User / Delete / Reset Password (local-only) */}
+        <DeveloperUserAdminPanel
+          users={users}
+          onUsersChanged={async () => {
+            await loadUsers();
+            await loadDiagnostics();
+          }}
+        />
       </div>
     </div>
   );

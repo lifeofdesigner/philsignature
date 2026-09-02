@@ -5,6 +5,8 @@ import { permissionEngine } from '@/lib/permissionEngine';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ROUTES } from '@/constants/routes';
 
+import { canAccessAdminPath } from '@/lib/permissions';
+
 export const StaffGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, profile, isLoading } = useAuth();
   const location = useLocation();
@@ -17,7 +19,7 @@ export const StaffGuard: React.FC<{ children: React.ReactNode }> = ({ children }
     return <Navigate to={ROUTES.LOGIN} state={{ from: location }} replace />;
   }
 
-  if (!permissionEngine.canAccessAdmin(profile)) {
+  if (!permissionEngine.canAccessAdmin(profile) || !canAccessAdminPath(profile?.role, location.pathname)) {
     return <Navigate to="/unauthorized" replace />;
   }
 

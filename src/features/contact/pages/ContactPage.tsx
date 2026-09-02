@@ -1,10 +1,22 @@
 import React from 'react';
-import { Mail, Phone, MapPin, MessageSquare } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Mail, Phone, MapPin, MessageSquare, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { cmsService } from '@/services/CMSService';
+import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 
 export const ContactPage: React.FC = () => {
+  const { data: contact, isLoading } = useQuery({
+    queryKey: ['contact-page-data'],
+    queryFn: () => cmsService.getContactContent(),
+  });
+
+  if (isLoading || !contact) {
+    return <PageSkeleton />;
+  }
+
   return (
     <div className="container mx-auto px-4 sm:px-8 py-16 max-w-5xl">
       <div className="text-center space-y-4 mb-16">
@@ -12,10 +24,10 @@ export const ContactPage: React.FC = () => {
           Get in Touch
         </span>
         <h1 className="font-serif text-4xl text-luxury-cream font-normal">
-          Contact Us
+          {contact.title}
         </h1>
-        <p className="text-xs text-luxury-muted font-light max-w-md mx-auto leading-relaxed">
-          Have a question about your order or need help choosing a perfume? We are here to help.
+        <p className="text-xs text-luxury-sand font-light max-w-md mx-auto leading-relaxed">
+          {contact.subtitle}
         </p>
       </div>
 
@@ -29,7 +41,7 @@ export const ContactPage: React.FC = () => {
             <Mail className="h-5 w-5 text-luxury-gold shrink-0 mt-0.5" />
             <div>
               <h4 className="text-xs uppercase tracking-luxury font-semibold text-luxury-cream">Email</h4>
-              <p className="text-xs text-luxury-muted mt-1">concierge@philzsignature.com</p>
+              <p className="text-xs text-luxury-sand mt-1">{contact.email}</p>
             </div>
           </div>
 
@@ -37,7 +49,7 @@ export const ContactPage: React.FC = () => {
             <Phone className="h-5 w-5 text-luxury-gold shrink-0 mt-0.5" />
             <div>
               <h4 className="text-xs uppercase tracking-luxury font-semibold text-luxury-cream">Phone</h4>
-              <p className="text-xs text-luxury-muted mt-1">+234 (0) 800 PHILZ SIG</p>
+              <p className="text-xs text-luxury-sand mt-1">{contact.phone}</p>
             </div>
           </div>
 
@@ -45,7 +57,7 @@ export const ContactPage: React.FC = () => {
             <MessageSquare className="h-5 w-5 text-luxury-gold shrink-0 mt-0.5" />
             <div>
               <h4 className="text-xs uppercase tracking-luxury font-semibold text-luxury-cream">WhatsApp</h4>
-              <p className="text-xs text-luxury-muted mt-1">Chat with us directly</p>
+              <p className="text-xs text-luxury-sand mt-1">{contact.whatsapp}</p>
             </div>
           </div>
 
@@ -53,9 +65,19 @@ export const ContactPage: React.FC = () => {
             <MapPin className="h-5 w-5 text-luxury-gold shrink-0 mt-0.5" />
             <div>
               <h4 className="text-xs uppercase tracking-luxury font-semibold text-luxury-cream">Our Location</h4>
-              <p className="text-xs text-luxury-muted mt-1">Victoria Island, Lagos, Nigeria</p>
+              <p className="text-xs text-luxury-sand mt-1">{contact.address}</p>
             </div>
           </div>
+
+          {contact.hours && (
+            <div className="flex items-start space-x-4">
+              <Clock className="h-5 w-5 text-luxury-gold shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-xs uppercase tracking-luxury font-semibold text-luxury-cream">Concierge Hours</h4>
+                <p className="text-xs text-luxury-sand mt-1">{contact.hours}</p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="lg:col-span-2 bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-8">

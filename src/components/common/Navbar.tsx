@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
+import { useStoreMenu } from '@/features/cms/hooks/useStoreMenu';
 import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
@@ -13,6 +14,7 @@ export const Navbar: React.FC = () => {
 
   const { count: wishlistCount } = useWishlist();
   const { totalCount: cartCount } = useCart();
+  const { items: dynamicNavItems } = useStoreMenu();
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -31,13 +33,12 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  const navLinks = [
-    { name: 'Collections', href: '/collections' },
-    { name: 'All Perfumes', href: '/shop?family=all' },
-    { name: 'Woody & Oud', href: '/shop?family=Woody' },
-    { name: 'Oriental & Amber', href: '/shop?family=Oriental' },
-    { name: 'About Us', href: '/about' },
-  ];
+  const navLinks = dynamicNavItems.map((item) => ({
+    name: item.label,
+    href: item.url,
+    target: item.target || '_self',
+    badge: item.badge,
+  }));
 
   return (
     <header className="sticky top-0 z-40 w-full bg-luxury-black/95 backdrop-blur-md border-b border-luxury-border/60 transition-colors">

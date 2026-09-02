@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cmsService } from '@/services/CMSService';
 
-const CMS_QUERY_KEY = ['admin-cms-content'];
+export const CMS_QUERY_KEY = ['admin-cms-content'];
 
 export const useAdminCms = () => {
   const queryClient = useQueryClient();
@@ -10,6 +10,11 @@ export const useAdminCms = () => {
   const announcementQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'announcement'], queryFn: () => cmsService.getAnnouncementSection() });
   const storyQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'story'], queryFn: () => cmsService.getStorySection() });
   const footerQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'footer'], queryFn: () => cmsService.getFooterSection() });
+  const layoutQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'layout'], queryFn: () => cmsService.getHomepageLayout() });
+  const menuQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'menu'], queryFn: () => cmsService.getNavigationMenu() });
+  const appearanceQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'appearance'], queryFn: () => cmsService.getAppearance() });
+  const faqQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'faq'], queryFn: () => cmsService.getFaqContent() });
+  const contactQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'contact'], queryFn: () => cmsService.getContactContent() });
 
   const saveMutation = useMutation({
     mutationFn: ({ key, section, title, content }: { key: string; section: string; title: string; content: Record<string, unknown> }) =>
@@ -17,6 +22,8 @@ export const useAdminCms = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: CMS_QUERY_KEY });
       queryClient.invalidateQueries({ queryKey: ['home-page-data'] });
+      queryClient.invalidateQueries({ queryKey: ['store-navigation-menu'] });
+      queryClient.invalidateQueries({ queryKey: ['store-appearance'] });
       queryClient.invalidateQueries({ queryKey: [variables.key] });
     },
   });
@@ -26,7 +33,19 @@ export const useAdminCms = () => {
     announcement: announcementQuery.data,
     story: storyQuery.data,
     footer: footerQuery.data,
-    isLoading: heroQuery.isLoading || announcementQuery.isLoading || storyQuery.isLoading || footerQuery.isLoading,
+    layout: layoutQuery.data,
+    menu: menuQuery.data,
+    appearance: appearanceQuery.data,
+    faq: faqQuery.data,
+    contact: contactQuery.data,
+    isLoading:
+      heroQuery.isLoading ||
+      announcementQuery.isLoading ||
+      storyQuery.isLoading ||
+      footerQuery.isLoading ||
+      layoutQuery.isLoading ||
+      menuQuery.isLoading ||
+      appearanceQuery.isLoading,
     save: saveMutation.mutateAsync,
     isSaving: saveMutation.isPending,
   };

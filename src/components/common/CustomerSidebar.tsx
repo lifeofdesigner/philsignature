@@ -31,7 +31,7 @@ export const CustomerSidebar: React.FC = () => {
       <div className="bg-luxury-card border border-luxury-border p-4 sm:p-6 flex lg:flex-col items-center lg:text-center gap-4 lg:gap-0 rounded-sm shadow-xs">
         <div className="h-12 w-12 lg:h-16 lg:w-16 rounded-full border border-luxury-gold/40 bg-luxury-charcoal flex items-center justify-center text-luxury-gold lg:mb-3 shrink-0">
           <span className="font-serif text-lg lg:text-xl font-medium">
-            {profile?.first_name?.charAt(0) || 'P'}
+            {(profile?.first_name?.[0] || 'P').toUpperCase()}
           </span>
         </div>
         <div className="text-left lg:text-center min-w-0 flex-1">
@@ -39,11 +39,10 @@ export const CustomerSidebar: React.FC = () => {
             {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Valued Customer'}
           </h3>
           <p className="text-[10px] lg:text-[11px] uppercase tracking-luxury text-luxury-gold mt-0.5 lg:mt-1 font-medium">
-            Customer Account
+            Privileged Patron
           </p>
         </div>
       </div>
-
       {/* Navigation Links (Horizontal scroll on mobile, vertical stack on desktop) */}
       <nav className="bg-luxury-card border border-luxury-border p-1.5 sm:p-2 flex lg:flex-col overflow-x-auto lg:overflow-x-visible scrollbar-none gap-1 rounded-sm shadow-xs">
         {customerNavItems.map((item) => {

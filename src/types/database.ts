@@ -1,4 +1,13 @@
-export type UserRole = 'super_admin' | 'staff' | 'customer';
+export type UserRole =
+  | 'super_admin'
+  | 'administrator'
+  | 'manager'
+  | 'content_editor'
+  | 'inventory_staff'
+  | 'order_staff'
+  | 'customer_support'
+  | 'staff'
+  | 'customer';
 
 export type ProductStatus = 'draft' | 'published' | 'archived';
 export type FragranceFamily = 'Woody' | 'Oriental' | 'Floral' | 'Fresh' | 'Gourmand' | 'Chypre' | 'Aromatic';

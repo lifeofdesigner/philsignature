@@ -140,24 +140,42 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-0 z-0"
         >
-          <picture className="w-full h-full block">
-            {currentSlide.mobile_image && (
-              <source media="(max-width: 640px)" srcSet={currentSlide.mobile_image} />
-            )}
-            <motion.img
-              initial={{ scale: 1.05 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: intervalMs / 1000 + 1, ease: 'linear' }}
-              src={currentSlide.desktop_image}
-              alt={currentSlide.headline}
-              className="w-full h-full object-cover object-center opacity-30 dark:opacity-40"
-              loading="eager"
-              fetchPriority="high"
+          {currentSlide.video_url ? (
+            <video
+              src={currentSlide.video_url}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover object-center opacity-40 dark:opacity-50"
             />
-          </picture>
+          ) : (
+            <picture className="w-full h-full block">
+              {currentSlide.mobile_image && (
+                <source media="(max-width: 640px)" srcSet={currentSlide.mobile_image} />
+              )}
+              <motion.img
+                key={`img-${currentSlide.id}`}
+                initial={{ scale: 1.05 }}
+                animate={{ scale: isPaused ? 1 : 1.05 }}
+                transition={{ duration: intervalMs / 1000 + 1, ease: 'linear' }}
+                src={currentSlide.desktop_image}
+                alt={currentSlide.headline}
+                className="w-full h-full object-cover object-center opacity-30 dark:opacity-40"
+                loading="eager"
+                fetchPriority="high"
+              />
+            </picture>
+          )}
 
           {/* Theme Vignette Overlays for Flawless Readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/75 to-luxury-black/35" />
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/75 to-luxury-black/35"
+            style={{
+              backgroundColor: currentSlide.overlay_color || undefined,
+              opacity: currentSlide.overlay_opacity ?? undefined,
+            }}
+          />
           <div className="absolute inset-0 bg-radial-vignette opacity-60 dark:opacity-75 pointer-events-none" />
         </motion.div>
       </AnimatePresence>

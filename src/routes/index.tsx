@@ -27,6 +27,7 @@ const ProductDetailPage = lazy(() => import('@/features/product').then((m) => ({
 const AboutPage = lazy(() => import('@/features/about').then((m) => ({ default: m.AboutPage })));
 const ContactPage = lazy(() => import('@/features/contact').then((m) => ({ default: m.ContactPage })));
 const FaqPage = lazy(() => import('@/features/faq').then((m) => ({ default: m.FaqPage })));
+const PolicyPage = lazy(() => import('@/features/cms/pages/PolicyPage').then((m) => ({ default: m.PolicyPage })));
 const CartPage = lazy(() => import('@/features/cart').then((m) => ({ default: m.CartPage })));
 const CheckoutPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.CheckoutPage })));
 const OrderConfirmationPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.OrderConfirmationPage })));
@@ -83,6 +84,11 @@ export const router = createBrowserRouter([
       { path: 'about', element: withSuspense(AboutPage) },
       { path: 'contact', element: withSuspense(ContactPage) },
       { path: 'faq', element: withSuspense(FaqPage) },
+      { path: 'policy/:slug', element: withSuspense(PolicyPage) },
+      { path: 'privacy', element: withSuspense(PolicyPage) },
+      { path: 'terms', element: withSuspense(PolicyPage) },
+      { path: 'shipping-policy', element: withSuspense(PolicyPage) },
+      { path: 'returns-policy', element: withSuspense(PolicyPage) },
       { path: 'cart', element: withSuspense(CartPage) },
       { path: 'checkout', element: withSuspense(CheckoutPage) },
       { path: 'checkout/confirmation/:orderNumber', element: withSuspense(OrderConfirmationPage) },
