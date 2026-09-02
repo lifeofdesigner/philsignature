@@ -20,6 +20,9 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import type { UserRole } from '@/types/database';
+import { canAccessAdminPath, ROLE_LABELS } from '@/lib/permissions';
 
 export const adminNavItems = [
   { title: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
@@ -39,10 +42,6 @@ export const adminNavItems = [
   { title: 'Settings', href: '/admin/settings', icon: Settings },
   { title: 'SEO Engine', href: '/admin/seo', icon: Globe },
 ];
-
-import { useAuth } from '@/hooks/useAuth';
-import type { UserRole } from '@/types/database';
-import { canAccessAdminPath, ROLE_LABELS } from '@/lib/permissions';
 
 export interface AdminSidebarProps {
   isOpen: boolean;
