@@ -250,10 +250,9 @@ export type MediaBucket = 'products' | 'banners' | 'cms' | 'avatars';
 export interface SiteSetting {
   id: string;
   key: string;
-  value: string;
-  type: 'string' | 'number' | 'boolean' | 'json';
-  category: 'general' | 'payment' | 'shipping' | 'seo' | 'social';
+  value: unknown;
   description: string | null;
+  created_at: string;
   updated_at: string;
 }
 
