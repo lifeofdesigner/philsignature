@@ -110,94 +110,96 @@ export const Navbar: React.FC = () => {
   return (
     <motion.header
       className={cn(
-        'sticky top-0 z-40 w-full transition-all duration-300 relative',
-        isScrolled
-          ? 'bg-luxury-black/90 backdrop-blur-xl border-b border-luxury-gold/25 shadow-[0_12px_36px_rgba(0,0,0,0.65)]'
-          : 'bg-luxury-black/95 backdrop-blur-md border-b border-luxury-border/60'
+        'sticky top-0 z-40 w-full transition-all duration-300 px-2 sm:px-4 lg:px-6 py-1.5 sm:py-2.5 pointer-events-none'
       )}
     >
-      {/* Haute Couture Golden Light Sweep Line */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-luxury-gold/45 to-transparent pointer-events-none opacity-80" />
-
+      {/* Floating Dynamic Island Luxury Capsule */}
       <div
         className={cn(
-          'container mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between transition-all duration-300',
-          isScrolled ? 'min-h-[4.25rem] sm:min-h-[4.75rem] py-1.5' : 'min-h-[4.75rem] sm:min-h-[5.25rem] py-2.5'
+          'mx-auto max-w-7xl rounded-2xl sm:rounded-full border transition-all duration-300 px-3 sm:px-6 relative overflow-hidden pointer-events-auto',
+          isScrolled
+            ? 'bg-luxury-black/90 backdrop-blur-2xl border-luxury-gold/40 shadow-[0_16px_48px_rgba(0,0,0,0.85),0_0_25px_rgba(197,168,128,0.18)] py-1.5 sm:py-2'
+            : 'bg-luxury-black/80 backdrop-blur-xl border-luxury-border/70 shadow-[0_10px_35px_rgba(0,0,0,0.6)] py-2 sm:py-2.5'
         )}
       >
-        {/* Left Side: Mobile Menu Button or Desktop Navigation */}
-        <div className="flex items-center">
-          <motion.button
-            type="button"
-            whileTap={{ scale: 0.92 }}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden h-11 w-11 -ml-1 flex items-center justify-center text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-luxury-gold/10"
-            aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              {mobileMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <X className="h-6 w-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <Menu className="h-6 w-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
+        {/* Luminous Golden Shimmer Accent Lines */}
+        <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-luxury-gold/50 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
 
-          {/* Desktop Left Nav with Framer Motion Sliding Pill */}
-          <nav
-            className="hidden lg:flex items-center space-x-1"
-            onMouseLeave={() => setHoveredNav(null)}
-          >
-            {navLinks.slice(0, 3).map((link) => {
-              const isActive = location.pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  onMouseEnter={() => setHoveredNav(link.name)}
-                  className={cn(
-                    'relative px-3.5 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
-                    isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream/80 hover:text-luxury-cream'
-                  )}
-                >
-                  {/* Sliding Hover Capsule */}
-                  {hoveredNav === link.name && (
-                    <motion.span
-                      layoutId="navbar-hover-capsule"
-                      className="absolute inset-0 rounded-full bg-luxury-gold/10 border border-luxury-gold/25 backdrop-blur-xs -z-10 shadow-xs"
-                      transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-                    />
-                  )}
-                  {/* Active Route Dot */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="navbar-active-dot"
-                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
-                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    />
-                  )}
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
+        <div className="flex items-center justify-between min-h-[3.75rem] sm:min-h-[4.25rem]">
+          {/* Left Side: Mobile Menu Button or Desktop Navigation */}
+          <div className="flex items-center">
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.92 }}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden h-10 w-10 flex items-center justify-center text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-luxury-gold/10"
+              aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {mobileMenuOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <X className="h-5 w-5" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <Menu className="h-5 w-5" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
+
+            {/* Desktop Left Nav with Framer Motion Sliding Pill */}
+            <nav
+              className="hidden lg:flex items-center space-x-1"
+              onMouseLeave={() => setHoveredNav(null)}
+            >
+              {navLinks.slice(0, 3).map((link) => {
+                const isActive = location.pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    onMouseEnter={() => setHoveredNav(link.name)}
+                    className={cn(
+                      'relative px-3.5 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
+                      isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream/80 hover:text-luxury-cream'
+                    )}
+                  >
+                    {/* Sliding Hover Capsule */}
+                    {hoveredNav === link.name && (
+                      <motion.span
+                        layoutId="navbar-hover-capsule"
+                        className="absolute inset-0 rounded-full bg-luxury-gold/15 border border-luxury-gold/30 backdrop-blur-xs -z-10 shadow-xs"
+                        transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                      />
+                    )}
+                    {/* Active Route Dot */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="navbar-active-dot"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
+                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                      />
+                    )}
+                    <span>{link.name}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
 
         {/* Center: Luxury Logo & Brand Name */}
         <Link
@@ -427,16 +429,17 @@ export const Navbar: React.FC = () => {
           </motion.div>
         </div>
       </div>
+    </div>
 
       {/* Mobile Animated Luxury Drawer Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:hidden bg-luxury-black/98 backdrop-blur-2xl border-b border-luxury-gold/30 overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden mt-2 bg-luxury-black/98 backdrop-blur-2xl border border-luxury-gold/30 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto"
           >
             <motion.div
               initial="closed"
