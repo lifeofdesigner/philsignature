@@ -22,6 +22,8 @@ import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
   const { count: wishlistCount } = useWishlist();
@@ -37,6 +39,16 @@ export const Navbar: React.FC = () => {
   const logoUrl = (isDarkChrome ? appearance.logo_dark_url : appearance.logo_light_url) || appearance.logo_url;
   const [logoLoadError, setLogoLoadError] = useState(false);
 
+  // Dynamic Scroll Detection
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 25);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Logo size calculation: Supports both preset scale (Small to Biggest) and fine-tuned pixel slider
   const SIZE_PRESETS: Record<string, { desktop: number; mobile: number }> = {
     small: { desktop: 48, mobile: 38 },
@@ -50,8 +62,12 @@ export const Navbar: React.FC = () => {
     ? SIZE_PRESETS[appearance.logo_size]
     : SIZE_PRESETS.medium;
 
-  const desktopLogoHeight = appearance.logo_height || currentSizePreset.desktop;
-  const mobileLogoHeight = appearance.logo_mobile_height || currentSizePreset.mobile;
+  const baseDesktopHeight = appearance.logo_height || currentSizePreset.desktop;
+  const baseMobileHeight = appearance.logo_mobile_height || currentSizePreset.mobile;
+
+  // On scroll: subtly streamline logo height by 12% for sleek browsing
+  const desktopLogoHeight = isScrolled ? Math.max(42, Math.round(baseDesktopHeight * 0.88)) : baseDesktopHeight;
+  const mobileLogoHeight = isScrolled ? Math.max(34, Math.round(baseMobileHeight * 0.90)) : baseMobileHeight;
 
   useEffect(() => {
     setLogoLoadError(false);
@@ -92,43 +108,108 @@ export const Navbar: React.FC = () => {
   }));
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-luxury-black/95 backdrop-blur-md border-b border-luxury-border/60 transition-colors">
-      <div className="container mx-auto px-3 sm:px-6 lg:px-8 min-h-[4.5rem] sm:min-h-[5rem] py-2 flex items-center justify-between transition-all duration-300">
+    <motion.header
+      className={cn(
+        'sticky top-0 z-40 w-full transition-all duration-300 relative',
+        isScrolled
+          ? 'bg-luxury-black/90 backdrop-blur-xl border-b border-luxury-gold/25 shadow-[0_12px_36px_rgba(0,0,0,0.65)]'
+          : 'bg-luxury-black/95 backdrop-blur-md border-b border-luxury-border/60'
+      )}
+    >
+      {/* Haute Couture Golden Light Sweep Line */}
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-luxury-gold/45 to-transparent pointer-events-none opacity-80" />
+
+      <div
+        className={cn(
+          'container mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between transition-all duration-300',
+          isScrolled ? 'min-h-[4.25rem] sm:min-h-[4.75rem] py-1.5' : 'min-h-[4.75rem] sm:min-h-[5.25rem] py-2.5'
+        )}
+      >
         {/* Left Side: Mobile Menu Button or Desktop Navigation */}
         <div className="flex items-center">
-          <button
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.92 }}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden h-11 w-11 -ml-1 flex items-center justify-center text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer"
+            className="lg:hidden h-11 w-11 -ml-1 flex items-center justify-center text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-luxury-gold/10"
             aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+            <AnimatePresence mode="wait" initial={false}>
+              {mobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <X className="h-6 w-6" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Menu className="h-6 w-6" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
 
-          {/* Desktop Left Nav */}
-          <nav className="hidden lg:flex items-center space-x-7">
-            {navLinks.slice(0, 3).map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={cn(
-                  'text-xs uppercase tracking-luxury font-medium transition-colors hover:text-luxury-gold',
-                  location.pathname === link.href ? 'text-luxury-gold' : 'text-luxury-cream/80'
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+          {/* Desktop Left Nav with Framer Motion Sliding Pill */}
+          <nav
+            className="hidden lg:flex items-center space-x-1"
+            onMouseLeave={() => setHoveredNav(null)}
+          >
+            {navLinks.slice(0, 3).map((link) => {
+              const isActive = location.pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onMouseEnter={() => setHoveredNav(link.name)}
+                  className={cn(
+                    'relative px-3.5 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
+                    isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream/80 hover:text-luxury-cream'
+                  )}
+                >
+                  {/* Sliding Hover Capsule */}
+                  {hoveredNav === link.name && (
+                    <motion.span
+                      layoutId="navbar-hover-capsule"
+                      className="absolute inset-0 rounded-full bg-luxury-gold/10 border border-luxury-gold/25 backdrop-blur-xs -z-10 shadow-xs"
+                      transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                    />
+                  )}
+                  {/* Active Route Dot */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navbar-active-dot"
+                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
+                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                    />
+                  )}
+                  <span>{link.name}</span>
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
         {/* Center: Luxury Logo & Brand Name */}
         <Link
           to="/"
-          className="flex flex-row sm:flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-2 gap-2.5 sm:gap-1"
+          className="flex flex-row sm:flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-2 gap-2.5 sm:gap-1 text-decoration-none"
         >
           {logoUrl && !logoLoadError ? (
-            <picture className="flex items-center justify-center shrink-0">
+            <motion.picture
+              className="flex items-center justify-center shrink-0"
+              whileHover={{ scale: 1.04 }}
+              transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+            >
               {appearance.logo_mobile_url && (
                 <source media="(max-width: 640px)" srcSet={appearance.logo_mobile_url} />
               )}
@@ -142,7 +223,7 @@ export const Navbar: React.FC = () => {
                 src={logoUrl}
                 alt="Philz Signature Logo"
                 onError={() => setLogoLoadError(true)}
-                className="brand-navbar-logo w-auto max-w-[260px] sm:max-w-[420px] object-contain group-hover:opacity-90 transition-all duration-300"
+                className="brand-navbar-logo w-auto max-w-[260px] sm:max-w-[420px] object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
               />
               <style>{`
                 .brand-navbar-logo {
@@ -156,83 +237,118 @@ export const Navbar: React.FC = () => {
                   }
                 }
               `}</style>
-            </picture>
+            </motion.picture>
           ) : null}
 
           {/* Business Name: Beside logo on mobile, Under logo on desktop */}
           {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
             <div className="flex flex-col items-start sm:items-center select-none text-left sm:text-center leading-none">
-              <span className="font-serif text-xs sm:text-base lg:text-lg tracking-[0.14em] sm:tracking-[0.22em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors whitespace-nowrap">
+              <span className="font-serif text-xs sm:text-sm lg:text-base tracking-[0.16em] sm:tracking-[0.22em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap">
                 {settings.store_name || 'PHILZ SIGNATURE'}
               </span>
-              <span className="text-[7px] sm:text-[8px] lg:text-[8.5px] tracking-[0.24em] sm:tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap">
-                {settings.store_slogan || 'HAUTE PARFUMERIE'}
+              <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.24em] sm:tracking-[0.3em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap opacity-90">
+                {settings.store_slogan || 'DIFFUSER CANDLES | PERFUME OIL'}
               </span>
             </div>
           )}
         </Link>
 
         {/* Right Side: Actions (Desktop & Mobile Optimized) */}
-        <div className="flex items-center space-x-1 sm:space-x-3">
-          {/* Desktop Extra Links */}
-          <nav className="hidden lg:flex items-center space-x-7 mr-3">
-            {navLinks.slice(3).map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={cn(
-                  'text-xs uppercase tracking-luxury font-medium transition-colors hover:text-luxury-gold',
-                  location.pathname === link.href ? 'text-luxury-gold' : 'text-luxury-cream/80'
-                )}
-              >
-                {link.name}
-              </Link>
-            ))}
+        <div className="flex items-center space-x-1 sm:space-x-1.5">
+          {/* Desktop Extra Links with Framer Motion Sliding Pill */}
+          <nav
+            className="hidden lg:flex items-center space-x-1 mr-2"
+            onMouseLeave={() => setHoveredNav(null)}
+          >
+            {navLinks.slice(3).map((link) => {
+              const isActive = location.pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onMouseEnter={() => setHoveredNav(link.name)}
+                  className={cn(
+                    'relative px-3.5 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1.5',
+                    isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream/80 hover:text-luxury-cream'
+                  )}
+                >
+                  {/* Sliding Hover Capsule */}
+                  {hoveredNav === link.name && (
+                    <motion.span
+                      layoutId="navbar-hover-capsule"
+                      className="absolute inset-0 rounded-full bg-luxury-gold/10 border border-luxury-gold/25 backdrop-blur-xs -z-10 shadow-xs"
+                      transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                    />
+                  )}
+                  {/* Active Route Dot */}
+                  {isActive && (
+                    <motion.span
+                      layoutId="navbar-active-dot"
+                      className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
+                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                    />
+                  )}
+                  <span>{link.name}</span>
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Theme Switcher */}
-          <ThemeToggle />
+          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+            <ThemeToggle />
+          </motion.div>
 
           {/* Search Icon */}
-          <Link
-            to="/shop"
-            className="h-11 w-11 flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors"
-            title="Search Perfumes"
-            aria-label="Search perfumes"
-          >
-            <Search className="h-4 w-4" />
-          </Link>
+          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+            <Link
+              to="/shop"
+              className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors"
+              title="Search Perfumes"
+              aria-label="Search perfumes"
+            >
+              <Search className="h-4 w-4" />
+            </Link>
+          </motion.div>
 
-          {/* Wishlist Icon (Desktop only, mobile accesses via bottom nav) */}
-          <Link
-            to="/wishlist"
-            className="hidden sm:flex h-11 w-11 items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors relative"
-            title="Wishlist"
-            aria-label="View saved perfumes"
-          >
-            <Heart className="h-4 w-4" />
-            {wishlistCount > 0 && (
-              <span className="absolute top-2 right-2 h-3.5 w-3.5 rounded-full bg-luxury-gold text-black text-[9px] font-bold flex items-center justify-center">
-                {wishlistCount}
-              </span>
-            )}
-          </Link>
+          {/* Wishlist Icon */}
+          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block">
+            <Link
+              to="/wishlist"
+              className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors relative"
+              title="Wishlist"
+              aria-label="View saved perfumes"
+            >
+              <Heart className="h-4 w-4" />
+              {wishlistCount > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-luxury-gold text-black text-[9px] font-bold flex items-center justify-center shadow-xs"
+                >
+                  {wishlistCount}
+                </motion.span>
+              )}
+            </Link>
+          </motion.div>
 
           {/* Account Icon & Dropdown Menu */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button
+                <motion.button
                   type="button"
-                  className="hidden sm:flex h-11 w-11 items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors relative cursor-pointer"
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  className="hidden sm:flex h-10 w-10 rounded-full items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors relative cursor-pointer"
                   title="My Account"
                   aria-label="Customer account portal"
                 >
                   <User className="h-4 w-4" />
-                  <span className="absolute bottom-2.5 right-2.5 h-1.5 w-1.5 rounded-full bg-luxury-gold ring-2 ring-black" />
-                </button>
+                  <span className="absolute bottom-2 right-2 h-2 w-2 rounded-full bg-luxury-gold ring-2 ring-black" />
+                </motion.button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 p-2 space-y-1">
+              <DropdownMenuContent align="end" className="w-56 p-2 space-y-1 bg-luxury-card/95 backdrop-blur-xl border border-luxury-border shadow-2xl">
                 <div className="px-2.5 py-2 border-b border-luxury-border/60 mb-1">
                   <p className="text-xs font-serif font-medium text-luxury-cream truncate">
                     {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
@@ -276,30 +392,39 @@ export const Navbar: React.FC = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link
-              to="/login"
-              className="hidden sm:flex h-11 w-11 items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors"
-              title="Sign In"
-              aria-label="Sign in to your account"
-            >
-              <User className="h-4 w-4" />
-            </Link>
+            <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block">
+              <Link
+                to="/login"
+                className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors"
+                title="Sign In"
+                aria-label="Sign in to your account"
+              >
+                <User className="h-4 w-4" />
+              </Link>
+            </motion.div>
           )}
 
-          {/* Cart Icon */}
-          <Link
-            to="/cart"
-            className="h-11 w-11 flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold transition-colors relative"
-            title="Shopping Cart"
-            aria-label="View shopping cart"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            {cartCount > 0 && (
-              <span className="absolute top-2 right-2 h-3.5 w-3.5 rounded-full bg-luxury-gold text-black text-[9px] font-bold flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+          {/* Cart Icon with Spring Bounce */}
+          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}>
+            <Link
+              to="/cart"
+              className="h-10 w-10 rounded-full flex items-center justify-center text-luxury-cream/80 hover:text-luxury-gold hover:bg-luxury-gold/10 transition-colors relative"
+              title="Shopping Cart"
+              aria-label="View shopping cart"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              {cartCount > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+                  className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-luxury-gold text-black text-[9px] font-bold flex items-center justify-center shadow-xs"
+                >
+                  {cartCount}
+                </motion.span>
+              )}
+            </Link>
+          </motion.div>
         </div>
       </div>
 
@@ -310,10 +435,19 @@ export const Navbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:hidden bg-luxury-black border-b border-luxury-border overflow-hidden shadow-2xl"
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden bg-luxury-black/98 backdrop-blur-2xl border-b border-luxury-gold/30 overflow-hidden shadow-2xl"
           >
-            <div className="px-5 py-6 space-y-6 max-h-[80vh] overflow-y-auto">
+            <motion.div
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={{
+                open: { transition: { staggerChildren: 0.04, delayChildren: 0.05 } },
+                closed: { transition: { staggerChildren: 0.02, staggerDirection: -1 } },
+              }}
+              className="px-5 py-6 space-y-6 max-h-[80vh] overflow-y-auto"
+            >
               {/* Category Navigation */}
               <div className="space-y-1">
                 <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block mb-2">
@@ -322,24 +456,37 @@ export const Navbar: React.FC = () => {
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
                   return (
-                    <Link
+                    <motion.div
                       key={link.name}
-                      to={link.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={cn(
-                        'flex items-center justify-between py-3 border-b border-luxury-border/40 text-xs uppercase tracking-luxury font-medium transition-colors',
-                        isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream hover:text-luxury-gold'
-                      )}
+                      variants={{
+                        open: { opacity: 1, y: 0 },
+                        closed: { opacity: 0, y: 8 },
+                      }}
                     >
-                      <span>{link.name}</span>
-                      <ArrowRight className="h-3.5 w-3.5 text-luxury-gold/60" />
-                    </Link>
+                      <Link
+                        to={link.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={cn(
+                          'flex items-center justify-between py-3 border-b border-luxury-border/40 text-xs uppercase tracking-luxury font-medium transition-colors',
+                          isActive ? 'text-luxury-gold font-semibold' : 'text-luxury-cream hover:text-luxury-gold'
+                        )}
+                      >
+                        <span>{link.name}</span>
+                        <ArrowRight className="h-3.5 w-3.5 text-luxury-gold/60" />
+                      </Link>
+                    </motion.div>
                   );
                 })}
               </div>
 
               {/* Client Services & Support */}
-              <div className="space-y-2 pt-2 border-t border-luxury-border/60">
+              <motion.div
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: 8 },
+                }}
+                className="space-y-2 pt-2 border-t border-luxury-border/60"
+              >
                 <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block mb-2">
                   Client Concierge
                 </span>
@@ -362,10 +509,16 @@ export const Navbar: React.FC = () => {
                     <span>Contact Us</span>
                   </Link>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Account & Session Controls */}
-              <div className="space-y-2 pt-2 border-t border-luxury-border/60">
+              <motion.div
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: 8 },
+                }}
+                className="space-y-2 pt-2 border-t border-luxury-border/60"
+              >
                 <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block mb-2">
                   Account & Privileges
                 </span>
@@ -439,17 +592,23 @@ export const Navbar: React.FC = () => {
                     <span>Sign In / Register</span>
                   </Link>
                 )}
-              </div>
+              </motion.div>
 
               {/* Theme Toggle & Quick Action */}
-              <div className="pt-2 border-t border-luxury-border/60 flex items-center justify-between">
+              <motion.div
+                variants={{
+                  open: { opacity: 1, y: 0 },
+                  closed: { opacity: 0, y: 8 },
+                }}
+                className="pt-2 border-t border-luxury-border/60 flex items-center justify-between"
+              >
                 <span className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Appearance</span>
                 <ThemeToggle showLabel />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 };
