@@ -15,11 +15,11 @@ export const Footer: React.FC = () => {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
-                100% Authentic
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream">
+                100% Original
               </h4>
               <p className="text-[11px] text-luxury-muted mt-0.5">
-                Rare oils & pure extraits
+                Long-lasting fragrance oils
               </p>
             </div>
           </div>
@@ -29,8 +29,8 @@ export const Footer: React.FC = () => {
               <Truck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
-                Complimentary Shipping
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream">
+                Free Delivery
               </h4>
               <p className="text-[11px] text-luxury-muted mt-0.5">
                 On orders over ₦150,000
@@ -43,11 +43,11 @@ export const Footer: React.FC = () => {
               <MessageSquare className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
-                Olfactory Concierge
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream">
+                Customer Support
               </h4>
               <p className="text-[11px] text-luxury-muted mt-0.5">
-                Bespoke fragrance guidance
+                Here to help you choose
               </p>
             </div>
           </div>
@@ -57,11 +57,11 @@ export const Footer: React.FC = () => {
               <RefreshCw className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
-                Signature Packaging
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream">
+                Gift Packaging
               </h4>
               <p className="text-[11px] text-luxury-muted mt-0.5">
-                Hand-wrapped luxury boxes
+                Beautiful presentation boxes
               </p>
             </div>
           </div>
@@ -73,21 +73,21 @@ export const Footer: React.FC = () => {
         {/* Brand Column */}
         <div className="lg:col-span-2 space-y-4">
           <Link to="/" className="inline-block">
-            <span className="font-serif text-2xl tracking-[0.2em] text-white uppercase font-normal">
+            <span className="font-serif text-2xl tracking-[0.2em] text-luxury-cream uppercase font-normal">
               PHILZ SIGNATURE
             </span>
           </Link>
           <p className="text-xs text-luxury-muted leading-relaxed max-w-sm font-light">
-            An artisanal fragrance sanctuary crafting transcendent extraits de parfum, opulent oud elixirs, and bespoke olfactory experiences.
+            Luxury perfumes handcrafted with high-concentration fragrance oils for lasting elegance and bold confidence.
           </p>
           <div className="pt-2">
             <a
-              href="https://wa.me/2340000000000"
+              href="https://wa.me/2348000000000"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center text-xs uppercase tracking-luxury text-luxury-gold hover:text-luxury-gold-light gap-2 font-medium"
             >
-              <span>Connect with our Perfume Concierge</span>
+              <span>Chat with Us on WhatsApp</span>
               <ArrowRight className="h-3 w-3" />
             </a>
           </div>
@@ -95,62 +95,62 @@ export const Footer: React.FC = () => {
 
         {/* Collections Links */}
         <div>
-          <h4 className="text-xs uppercase tracking-luxury font-medium text-white mb-4">
-            Creations
+          <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream mb-4">
+            Shop
           </h4>
           <ul className="space-y-2.5 text-xs text-luxury-muted font-light">
             <li>
-              <Link to="/shop?category=extrait" className="hover:text-luxury-gold transition-colors">
-                Extraits de Parfum
-              </Link>
-            </li>
-            <li>
-              <Link to="/shop?collection=private-reserve" className="hover:text-luxury-gold transition-colors">
-                Private Reserve
-              </Link>
-            </li>
-            <li>
-              <Link to="/shop?category=home-fragrance" className="hover:text-luxury-gold transition-colors">
-                Home Fragrance & Diffusers
-              </Link>
-            </li>
-            <li>
-              <Link to="/shop?collection=the-oud-edition" className="hover:text-luxury-gold transition-colors">
-                The Oud Edition
-              </Link>
-            </li>
-            <li>
               <Link to="/shop" className="hover:text-luxury-gold transition-colors">
-                Discovery Sets
+                All Perfumes
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections" className="hover:text-luxury-gold transition-colors">
+                Our Collections
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop?family=Woody" className="hover:text-luxury-gold transition-colors">
+                Woody & Oud
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop?family=Oriental" className="hover:text-luxury-gold transition-colors">
+                Oriental & Amber
+              </Link>
+            </li>
+            <li>
+              <Link to="/shop?family=Fresh" className="hover:text-luxury-gold transition-colors">
+                Fresh & Citrus
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Boutique Links */}
+        {/* Company Links */}
         <div>
-          <h4 className="text-xs uppercase tracking-luxury font-medium text-white mb-4">
-            The Atelier
+          <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream mb-4">
+            About Philz
           </h4>
           <ul className="space-y-2.5 text-xs text-luxury-muted font-light">
             <li>
               <Link to="/about" className="hover:text-luxury-gold transition-colors">
-                Brand Heritage
+                Our Story
               </Link>
             </li>
             <li>
               <Link to="/contact" className="hover:text-luxury-gold transition-colors">
-                Boutique Locations
+                Contact Us
               </Link>
             </li>
             <li>
               <Link to="/faq" className="hover:text-luxury-gold transition-colors">
-                Fragrance Care & FAQ
+                Help & FAQs
               </Link>
             </li>
             <li>
               <Link to="/track-order" className="hover:text-luxury-gold transition-colors">
-                Track Consignment
+                Track Order
               </Link>
             </li>
           </ul>
@@ -158,11 +158,11 @@ export const Footer: React.FC = () => {
 
         {/* Newsletter Column */}
         <div>
-          <h4 className="text-xs uppercase tracking-luxury font-medium text-white mb-4">
-            The Private Circle
+          <h4 className="text-xs uppercase tracking-luxury font-medium text-luxury-cream mb-4">
+            Stay in Touch
           </h4>
           <p className="text-xs text-luxury-muted leading-relaxed font-light mb-4">
-            Receive private release allocations and olfactory salon invitations.
+            Subscribe to receive updates on new perfumes, exclusive discounts, and special offers.
           </p>
           <form onSubmit={(e) => e.preventDefault()} className="space-y-2">
             <Input
@@ -178,7 +178,7 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Copyright */}
-      <div className="border-t border-luxury-border/40 py-6">
+      <div className="border-t border-luxury-border/40 pt-6 pb-20 lg:pb-6">
         <div className="container mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-luxury-muted space-y-2 sm:space-y-0 font-light">
           <p>© {new Date().getFullYear()} PHILZ SIGNATURE. All rights reserved.</p>
           <div className="flex space-x-6">

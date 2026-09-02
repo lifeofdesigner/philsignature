@@ -48,7 +48,7 @@ export const CustomerDashboardPage: React.FC = () => {
     .filter((o) => o.financial_status === 'paid')
     .reduce((sum, o) => sum + (o.total_amount || 0), 0);
 
-  const patronTier = lifetimeSpend >= 500000 ? 'Bespoke Haute Connoisseur' : 'Privileged Circle Member';
+  const patronTier = lifetimeSpend >= 500000 ? 'VIP Customer' : 'Valued Customer';
   const memberSince = profile?.created_at || user?.created_at;
 
   return (
@@ -58,24 +58,24 @@ export const CustomerDashboardPage: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-              Private Salon
+              My Account
             </span>
             <span className="text-luxury-border">•</span>
             <span className="text-[10px] uppercase tracking-luxury text-luxury-muted">
               {patronTier}
             </span>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl text-white font-normal mt-1">
-            Welcome, {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
+          <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mt-1">
+            Welcome, {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Valued Customer'}
           </h1>
           <p className="text-xs text-luxury-muted mt-1.5 font-light">
-            Your personal sanctuary for artisanal extrait memoirs and bespoke consignment records.
+            Manage your orders, saved addresses, and account details all in one place.
           </p>
         </div>
 
         {memberSince && (
           <div className="text-left md:text-right">
-            <span className="text-[10px] uppercase tracking-wider text-luxury-muted block">Patron Since</span>
+            <span className="text-[10px] uppercase tracking-wider text-luxury-muted block">Customer Since</span>
             <span className="font-serif text-sm text-luxury-gold font-medium">{formatDate(memberSince)}</span>
           </div>
         )}
@@ -83,24 +83,24 @@ export const CustomerDashboardPage: React.FC = () => {
 
       {/* 2. Key Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {/* Acquisitions Card */}
+        {/* Orders Card */}
         <Link
           to="/account/orders"
           className="bg-luxury-card/60 border border-luxury-border p-5 rounded hover:border-luxury-gold/50 transition-all duration-300 group"
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted font-medium">
-              Acquisitions
+              My Orders
             </span>
             <div className="p-2 rounded bg-luxury-gold/10 text-luxury-gold group-hover:scale-110 transition-transform">
               <ShoppingBag className="h-4 w-4" />
             </div>
           </div>
-          <div className="font-serif text-2xl text-white font-normal group-hover:text-luxury-gold transition-colors">
+          <div className="font-serif text-2xl text-luxury-cream font-normal group-hover:text-luxury-gold transition-colors">
             {orders.length}
           </div>
           <p className="text-[11px] text-luxury-muted mt-1 truncate">
-            {lifetimeSpend > 0 ? `Total: ${formatCurrency(lifetimeSpend)}` : 'No completed acquisitions yet'}
+            {lifetimeSpend > 0 ? `Total Spent: ${formatCurrency(lifetimeSpend)}` : 'No completed orders yet'}
           </p>
         </Link>
 
@@ -111,28 +111,28 @@ export const CustomerDashboardPage: React.FC = () => {
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted font-medium">
-              Private Wishlist
+              My Wishlist
             </span>
             <div className="p-2 rounded bg-luxury-gold/10 text-luxury-gold group-hover:scale-110 transition-transform">
               <Heart className="h-4 w-4" />
             </div>
           </div>
-          <div className="font-serif text-2xl text-white font-normal group-hover:text-luxury-gold transition-colors">
+          <div className="font-serif text-2xl text-luxury-cream font-normal group-hover:text-luxury-gold transition-colors">
             {wishlistCount}
           </div>
           <p className="text-[11px] text-luxury-muted mt-1 truncate">
-            Curated olfactory aspirations
+            Perfumes you have saved
           </p>
         </Link>
 
-        {/* Primary Sanctuary Destination */}
+        {/* Saved Addresses Card */}
         <Link
           to="/account/addresses"
           className="bg-luxury-card/60 border border-luxury-border p-5 rounded hover:border-luxury-gold/50 transition-all duration-300 group"
         >
           <div className="flex items-center justify-between mb-3">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted font-medium">
-              Delivery Sanctuary
+              Saved Addresses
             </span>
             <div className="p-2 rounded bg-luxury-gold/10 text-luxury-gold group-hover:scale-110 transition-transform">
               <MapPin className="h-4 w-4" />
@@ -140,7 +140,7 @@ export const CustomerDashboardPage: React.FC = () => {
           </div>
           {defaultAddress ? (
             <div>
-              <div className="text-xs text-white font-medium truncate">
+              <div className="text-xs text-luxury-cream font-medium truncate">
                 {defaultAddress.first_name} {defaultAddress.last_name}
               </div>
               <p className="text-[11px] text-luxury-muted mt-0.5 truncate">
@@ -160,8 +160,8 @@ export const CustomerDashboardPage: React.FC = () => {
       <div className="space-y-4 pt-2">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-serif text-lg text-white font-normal">Recent Acquisitions</h3>
-            <p className="text-xs text-luxury-muted">Your latest commissioned fragrances and consignments</p>
+            <h3 className="font-serif text-lg text-luxury-cream font-normal">Recent Orders</h3>
+            <p className="text-xs text-luxury-muted">Your latest orders and their status</p>
           </div>
           {orders.length > 0 && (
             <Link
@@ -175,22 +175,22 @@ export const CustomerDashboardPage: React.FC = () => {
         </div>
 
         {recentOrders.length === 0 ? (
-          <div className="bg-luxury-card/30 border border-luxury-border/60 p-8 rounded text-center space-y-4">
+          <div className="bg-luxury-card border border-luxury-border/60 p-8 rounded text-center space-y-4">
             <div className="h-12 w-12 mx-auto rounded-full bg-luxury-gold/10 text-luxury-gold flex items-center justify-center">
               <Package className="h-6 w-6" />
             </div>
             <div className="max-w-md mx-auto space-y-1">
-              <h4 className="font-serif text-base text-white">No Acquisitions Yet</h4>
+              <h4 className="font-serif text-base text-luxury-cream font-normal">No Orders Yet</h4>
               <p className="text-xs text-luxury-muted font-light">
-                Discover our olfactory gallery of pure extrait de parfum masterpieces crafted for distinguished presence.
+                You have not placed any orders yet. Browse our collection of premium perfumes to get started.
               </p>
             </div>
             <Link
               to="/shop"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs uppercase tracking-luxury-wide font-medium rounded transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs uppercase tracking-luxury-wide font-semibold rounded transition-colors"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Explore The Collection</span>
+              <span>Shop Now</span>
             </Link>
           </div>
         ) : (
@@ -198,18 +198,18 @@ export const CustomerDashboardPage: React.FC = () => {
             {recentOrders.map((order) => (
               <div
                 key={order.id}
-                className="bg-luxury-card/40 border border-luxury-border p-4 sm:p-5 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-luxury-gold/40 transition-colors"
+                className="bg-luxury-card border border-luxury-border p-4 sm:p-5 rounded flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-luxury-gold/40 transition-colors"
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2.5">
-                    <span className="font-mono text-xs font-semibold text-white tracking-wider">
+                    <span className="font-mono text-xs font-semibold text-luxury-cream tracking-wider">
                       {order.order_number}
                     </span>
                     <span
                       className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded font-medium ${
                         order.financial_status === 'paid'
-                          ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/40'
-                          : 'bg-amber-950/60 text-amber-300 border border-amber-800/40'
+                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800/40'
+                          : 'bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800/40'
                       }`}
                     >
                       {order.financial_status}
@@ -235,9 +235,9 @@ export const CustomerDashboardPage: React.FC = () => {
                   </div>
                   <Link
                     to={`/checkout/confirmation/${order.order_number}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-luxury-border/60 hover:bg-luxury-gold hover:text-luxury-black text-white text-xs uppercase tracking-wider rounded transition-colors font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-luxury-border/60 hover:bg-luxury-gold hover:text-black text-luxury-cream text-xs uppercase tracking-wider rounded transition-colors font-medium"
                   >
-                    <span>Inspect</span>
+                    <span>View</span>
                     <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
@@ -247,43 +247,43 @@ export const CustomerDashboardPage: React.FC = () => {
         )}
       </div>
 
-      {/* 4. Curated Concierge Quick Actions */}
+      {/* Quick Actions */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
         <Link
           to="/shop"
-          className="p-4 bg-luxury-card/30 border border-luxury-border rounded hover:border-luxury-gold/40 transition-colors flex items-center justify-between group"
+          className="p-4 bg-luxury-card border border-luxury-border rounded hover:border-luxury-gold/40 transition-colors flex items-center justify-between group"
         >
           <div>
-            <span className="text-xs font-serif text-white group-hover:text-luxury-gold transition-colors block">
-              Boutique Catalog
+            <span className="text-xs font-serif text-luxury-cream group-hover:text-luxury-gold transition-colors block">
+              Shop Our Perfumes
             </span>
-            <span className="text-[11px] text-luxury-muted">Discover extrait creations</span>
+            <span className="text-[11px] text-luxury-muted">Browse our full collection</span>
           </div>
           <ArrowRight className="h-4 w-4 text-luxury-muted group-hover:text-luxury-gold group-hover:translate-x-1 transition-all" />
         </Link>
 
         <Link
           to="/track-order"
-          className="p-4 bg-luxury-card/30 border border-luxury-border rounded hover:border-luxury-gold/40 transition-colors flex items-center justify-between group"
+          className="p-4 bg-luxury-card border border-luxury-border rounded hover:border-luxury-gold/40 transition-colors flex items-center justify-between group"
         >
           <div>
-            <span className="text-xs font-serif text-white group-hover:text-luxury-gold transition-colors block">
-              Track Consignment
+            <span className="text-xs font-serif text-luxury-cream group-hover:text-luxury-gold transition-colors block">
+              Track My Order
             </span>
-            <span className="text-[11px] text-luxury-muted">Real-time delivery progress</span>
+            <span className="text-[11px] text-luxury-muted">Check your delivery status</span>
           </div>
           <ArrowRight className="h-4 w-4 text-luxury-muted group-hover:text-luxury-gold group-hover:translate-x-1 transition-all" />
         </Link>
 
         <Link
           to="/account/profile"
-          className="p-4 bg-luxury-card/30 border border-luxury-border rounded hover:border-luxury-gold/40 transition-colors flex items-center justify-between group"
+          className="p-4 bg-luxury-card border border-luxury-border rounded hover:border-luxury-gold/40 transition-colors flex items-center justify-between group"
         >
           <div>
-            <span className="text-xs font-serif text-white group-hover:text-luxury-gold transition-colors block">
-              Security & Credentials
+            <span className="text-xs font-serif text-luxury-cream group-hover:text-luxury-gold transition-colors block">
+              Profile & Password
             </span>
-            <span className="text-[11px] text-luxury-muted">Update contact & password</span>
+            <span className="text-[11px] text-luxury-muted">Update your details</span>
           </div>
           <ArrowRight className="h-4 w-4 text-luxury-muted group-hover:text-luxury-gold group-hover:translate-x-1 transition-all" />
         </Link>

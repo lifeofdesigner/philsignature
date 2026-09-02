@@ -23,7 +23,7 @@ export const ForgotPasswordPage: React.FC = () => {
       await resetPassword(email);
       setIsSent(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to transmit reset instructions.');
+      setError(err instanceof Error ? err.message : 'Unable to send reset instructions. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -33,13 +33,13 @@ export const ForgotPasswordPage: React.FC = () => {
     <div className="container mx-auto px-4 py-20 max-w-md">
       <div className="text-center space-y-2 mb-8">
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-          Account Security
+          Account Help
         </span>
         <h1 className="font-serif text-3xl text-white font-normal">
-          Password Recovery
+          Forgot Password
         </h1>
         <p className="text-xs text-luxury-muted font-light">
-          Enter your registered email to receive a secure recovery key.
+          Enter your email address to receive a password reset link.
         </p>
       </div>
 
@@ -57,15 +57,15 @@ export const ForgotPasswordPage: React.FC = () => {
               <CheckCircle2 className="h-6 w-6" />
             </div>
             <h3 className="font-serif text-lg text-white font-normal">
-              Recovery Link Transmitted
+              Reset Link Sent
             </h3>
             <p className="text-xs text-luxury-sand leading-relaxed">
-              If an account exists for <strong className="text-white">{email}</strong>, you will receive password reset instructions in your inbox shortly.
+              If an account exists for <strong className="text-white">{email}</strong>, you will receive password reset instructions in your email shortly.
             </p>
             <div className="pt-2">
               <Link to={ROUTES.LOGIN}>
                 <Button variant="outline" size="sm">
-                  Return to Login
+                  Back to Sign In
                 </Button>
               </Link>
             </div>
@@ -75,7 +75,7 @@ export const ForgotPasswordPage: React.FC = () => {
             <Input
               label="Email Address"
               type="email"
-              placeholder="client@domain.com"
+              placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -83,7 +83,7 @@ export const ForgotPasswordPage: React.FC = () => {
             />
             <Button variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
               <Mail className="h-4 w-4" />
-              <span>{isSubmitting ? 'Transmitting...' : 'Transmit Recovery Link'}</span>
+              <span>{isSubmitting ? 'Sending...' : 'Send Reset Link'}</span>
             </Button>
           </form>
         )}
@@ -93,7 +93,7 @@ export const ForgotPasswordPage: React.FC = () => {
             to={ROUTES.LOGIN}
             className="text-luxury-gold hover:underline font-medium"
           >
-            Return to Login
+            Back to Sign In
           </Link>
         </div>
       </div>

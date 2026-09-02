@@ -174,7 +174,7 @@ export class PaymentService {
       },
       customizations: {
         title: 'PHILZ SIGNATURE',
-        description: `Bespoke Acquisition #${options.txRef}`,
+        description: `Order #${options.txRef}`,
         logo: `${window.location.origin}/favicon.svg`,
       },
       callback: (data) => {

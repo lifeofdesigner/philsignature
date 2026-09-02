@@ -83,8 +83,8 @@ export class OrderService {
     await this.repo.addTimeline(
       orderId,
       status,
-      `Dispatch status updated: ${status}`,
-      note || `Consignment status changed to "${status}" by atelier staff.`
+      `Delivery status updated: ${status}`,
+      note || `Order status changed to "${status}".`
     );
     return updated;
   }
@@ -163,7 +163,7 @@ export class OrderService {
       orderId,
       'paid',
       'Payment Confirmed',
-      `Transaction authorized successfully via ${paymentMethod.toUpperCase()} (Ref: ${reference}). Atelier allocation secured.`
+      `Payment confirmed successfully via ${paymentMethod.toUpperCase()} (Ref: ${reference}). Your order is being prepared.`
     );
 
     return updated;

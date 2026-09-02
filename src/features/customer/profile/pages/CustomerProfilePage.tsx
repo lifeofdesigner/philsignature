@@ -43,12 +43,12 @@ export const CustomerProfilePage: React.FC = () => {
     },
     onSuccess: async () => {
       await refreshProfile();
-      setProfileSuccess('Your profile credentials have been preserved.');
+      setProfileSuccess('Your profile has been updated successfully.');
       setProfileError(null);
       setTimeout(() => setProfileSuccess(null), 5000);
     },
     onError: (err: Error) => {
-      setProfileError(err.message || 'Failed to update patron profile');
+      setProfileError(err.message || 'Failed to update profile');
       setProfileSuccess(null);
     },
   });
@@ -65,14 +65,14 @@ export const CustomerProfilePage: React.FC = () => {
       return updatePassword(newPassword);
     },
     onSuccess: () => {
-      setPasswordSuccess('Security credentials successfully updated.');
+      setPasswordSuccess('Your password has been changed successfully.');
       setPasswordError(null);
       setNewPassword('');
       setConfirmPassword('');
       setTimeout(() => setPasswordSuccess(null), 5000);
     },
     onError: (err: Error) => {
-      setPasswordError(err.message || 'Failed to update security password');
+      setPasswordError(err.message || 'Failed to update password');
       setPasswordSuccess(null);
     },
   });
@@ -101,13 +101,13 @@ export const CustomerProfilePage: React.FC = () => {
       {/* Page Header */}
       <div>
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-          Patron Registry
+          My Account
         </span>
         <h1 className="font-serif text-2xl sm:text-3xl text-white font-normal mt-1">
-          Profile & Security
+          Profile & Password
         </h1>
         <p className="text-xs text-luxury-muted mt-1.5 font-light">
-          Manage your personal credentials, communication channels, and security credentials.
+          Update your personal details, phone number, and password.
         </p>
       </div>
 
@@ -119,7 +119,7 @@ export const CustomerProfilePage: React.FC = () => {
             <h2 className="font-serif text-base text-white">Personal Information</h2>
           </div>
           <span className="text-[10px] uppercase tracking-wider text-luxury-muted">
-            Private Identity
+            Account Details
           </span>
         </div>
 
@@ -218,7 +218,7 @@ export const CustomerProfilePage: React.FC = () => {
             <h2 className="font-serif text-base text-white">Security & Password</h2>
           </div>
           <span className="text-[10px] uppercase tracking-wider text-luxury-muted">
-            Credential Vault
+            Password Settings
           </span>
         </div>
 
@@ -279,23 +279,23 @@ export const CustomerProfilePage: React.FC = () => {
         </form>
       </section>
 
-      {/* 3. Patron Identity & Audit Card */}
+      {/* 3. Account Details Card */}
       <section className="bg-luxury-card/30 border border-luxury-border/60 p-5 rounded">
         <div className="flex items-center gap-2 text-xs text-luxury-gold mb-3">
           <ShieldCheck className="h-4 w-4" />
-          <span className="font-medium uppercase tracking-wider text-[11px]">Private Circle Patron Verification</span>
+          <span className="font-medium uppercase tracking-wider text-[11px]">Account Information</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-luxury-muted">
           <div>
-            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Patron Identifier</span>
+            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account ID</span>
             <span className="font-mono text-[11px] text-white truncate block">{user?.id || '—'}</span>
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account Inception</span>
+            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Member Since</span>
             <span className="text-white block">{formatDate(profile?.created_at || user?.created_at)}</span>
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Patronage Level</span>
+            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account Role</span>
             <span className="text-luxury-gold uppercase tracking-wider text-[10px] font-medium block">
               {profile?.role || 'Customer'}
             </span>

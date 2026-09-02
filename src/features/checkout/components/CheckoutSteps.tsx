@@ -18,21 +18,21 @@ export const CheckoutSteps: React.FC<CheckoutStepsProps> = ({
   const steps: { id: CheckoutStep; label: string; number: number; icon: React.ReactNode; isComplete: boolean }[] = [
     {
       id: 'address',
-      label: 'Recipient & Delivery',
+      label: 'Address',
       number: 1,
       icon: <MapPin className="h-4 w-4" />,
       isComplete: isAddressValid,
     },
     {
       id: 'shipping',
-      label: 'Dispatch Method',
+      label: 'Delivery',
       number: 2,
       icon: <Truck className="h-4 w-4" />,
       isComplete: isShippingValid,
     },
     {
       id: 'payment',
-      label: 'Payment & Settlement',
+      label: 'Payment',
       number: 3,
       icon: <CreditCard className="h-4 w-4" />,
       isComplete: false,

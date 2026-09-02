@@ -122,6 +122,7 @@ export class OrderRepository extends BaseRepository {
           shipping_address: input.shipping_address,
           billing_address: input.billing_address || input.shipping_address,
           notes: input.notes || null,
+          customer_notes: input.notes || null,
           coupon_code: input.coupon_code || null,
         })
         .select()
@@ -141,6 +142,7 @@ export class OrderRepository extends BaseRepository {
         price: item.price,
         quantity: item.quantity,
         subtotal: item.subtotal,
+        total: item.subtotal,
       }));
 
       const { error: itemsError } = await this.client.from('order_items').insert(itemsToInsert);
@@ -150,8 +152,8 @@ export class OrderRepository extends BaseRepository {
       const { error: timelineError } = await this.client.from('order_timeline').insert({
         order_id: order.id,
         status: 'pending',
-        title: 'Order Transmitted to Atelier',
-        description: `Order ${financialSummary.orderNumber} placed via ${input.payment_method}. Awaiting payment settlement.`,
+        title: 'Order Placed',
+        description: `Order ${financialSummary.orderNumber} received via ${input.payment_method}. Awaiting payment.`,
       });
       if (timelineError) console.warn('Order timeline insert warning:', timelineError);
 

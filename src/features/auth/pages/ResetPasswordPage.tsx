@@ -45,13 +45,13 @@ export const ResetPasswordPage: React.FC = () => {
     <div className="container mx-auto px-4 py-20 max-w-md">
       <div className="text-center space-y-2 mb-8">
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-          New Credentials
+          Account Security
         </span>
         <h1 className="font-serif text-3xl text-white font-normal">
           Set New Password
         </h1>
         <p className="text-xs text-luxury-muted font-light">
-          Establish a secure password for your PHILZ SIGNATURE account.
+          Enter a new password for your account.
         </p>
       </div>
 

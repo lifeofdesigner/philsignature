@@ -17,13 +17,13 @@ export const CartPage: React.FC = () => {
   }).format(subtotal);
 
   return (
-    <div className="min-h-screen bg-black py-16 sm:py-20">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-16 sm:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl space-y-10">
         <div className="text-center space-y-3">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
             Your Selection
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
             Shopping Bag
           </h1>
         </div>
@@ -65,11 +65,11 @@ export const CartPage: React.FC = () => {
                 return (
                   <div
                     key={item.id}
-                    className="py-6 flex flex-col sm:flex-row items-center gap-6"
+                    className="py-5 flex items-center gap-4 sm:gap-6 border-b border-luxury-border/60 last:border-0"
                   >
                     <Link
                       to={`/product/${item.product.slug}`}
-                      className="relative aspect-[3/4] w-24 shrink-0 overflow-hidden bg-luxury-charcoal"
+                      className="relative aspect-[3/4] w-20 sm:w-24 shrink-0 overflow-hidden bg-luxury-charcoal rounded-sm"
                     >
                       <img
                         src={primaryImage}
@@ -78,38 +78,38 @@ export const CartPage: React.FC = () => {
                       />
                     </Link>
 
-                    <div className="flex-1 space-y-1 text-center sm:text-left">
-                      <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block">
-                        {item.product.concentration || 'Extrait de Parfum'} • {item.product.volume_ml || 100}ml
+                    <div className="flex-1 min-w-0 space-y-1 text-left">
+                      <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
+                        {item.product.concentration || 'Perfume'} • {item.product.volume_ml || 100}ml
                       </span>
-                      <h3 className="font-serif text-lg text-white font-normal hover:text-luxury-gold transition-colors">
+                      <h3 className="font-serif text-base sm:text-lg text-luxury-cream font-normal hover:text-luxury-gold transition-colors truncate">
                         <Link to={`/product/${item.product.slug}`}>
                           {item.product.name}
                         </Link>
                       </h3>
-                      <div className="font-serif text-sm text-luxury-gold pt-1">
+                      <div className="font-serif text-sm text-luxury-gold pt-0.5">
                         {itemFormattedPrice}
                       </div>
                     </div>
 
                     {/* Quantity & Delete */}
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center border border-luxury-border bg-luxury-charcoal">
+                    <div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 sm:gap-4 shrink-0">
+                      <div className="flex items-center border border-luxury-border bg-luxury-card rounded-sm">
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-2 text-luxury-muted hover:text-white transition-colors"
+                          className="p-1.5 sm:p-2 text-luxury-muted hover:text-luxury-cream transition-colors"
                           aria-label="Decrease quantity"
                         >
                           <Minus className="h-3 w-3" />
                         </button>
-                        <span className="px-3 text-xs font-mono text-white select-none">
+                        <span className="px-2.5 sm:px-3 text-xs font-mono text-luxury-cream select-none">
                           {item.quantity}
                         </span>
                         <button
                           type="button"
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-2 text-luxury-muted hover:text-white transition-colors"
+                          className="p-1.5 sm:p-2 text-luxury-muted hover:text-luxury-cream transition-colors"
                           aria-label="Increase quantity"
                         >
                           <Plus className="h-3 w-3" />
@@ -119,8 +119,8 @@ export const CartPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => removeItem(item.id)}
-                        className="p-2 text-luxury-muted hover:text-red-400 transition-colors"
-                        aria-label="Remove item from bag"
+                        className="p-1.5 text-luxury-muted hover:text-red-400 transition-colors"
+                        aria-label="Remove item from cart"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -146,7 +146,7 @@ export const CartPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to={ROUTES.SHOP} className="flex-1">
                   <Button variant="outline" size="lg" className="w-full text-xs">
-                    Continue Exploring
+                    Continue Shopping
                   </Button>
                 </Link>
                 <Link to={ROUTES.CHECKOUT} className="flex-1">

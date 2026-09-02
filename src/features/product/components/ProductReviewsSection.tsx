@@ -18,10 +18,10 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div className="space-y-2">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Sensory Testimonials
+            Customer Feedback
           </span>
           <h2 className="font-serif text-2xl sm:text-3xl text-white font-normal">
-            Client Memoirs & Ratings
+            Customer Reviews & Ratings
           </h2>
         </div>
 
@@ -35,7 +35,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
             {rating.toFixed(1)}
           </span>
           <span className="text-xs text-luxury-muted">
-            ({reviewsCount || reviews.length} verified memoirs)
+            ({reviewsCount || reviews.length} verified reviews)
           </span>
         </div>
       </div>
@@ -43,10 +43,10 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
       {reviews.length === 0 ? (
         <div className="p-8 bg-luxury-card border border-luxury-border text-center space-y-2">
           <p className="text-xs text-luxury-sand font-light">
-            No verified reviews have been submitted for this private allocation yet.
+            No reviews yet for this perfume.
           </p>
           <p className="text-[11px] text-luxury-muted">
-            Acquisitions will receive an invitation to record their olfactory impression.
+            Customers who purchased will be able to leave a review.
           </p>
         </div>
       ) : (
@@ -80,7 +80,7 @@ export const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({
               {r.is_verified_purchase && (
                 <div className="flex items-center gap-1.5 text-[10px] text-emerald-400">
                   <ShieldCheck className="h-3 w-3" />
-                  <span>Verified Scent Acquisition</span>
+                  <span>Verified Purchase</span>
                 </div>
               )}
             </div>

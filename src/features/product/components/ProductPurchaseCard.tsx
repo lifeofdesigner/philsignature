@@ -54,7 +54,7 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
             </span>
           )}
         </div>
-        <h1 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
+        <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
           {product.name}
         </h1>
         {product.tagline && (
@@ -66,14 +66,14 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
 
       {/* Specifications & Badges */}
       <div className="flex items-center gap-3 text-xs">
-        <span className="px-3 py-1 bg-luxury-charcoal border border-luxury-border text-white uppercase tracking-wider text-[10px] font-medium">
-          {product.concentration || 'Extrait de Parfum'}
+        <span className="px-3 py-1 bg-luxury-card border border-luxury-border text-luxury-cream uppercase tracking-wider text-[10px] font-medium">
+          {product.concentration || 'Perfume'}
         </span>
-        <span className="px-3 py-1 bg-luxury-charcoal border border-luxury-border text-luxury-sand text-[10px] font-mono">
-          {product.volume_ml || 100}ml Flacon
+        <span className="px-3 py-1 bg-luxury-card border border-luxury-border text-luxury-sand text-[10px] font-mono">
+          {product.volume_ml || 100}ml
         </span>
-        <span className="text-[10px] text-emerald-400 flex items-center gap-1 font-mono">
-          <ShieldCheck className="h-3 w-3" /> Hand-Poured Edition
+        <span className="text-[10px] text-emerald-500 dark:text-emerald-400 flex items-center gap-1 font-mono">
+          <ShieldCheck className="h-3 w-3" /> Handcrafted
         </span>
       </div>
 
@@ -97,24 +97,24 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
       {/* Quantity & Actions */}
       <div className="space-y-4 pt-4 border-t border-luxury-border/60">
         <div className="flex items-center gap-4">
-          <div className="flex items-center border border-luxury-border bg-luxury-charcoal">
+          <div className="flex items-center border border-luxury-border bg-luxury-card rounded-sm">
             <button
               type="button"
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
               disabled={quantity <= 1 || isOutOfStock}
-              className="p-2.5 text-luxury-muted hover:text-white disabled:opacity-30 transition-colors"
+              className="p-2.5 text-luxury-muted hover:text-luxury-cream disabled:opacity-30 transition-colors"
               aria-label="Decrease quantity"
             >
               <Minus className="h-3.5 w-3.5" />
             </button>
-            <span className="px-4 text-xs font-mono text-white select-none">
+            <span className="px-4 text-xs font-mono text-luxury-cream select-none">
               {quantity}
             </span>
             <button
               type="button"
               onClick={() => setQuantity((q) => Math.min(product.stock_quantity || 10, q + 1))}
               disabled={isOutOfStock || quantity >= product.stock_quantity}
-              className="p-2.5 text-luxury-muted hover:text-white disabled:opacity-30 transition-colors"
+              className="p-2.5 text-luxury-muted hover:text-luxury-cream disabled:opacity-30 transition-colors"
               aria-label="Increase quantity"
             >
               <Plus className="h-3.5 w-3.5" />
@@ -133,11 +133,11 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
             aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <Heart className={`h-4 w-4 ${inWishlist ? 'fill-current' : ''}`} />
-            <span className="hidden sm:inline">{inWishlist ? 'Bookmarked' : 'Save to Wishlist'}</span>
+            <span className="hidden sm:inline">{inWishlist ? 'Saved' : 'Save to Wishlist'}</span>
           </button>
         </div>
 
-        {/* Add to Bag Button */}
+        {/* Add to Cart Button */}
         <Button
           variant="luxury"
           size="lg"
@@ -148,28 +148,28 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
           {justAdded ? (
             <>
               <Check className="h-4 w-4 text-black" />
-              <span>Added to Bag</span>
+              <span>Added to Cart</span>
             </>
           ) : isOutOfStock ? (
-            <span>Private Allocation Exhausted</span>
+            <span>Out of Stock</span>
           ) : (
             <>
               <ShoppingBag className="h-4 w-4" />
-              <span>Add to Shopping Bag • {formattedPrice}</span>
+              <span>Add to Cart — {formattedPrice}</span>
             </>
           )}
         </Button>
       </div>
 
-      {/* Concierge Delivery Perks */}
+      {/* Delivery Info */}
       <div className="pt-4 border-t border-luxury-border/40 space-y-2 text-[11px] text-luxury-muted font-light">
         <div className="flex items-center gap-2">
           <Truck className="h-3.5 w-3.5 text-luxury-gold shrink-0" />
-          <span>Complimentary insured express delivery on acquisitions over ₦150,000.</span>
+          <span>Free delivery on orders over ₦150,000.</span>
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-3.5 w-3.5 text-luxury-gold shrink-0" />
-          <span>Accompanied by Certificate of Authenticity & sample flacon ritual.</span>
+          <span>Comes with Certificate of Authenticity and a sample spray.</span>
         </div>
       </div>
     </div>

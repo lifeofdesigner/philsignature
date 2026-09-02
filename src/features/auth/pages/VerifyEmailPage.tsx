@@ -23,7 +23,7 @@ export const VerifyEmailPage: React.FC = () => {
             Verify Your Email
           </h1>
           <p className="text-xs text-luxury-sand font-light leading-relaxed">
-            A confirmation transmission has been dispatched to:
+            We sent a confirmation email to:
           </p>
           {email && (
             <div className="text-xs text-white font-medium py-1.5 px-3 bg-luxury-charcoal border border-luxury-border inline-block">
@@ -33,13 +33,13 @@ export const VerifyEmailPage: React.FC = () => {
         </div>
 
         <p className="text-xs text-luxury-muted leading-relaxed font-light">
-          Please click the activation link enclosed within to finalize your privileged membership.
+          Please check your inbox and click the link to confirm your email and activate your account.
         </p>
 
         <div className="pt-2">
           <Link to={ROUTES.LOGIN}>
             <Button variant="outline" size="sm" className="gap-2">
-              <span>Return to Client Login</span>
+              <span>Back to Sign In</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>

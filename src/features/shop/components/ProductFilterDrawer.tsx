@@ -59,7 +59,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
         {/* Mobile Header */}
         <div className="flex items-center justify-between lg:hidden border-b border-luxury-border pb-4">
           <span className="text-xs uppercase tracking-luxury text-luxury-gold font-medium">
-            Olfactory Filters
+            Filters
           </span>
           <button onClick={onClose} className="p-1 text-luxury-muted hover:text-white" aria-label="Close filters">
             <X className="h-5 w-5" />
@@ -69,7 +69,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
         {/* Header Reset */}
         <div className="hidden lg:flex items-center justify-between border-b border-luxury-border/60 pb-3">
           <span className="text-xs uppercase tracking-luxury text-luxury-sand font-medium">
-            Refine Catalog
+            Filter Perfumes
           </span>
           {hasActiveFilters && (
             <button
@@ -97,7 +97,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                   : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
               }`}
             >
-              <span>All Olfactory Families</span>
+              <span>All Fragrance Families</span>
             </button>
             {FRAGRANCE_FAMILIES.map((fam) => (
               <button
@@ -161,14 +161,14 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
               onChange={(e) => onInStockChange(e.target.checked)}
               className="accent-luxury-gold h-4 w-4 rounded-none"
             />
-            <span>Immediate Allocations Only (In-Stock)</span>
+            <span>In-Stock Only</span>
           </label>
         </div>
 
         {/* Mobile Apply Button */}
         <div className="lg:hidden pt-4 border-t border-luxury-border">
           <Button variant="luxury" size="default" onClick={onClose} className="w-full text-xs">
-            Show Filtered Creations
+            View Results
           </Button>
         </div>
       </aside>

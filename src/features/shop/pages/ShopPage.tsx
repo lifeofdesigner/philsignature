@@ -38,18 +38,18 @@ export const ShopPage: React.FC = () => {
   } = useShopCatalog();
 
   return (
-    <div className="min-h-screen bg-black py-12 sm:py-16">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-12 sm:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header Title */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Haute Parfumerie
+            Our Collection
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
-            The Fragrance Compendium
+          <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
+            Shop All Perfumes
           </h1>
           <p className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
-            Explore our artisanal extraits de parfum, sovereign oud distillations, and bespoke discovery sets.
+            Browse our full range of premium perfumes — from rich ouds to fresh citrus blends and everything in between.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export const ShopPage: React.FC = () => {
           <CatalogSearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search creations or olfactory notes..."
+            placeholder="Search by name or scent type..."
           />
 
           <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
@@ -96,22 +96,22 @@ export const ShopPage: React.FC = () => {
           <div className="flex-1 space-y-8">
             {isError ? (
               <ErrorState
-                title="Catalog Unavailable"
-                message={error instanceof Error ? error.message : 'Unable to load fragrances.'}
+                title="Could Not Load Perfumes"
+                message={error instanceof Error ? error.message : 'Something went wrong. Please try again.'}
                 onRetry={() => refetch()}
               />
             ) : !isLoading && products.length === 0 ? (
               <EmptyState
-                title="No Fragrances Found"
-                description="No flacons match your chosen olfactory filters or search terms."
-                actionLabel={hasActiveFilters ? 'Reset Filters' : undefined}
+                title="No Perfumes Found"
+                description="No perfumes match your search or filter. Try a different keyword or clear your filters."
+                actionLabel={hasActiveFilters ? 'Clear Filters' : undefined}
                 onAction={hasActiveFilters ? resetFilters : undefined}
               />
             ) : (
               <>
                 <div className="text-[11px] uppercase tracking-wider text-luxury-muted flex items-center justify-between">
                   <span>
-                    Showing {products.length} of {allFilteredCount} Creations
+                    Showing {products.length} of {allFilteredCount} Perfumes
                   </span>
                 </div>
 

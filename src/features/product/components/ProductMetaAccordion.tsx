@@ -20,7 +20,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
 
   return (
     <div className="border-t border-luxury-border divide-y divide-luxury-border/60">
-      {/* 1. Formulation Details */}
+      {/* 1. Details & Packaging */}
       {details && (
         <div>
           <button
@@ -30,7 +30,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           >
             <span className="flex items-center gap-2">
               <Sparkles className="h-3.5 w-3.5 text-luxury-gold" />
-              <span>Formulation & Packaging</span>
+              <span>Details & Packaging</span>
             </span>
             <ChevronDown
               className={`h-4 w-4 transition-transform duration-200 ${openSection === 'details' ? 'rotate-180 text-luxury-gold' : 'text-luxury-muted'}`}
@@ -44,7 +44,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         </div>
       )}
 
-      {/* 2. Scent Ritual & Application */}
+      {/* 2. How to Use */}
       <div>
         <button
           type="button"
@@ -53,7 +53,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         >
           <span className="flex items-center gap-2">
             <Droplets className="h-3.5 w-3.5 text-luxury-gold" />
-            <span>The Application Ritual</span>
+            <span>How to Use</span>
           </span>
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-200 ${openSection === 'ritual' ? 'rotate-180 text-luxury-gold' : 'text-luxury-muted'}`}
@@ -63,13 +63,13 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed space-y-2">
             <p>
               {howToUse ||
-                'Apply to arterial pulse points: the warm hollow of the clavicle, the wrists, and behind the ears. Formulated at pure extrait concentration, a minimal application radiates with extraordinary persistence.'}
+                'Spray on your pulse points — your wrists, neck, and behind your ears. A small amount goes a long way. This perfume is highly concentrated, so it will last all day on your skin.'}
             </p>
           </div>
         )}
       </div>
 
-      {/* 3. Pure Botanical Ingredients */}
+      {/* 3. Ingredients */}
       <div>
         <button
           type="button"
@@ -78,7 +78,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         >
           <span className="flex items-center gap-2">
             <RefreshCw className="h-3.5 w-3.5 text-luxury-gold" />
-            <span>Botanical Absolutes & Sourcing</span>
+            <span>Ingredients</span>
           </span>
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-200 ${openSection === 'ingredients' ? 'rotate-180 text-luxury-gold' : 'text-luxury-muted'}`}

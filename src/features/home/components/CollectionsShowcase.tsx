@@ -16,17 +16,17 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 gap-4">
           <div className="space-y-2">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-              Curated Portfolios
+              Perfume Collections
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl text-white font-normal">
-              Olfactory Collections
+            <h2 className="font-serif text-3xl sm:text-4xl text-luxury-cream font-normal">
+              Our Collections
             </h2>
           </div>
           <Link
             to="/collections"
             className="text-xs uppercase tracking-luxury text-luxury-gold hover:text-luxury-gold-light flex items-center gap-1.5 transition-colors font-medium"
           >
-            <span>View All Portfolios</span>
+            <span>View All Collections</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -45,14 +45,14 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
                   className="w-full h-full object-cover object-center opacity-40 group-hover:scale-105 transition-transform duration-700 ease-out"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/60 to-transparent" />
               </div>
 
               <div className="relative z-10 space-y-2">
                 <span className="text-[9px] uppercase tracking-luxury text-luxury-gold block font-medium">
-                  {col.tagline || 'Private Formulation'}
+                  {col.tagline || 'Special Collection'}
                 </span>
-                <h3 className="font-serif text-2xl text-white font-normal group-hover:text-luxury-gold transition-colors">
+                <h3 className="font-serif text-2xl text-luxury-cream font-normal group-hover:text-luxury-gold transition-colors">
                   {col.name}
                 </h3>
                 <p className="text-xs text-luxury-sand font-light line-clamp-2 leading-relaxed">

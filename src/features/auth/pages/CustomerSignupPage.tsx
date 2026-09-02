@@ -49,16 +49,15 @@ export const CustomerSignupPage: React.FC = () => {
     <div className="container mx-auto px-4 py-16 max-w-md">
       <div className="text-center space-y-2 mb-8">
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-          Privileged Membership
+          New Customer
         </span>
         <h1 className="font-serif text-3xl text-white font-normal">
-          Join the Circle
+          Create an Account
         </h1>
         <p className="text-xs text-luxury-muted font-light">
-          Create an account to track private acquisitions and orders.
+          Create an account to track your orders and checkout faster.
         </p>
       </div>
-
       <div className="bg-luxury-card border border-luxury-border p-8 space-y-6">
         {error && (
           <div className="flex items-start gap-2.5 p-3.5 bg-red-950/40 border border-red-800/60 text-red-200 text-xs font-light">
@@ -71,14 +70,14 @@ export const CustomerSignupPage: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="First Name"
-              placeholder="Alexander"
+              placeholder="John"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
             />
             <Input
               label="Last Name"
-              placeholder="Sterling"
+              placeholder="Doe"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
@@ -87,21 +86,21 @@ export const CustomerSignupPage: React.FC = () => {
           <Input
             label="Email Address"
             type="email"
-            placeholder="client@domain.com"
+            placeholder="your@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
           />
           <Input
-            label="Telephone"
+            label="Phone Number"
             type="tel"
-            placeholder="+234..."
+            placeholder="08012345678"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
           <Input
-            label="Master Password"
+            label="Password"
             type="password"
             placeholder="Minimum 8 characters"
             value={password}
@@ -110,10 +109,9 @@ export const CustomerSignupPage: React.FC = () => {
             autoComplete="new-password"
           />
 
-          {/* Password Policy Indicator */}
           <div className="p-3 bg-luxury-charcoal/60 border border-luxury-border/60 space-y-1.5 text-[11px]">
             <span className="text-luxury-sand font-medium uppercase tracking-wider block text-[10px]">
-              Security Requirements:
+              Password Requirements:
             </span>
             <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-luxury-muted">
               <span className={`flex items-center gap-1 ${hasLength ? 'text-emerald-400' : ''}`}>
@@ -133,12 +131,12 @@ export const CustomerSignupPage: React.FC = () => {
 
           <Button variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
             <ShieldCheck className="h-4 w-4" />
-            <span>{isSubmitting ? 'Registering...' : 'Register Account'}</span>
+            <span>{isSubmitting ? 'Creating account...' : 'Create Account'}</span>
           </Button>
         </form>
 
         <div className="text-center pt-2 border-t border-luxury-border/60 text-xs text-luxury-muted">
-          <span>Already registered? </span>
+          <span>Already have an account? </span>
           <Link
             to={ROUTES.LOGIN}
             className="text-luxury-gold underline underline-offset-4 hover:text-luxury-gold-light font-medium"

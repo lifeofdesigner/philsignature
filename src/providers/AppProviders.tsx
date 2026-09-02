@@ -11,7 +11,7 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return (
     <QueryProvider>
-      <ThemeProvider defaultTheme="dark">
+      <ThemeProvider defaultTheme="system">
         <AuthProvider>
           <LoadingProvider>
             <ModalProvider>

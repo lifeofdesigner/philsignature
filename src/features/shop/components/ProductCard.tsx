@@ -61,7 +61,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
             </span>
           )}
           {product.fragrance_family && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-black/70 border border-luxury-border text-luxury-sand backdrop-blur-sm">
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-black/80 border border-luxury-border text-luxury-sand backdrop-blur-sm">
               {product.fragrance_family}
             </span>
           )}
@@ -80,7 +80,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-20 backdrop-blur-md ${
             inWishlist
               ? 'bg-luxury-gold text-black border-luxury-gold'
-              : 'bg-black/60 text-luxury-sand border-luxury-border hover:text-luxury-gold hover:border-luxury-gold/60'
+              : 'bg-luxury-black/70 text-luxury-sand border-luxury-border hover:text-luxury-gold hover:border-luxury-gold/60'
           }`}
         >
           <Heart className={`h-3.5 w-3.5 ${inWishlist ? 'fill-current' : ''}`} />
@@ -88,38 +88,38 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       </div>
 
       {/* Flacon Details */}
-      <div className="p-4 sm:p-5 flex flex-col justify-between flex-grow space-y-3">
+      <div className="p-3 sm:p-5 flex flex-col justify-between flex-grow space-y-2 sm:space-y-3">
         <div className="space-y-1">
-          <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block">
-            {product.concentration || 'Extrait de Parfum'} • {product.volume_ml || 100}ml
+          <span className="text-[8px] sm:text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
+            {product.concentration || 'Perfume'} • {product.volume_ml || 100}ml
           </span>
-          <h3 className="font-serif text-lg text-white font-normal group-hover:text-luxury-gold transition-colors">
+          <h3 className="font-serif text-sm sm:text-lg text-white font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
             <Link to={`/product/${product.slug}`}>{product.name}</Link>
           </h3>
           {product.tagline && (
-            <p className="text-xs text-luxury-muted font-light line-clamp-1">
+            <p className="text-[11px] sm:text-xs text-luxury-muted font-light line-clamp-1">
               {product.tagline}
             </p>
           )}
         </div>
 
         {/* Pricing & Link */}
-        <div className="pt-2 border-t border-luxury-border/50 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <span className="font-serif text-base text-luxury-gold font-normal">
+        <div className="pt-2 border-t border-luxury-border/50 flex items-center justify-between gap-1">
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
+            <span className="font-serif text-sm sm:text-base text-luxury-gold font-normal">
               {formattedPrice}
             </span>
             {formattedOriginalPrice && (
-              <span className="text-xs text-luxury-muted line-through">
+              <span className="text-[10px] sm:text-xs text-luxury-muted line-through">
                 {formattedOriginalPrice}
               </span>
             )}
           </div>
           <Link
             to={`/product/${product.slug}`}
-            className="text-[10px] uppercase tracking-wider text-luxury-sand hover:text-luxury-gold transition-colors font-medium underline underline-offset-4"
+            className="text-[9px] sm:text-[10px] uppercase tracking-wider text-luxury-sand hover:text-luxury-gold transition-colors font-medium underline underline-offset-4 shrink-0"
           >
-            Discover
+            View
           </Link>
         </div>
       </div>

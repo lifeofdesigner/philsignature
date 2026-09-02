@@ -43,7 +43,7 @@ export const CustomerAddressesPage: React.FC = () => {
     mutationFn: async () => {
       if (!user?.id) throw new Error('Authentication required');
       if (!formData.first_name || !formData.last_name || !formData.phone || !formData.address_line1) {
-        throw new Error('Please fulfill all required address fields');
+        throw new Error('Please fill in all required fields');
       }
       return addressService.saveAddress({
         customer_id: user.id,
@@ -90,13 +90,13 @@ export const CustomerAddressesPage: React.FC = () => {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Delivery Addresses
+            My Addresses
           </span>
           <h1 className="font-serif text-2xl text-white font-normal mt-1">
-            Saved Destinations
+            Saved Delivery Addresses
           </h1>
           <p className="text-xs text-luxury-muted mt-1">
-            Maintain curated delivery sanctuaries for swift checkout authorization.
+            Save your delivery addresses for quick and easy checkout.
           </p>
         </div>
 
@@ -106,16 +106,16 @@ export const CustomerAddressesPage: React.FC = () => {
           className="inline-flex items-center gap-1.5 px-4 py-2 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-colors rounded cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
-          <span>Add Destination</span>
+          <span>Add Address</span>
         </button>
       </div>
 
       {addresses.length === 0 ? (
         <EmptyState
           icon={<MapPin className="h-5 w-5" />}
-          title="No Delivery Destinations Saved"
-          description="Save primary and secondary shipping sanctuaries for seamless one-click boutique checkout."
-          actionLabel="Add Destination"
+          title="No Saved Addresses"
+          description="Save your home or office delivery address for faster checkout."
+          actionLabel="Add Address"
           onAction={() => setIsModalOpen(true)}
         />
       ) : (
@@ -127,7 +127,7 @@ export const CustomerAddressesPage: React.FC = () => {
             >
               <div className="flex items-center justify-between">
                 <span className="font-serif text-sm text-white font-medium">
-                  {addr.company || 'Delivery Destination'}
+                  {addr.company || 'Delivery Address'}
                 </span>
                 <div className="flex items-center gap-2">
                   {addr.is_default && (
@@ -162,7 +162,7 @@ export const CustomerAddressesPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
           <div className="bg-luxury-card border border-luxury-border w-full max-w-lg p-6 rounded space-y-5 shadow-2xl relative">
             <div className="flex items-center justify-between border-b border-luxury-border pb-3">
-              <h3 className="font-serif text-lg text-white font-normal">Add Delivery Destination</h3>
+              <h3 className="font-serif text-lg text-white font-normal">Add New Address</h3>
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
@@ -266,7 +266,7 @@ export const CustomerAddressesPage: React.FC = () => {
                   onChange={(e) => setFormData({ ...formData, is_default: e.target.checked })}
                   className="text-luxury-gold focus:ring-luxury-gold rounded"
                 />
-                <span className="text-xs text-luxury-muted">Set as primary default delivery destination</span>
+                <span className="text-xs text-luxury-muted">Set as default delivery address</span>
               </label>
             </div>
 
@@ -285,7 +285,7 @@ export const CustomerAddressesPage: React.FC = () => {
                 className="inline-flex items-center gap-2 px-6 py-2 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-wider rounded cursor-pointer disabled:opacity-50"
               >
                 {addAddressMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                <span>Save Destination</span>
+                <span>Save Address</span>
               </button>
             </div>
           </div>

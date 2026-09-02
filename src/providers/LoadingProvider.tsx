@@ -14,7 +14,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('Crafting olfactory notes...');
+  const [loadingMessage, setLoadingMessage] = useState('Loading...');
 
   const showLoading = (message?: string) => {
     if (message) setLoadingMessage(message);

@@ -42,13 +42,13 @@ export const CustomerLoginPage: React.FC = () => {
     <div className="container mx-auto px-4 py-20 max-w-md">
       <div className="text-center space-y-2 mb-8">
         <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-          Privileged Access
+          Welcome Back
         </span>
         <h1 className="font-serif text-3xl text-white font-normal">
-          Client Login
+          Sign In
         </h1>
         <p className="text-xs text-luxury-muted font-light">
-          Sign into your PHILZ SIGNATURE private salon account.
+          Sign in to your account to view your orders and details.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ export const CustomerLoginPage: React.FC = () => {
           <Input
             label="Email Address"
             type="email"
-            placeholder="client@domain.com"
+            placeholder="your@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -88,17 +88,17 @@ export const CustomerLoginPage: React.FC = () => {
               to={ROUTES.FORGOT_PASSWORD}
               className="hover:text-luxury-gold transition-colors"
             >
-              Forgotten password?
+              Forgot password?
             </Link>
           </div>
           <Button variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
             <Lock className="h-3.5 w-3.5" />
-            <span>{isSubmitting ? 'Authenticating...' : 'Enter Private Salon'}</span>
+            <span>{isSubmitting ? 'Signing in...' : 'Sign In'}</span>
           </Button>
         </form>
 
         <div className="text-center pt-2 border-t border-luxury-border/60 text-xs text-luxury-muted">
-          <span>Not yet a member? </span>
+          <span>Don't have an account? </span>
           <Link
             to={ROUTES.SIGNUP}
             className="text-luxury-gold underline underline-offset-4 hover:text-luxury-gold-light font-medium"

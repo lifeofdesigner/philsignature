@@ -39,10 +39,10 @@ export class CMSService {
   constructor(private repo: CMSRepository = cmsRepository) {}
 
   private static DEFAULT_HERO: CmsHeroContent = {
-    badge: 'The Private Reserve Collection',
-    headline: 'Transcendence in Every Note',
-    subtitle: 'Handcrafted pure extraits de parfum, rare Cambodian oud, and timeless olfactory sanctuaries born from the rarest botanical harvest.',
-    primary_cta_text: 'Explore Creations',
+    badge: 'Luxury Fragrance House',
+    headline: 'Luxury Perfumes That Last',
+    subtitle: 'Handcrafted long-lasting perfumes made with the finest fragrance oils. Rich, elegant scents designed to make a statement.',
+    primary_cta_text: 'Shop Perfumes',
     primary_cta_url: '/shop',
     secondary_cta_text: 'View Collections',
     secondary_cta_url: '/collections',
@@ -51,24 +51,24 @@ export class CMSService {
 
   private static DEFAULT_ANNOUNCEMENT: CmsAnnouncementContent = {
     enabled: true,
-    text: 'COMPLIMENTARY NATIONWIDE EXPRESS DELIVERY ON ALL ACQUISITIONS OVER ₦150,000',
-    link_text: 'EXPLORE CREATIONS',
+    text: 'FREE NATIONWIDE DELIVERY ON ALL ORDERS OVER ₦150,000',
+    link_text: 'SHOP NOW',
     link_url: '/shop',
   };
 
   private static DEFAULT_STORY: CmsStoryContent = {
     title: 'The Art of Philz Signature',
-    quote: 'Perfume is not mere scent; it is an invisible crown of memory, presence, and individuality.',
-    philosophy: 'PHILZ SIGNATURE was conceived to redefine the olfactory landscape through artisanal integrity. Every flacon is formulated using pure extraits, ensuring longevity, complexity, and undeniable presence.',
-    sourcing: 'From the deep woods of Cambodia to the rose fields of Taif and Mediterranean bergamot groves, our distillations honor the natural spirit of each botanical harvest.',
+    quote: 'Perfume is more than just a scent; it is a sign of confidence, presence, and personal style.',
+    philosophy: 'PHILZ SIGNATURE was created to bring you authentic luxury perfumes. Every bottle is made with high-concentration perfume oils, ensuring your scent lasts all day and leaves a lasting impression.',
+    sourcing: 'From rare Cambodian woods to the rose fields of Taif and fresh Mediterranean bergamot, our ingredients are carefully selected from the finest sources around the world.',
     image1_url: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1200&q=85',
   };
 
   private static DEFAULT_FOOTER: CmsFooterContent = {
-    brand_description: 'Haute Parfumerie & Artisanal Olfactory Creations. Handcrafted in limited private allocations.',
+    brand_description: 'Luxury perfumes and signature fragrances. Made with high-concentration oils for long-lasting performance.',
     instagram: 'https://instagram.com/philzsignature',
     whatsapp: '+2348000000000',
-    concierge_email: 'concierge@philzsignature.com',
+    concierge_email: 'support@philzsignature.com',
     flagship_location: 'Victoria Island, Lagos, Nigeria',
   };
 

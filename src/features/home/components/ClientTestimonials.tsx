@@ -3,35 +3,35 @@ import { Star, ShieldCheck } from 'lucide-react';
 
 const TESTIMONIALS = [
   {
-    quote: 'Beyond You is an absolute revelation. The transition from spicy elemi to dark Cambodian agarwood has a commanding, aristocratic sillage that lasts all day.',
-    author: 'Lady Victoria D.',
+    quote: 'Beyond You is an absolute masterpiece. The scent has a commanding presence and lasts from morning till night. People kept asking me what I was wearing.',
+    author: 'Victoria D.',
     location: 'Ikoyi, Lagos',
-    scent: 'Beyond You • Extrait de Parfum',
+    scent: 'Beyond You • 100ml',
   },
   {
-    quote: 'Nomad captures the essence of nocturnal desert warmth like nothing else. The Florentine iris and aged tobacco blend into pure liquid velvet.',
+    quote: 'Nomad is easily one of the best perfumes in my collection. Warm, rich, and very smooth. The compliments have been non-stop.',
     author: 'Chief Adebayo O.',
     location: 'Abuja, FCT',
-    scent: 'Nomad • Extrait de Parfum',
+    scent: 'Nomad • 100ml',
   },
   {
-    quote: 'Oud en Botella is in a league of its own. The vintage Assam agarwood depth is hypnotic. This is true bespoke perfumery.',
+    quote: 'Oud en Botella is in a league of its own. The depth of the oud is incredible. You can immediately tell it is made with genuine, premium oils.',
     author: 'Dr. Tariq M.',
-    location: 'London / Victoria Island',
-    scent: 'Oud en Botella • Private Reserve',
+    location: 'Victoria Island, Lagos',
+    scent: 'Oud en Botella • 100ml',
   },
 ];
 
 export const ClientTestimonials: React.FC = () => {
   return (
-    <section className="py-20 sm:py-28 bg-black border-b border-luxury-border">
+    <section className="py-20 sm:py-28 bg-luxury-black border-b border-luxury-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-5xl space-y-12">
         <div className="space-y-2">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Sensory Acclaim
+            What Our Customers Say
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl text-white font-normal">
-            Client Memoirs & Testimonials
+          <h2 className="font-serif text-3xl sm:text-4xl text-luxury-cream font-normal">
+            Customer Reviews
           </h2>
         </div>
 
@@ -53,7 +53,7 @@ export const ClientTestimonials: React.FC = () => {
               </div>
 
               <div className="pt-4 border-t border-luxury-border/50 space-y-1">
-                <div className="flex items-center gap-1.5 text-xs text-white font-medium">
+                <div className="flex items-center gap-1.5 text-xs text-luxury-cream font-medium">
                   <span>{t.author}</span>
                   <ShieldCheck className="h-3.5 w-3.5 text-luxury-gold" />
                 </div>

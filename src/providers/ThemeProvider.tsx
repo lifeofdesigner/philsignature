@@ -10,17 +10,34 @@ interface ThemeProviderProps {
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
-  defaultTheme = 'dark',
+  defaultTheme = 'system',
 }) => {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem('ps-theme') as Theme) || defaultTheme
-  );
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const qTheme = params.get('theme') as Theme;
+      if (qTheme === 'light' || qTheme === 'dark') {
+        localStorage.setItem('ps-theme', qTheme);
+        return qTheme;
+      }
+    }
+    const saved = localStorage.getItem('ps-theme') as Theme;
+    if (saved) return saved;
+    if (defaultTheme === 'system' || !defaultTheme) {
+      if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        return 'light';
+      }
+      return 'dark';
+    }
+    return defaultTheme;
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -39,8 +56,12 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     localStorage.setItem('ps-theme', theme);
   }, [theme]);
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

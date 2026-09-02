@@ -33,10 +33,10 @@ export const ShippingStep: React.FC<ShippingStepProps> = ({
     <div className="space-y-8 animate-fadeIn">
       <div>
         <h3 className="font-serif text-lg text-white font-normal mb-1">
-          Select Atelier Dispatch Method
+          Choose Delivery Option
         </h3>
         <p className="text-xs text-luxury-muted">
-          All Philz Signature orders are packed in secure shock-absorbing bespoke luxury presentation packaging.
+          All orders are carefully packed in protective luxury boxes so your perfumes arrive safely.
         </p>
       </div>
 
@@ -77,7 +77,7 @@ export const ShippingStep: React.FC<ShippingStepProps> = ({
                       {isFree && (
                         <span className="inline-flex items-center gap-1 text-[9px] uppercase tracking-wider text-luxury-gold bg-luxury-gold/10 px-2 py-0.5 border border-luxury-gold/30">
                           <Sparkles className="h-2.5 w-2.5" />
-                          Complimentary
+                          FREE Delivery
                         </span>
                       )}
                     </div>
@@ -91,7 +91,7 @@ export const ShippingStep: React.FC<ShippingStepProps> = ({
 
                 <div className="text-right whitespace-nowrap pl-4">
                   <span className="text-sm font-serif font-normal text-white">
-                    {effectivePrice === 0 ? 'Complimentary' : formatCurrency(effectivePrice)}
+                    {effectivePrice === 0 ? 'FREE' : formatCurrency(effectivePrice)}
                   </span>
                   {isFree && (
                     <span className="block text-[10px] text-luxury-muted line-through">

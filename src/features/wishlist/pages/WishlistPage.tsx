@@ -19,8 +19,8 @@ export const WishlistPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-20">
         <ErrorState
-          title="Wishlist Unavailable"
-          message={error instanceof Error ? error.message : 'Unable to synchronize private wishlist.'}
+          title="Could Not Load Wishlist"
+          message={error instanceof Error ? error.message : 'Unable to load your saved perfumes right now.'}
           onRetry={() => refetch()}
         />
       </div>
@@ -28,35 +28,35 @@ export const WishlistPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black py-16 sm:py-20">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-16 sm:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-10 max-w-4xl">
         <div className="text-center space-y-3">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Saved Creations
+            My Wishlist
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
-            Your Fragrance Portfolio
+          <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
+            Saved Perfumes
           </h1>
           <p className="text-xs sm:text-sm text-luxury-sand font-light">
             {itemCount > 0
-              ? `You have reserved ${itemCount} extrait ${itemCount === 1 ? 'creation' : 'creations'} in your personal archive.`
-              : 'Curate your private archive of olfactory desires.'}
+              ? `You have ${itemCount} ${itemCount === 1 ? 'perfume' : 'perfumes'} saved in your wishlist.`
+              : 'Save your favorite perfumes here and buy them whenever you are ready.'}
           </p>
         </div>
 
         {products.length === 0 ? (
           <EmptyState
-            title="Your Fragrance Portfolio is Empty"
-            description="Explore our artisanal extraits and bookmark your chosen olfactory creations."
-            actionLabel="Discover Creations"
+            title="Your Wishlist is Empty"
+            description="You have not saved any perfumes yet. Explore our shop and add your favorites."
+            actionLabel="Start Shopping"
             onAction={() => window.location.assign('/shop')}
           />
         ) : (
           <div className="space-y-4">
             <div className="flex items-center justify-between text-xs text-luxury-muted pb-2 border-b border-luxury-border">
-              <span>{itemCount} Saved Flacons</span>
+              <span>{itemCount} Saved {itemCount === 1 ? 'Perfume' : 'Perfumes'}</span>
               <Link to="/shop" className="text-luxury-gold hover:underline flex items-center gap-1">
-                <span>Continue Exploring</span>
+                <span>Continue Shopping</span>
                 <ArrowRight className="h-3 w-3" />
               </Link>
             </div>

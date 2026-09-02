@@ -10,28 +10,28 @@ export interface HeroBillboardProps {
 
 export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-black border-b border-luxury-border">
-      {/* Background with luxury gradient mask */}
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-luxury-black border-b border-luxury-border">
+      {/* Background with adaptive theme gradient mask */}
       <div className="absolute inset-0 z-0">
         <img
           src={hero.background_image}
-          alt="Philz Signature Haute Parfumerie"
-          className="w-full h-full object-cover object-center opacity-40 scale-105 transition-transform duration-1000 ease-out"
+          alt="Philz Signature Luxury Perfumes"
+          className="w-full h-full object-cover object-center opacity-30 dark:opacity-40 scale-105 transition-transform duration-1000 ease-out"
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30" />
-        <div className="absolute inset-0 bg-radial-vignette opacity-70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-luxury-black/70 to-luxury-black/30" />
+        <div className="absolute inset-0 bg-radial-vignette opacity-50 dark:opacity-70 pointer-events-none" />
       </div>
 
       {/* Editorial Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center max-w-4xl space-y-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 border border-luxury-gold/40 bg-luxury-charcoal/80 text-luxury-gold text-[10px] sm:text-xs uppercase tracking-luxury-wide font-medium backdrop-blur-sm">
+        <div className="inline-flex items-center gap-2 px-3 py-1 border border-luxury-gold/40 bg-luxury-charcoal/90 text-luxury-gold text-[10px] sm:text-xs uppercase tracking-luxury-wide font-medium backdrop-blur-sm shadow-sm">
           <Sparkles className="h-3 w-3" />
           <span>{hero.badge}</span>
         </div>
 
-        <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white font-normal tracking-tight leading-[1.1]">
+        <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl text-luxury-cream font-normal tracking-tight leading-[1.1]">
           {hero.headline}
         </h1>
 

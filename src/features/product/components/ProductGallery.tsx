@@ -35,7 +35,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
           type="button"
           onClick={() => setIsFullscreen(true)}
           className="absolute bottom-4 right-4 p-2.5 bg-black/70 backdrop-blur-md border border-luxury-border text-luxury-sand hover:text-luxury-gold transition-colors"
-          aria-label="Inspect high resolution flacon"
+          aria-label="View larger image"
         >
           <Maximize2 className="h-4 w-4" />
         </button>
@@ -43,7 +43,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
 
       {/* Thumbnail Strip */}
       {displayImages.length > 1 && (
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-2.5 sm:gap-3 overflow-x-auto pb-2 scrollbar-none touch-pan-x">
           {displayImages.map((url, idx) => (
             <button
               key={idx}
@@ -61,7 +61,6 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
           ))}
         </div>
       )}
-
       {/* Fullscreen Inspection Modal */}
       {isFullscreen && (
         <div

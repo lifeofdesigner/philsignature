@@ -76,13 +76,13 @@ export const CustomerOrdersPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-luxury-border/60 pb-5">
         <div>
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Order Archive
+            Order History
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl text-white font-normal mt-1">
-            Acquisitions History
+            My Orders
           </h1>
           <p className="text-xs text-luxury-muted mt-1">
-            Review your private bespoke fragrance acquisitions and track consignment milestones.
+            View and manage all your orders here.
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export const CustomerOrdersPage: React.FC = () => {
           onClick={() => navigate(ROUTES.SHOP)}
           className="self-start sm:self-auto px-4 py-2 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-colors rounded cursor-pointer"
         >
-          Explore Catalog
+          Shop More
         </button>
       </div>
 
@@ -141,14 +141,14 @@ export const CustomerOrdersPage: React.FC = () => {
       {orders.length === 0 ? (
         <EmptyState
           icon={<ShoppingBag className="h-5 w-5" />}
-          title="No Past Acquisitions on Record"
-          description="Your private bespoke extrait acquisitions will appear here once commissioned."
-          actionLabel="Explore Haute Parfums"
+          title="No Orders Yet"
+          description="You have not placed any orders yet. Browse our shop to find your next perfume."
+          actionLabel="Shop Now"
           onAction={() => navigate(ROUTES.SHOP)}
         />
       ) : filteredOrders.length === 0 ? (
         <div className="p-12 text-center bg-luxury-card/30 border border-luxury-border rounded space-y-2">
-          <p className="text-sm font-serif text-white">No matching acquisitions found</p>
+          <p className="text-sm font-serif text-white">No matching orders found</p>
           <p className="text-xs text-luxury-muted">Try adjusting your search query or filter settings.</p>
         </div>
       ) : (
@@ -163,15 +163,15 @@ export const CustomerOrdersPage: React.FC = () => {
                 {/* Header Row */}
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-luxury-border/60 pb-3 text-xs">
                   <div>
-                    <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Reference</span>
+                    <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Order Number</span>
                     <span className="font-mono font-bold text-luxury-gold">{order.order_number}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Acquisition Date</span>
+                    <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Order Date</span>
                     <span className="text-white">{formatDate(order.created_at)}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Financial Status</span>
+                    <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Payment Status</span>
                     <span
                       className={`inline-flex items-center gap-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border ${
                         isPaid
@@ -222,7 +222,7 @@ export const CustomerOrdersPage: React.FC = () => {
                       onClick={() => setSelectedOrder(order)}
                       className="text-luxury-muted hover:text-white transition-colors cursor-pointer"
                     >
-                      Inspect Details
+                      View Details
                     </button>
                     <button
                       type="button"
@@ -241,7 +241,7 @@ export const CustomerOrdersPage: React.FC = () => {
                       className="inline-flex items-center gap-1 text-luxury-gold hover:text-luxury-gold-light transition-colors cursor-pointer font-medium"
                     >
                       <Truck className="h-3.5 w-3.5" />
-                      <span>Track Consignment</span>
+                      <span>Track Order</span>
                       <ChevronRight className="h-3 w-3" />
                     </button>
                   </div>
@@ -260,7 +260,7 @@ export const CustomerOrdersPage: React.FC = () => {
             <div className="flex items-center justify-between border-b border-luxury-border pb-4">
               <div>
                 <span className="text-[10px] uppercase tracking-wider text-luxury-gold font-medium">
-                  Acquisition Memoir
+                  Order Details
                 </span>
                 <h3 className="font-serif text-xl text-white font-normal mt-0.5">
                   Order {selectedOrder.order_number}
@@ -278,19 +278,19 @@ export const CustomerOrdersPage: React.FC = () => {
             {/* Quick Meta Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-luxury-black/60 border border-luxury-border p-3.5 rounded text-xs">
               <div>
-                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Commissioned</span>
+                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Order Date</span>
                 <span className="text-white font-medium">{formatDate(selectedOrder.created_at)}</span>
               </div>
               <div>
-                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Financial</span>
+                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Payment</span>
                 <span className="text-emerald-400 capitalize font-medium">{selectedOrder.financial_status}</span>
               </div>
               <div>
-                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Dispatch</span>
+                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Delivery</span>
                 <span className="text-luxury-gold capitalize font-medium">{selectedOrder.fulfillment_status}</span>
               </div>
               <div>
-                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Payment</span>
+                <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Method</span>
                 <span className="text-white uppercase font-mono text-[11px]">{selectedOrder.payment_method}</span>
               </div>
             </div>
@@ -298,7 +298,7 @@ export const CustomerOrdersPage: React.FC = () => {
             {/* Purchased Items */}
             <div className="space-y-3">
               <h4 className="text-[11px] uppercase tracking-wider text-luxury-muted font-medium">
-                Fragrance Compositions ({selectedOrder.items?.length || 0})
+                Perfumes Ordered ({selectedOrder.items?.length || 0})
               </h4>
               <div className="border border-luxury-border rounded divide-y divide-luxury-border/60 overflow-hidden">
                 {selectedOrder.items?.map((item) => (
@@ -333,30 +333,30 @@ export const CustomerOrdersPage: React.FC = () => {
                 <span className="text-white">{formatCurrency(selectedOrder.subtotal)}</span>
               </div>
               <div className="flex justify-between text-luxury-muted">
-                <span>Dispatch & Handling</span>
+                <span>Delivery Fee</span>
                 <span className="text-white">
-                  {selectedOrder.shipping_amount === 0 ? 'Complimentary' : formatCurrency(selectedOrder.shipping_amount)}
+                  {selectedOrder.shipping_amount === 0 ? 'FREE' : formatCurrency(selectedOrder.shipping_amount)}
                 </span>
               </div>
               {selectedOrder.discount_amount > 0 && (
                 <div className="flex justify-between text-luxury-gold">
-                  <span>Privilege Voucher {selectedOrder.coupon_code ? `(${selectedOrder.coupon_code})` : ''}</span>
+                  <span>Discount {selectedOrder.coupon_code ? `(${selectedOrder.coupon_code})` : ''}</span>
                   <span>-{formatCurrency(selectedOrder.discount_amount)}</span>
                 </div>
               )}
               <div className="border-t border-luxury-border pt-2 flex justify-between font-serif text-sm font-semibold">
-                <span className="text-white">Total Consideration</span>
+                <span className="text-white">Total Amount</span>
                 <span className="text-luxury-gold">{formatCurrency(selectedOrder.total_amount)}</span>
               </div>
             </div>
 
-            {/* Destination & Consignment Timeline */}
+            {/* Destination & Timeline */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              {/* Destination */}
+              {/* Delivery Address */}
               <div className="bg-luxury-card/20 border border-luxury-border p-4 rounded space-y-2">
                 <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-luxury-gold font-medium">
                   <MapPin className="h-3.5 w-3.5" />
-                  <span>Consignment Destination</span>
+                  <span>Delivery Address</span>
                 </div>
                 <div className="text-luxury-muted space-y-0.5">
                   <p className="text-white font-medium">
@@ -371,11 +371,11 @@ export const CustomerOrdersPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Consignment Sillage Milestones */}
+              {/* Order Timeline */}
               <div className="bg-luxury-card/20 border border-luxury-border p-4 rounded space-y-2">
                 <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider text-luxury-gold font-medium">
                   <Truck className="h-3.5 w-3.5" />
-                  <span>Consignment Progress</span>
+                  <span>Order Timeline</span>
                 </div>
                 {selectedOrder.timeline && selectedOrder.timeline.length > 0 ? (
                   <div className="space-y-2.5 pt-1">
@@ -391,7 +391,7 @@ export const CustomerOrdersPage: React.FC = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-luxury-muted italic text-[11px]">Awaiting initial dispatch log</p>
+                  <p className="text-luxury-muted italic text-[11px]">No updates yet</p>
                 )}
               </div>
             </div>
@@ -426,7 +426,7 @@ export const CustomerOrdersPage: React.FC = () => {
                   className="inline-flex items-center gap-1.5 px-4 py-2 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-wider rounded transition-colors cursor-pointer"
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
-                  <span>Live Tracking</span>
+                  <span>Track Order</span>
                 </button>
               </div>
             </div>

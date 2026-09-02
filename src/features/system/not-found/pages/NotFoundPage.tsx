@@ -7,16 +7,16 @@ export const NotFoundPage: React.FC = () => {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center max-w-lg mx-auto">
       <span className="text-[11px] uppercase tracking-luxury-wide text-luxury-gold mb-3 font-medium">
-        404 — Scent Lost
+        404 Error
       </span>
       <h1 className="font-serif text-4xl sm:text-5xl text-white font-normal mb-4">
-        Vanished Into Thin Air
+        Page Not Found
       </h1>
       <p className="text-xs sm:text-sm text-luxury-muted leading-relaxed mb-8 font-light max-w-sm">
-        The formulation or salon page you sought has either expired or been retired from our private collections.
+        The page or perfume you are looking for does not exist or may have been moved.
       </p>
       <Link to={ROUTES.HOME}>
-        <Button variant="luxury">Return to Flagship Boutique</Button>
+        <Button variant="luxury">Back to Homepage</Button>
       </Link>
     </div>
   );

@@ -18,20 +18,20 @@ export const NewsletterSection: React.FC = () => {
       <div className="container mx-auto px-4 max-w-xl space-y-6">
         <div className="space-y-2">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Private Salon Dispatch
+            Stay In The Loop
           </span>
-          <h2 className="font-serif text-3xl text-white font-normal">
-            Privilege Membership
+          <h2 className="font-serif text-3xl text-luxury-cream font-normal">
+            Join Our Newsletter
           </h2>
           <p className="text-xs text-luxury-sand font-light leading-relaxed">
-            Receive private invitations to limited harvest extraits, bespoke flacon allocations, and private olfactory soirees.
+            Be the first to know about new perfumes, special discounts, and exclusive offers.
           </p>
         </div>
 
         {isSubmitted ? (
           <div className="p-4 bg-luxury-black border border-luxury-gold/50 flex items-center justify-center gap-2 text-xs text-luxury-gold">
             <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-            <span>Your transmission has been recorded into the private ledger.</span>
+            <span>You are now subscribed. Thank you!</span>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
@@ -45,7 +45,7 @@ export const NewsletterSection: React.FC = () => {
             />
             <Button variant="luxury" size="default" className="shrink-0 gap-2 text-xs">
               <Mail className="h-3.5 w-3.5" />
-              <span>Join Circle</span>
+              <span>Subscribe</span>
             </Button>
           </form>
         )}

@@ -11,10 +11,10 @@ interface UnauthorizedStateProps {
 }
 
 export const UnauthorizedState: React.FC<UnauthorizedStateProps> = ({
-  title = 'Private Quarters Access Restricted',
-  message = 'You do not have the administrative privileges required to access this atelier salon.',
+  title = 'Access Restricted',
+  message = 'You do not have permission to access this page.',
   redirectTo = '/',
-  redirectLabel = 'Return to Boutique',
+  redirectLabel = 'Return to Home',
 }) => {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center max-w-lg mx-auto">

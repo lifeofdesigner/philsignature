@@ -3,7 +3,57 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root,
+  html.light,
+  html:not(.dark) {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 34 50% 40%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 20% 98%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 34 50% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 34 50% 40%;
+
+    --radius: 0.125rem;
+
+    /* Luxury Tokens - White Light Theme */
+    --luxury-black: 255 255 255;       /* #FFFFFF Pure White main canvas */
+    --luxury-charcoal: 249 250 251;    /* #F9FAFB Clean subtle light gray surface */
+    --luxury-graphite: 243 244 246;    /* #F3F4F6 Light gray subtle hover */
+    --luxury-card: 255 255 255;        /* #FFFFFF Crisp Pure White Card */
+    --luxury-border: 229 231 235;      /* #E5E7EB Clean modern border */
+    --luxury-cream: 17 24 39;          /* #111827 Rich Dark typography */
+    --luxury-cream-soft: 31 41 55;     /* #1F2937 Soft text */
+    --luxury-cream-dim: 55 65 81;      /* #374151 Dim text */
+    --luxury-sand: 75 85 99;           /* #4B5563 Subtitle / secondary */
+    --luxury-muted: 107 114 128;       /* #6B7280 Muted text */
+    --luxury-gold: 161 120 54;         /* #A17836 High-contrast Gold */
+    --luxury-gold-light: 191 146 72;   /* #BF9248 */
+    --luxury-gold-dark: 130 94 38;      /* #825E26 */
+  }
+
+  html.dark,
+  .dark {
     --background: 0 0% 5%;
     --foreground: 40 20% 97%;
 
@@ -32,7 +82,20 @@
     --input: 0 0% 16%;
     --ring: 34 38% 64%;
 
-    --radius: 0.125rem;
+    /* Luxury Tokens - Dark Mode (Obsidian & Champagne Gold) */
+    --luxury-black: 13 13 13;          /* #0D0D0D Deep Obsidian canvas */
+    --luxury-charcoal: 22 22 22;       /* #161616 Charcoal surface */
+    --luxury-graphite: 34 34 34;       /* #222222 Graphite hover */
+    --luxury-card: 24 24 24;           /* #181818 Card surface */
+    --luxury-border: 42 42 42;         /* #2A2A2A Border */
+    --luxury-cream: 250 248 245;       /* #FAF8F5 Cream text */
+    --luxury-cream-soft: 244 240 234;  /* #F4F0EA */
+    --luxury-cream-dim: 232 226 215;   /* #E8E2D7 */
+    --luxury-sand: 213 204 191;        /* #D5CCBF Sand */
+    --luxury-muted: 136 132 125;       /* #88847D Muted */
+    --luxury-gold: 197 168 128;        /* #C5A880 Gold */
+    --luxury-gold-light: 222 197 162;  /* #DEC5A2 */
+    --luxury-gold-dark: 166 136 94;    /* #A6885E */
   }
 }
 
@@ -40,9 +103,134 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-luxury-black text-luxury-cream antialiased font-sans selection:bg-luxury-gold/30 selection:text-white;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Explicit White Light Theme Overrides */
+  html.light,
+  html:not(.dark) {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+  }
+
+  html.light body,
+  html:not(.dark) body {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+  }
+
+  /* All headings become crisp dark text in white mode */
+  html.light h1,
+  html.light h2,
+  html.light h3,
+  html.light h4,
+  html.light h5,
+  html.light h6,
+  html:not(.dark) h1,
+  html:not(.dark) h2,
+  html:not(.dark) h3,
+  html:not(.dark) h4,
+  html:not(.dark) h5,
+  html:not(.dark) h6 {
+    color: #111827 !important;
+  }
+
+  /* text-white becomes dark text in white mode (unless on a badge or gold button) */
+  html.light .text-white:not(.btn-gold *):not([data-keep-white]),
+  html:not(.dark) .text-white:not(.btn-gold *):not([data-keep-white]) {
+    color: #111827 !important;
+  }
+
+  /* bg-black becomes pure white in white mode */
+  html.light .bg-black:not([data-keep-black]),
+  html:not(.dark) .bg-black:not([data-keep-black]) {
+    background-color: #FFFFFF !important;
+  }
+
+  /* Header in white mode */
+  html.light header,
+  html:not(.dark) header {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border-bottom-color: #E5E7EB !important;
+  }
+
+  html.light header a,
+  html.light header button,
+  html.light header span.font-serif,
+  html:not(.dark) header a,
+  html:not(.dark) header button,
+  html:not(.dark) header span.font-serif {
+    color: #111827 !important;
+  }
+
+  html.light header a:hover,
+  html.light header button:hover,
+  html:not(.dark) header a:hover,
+  html:not(.dark) header button:hover {
+    color: #A17836 !important;
+  }
+
+  html.light header .text-luxury-gold,
+  html.light header span.text-luxury-gold,
+  html:not(.dark) header .text-luxury-gold,
+  html:not(.dark) header span.text-luxury-gold {
+    color: #A17836 !important;
+  }
+
+  /* Radial vignette in white mode */
+  html.light .bg-radial-vignette,
+  html:not(.dark) .bg-radial-vignette {
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 100%) !important;
+  }
+
+  /* Footer in white mode */
+  html.light footer,
+  html:not(.dark) footer {
+    background-color: #F9FAFB !important;
+    border-top-color: #E5E7EB !important;
+  }
+
+  /* Mobile bottom nav in white mode */
+  html.light nav[aria-label="Mobile Navigation"],
+  html:not(.dark) nav[aria-label="Mobile Navigation"] {
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    border-top-color: #E5E7EB !important;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  /* Sections and cards in white mode */
+  html.light .bg-luxury-black,
+  html:not(.dark) .bg-luxury-black {
+    background-color: #FFFFFF !important;
+  }
+
+  html.light .bg-luxury-charcoal,
+  html:not(.dark) .bg-luxury-charcoal {
+    background-color: #F9FAFB !important;
+  }
+
+  html.light .bg-luxury-card,
+  html:not(.dark) .bg-luxury-card {
+    background-color: #FFFFFF !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  html.light .border-luxury-border,
+  html:not(.dark) .border-luxury-border {
+    border-color: #E5E7EB !important;
+  }
+
+  html.light .border-luxury-border\/60,
+  html:not(.dark) .border-luxury-border\/60,
+  html.light .border-luxury-border\/40,
+  html:not(.dark) .border-luxury-border\/40,
+  html.light .border-luxury-border\/80,
+  html:not(.dark) .border-luxury-border\/80 {
+    border-color: #E5E7EB !important;
   }
 
   /* Custom Luxury Scrollbar */
@@ -51,16 +239,15 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #0D0D0D;
+    background: rgb(var(--luxury-black));
   }
   ::-webkit-scrollbar-thumb {
-    background: #262626;
+    background: rgb(var(--luxury-border));
     border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #C5A880;
+    background: rgb(var(--luxury-gold));
   }
-}
 
 @layer utilities {
   .font-editorial {
@@ -81,4 +268,3 @@
     -webkit-text-fill-color: transparent;
   }
 }
-

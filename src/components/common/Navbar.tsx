@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
+import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -15,10 +16,10 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { name: 'Collections', href: '/collections' },
-    { name: 'Extraits de Parfum', href: '/shop?family=all' },
+    { name: 'All Perfumes', href: '/shop?family=all' },
     { name: 'Woody & Oud', href: '/shop?family=Woody' },
     { name: 'Oriental & Amber', href: '/shop?family=Oriental' },
-    { name: 'Brand Story', href: '/about' },
+    { name: 'About Us', href: '/about' },
   ];
 
   return (
@@ -51,12 +52,12 @@ export const Navbar: React.FC = () => {
           ))}
         </nav>
 
-        {/* Central Luxury Logo */}
-        <Link to="/" className="flex flex-col items-center justify-center group">
-          <span className="font-serif text-2xl sm:text-3xl tracking-[0.25em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors">
+        {/* Central Logo */}
+        <Link to="/" className="flex flex-col items-center justify-center group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold">
+          <span className="font-serif text-xl sm:text-2xl lg:text-3xl tracking-[0.2em] sm:tracking-[0.25em] text-luxury-cream uppercase font-normal group-hover:text-luxury-gold transition-colors whitespace-nowrap">
             PHILZ SIGNATURE
           </span>
-          <span className="text-[8px] uppercase tracking-luxury-wide text-luxury-gold font-medium mt-0.5">
+          <span className="text-[7.5px] sm:text-[8.5px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5">
             HAUTE PARFUMERIE
           </span>
         </Link>
@@ -80,12 +81,15 @@ export const Navbar: React.FC = () => {
             ))}
           </nav>
 
+          {/* Theme Switcher */}
+          <ThemeToggle />
+
           {/* Search Icon */}
           <Link
             to="/shop"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors"
-            title="Search Catalog"
-            aria-label="Search catalog"
+            title="Search Perfumes"
+            aria-label="Search perfumes"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -95,7 +99,7 @@ export const Navbar: React.FC = () => {
             to="/wishlist"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors relative"
             title="Wishlist"
-            aria-label="View fragrance wishlist"
+            aria-label="View saved perfumes"
           >
             <Heart className="h-4 w-4" />
             {wishlistCount > 0 && (
@@ -119,8 +123,8 @@ export const Navbar: React.FC = () => {
           <Link
             to="/cart"
             className="p-1.5 text-luxury-cream/80 hover:text-luxury-gold transition-colors relative"
-            title="Shopping Bag"
-            aria-label="View shopping bag"
+            title="Shopping Cart"
+            aria-label="View shopping cart"
           >
             <ShoppingBag className="h-4 w-4" />
             {cartCount > 0 && (
@@ -145,7 +149,11 @@ export const Navbar: React.FC = () => {
               {link.name}
             </Link>
           ))}
-          <div className="pt-2 flex flex-col space-y-2">
+          <div className="pt-2 flex flex-col space-y-3">
+            <div className="flex items-center justify-between py-2 border-b border-luxury-border/40 text-xs uppercase tracking-luxury text-luxury-cream">
+              <span>Display Theme</span>
+              <ThemeToggle showLabel />
+            </div>
             <Link to="/track-order" onClick={() => setMobileMenuOpen(false)}>
               <Button variant="outline" size="sm" className="w-full">
                 Track Order

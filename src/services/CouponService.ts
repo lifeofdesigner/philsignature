@@ -16,22 +16,22 @@ export class CouponService {
   async validateCoupon(code: string, subtotal: number): Promise<CouponValidationResult> {
     const trimmed = code.trim().toUpperCase();
     if (!trimmed) {
-      return { valid: false, discountAmount: 0, message: 'Please enter a privilege code' };
+      return { valid: false, discountAmount: 0, message: 'Please enter a discount code' };
     }
 
     const coupon = await this.repo.findByCode(trimmed);
     if (!coupon) {
-      return { valid: false, discountAmount: 0, message: 'Invalid or expired privilege voucher' };
+      return { valid: false, discountAmount: 0, message: 'Invalid discount code' };
     }
 
     // Expiry check
     if (coupon.expires_at && new Date(coupon.expires_at).getTime() < Date.now()) {
-      return { valid: false, discountAmount: 0, message: 'This privilege coupon has expired' };
+      return { valid: false, discountAmount: 0, message: 'This coupon has expired' };
     }
 
     // Usage limit check
     if (coupon.usage_limit && coupon.used_count >= coupon.usage_limit) {
-      return { valid: false, discountAmount: 0, message: 'Privilege coupon allocation limit reached' };
+      return { valid: false, discountAmount: 0, message: 'This coupon has reached its usage limit' };
     }
 
     // Minimum spend check
@@ -44,7 +44,7 @@ export class CouponService {
       return {
         valid: false,
         discountAmount: 0,
-        message: `Requires a minimum acquisition of ${minSpendFormatted}`,
+        message: `Requires a minimum order of ${minSpendFormatted}`,
       };
     }
 
@@ -63,7 +63,7 @@ export class CouponService {
       valid: true,
       coupon,
       discountAmount: Math.round(discount),
-      message: `Privilege applied: ${coupon.code}`,
+      message: `Discount applied: ${coupon.code}`,
     };
   }
 

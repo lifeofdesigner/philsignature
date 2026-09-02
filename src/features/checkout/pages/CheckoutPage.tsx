@@ -31,9 +31,9 @@ export const CheckoutPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 sm:px-8 py-20 max-w-2xl">
         <EmptyState
-          title="Your Shopping Bag is Vacant"
-          description="You have not yet selected any haute parfumerie flacons for acquisition. Explore our curated collections to begin."
-          actionLabel="Explore Haute Parfums"
+          title="Your Cart is Empty"
+          description="You have not added any perfumes to your cart yet. Browse our collection to get started."
+          actionLabel="Shop Perfumes"
           onAction={() => navigate('/shop')}
         />
       </div>
@@ -46,14 +46,14 @@ export const CheckoutPage: React.FC = () => {
         {/* Header Billboard */}
         <div className="text-center space-y-2 mb-10">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Privileged Acquisition
+            Safe & Easy Payment
           </span>
-          <h1 className="font-serif text-3xl sm:text-4xl text-white font-normal">
-            Bespoke Checkout
+          <h1 className="font-serif text-3xl sm:text-4xl text-luxury-cream font-normal">
+            Checkout
           </h1>
           <div className="flex items-center justify-center gap-1.5 text-[11px] text-luxury-muted">
             <ShieldCheck className="h-3.5 w-3.5 text-luxury-gold" />
-            <span>Encrypted 256-Bit SSL Luxury Settlement Protocol</span>
+            <span>100% Safe & Secure Checkout</span>
           </div>
         </div>
 
@@ -135,10 +135,10 @@ export const CheckoutPage: React.FC = () => {
               onRemoveCoupon={checkout.handleRemoveCoupon}
             />
 
-            {/* Privilege Concierge Note */}
+            {/* Customer Care Note */}
             <div className="mt-4 p-4 text-center text-[11px] text-luxury-muted font-light leading-relaxed border border-luxury-border/40 rounded">
               <ShoppingBag className="h-4 w-4 text-luxury-gold mx-auto mb-1 opacity-70" />
-              <p>For bespoke corporate gifting or private concierge allocations, contact our atelier directly at concierge@philzsignature.com.</p>
+              <p>Need help with your order or bulk gifts? Contact us on WhatsApp or email info@philzsignature.com.</p>
             </div>
           </div>
         </div>

@@ -31,8 +31,8 @@ export const OrderConfirmationPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-20 max-w-2xl">
         <ErrorState
-          title="Consignment Not Located"
-          message="We could not retrieve the records for this acquisition reference."
+          title="Order Not Found"
+          message="We could not find this order. Please check your order number and try again."
           onRetry={refetch}
         />
       </div>
@@ -57,19 +57,19 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
 
           <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-gold font-medium block mb-1">
-            {isPaid ? 'Acquisition Authorized & Sealed' : 'Consignment Reserved — Awaiting Settlement'}
+            {isPaid ? 'Payment Confirmed' : 'Order Placed — Waiting for Payment'}
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl text-white font-normal mb-2">
-            Gratitude for Your Discerning Acquisition
+            Thank You for Your Order!
           </h1>
           <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed">
             {isPaid
-              ? 'Your private consignment has been transmitted to our master perfume atelier. A confirmation memoir has been dispatched to your email.'
-              : 'Your flacon allocation has been temporarily reserved. Please complete your bank transfer using your order number as reference.'}
+              ? 'Your order has been confirmed and sent to our team. A confirmation email has been sent to you.'
+              : 'Your order has been saved. Please complete your bank transfer using your order number as the reference.'}
           </p>
 
           <div className="mt-6 inline-flex items-center gap-3 bg-luxury-black border border-luxury-border px-5 py-2.5 rounded text-xs">
-            <span className="text-luxury-muted">Consignment Reference:</span>
+            <span className="text-luxury-muted">Order Number:</span>
             <span className="text-luxury-gold font-mono font-bold tracking-wider">{order.order_number}</span>
           </div>
         </div>
@@ -84,12 +84,11 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
         )}
 
-        {/* Order Details Grid */}
         <div className="bg-luxury-card/60 border border-luxury-border p-6 rounded space-y-6 mb-8">
           <div className="flex items-center justify-between border-b border-luxury-border pb-4">
             <h3 className="font-serif text-base text-white font-normal flex items-center gap-2">
               <PackageCheck className="h-4 w-4 text-luxury-gold" />
-              <span>Consignment Manifest</span>
+              <span>Order Details</span>
             </h3>
             <span
               className={`text-[10px] uppercase tracking-wider px-2.5 py-0.5 border rounded ${
@@ -98,7 +97,7 @@ export const OrderConfirmationPage: React.FC = () => {
                   : 'text-amber-400 border-amber-500/30 bg-amber-500/10'
               }`}
             >
-              {isPaid ? 'Settled' : 'Payment Pending'}
+              {isPaid ? 'Paid' : 'Payment Pending'}
             </span>
           </div>
 
@@ -116,7 +115,7 @@ export const OrderConfirmationPage: React.FC = () => {
                   )}
                   <div>
                     <h4 className="font-serif text-white">{item.product_name}</h4>
-                    <p className="text-[10px] text-luxury-muted">Qty: {item.quantity} • 100ml Extrait</p>
+                    <p className="text-[10px] text-luxury-muted">Qty: {item.quantity} • 100ml</p>
                   </div>
                 </div>
                 <span className="text-white font-medium">{formatCurrency(item.subtotal)}</span>
@@ -131,19 +130,19 @@ export const OrderConfirmationPage: React.FC = () => {
               <span className="text-white">{formatCurrency(order.subtotal)}</span>
             </div>
             <div className="flex justify-between text-luxury-muted">
-              <span>Dispatch & Handling</span>
+              <span>Delivery Fee</span>
               <span className="text-white">
-                {order.shipping_amount === 0 ? 'Complimentary' : formatCurrency(order.shipping_amount)}
+                {order.shipping_amount === 0 ? 'FREE' : formatCurrency(order.shipping_amount)}
               </span>
             </div>
             {order.discount_amount > 0 && (
               <div className="flex justify-between text-luxury-gold">
-                <span>Privilege Discount ({order.coupon_code})</span>
+                <span>Discount ({order.coupon_code})</span>
                 <span>-{formatCurrency(order.discount_amount)}</span>
               </div>
             )}
             <div className="border-t border-luxury-border pt-3 flex justify-between items-baseline">
-              <span className="font-serif text-sm text-white">Total Consideration</span>
+              <span className="font-serif text-sm text-white">Total Amount</span>
               <span className="font-serif text-base text-luxury-gold font-bold">
                 {formatCurrency(order.total_amount)}
               </span>
@@ -155,7 +154,7 @@ export const OrderConfirmationPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mb-8">
           <div className="bg-luxury-card/40 border border-luxury-border p-5 rounded">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted block mb-1 font-medium">
-              Delivery Destination
+              Delivery Address
             </span>
             <p className="text-white font-medium">{shippingAddr.first_name} {shippingAddr.last_name}</p>
             <p className="text-luxury-muted">{shippingAddr.address_line1 || shippingAddr.street_address}</p>
@@ -165,7 +164,7 @@ export const OrderConfirmationPage: React.FC = () => {
 
           <div className="bg-luxury-card/40 border border-luxury-border p-5 rounded">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted block mb-1 font-medium">
-              Payment & Security
+              Payment Info
             </span>
             <p className="text-white font-medium uppercase tracking-wider">{order.payment_method}</p>
             {order.payment_reference && (
@@ -173,7 +172,7 @@ export const OrderConfirmationPage: React.FC = () => {
             )}
             <div className="flex items-center gap-1.5 mt-3 text-[11px] text-luxury-gold">
               <ShieldCheck className="h-3.5 w-3.5" />
-              <span>Insured Luxury Fragrance Consignment</span>
+              <span>100% Genuine Perfume Guaranteed</span>
             </div>
           </div>
         </div>
@@ -186,7 +185,7 @@ export const OrderConfirmationPage: React.FC = () => {
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-luxury-black text-xs uppercase tracking-luxury-wide transition-colors cursor-pointer"
           >
             <Truck className="h-4 w-4" />
-            <span>Track Consignment Sillage</span>
+            <span>Track My Order</span>
           </button>
 
           <button
@@ -194,7 +193,7 @@ export const OrderConfirmationPage: React.FC = () => {
             onClick={() => navigate('/shop')}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-colors cursor-pointer"
           >
-            <span>Continue Exploring Atelier</span>
+            <span>Continue Shopping</span>
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>

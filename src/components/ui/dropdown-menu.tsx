@@ -18,7 +18,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        'z-50 min-w-[8rem] overflow-hidden border border-luxury-border bg-luxury-charcoal p-1 text-luxury-cream shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+        'z-50 min-w-[8rem] overflow-hidden rounded-sm border border-luxury-border bg-luxury-card p-1 text-luxury-cream shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
         className
       )}
       {...props}
@@ -36,7 +36,7 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-pointer select-none items-center px-2.5 py-1.5 text-xs outline-none transition-colors hover:bg-luxury-gold/15 hover:text-white focus:bg-luxury-gold/15 focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex cursor-pointer select-none items-center px-2.5 py-1.5 text-xs outline-none transition-colors hover:bg-luxury-gold/15 hover:text-luxury-gold focus:bg-luxury-gold/15 focus:text-luxury-gold data-[disabled]:pointer-events-none data-[disabled]:opacity-50 rounded-[2px]',
       inset && 'pl-8',
       className
     )}

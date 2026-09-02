@@ -25,9 +25,9 @@ export const ProductDetailPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-24 text-center">
         <EmptyState
-          title="Fragrance Formulation Not Found"
-          description="The requested creation either does not exist or has been reserved for private salon archives."
-          actionLabel="Return to Catalog"
+          title="Perfume Not Found"
+          description="This perfume may no longer be available. Browse our shop to find something you'll love."
+          actionLabel="Go to Shop"
           onAction={() => window.location.assign('/shop')}
         />
       </div>
@@ -38,8 +38,8 @@ export const ProductDetailPage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-20">
         <ErrorState
-          title="Unable to Retrieve Fragrance Profile"
-          message={error instanceof Error ? error.message : 'Error connecting to the perfume ledger.'}
+          title="Could Not Load This Perfume"
+          message={error instanceof Error ? error.message : 'Something went wrong. Please try again.'}
           onRetry={() => refetch()}
         />
       </div>
@@ -47,7 +47,7 @@ export const ProductDetailPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black py-10 sm:py-16">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-10 sm:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <nav aria-label="Breadcrumb">
@@ -56,12 +56,12 @@ export const ProductDetailPage: React.FC = () => {
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-luxury text-luxury-muted hover:text-luxury-gold transition-colors font-medium"
           >
             <ChevronLeft className="h-3.5 w-3.5" />
-            <span>Return to Catalog</span>
+            <span>Back to Shop</span>
           </Link>
         </nav>
 
         {/* Main Product Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           {/* Left Column: Gallery & Olfactory Pyramid (7 cols) */}
           <div className="lg:col-span-7 space-y-10">
             <ProductGallery
@@ -69,17 +69,28 @@ export const ProductDetailPage: React.FC = () => {
               productName={product.name}
             />
 
-            {/* Olfactory Pyramid Component */}
-            <OlfactoryPyramid
-              topNotes={product.top_notes}
-              middleNotes={product.middle_notes}
-              baseNotes={product.base_notes}
-            />
+            {/* Fragrance Notes Component (Desktop View) */}
+            <div className="hidden lg:block">
+              <OlfactoryPyramid
+                topNotes={product.top_notes}
+                middleNotes={product.middle_notes}
+                baseNotes={product.base_notes}
+              />
+            </div>
           </div>
 
-          {/* Right Column: Pricing, Bag Action, Accordion Details (5 cols) */}
+          {/* Right Column: Pricing, Cart Action, Accordion Details (5 cols) */}
           <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-24">
             <ProductPurchaseCard product={product} />
+
+            {/* Fragrance Notes Component (Mobile View: placed directly after purchase card) */}
+            <div className="block lg:hidden">
+              <OlfactoryPyramid
+                topNotes={product.top_notes}
+                middleNotes={product.middle_notes}
+                baseNotes={product.base_notes}
+              />
+            </div>
 
             <ProductMetaAccordion
               details={product.details}

@@ -47,7 +47,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
         <div className="space-y-3 pb-6 border-b border-luxury-border">
           <div className="flex items-center gap-2 text-xs text-luxury-gold uppercase tracking-luxury-wide font-medium">
             <BookmarkCheck className="h-3.5 w-3.5" />
-            <span>Saved Portfolio Addresses</span>
+            <span>Your Saved Delivery Addresses</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {savedAddresses.map((addr) => {
@@ -64,7 +64,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-white">{addr.company || 'Delivery Destination'}</span>
+                    <span className="text-xs font-medium text-white">{addr.company || 'Delivery Address'}</span>
                     {addr.is_default && (
                       <span className="text-[9px] uppercase tracking-wider text-luxury-gold border border-luxury-gold/40 px-1.5 py-0.5">
                         Default
@@ -83,7 +83,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
       {/* Manual Address Form */}
       <div className="space-y-5">
         <h3 className="font-serif text-lg text-white font-normal">
-          Delivery & Consignment Destination
+          Delivery Address
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -96,7 +96,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               name="firstName"
               value={addressForm.firstName}
               onChange={handleChange}
-              placeholder="Alexander"
+              placeholder="e.g. John"
               required
               className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
             />
@@ -110,7 +110,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               name="lastName"
               value={addressForm.lastName}
               onChange={handleChange}
-              placeholder="Sterling"
+              placeholder="e.g. Adeleke"
               required
               className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
             />
@@ -120,14 +120,14 @@ export const AddressStep: React.FC<AddressStepProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-[11px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
-              Email Address (For Consignment Tracking) *
+              Email Address (For Order Confirmation) *
             </label>
             <input
               type="email"
               name="email"
               value={addressForm.email}
               onChange={handleChange}
-              placeholder="client@sanctuary.com"
+              placeholder="e.g. name@gmail.com"
               required
               className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
             />
@@ -141,7 +141,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
               name="phone"
               value={addressForm.phone}
               onChange={handleChange}
-              placeholder="+234 800 000 0000"
+              placeholder="e.g. 08012345678"
               required
               className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none border-luxury-border focus:border-luxury-gold transition-colors"
             />
@@ -157,7 +157,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
             name="streetAddress"
             value={addressForm.streetAddress}
             onChange={handleChange}
-            placeholder="Apt, Suite, Penthouse, Street Name"
+            placeholder="e.g. 15 Admiralty Way, Lekki Phase 1"
             required
             className="w-full bg-luxury-black border border-luxury-border px-3.5 py-2.5 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors"
           />
@@ -218,7 +218,7 @@ export const AddressStep: React.FC<AddressStepProps> = ({
           onClick={onProceed}
           className="inline-flex items-center gap-2 px-8 py-3.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-xs font-medium uppercase tracking-luxury-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
-          <span>Continue to Dispatch Options</span>
+          <span>Continue to Delivery Method</span>
           <ArrowRight className="h-4 w-4" />
         </button>
       </div>

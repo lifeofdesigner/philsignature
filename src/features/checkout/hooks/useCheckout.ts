@@ -156,11 +156,11 @@ export function useCheckout() {
 
       // Validate required address fields
       if (!addressForm.firstName || !addressForm.lastName || !addressForm.email || !addressForm.phone || !addressForm.streetAddress) {
-        throw new Error('Please fulfill all required recipient and delivery address details.');
+        throw new Error('Please fill in all required delivery details (name, email, phone, and address).');
       }
 
       if (items.length === 0) {
-        throw new Error('Your shopping bag is currently vacant.');
+        throw new Error('Your cart is empty.');
       }
 
       // Prepare items for OrderService
@@ -211,7 +211,7 @@ export function useCheckout() {
       return createdOrder;
     },
     onError: (err: Error) => {
-      setCheckoutError(err.message || 'An error occurred during order generation.');
+      setCheckoutError(err.message || 'An error occurred while creating your order. Please try again.');
       setIsProcessingPayment(false);
     },
   });
@@ -285,7 +285,7 @@ export function useCheckout() {
         navigate(`/checkout/confirmation/${order.order_number}?method=bank_transfer`);
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Order submission failed';
+      const msg = err instanceof Error ? err.message : 'Could not place your order. Please try again.';
       setCheckoutError(msg);
       setIsProcessingPayment(false);
     }

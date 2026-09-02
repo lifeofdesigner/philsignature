@@ -28,7 +28,7 @@ export class CustomerEntity {
   }
 
   get fullName(): string {
-    return [this.props.firstName, this.props.lastName].filter(Boolean).join(' ') || 'Valued Patron';
+    return [this.props.firstName, this.props.lastName].filter(Boolean).join(' ') || 'Valued Customer';
   }
 
   get isSuperAdmin(): boolean {

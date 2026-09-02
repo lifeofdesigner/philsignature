@@ -55,13 +55,13 @@ export const TrackOrderPage: React.FC = () => {
             <Clock className="h-5 w-5" />
           </div>
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Consignment Tracking
+            Order Tracking
           </span>
           <h1 className="font-serif text-3xl text-white font-normal">
-            Track Consignment Sillage
+            Track Your Order
           </h1>
           <p className="text-xs text-luxury-muted font-light leading-relaxed">
-            Enter your unique PHILZ SIGNATURE order reference (e.g. PS-10492) to inspect real-time dispatch milestones.
+            Enter your order number (e.g. PS-8492-1204) to see where your package is right now.
           </p>
         </div>
 
@@ -83,11 +83,11 @@ export const TrackOrderPage: React.FC = () => {
             </div>
             <div>
               <label className="block text-[10px] uppercase tracking-wider text-luxury-muted mb-1 font-medium">
-                Account / Delivery Email (Optional verification)
+                Email Address (Optional)
               </label>
               <input
                 type="email"
-                placeholder="client@domain.com"
+                placeholder="your@email.com"
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 className="w-full bg-luxury-black border border-luxury-border p-3 text-xs text-white placeholder:text-luxury-muted/40 focus:outline-none focus:border-luxury-gold transition-colors rounded"
@@ -101,12 +101,12 @@ export const TrackOrderPage: React.FC = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Locating Manifest...</span>
+                  <span>Searching for Order...</span>
                 </>
               ) : (
                 <>
                   <Search className="h-4 w-4" />
-                  <span>Locate Consignment</span>
+                  <span>Track Order</span>
                 </>
               )}
             </button>
@@ -122,11 +122,11 @@ export const TrackOrderPage: React.FC = () => {
                 <div className="bg-luxury-card border border-luxury-gold/30 p-6 rounded space-y-4">
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b border-luxury-border pb-4">
                     <div>
-                      <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Manifest Reference</span>
+                      <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Order Number</span>
                       <span className="font-mono text-base font-bold text-luxury-gold">{order.order_number}</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Fulfillment Stage</span>
+                      <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Delivery Status</span>
                       <span className="text-xs text-white uppercase tracking-wider font-medium px-2 py-0.5 border border-luxury-border rounded bg-luxury-black">
                         {order.fulfillment_status}
                       </span>
@@ -135,7 +135,7 @@ export const TrackOrderPage: React.FC = () => {
 
                   <div className="grid grid-cols-2 gap-4 text-xs text-luxury-muted">
                     <div>
-                      <span className="text-[10px] uppercase text-luxury-muted tracking-wider block">Placed On</span>
+                      <span className="text-[10px] uppercase text-luxury-muted tracking-wider block">Order Date</span>
                       <span className="text-white">{formatDate(order.created_at)}</span>
                     </div>
                     <div>
@@ -149,7 +149,7 @@ export const TrackOrderPage: React.FC = () => {
                 <div className="bg-luxury-card border border-luxury-border p-6 rounded space-y-4">
                   <h3 className="font-serif text-sm text-white font-medium flex items-center gap-2">
                     <Truck className="h-4 w-4 text-luxury-gold" />
-                    <span>Consignment Progression Milestones</span>
+                    <span>Delivery Progress</span>
                   </h3>
 
                   {order.timeline && order.timeline.length > 0 ? (
@@ -170,15 +170,15 @@ export const TrackOrderPage: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-luxury-muted">Initial atelier processing initiated.</p>
+                    <p className="text-xs text-luxury-muted">Your order is being processed.</p>
                   )}
                 </div>
 
-                {/* Manifest Products */}
+                {/* Products */}
                 <div className="bg-luxury-card border border-luxury-border p-6 rounded space-y-3">
                   <h3 className="font-serif text-sm text-white font-medium flex items-center gap-2">
                     <PackageCheck className="h-4 w-4 text-luxury-gold" />
-                    <span>Enclosed Flacons</span>
+                    <span>Items in this Order</span>
                   </h3>
                   <div className="space-y-2.5">
                     {order.items?.map((item) => (
@@ -202,9 +202,9 @@ export const TrackOrderPage: React.FC = () => {
               </div>
             ) : (
               <div className="bg-luxury-card border border-luxury-border p-8 text-center rounded space-y-2 animate-fadeIn">
-                <p className="font-serif text-base text-white font-normal">Consignment Not Located</p>
+                <p className="font-serif text-base text-white font-normal">Order Not Found</p>
                 <p className="text-xs text-luxury-muted">
-                  No active or historical order matching reference "{searchQuery.order}" was found. Please verify your reference number.
+                  We could not find any order with number "{searchQuery.order}". Please check the number and try again.
                 </p>
               </div>
             )}

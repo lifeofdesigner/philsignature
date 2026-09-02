@@ -43,10 +43,10 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
     <div className="bg-luxury-card border border-luxury-border p-6 rounded sticky top-28 space-y-6">
       <div className="flex items-center justify-between border-b border-luxury-border pb-4">
         <h3 className="font-serif text-base text-white font-normal">
-          Acquisition Summary
+          Order Summary
         </h3>
         <span className="text-[11px] text-luxury-gold uppercase tracking-wider">
-          {items.length} {items.length === 1 ? 'Flacon' : 'Flacons'}
+          {items.length} {items.length === 1 ? 'Item' : 'Items'}
         </span>
       </div>
 
@@ -76,7 +76,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
               </div>
               <div className="flex-1 min-w-0">
                 <h4 className="font-serif text-white truncate font-normal">{item.product.name}</h4>
-                <p className="text-[10px] text-luxury-muted">100ml Extrait • Qty {item.quantity}</p>
+                <p className="text-[10px] text-luxury-muted">100ml • Qty {item.quantity}</p>
               </div>
               <div className="text-right">
                 <span className="text-white font-medium">
@@ -88,10 +88,10 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
         })}
       </div>
 
-      {/* Privilege Voucher Input */}
+      {/* Discount Code Input */}
       <div className="border-t border-luxury-border pt-4">
         <label className="block text-[10px] uppercase tracking-luxury-wide text-luxury-muted mb-1.5 font-medium">
-          Privilege Voucher Code
+          Discount Code
         </label>
         {appliedCoupon ? (
           <div className="flex items-center justify-between p-2.5 bg-luxury-gold/10 border border-luxury-gold/30 rounded text-xs">
@@ -138,7 +138,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
         )}
       </div>
 
-      {/* Financial Line Item Breakdown */}
+      {/* Price Breakdown */}
       <div className="border-t border-luxury-border pt-4 space-y-2.5 text-xs">
         <div className="flex justify-between text-luxury-muted">
           <span>Subtotal</span>
@@ -146,10 +146,10 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
         </div>
 
         <div className="flex justify-between text-luxury-muted">
-          <span>Estimated Dispatch</span>
+          <span>Delivery Fee</span>
           <span className="text-white">
             {shippingCost === 0 ? (
-              <span className="text-luxury-gold">Complimentary</span>
+              <span className="text-luxury-gold">FREE</span>
             ) : (
               formatCurrency(shippingCost)
             )}
@@ -158,13 +158,13 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
 
         {discountAmount > 0 && (
           <div className="flex justify-between text-luxury-gold">
-            <span>Privilege Discount</span>
+            <span>Discount</span>
             <span>-{formatCurrency(discountAmount)}</span>
           </div>
         )}
 
         <div className="border-t border-luxury-border pt-3 flex justify-between items-baseline">
-          <span className="font-serif text-sm text-white">Total Consideration</span>
+          <span className="font-serif text-sm text-white">Total Amount</span>
           <span className="font-serif text-lg text-luxury-gold font-normal">
             {formatCurrency(totalAmount)}
           </span>
