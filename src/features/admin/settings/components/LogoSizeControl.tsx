@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Sliders, Check } from 'lucide-react';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 
@@ -9,11 +9,11 @@ interface LogoSizeControlProps {
 }
 
 const PRESETS = [
-  { id: 'small', label: 'Small', height: 32, mobile: 26, description: 'Discreet & compact (32px)' },
-  { id: 'medium', label: 'Medium', height: 48, mobile: 34, description: 'Balanced standard (48px)' },
-  { id: 'large', label: 'Large', height: 64, mobile: 44, description: 'Prominent & elegant (64px)' },
-  { id: 'xl', label: 'Extra Large', height: 80, mobile: 52, description: 'High-impact statement (80px)' },
-  { id: 'huge', label: 'Biggest', height: 100, mobile: 64, description: 'Grand signature presence (100px)' },
+  { id: 'small', label: 'Small', height: 48, mobile: 38, description: 'Compact (48px)' },
+  { id: 'medium', label: 'Medium', height: 72, mobile: 52, description: 'Standard (72px)' },
+  { id: 'large', label: 'Large', height: 96, mobile: 68, description: 'Prominent & Bold (96px)' },
+  { id: 'xl', label: 'Extra Large', height: 120, mobile: 82, description: 'High-Impact Statement (120px)' },
+  { id: 'huge', label: 'Biggest', height: 150, mobile: 98, description: 'Grand Luxury Presence (150px)' },
 ] as const;
 
 export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
@@ -21,8 +21,8 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
   onChange,
   onCommit,
 }) => {
-  const currentHeight = appearance.logo_height || 48;
-  const currentMobileHeight = appearance.logo_mobile_height || 36;
+  const currentHeight = appearance.logo_height || 72;
+  const currentMobileHeight = appearance.logo_mobile_height || 52;
   const currentPreset = appearance.logo_size || 'medium';
   const logoUrl = appearance.logo_dark_url || appearance.logo_url;
 
@@ -46,34 +46,34 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
 
   const handleSliderChange = (height: number) => {
     let matchedPreset: 'small' | 'medium' | 'large' | 'xl' | 'huge' = 'medium';
-    if (height <= 36) matchedPreset = 'small';
-    else if (height <= 54) matchedPreset = 'medium';
-    else if (height <= 72) matchedPreset = 'large';
-    else if (height <= 90) matchedPreset = 'xl';
+    if (height <= 55) matchedPreset = 'small';
+    else if (height <= 80) matchedPreset = 'medium';
+    else if (height <= 105) matchedPreset = 'large';
+    else if (height <= 130) matchedPreset = 'xl';
     else matchedPreset = 'huge';
 
     const updated: CmsAppearanceConfig = {
       ...appearance,
       logo_height: height,
       logo_size: matchedPreset,
-      logo_mobile_height: Math.round(height * 0.65),
+      logo_mobile_height: Math.max(38, Math.round(height * 0.7)),
     };
     onChange(updated);
   };
 
   const handleSliderCommit = async (height: number) => {
     let matchedPreset: 'small' | 'medium' | 'large' | 'xl' | 'huge' = 'medium';
-    if (height <= 36) matchedPreset = 'small';
-    else if (height <= 54) matchedPreset = 'medium';
-    else if (height <= 72) matchedPreset = 'large';
-    else if (height <= 90) matchedPreset = 'xl';
+    if (height <= 55) matchedPreset = 'small';
+    else if (height <= 80) matchedPreset = 'medium';
+    else if (height <= 105) matchedPreset = 'large';
+    else if (height <= 130) matchedPreset = 'xl';
     else matchedPreset = 'huge';
 
     const updated: CmsAppearanceConfig = {
       ...appearance,
       logo_height: height,
       logo_size: matchedPreset,
-      logo_mobile_height: Math.round(height * 0.65),
+      logo_mobile_height: Math.max(38, Math.round(height * 0.7)),
     };
     setIsSaving(true);
     try {
@@ -145,11 +145,11 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-[10px] text-luxury-muted font-mono">30px (Small)</span>
+          <span className="text-[10px] text-luxury-muted font-mono">40px (Small)</span>
           <input
             type="range"
-            min={30}
-            max={110}
+            min={40}
+            max={160}
             step={2}
             value={currentHeight}
             onChange={(e) => handleSliderChange(Number(e.target.value))}
@@ -157,7 +157,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
             onTouchEnd={(e) => handleSliderCommit(Number((e.target as HTMLInputElement).value))}
             className="flex-1 accent-[#C5A880] h-1.5 bg-luxury-charcoal rounded-lg cursor-pointer"
           />
-          <span className="text-[10px] text-luxury-muted font-mono">110px (Biggest)</span>
+          <span className="text-[10px] text-luxury-muted font-mono">160px (Biggest)</span>
         </div>
       </div>
 
@@ -170,12 +170,12 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
           </span>
         </div>
 
-        <div className="bg-luxury-black/95 border border-luxury-border p-6 rounded-sm flex items-center justify-center overflow-hidden min-h-[120px] transition-all">
+        <div className="bg-luxury-black/95 border border-luxury-border p-6 rounded-sm flex items-center justify-center overflow-hidden min-h-[140px] transition-all">
           {logoUrl ? (
             <img
               src={logoUrl}
               alt="Logo Preview"
-              style={{ height: `${currentHeight}px`, maxHeight: '110px' }}
+              style={{ height: `${currentHeight}px`, maxHeight: '160px' }}
               className="w-auto max-w-full object-contain transition-all duration-300"
             />
           ) : (

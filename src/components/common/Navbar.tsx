@@ -39,11 +39,11 @@ export const Navbar: React.FC = () => {
 
   // Logo size calculation: Supports both preset scale (Small to Biggest) and fine-tuned pixel slider
   const SIZE_PRESETS: Record<string, { desktop: number; mobile: number }> = {
-    small: { desktop: 32, mobile: 26 },
-    medium: { desktop: 48, mobile: 34 },
-    large: { desktop: 64, mobile: 42 },
-    xl: { desktop: 80, mobile: 52 },
-    huge: { desktop: 100, mobile: 64 },
+    small: { desktop: 48, mobile: 38 },
+    medium: { desktop: 72, mobile: 52 },
+    large: { desktop: 96, mobile: 68 },
+    xl: { desktop: 120, mobile: 82 },
+    huge: { desktop: 150, mobile: 98 },
   };
 
   const currentSizePreset = appearance.logo_size && SIZE_PRESETS[appearance.logo_size]
@@ -142,15 +142,18 @@ export const Navbar: React.FC = () => {
                 src={logoUrl}
                 alt="Philz Signature Logo"
                 onError={() => setLogoLoadError(true)}
-                style={{
-                  height: `${mobileLogoHeight}px`,
-                  maxHeight: '120px',
-                }}
-                className="w-auto max-w-[200px] sm:max-w-[340px] sm:[height:var(--desktop-logo-h)] object-contain group-hover:opacity-90 transition-all duration-300"
+                className="brand-navbar-logo w-auto max-w-[260px] sm:max-w-[420px] object-contain group-hover:opacity-90 transition-all duration-300"
               />
               <style>{`
-                :root {
-                  --desktop-logo-h: ${desktopLogoHeight}px;
+                .brand-navbar-logo {
+                  height: ${mobileLogoHeight}px !important;
+                  max-height: 140px !important;
+                }
+                @media (min-width: 640px) {
+                  .brand-navbar-logo {
+                    height: ${desktopLogoHeight}px !important;
+                    max-height: 180px !important;
+                  }
                 }
               `}</style>
             </picture>

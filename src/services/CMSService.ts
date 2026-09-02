@@ -295,8 +295,8 @@ export class CMSService {
     button_style: 'luxury',
     site_width: 'standard',
     logo_size: 'medium',
-    logo_height: 48,
-    logo_mobile_height: 36,
+    logo_height: 72,
+    logo_mobile_height: 52,
   };
 
   private static DEFAULT_FOOTER: CmsFooterContent = {
