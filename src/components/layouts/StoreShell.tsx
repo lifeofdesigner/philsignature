@@ -10,7 +10,7 @@ export const StoreShell: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-luxury-black text-luxury-cream">
       <AnnouncementBar />
       <Navbar />
-      <main className="flex-1 pb-16 lg:pb-0">
+      <main className="flex-1 pb-[calc(4.25rem+env(safe-area-inset-bottom,0px))] lg:pb-0">
         <Outlet />
       </main>
       <Footer />

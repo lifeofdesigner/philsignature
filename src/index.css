@@ -249,6 +249,18 @@
     background: rgb(var(--luxury-gold));
   }
 
+  /* Mobile App Viewport Stability & Touch Optimization */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw;
+    width: 100%;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
 @layer utilities {
   .font-editorial {
     font-family: 'Cormorant Garamond', serif;
@@ -266,5 +278,11 @@
     background: linear-gradient(135deg, #DEC5A2 0%, #C5A880 50%, #A6885E 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
   }
 }

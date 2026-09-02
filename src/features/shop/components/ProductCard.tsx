@@ -33,7 +33,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
 
   return (
     <div
-      className="group relative bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-all duration-300 flex flex-col justify-between"
+      className="group relative bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 rounded-sm shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -51,17 +51,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10 pointer-events-none">
           {product.is_bestseller && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-gold text-black font-semibold">
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-gold text-black font-semibold rounded-xs">
               Bestseller
             </span>
           )}
           {product.is_new_arrival && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-white text-black font-semibold">
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-white text-black font-semibold rounded-xs">
               New
             </span>
           )}
           {product.fragrance_family && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-black/80 border border-luxury-border text-luxury-sand backdrop-blur-sm">
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-black/80 border border-luxury-border text-luxury-sand backdrop-blur-sm rounded-xs">
               {product.fragrance_family}
             </span>
           )}
@@ -77,13 +77,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           }}
           disabled={isToggling}
           aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-          className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-20 backdrop-blur-md ${
+          className={`absolute top-2.5 right-2.5 h-9 w-9 flex items-center justify-center rounded-full border transition-all z-20 backdrop-blur-md cursor-pointer ${
             inWishlist
-              ? 'bg-luxury-gold text-black border-luxury-gold'
+              ? 'bg-luxury-gold text-black border-luxury-gold shadow-sm'
               : 'bg-luxury-black/70 text-luxury-sand border-luxury-border hover:text-luxury-gold hover:border-luxury-gold/60'
           }`}
         >
-          <Heart className={`h-3.5 w-3.5 ${inWishlist ? 'fill-current' : ''}`} />
+          <Heart className={`h-4 w-4 ${inWishlist ? 'fill-current' : ''}`} />
         </button>
       </div>
 

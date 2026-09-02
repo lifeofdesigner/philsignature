@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Compass, Heart, ShoppingBag, User } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
@@ -52,7 +53,7 @@ export const MobileFooterNav: React.FC = () => {
   return (
     <nav
       aria-label="Mobile Navigation"
-      className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-luxury-black/95 backdrop-blur-lg border-t border-luxury-border/80 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.5)] pb-[env(safe-area-inset-bottom,0px)]"
+      className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-luxury-black/95 backdrop-blur-lg border-t border-luxury-border/80 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.5)] pb-[env(safe-area-inset-bottom,0px)] select-none"
     >
       <div className="grid grid-cols-5 h-16 max-w-lg mx-auto">
         {navItems.map((item) => {
@@ -62,22 +63,26 @@ export const MobileFooterNav: React.FC = () => {
               key={item.label}
               to={item.href}
               className={cn(
-                'relative flex flex-col items-center justify-center py-1 transition-all duration-200 select-none touch-manipulation group',
+                'relative flex flex-col items-center justify-center py-1 transition-all duration-200 select-none touch-manipulation group active:scale-95',
                 item.isActive
                   ? 'text-luxury-gold font-semibold'
                   : 'text-luxury-muted hover:text-luxury-cream'
               )}
             >
-              {/* Active Indicator Bar */}
+              {/* Active Animated Pill Indicator */}
               {item.isActive && (
-                <span className="absolute top-0 w-8 h-0.5 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(212,175,55,0.6)]" />
+                <motion.span
+                  layoutId="mobileActiveTabIndicator"
+                  className="absolute top-0 w-8 h-0.5 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(212,175,55,0.6)]"
+                  transition={{ type: 'spring', stiffness: 450, damping: 35 }}
+                />
               )}
 
               {/* Icon with Badge */}
               <div className="relative flex items-center justify-center">
                 <Icon
                   className={cn(
-                    'h-5 w-5 transition-transform duration-200 group-active:scale-90',
+                    'h-5 w-5 transition-transform duration-200',
                     item.isActive && 'stroke-[2.25] text-luxury-gold'
                   )}
                 />
