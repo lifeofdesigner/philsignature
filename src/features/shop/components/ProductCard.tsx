@@ -1,8 +1,10 @@
 ﻿import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import type { Product } from '@/types/database';
 import { useWishlist } from '@/hooks/useWishlist';
+import { LUXURY_EASE } from '@/components/common/MotionWrapper';
 
 export interface ProductCardProps {
   product: Product;
@@ -32,8 +34,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
     : null;
 
   return (
-    <div
-      className="group relative bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-all duration-300 flex flex-col justify-between"
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-30px' }}
+      transition={{ duration: 0.6, ease: LUXURY_EASE }}
+      whileHover={{ y: -4 }}
+      className="group relative bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-all duration-400 flex flex-col justify-between shadow-lg rounded-xs overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -43,7 +50,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           <img
             src={isHovered && hoverImage ? hoverImage : primaryImage || '/media/products/perfume-oils/perfume-oil-1.jpg'}
             alt={product.name}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
             loading={priority ? 'eager' : 'lazy'}
           />
         </Link>
@@ -51,12 +58,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10 pointer-events-none">
           {product.is_bestseller && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-gold text-black font-semibold">
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-gold text-black font-semibold shadow-xs">
               Bestseller
             </span>
           )}
           {product.is_new_arrival && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-white text-black font-semibold">
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-white text-black font-semibold shadow-xs">
               New
             </span>
           )}
@@ -77,7 +84,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           }}
           disabled={isToggling}
           aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-          className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-20 backdrop-blur-md ${
+          className={`absolute top-3 right-3 p-2 rounded-full border transition-all z-20 backdrop-blur-md cursor-pointer ${
             inWishlist
               ? 'bg-luxury-gold text-black border-luxury-gold'
               : 'bg-black/60 text-luxury-sand border-luxury-border hover:text-luxury-gold hover:border-luxury-gold/60'
@@ -88,12 +95,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       </div>
 
       {/* Flacon Details */}
-      <div className="p-3 sm:p-5 flex flex-col justify-between flex-grow space-y-2 sm:space-y-3">
+      <div className="p-3.5 sm:p-5 flex flex-col justify-between flex-grow space-y-2 sm:space-y-3">
         <div className="space-y-1">
           <span className="text-[8px] sm:text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
             {product.concentration || 'Perfume'} • {product.volume_ml || 100}ml
           </span>
-          <h3 className="font-serif text-sm sm:text-lg text-white font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
+          <h3 className="font-serif text-sm sm:text-base lg:text-lg text-white font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
             <Link to={`/product/${product.slug}`}>{product.name}</Link>
           </h3>
           {product.tagline && (
@@ -123,6 +130,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

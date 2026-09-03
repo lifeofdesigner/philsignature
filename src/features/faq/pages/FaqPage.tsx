@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Search, Sparkles, HelpCircle } from 'lucide-react';
 import { cmsService, CMSService, type CmsFaqItem } from '@/services/CMSService';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
+import { PageTransition, WordReveal, LUXURY_EASE } from '@/components/common/MotionWrapper';
 
 export const FaqPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -32,7 +33,7 @@ export const FaqPage: React.FC = () => {
   );
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <PageTransition className="bg-black text-white min-h-screen">
       {/* Header */}
       <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-white/10 overflow-hidden text-center">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-luxury-gold/5 blur-[140px] pointer-events-none rounded-full" />
@@ -41,25 +42,23 @@ export const FaqPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: LUXURY_EASE }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-luxury-gold/40 bg-luxury-gold/10 text-luxury-gold text-[10px] sm:text-xs uppercase tracking-[0.25em] font-medium"
           >
             <Sparkles className="h-3 w-3" />
             <span>KNOWLEDGE BASE & SUPPORT</span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+          <WordReveal
+            as="h1"
+            text={faq.title || 'FREQUENTLY ASKED QUESTIONS'}
             className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight"
-          >
-            {faq.title || 'Frequently Asked Questions'}
-          </motion.h1>
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.2, duration: 0.7, ease: LUXURY_EASE }}
             className="text-xs sm:text-sm text-white/80 font-light leading-relaxed max-w-lg mx-auto"
           >
             {faq.subtitle || 'Everything you need to know about our fragrance collections, bespoke solutions, orders and delivery.'}
@@ -74,7 +73,7 @@ export const FaqPage: React.FC = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search questions (e.g. private label, delivery, longevity)..."
-                className="w-full bg-luxury-charcoal/80 border border-white/15 focus:border-luxury-gold rounded-full pl-10 pr-4 py-2.5 text-xs text-white placeholder-white/40 focus:outline-none transition-colors"
+                className="w-full bg-neutral-900 border border-white/15 focus:border-luxury-gold rounded-full pl-10 pr-4 py-2.5 text-xs text-white placeholder-white/40 focus:outline-none transition-colors"
               />
             </div>
           </div>
@@ -91,7 +90,7 @@ export const FaqPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSearchTerm('')}
-                className="text-xs text-luxury-gold underline hover:text-luxury-gold-light"
+                className="text-xs text-luxury-gold underline hover:text-luxury-gold-light cursor-pointer"
               >
                 Clear search filter
               </button>
@@ -102,25 +101,28 @@ export const FaqPage: React.FC = () => {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.04 }}
-                  className="bg-luxury-charcoal/40 border border-white/10 rounded-sm overflow-hidden transition-all duration-300 hover:border-luxury-gold/30"
+                  transition={{ duration: 0.5, delay: index * 0.04, ease: LUXURY_EASE }}
+                  className="border border-white/10 rounded-sm bg-neutral-950/60 overflow-hidden hover:border-luxury-gold/40 transition-colors"
                 >
                   <button
                     type="button"
                     onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 cursor-pointer"
+                    className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer"
+                    aria-expanded={isOpen}
                   >
-                    <span className="font-serif text-base sm:text-lg text-white font-normal leading-snug">
+                    <span className="font-serif text-base sm:text-lg text-white font-normal pr-2">
                       {item.question}
                     </span>
-                    <ChevronDown
-                      className={`h-4 w-4 text-luxury-gold shrink-0 transition-transform duration-300 ${
-                        isOpen ? 'rotate-180' : ''
-                      }`}
-                    />
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.3, ease: LUXURY_EASE }}
+                      className="shrink-0 text-luxury-gold"
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </motion.div>
                   </button>
 
                   <AnimatePresence initial={false}>
@@ -129,9 +131,10 @@ export const FaqPage: React.FC = () => {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.35, ease: LUXURY_EASE }}
+                        className="overflow-hidden"
                       >
-                        <div className="px-5 pb-6 sm:px-6 sm:pb-6 text-xs sm:text-sm text-white/80 font-light leading-relaxed border-t border-white/5 pt-4">
+                        <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-white/75 font-light leading-relaxed border-t border-white/5">
                           {item.answer}
                         </div>
                       </motion.div>
@@ -143,6 +146,6 @@ export const FaqPage: React.FC = () => {
           )}
         </div>
       </section>
-    </div>
+    </PageTransition>
   );
 };

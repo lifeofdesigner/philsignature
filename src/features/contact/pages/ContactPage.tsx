@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { cmsService, CMSService, type CmsInquiryPillar } from '@/services/CMSService';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
+import { PageTransition, WordReveal, FadeIn, LUXURY_EASE } from '@/components/common/MotionWrapper';
 
 export const ContactPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -64,7 +65,7 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <PageTransition className="bg-black text-white min-h-screen">
       {/* Hero Header */}
       <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-white/10 overflow-hidden text-center">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-luxury-gold/5 blur-[140px] pointer-events-none rounded-full" />
@@ -73,24 +74,22 @@ export const ContactPage: React.FC = () => {
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: LUXURY_EASE }}
             className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-luxury-gold font-medium block"
           >
             ✦ CONCIERGE & BESPOKE SERVICES
           </motion.span>
           
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+          <WordReveal
+            as="h1"
+            text={contact.title || "LET'S CREATE YOUR SIGNATURE"}
             className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight"
-          >
-            {contact.title || "LET'S CREATE YOUR SIGNATURE"}
-          </motion.h1>
+          />
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.2, duration: 0.7, ease: LUXURY_EASE }}
             className="text-xs sm:text-sm text-white/80 font-light leading-relaxed max-w-xl mx-auto"
           >
             {contact.subtitle || "Whether you're looking for your next fragrance, planning a corporate gift project or interested in creating your own fragrance brand, we'd love to hear from you."}
@@ -99,23 +98,23 @@ export const ContactPage: React.FC = () => {
       </section>
 
       {/* 3 Inquiry Pillars */}
-      <section className="py-16 sm:py-20 border-b border-white/10 bg-luxury-charcoal/40">
+      <section className="py-16 sm:py-20 border-b border-white/10 bg-neutral-950/60">
         <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {pillars.map((pillar, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-black/60 border border-white/10 rounded-sm p-6 sm:p-8 flex flex-col justify-between hover:border-luxury-gold/50 transition-all group shadow-xl"
+                transition={{ duration: 0.7, delay: idx * 0.12, ease: LUXURY_EASE }}
+                className="bg-black border border-white/10 rounded-sm p-6 sm:p-8 flex flex-col justify-between hover:border-luxury-gold/50 transition-all group shadow-xl"
               >
                 <div className="space-y-3">
-                  <div className="h-9 w-9 rounded-full bg-luxury-gold/10 border border-luxury-gold/30 flex items-center justify-center text-luxury-gold">
+                  <div className="h-9 w-9 rounded-full bg-luxury-gold/10 border border-luxury-gold/30 flex items-center justify-center text-luxury-gold group-hover:scale-105 transition-transform">
                     <Sparkles className="h-4 w-4" />
                   </div>
-                  <h3 className="font-serif text-lg sm:text-xl text-white font-normal">
+                  <h3 className="font-serif text-lg sm:text-xl text-white font-normal group-hover:text-luxury-gold transition-colors">
                     {pillar.title}
                   </h3>
                   <p className="text-xs text-white/70 font-light leading-relaxed">
@@ -130,7 +129,7 @@ export const ContactPage: React.FC = () => {
                     className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-white/10 group-hover:bg-luxury-gold group-hover:text-black text-white text-xs uppercase tracking-wider font-semibold transition-all border border-white/15 group-hover:border-luxury-gold cursor-pointer"
                   >
                     <span>{pillar.button_text}</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </motion.div>
@@ -144,7 +143,7 @@ export const ContactPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* General Enquiries Column */}
-            <div className="space-y-8 bg-luxury-charcoal/50 border border-white/10 rounded-sm p-8 shadow-xl">
+            <FadeIn direction="up" distance={20} className="space-y-8 bg-neutral-950/80 border border-white/10 rounded-sm p-8 shadow-xl">
               <div>
                 <span className="text-[10px] uppercase tracking-widest text-luxury-gold font-medium block mb-1">
                   DIRECT CONTACT
@@ -204,10 +203,10 @@ export const ContactPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </FadeIn>
 
             {/* Direct Message Form */}
-            <div className="lg:col-span-2 bg-luxury-charcoal/30 border border-white/10 rounded-sm p-8 shadow-xl">
+            <FadeIn direction="up" distance={20} delay={0.15} className="lg:col-span-2 bg-neutral-950/60 border border-white/10 rounded-sm p-8 shadow-xl">
               <h3 className="font-serif text-2xl text-white mb-6 font-normal">
                 Send a Message
               </h3>
@@ -271,17 +270,17 @@ export const ContactPage: React.FC = () => {
                     variant="luxury"
                     size="lg"
                     disabled={isSubmitting}
-                    className="w-full sm:w-auto gap-2"
+                    className="w-full sm:w-auto gap-2 cursor-pointer"
                   >
                     <Send className="h-4 w-4" />
                     <span>{isSubmitting ? 'Transmitting...' : 'Transmit Message'}</span>
                   </Button>
                 </form>
               )}
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
-    </div>
+    </PageTransition>
   );
 };

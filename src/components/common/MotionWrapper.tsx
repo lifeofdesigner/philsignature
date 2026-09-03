@@ -1,6 +1,10 @@
 import React from 'react';
 import { motion, type Variants } from 'framer-motion';
 
+// Luxury Haute Parfumerie Easing Curves
+export const LUXURY_EASE = [0.16, 1, 0.3, 1] as const;
+export const LUXURY_SLOW_EASE = [0.22, 1, 0.36, 1] as const;
+
 export interface FadeInProps {
   children: React.ReactNode;
   delay?: number;
@@ -15,8 +19,8 @@ export const FadeIn: React.FC<FadeInProps> = ({
   children,
   delay = 0,
   direction = 'up',
-  distance = 20,
-  duration = 0.6,
+  distance = 24,
+  duration = 0.7,
   className,
   viewportOnce = true,
 }) => {
@@ -40,16 +44,110 @@ export const FadeIn: React.FC<FadeInProps> = ({
     <motion.div
       initial={{ opacity: 0, ...getInitialPosition() }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: viewportOnce, margin: '-30px' }}
+      viewport={{ once: viewportOnce, margin: '-40px' }}
       transition={{
         duration,
         delay,
-        ease: [0.22, 1, 0.36, 1],
+        ease: LUXURY_EASE,
       }}
       className={className}
     >
       {children}
     </motion.div>
+  );
+};
+
+export interface BlurRevealProps {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+  className?: string;
+}
+
+export const BlurReveal: React.FC<BlurRevealProps> = ({
+  children,
+  delay = 0,
+  duration = 0.8,
+  className,
+}) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, filter: 'blur(10px)', y: 12 }}
+      whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{
+        duration,
+        delay,
+        ease: LUXURY_EASE,
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export interface WordRevealProps {
+  text: string;
+  className?: string;
+  delay?: number;
+  staggerDelay?: number;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span';
+}
+
+export const WordReveal: React.FC<WordRevealProps> = ({
+  text,
+  className = '',
+  delay = 0,
+  staggerDelay = 0.04,
+  as: Component = 'span',
+}) => {
+  const words = text.split(' ');
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: staggerDelay,
+        delayChildren: delay,
+      },
+    },
+  };
+
+  const wordVariants: Variants = {
+    hidden: { opacity: 0, y: 18, filter: 'blur(4px)' },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.65,
+        ease: LUXURY_EASE,
+      },
+    },
+  };
+
+  const MotionComponent = motion[Component as 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'span'] || motion.span;
+
+  return (
+    <MotionComponent
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-40px' }}
+      className={`inline-block ${className}`}
+    >
+      {words.map((word, index) => (
+        <motion.span
+          key={`${word}-${index}`}
+          variants={wordVariants}
+          className="inline-block mr-[0.26em] last:mr-0"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </MotionComponent>
   );
 };
 
@@ -63,8 +161,8 @@ export interface StaggerContainerProps {
 
 export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   children,
-  staggerDelay = 0.08,
-  delayChildren = 0.05,
+  staggerDelay = 0.1,
+  delayChildren = 0.06,
   className,
   viewportOnce = true,
 }) => {
@@ -101,7 +199,7 @@ export interface StaggerItemProps {
 export const StaggerItem: React.FC<StaggerItemProps> = ({
   children,
   className,
-  distance = 16,
+  distance = 20,
 }) => {
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: distance },
@@ -109,8 +207,8 @@ export const StaggerItem: React.FC<StaggerItemProps> = ({
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 0.7,
+        ease: LUXURY_EASE,
       },
     },
   };
@@ -133,10 +231,10 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 12, filter: 'blur(3px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      exit={{ opacity: 0, y: -10, filter: 'blur(3px)' }}
+      transition={{ duration: 0.45, ease: LUXURY_EASE }}
       className={className}
     >
       {children}
