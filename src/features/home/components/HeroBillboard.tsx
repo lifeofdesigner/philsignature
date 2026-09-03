@@ -175,7 +175,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
       </AnimatePresence>
 
       {/* Main Editorial Content & Floating Product Card Row (ÁRUM Framer Architecture) */}
-      <div className="relative z-20 container mx-auto px-6 sm:px-12 lg:px-16 pb-16 sm:pb-24 pt-32 w-full flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+      <div className="relative z-20 container mx-auto px-5 sm:px-12 lg:px-16 pb-12 sm:pb-20 pt-24 sm:pt-32 w-full flex flex-col md:flex-row items-start md:items-end justify-between gap-6 sm:gap-8">
         {/* Bottom-Left Editorial Typography */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -184,7 +184,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -direction * 16 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-xl text-left space-y-5"
+            className="max-w-xl text-left space-y-3.5 sm:space-y-5"
           >
             {/* Badge */}
             {currentSlide.badge && (
@@ -192,7 +192,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="inline-block text-[11px] sm:text-xs uppercase tracking-luxury-wide font-medium text-luxury-gold"
+                className="inline-block text-[10px] sm:text-xs uppercase tracking-luxury-wide font-medium text-luxury-gold drop-shadow-sm"
               >
                 ✦ {currentSlide.badge}
               </motion.span>
@@ -203,7 +203,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight leading-[1.12] drop-shadow-md"
+              className="font-serif text-2xl sm:text-4xl lg:text-6xl text-white font-normal tracking-tight leading-[1.15] drop-shadow-md"
             >
               {currentSlide.headline}
             </motion.h1>
@@ -214,7 +214,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-xs sm:text-sm lg:text-base text-white/80 font-light max-w-lg leading-relaxed drop-shadow-sm"
+                className="text-[11px] sm:text-sm lg:text-base text-white/85 font-light max-w-lg leading-relaxed line-clamp-2 sm:line-clamp-none drop-shadow-sm"
               >
                 {currentSlide.subtitle}
               </motion.p>
@@ -225,13 +225,13 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="pt-2 flex items-center gap-4"
+              className="pt-1 sm:pt-2 flex items-center gap-4"
             >
               <Link to={currentSlide.primary_cta_url || '/shop'}>
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  className="px-7 py-3 rounded-xs border border-white/40 bg-white/10 hover:bg-white hover:text-black hover:border-white backdrop-blur-md text-white text-xs font-semibold uppercase tracking-luxury transition-all duration-300 shadow-lg cursor-pointer"
+                  className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-xs border border-white/40 bg-white/10 hover:bg-white hover:text-black hover:border-white backdrop-blur-md text-white text-xs font-semibold uppercase tracking-luxury transition-all duration-300 shadow-lg cursor-pointer"
                 >
                   {currentSlide.primary_cta_text || 'Shop Now'}
                 </motion.button>
@@ -240,7 +240,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Bottom-Right Floating Product Spotlight Card (Signature ÁRUM Framer Feature) */}
+        {/* Bottom-Right Floating Product Spotlight Card (Hidden on extra small mobile, visible on tablet/desktop) */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`product-card-${currentSlide.id}`}
@@ -248,7 +248,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 20, scale: 0.95 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="w-full sm:w-auto self-stretch sm:self-auto"
+            className="hidden md:block self-auto shrink-0"
           >
             <Link
               to={currentSlide.featured_product_url || currentSlide.primary_cta_url || '/shop'}

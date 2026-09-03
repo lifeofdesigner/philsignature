@@ -15,7 +15,7 @@ export const BrandManifestoBanner: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-luxury-gold font-medium block"
         >
-          ? THE PHILZ PHILOSOPHY
+          ✦ THE PHILZ PHILOSOPHY
         </motion.span>
 
         <motion.p
