@@ -9,6 +9,7 @@ import { ScentsFormulaSection } from '../components/ScentsFormulaSection';
 import { BrandStorySection } from '../components/BrandStorySection';
 import { ClientTestimonials } from '../components/ClientTestimonials';
 import { NewsletterSection } from '../components/NewsletterSection';
+import { InstagramFeedSection } from '../components/InstagramFeedSection';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { cn } from '@/lib/utils';
@@ -82,6 +83,12 @@ export const HomePage: React.FC = () => {
         return (
           <div key={section.id} className={cn(spacingClasses, bgClasses)}>
             <ClientTestimonials />
+          </div>
+        );
+      case 'instagram':
+        return (
+          <div key={section.id} className={cn(spacingClasses, bgClasses)}>
+            <InstagramFeedSection />
           </div>
         );
       case 'newsletter':

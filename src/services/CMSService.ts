@@ -101,9 +101,31 @@ export type CmsHomepageSectionType =
   | 'featured_products'
   | 'brand_story'
   | 'testimonials'
+  | 'instagram'
   | 'newsletter'
   | 'banner'
   | 'custom_html';
+
+export interface CmsInstagramPost {
+  id: string;
+  image_url: string;
+  caption?: string;
+  likes_count?: number;
+  comments_count?: number;
+  post_url?: string;
+}
+
+export interface CmsInstagramSection {
+  enabled: boolean;
+  title: string;
+  subtitle?: string;
+  handle: string;
+  profile_url: string;
+  layout: 'slider' | 'grid';
+  post_count: number;
+  posts: CmsInstagramPost[];
+  status?: CmsPublishStatus;
+}
 
 export interface CmsHomepageSection {
   id: string;
@@ -288,7 +310,68 @@ export class CMSService {
     quote: 'Perfume is more than just a scent; it is a sign of confidence, presence, and personal style.',
     philosophy: 'PHILZ SIGNATURE was created to bring you authentic luxury perfumes. Every bottle is made with high-concentration perfume oils, ensuring your scent lasts all day and leaves a lasting impression.',
     sourcing: 'From rare Cambodian woods to the rose fields of Taif and fresh Mediterranean bergamot, our ingredients are carefully selected from the finest sources around the world.',
-    image1_url: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1200&q=85',
+    image1_url: '/media/banners/banner-4.jpg',
+  };
+
+  public static DEFAULT_INSTAGRAM: CmsInstagramSection = {
+    enabled: true,
+    title: 'Follow Our Olfactory Journey',
+    subtitle: 'Behind the atelier, seasonal harvests, and haute fragrance moments.',
+    handle: '@philzsignature',
+    profile_url: 'https://instagram.com/philzsignature',
+    layout: 'slider',
+    post_count: 6,
+    posts: [
+      {
+        id: 'insta-1',
+        image_url: '/media/products/perfume-oils/perfume-oil-1.jpg',
+        caption: 'Pure botanical essence extracted in small batches. Our signature Perfume Body Oil on rough travertine. ✨ #PhilzSignature #HauteParfumerie',
+        likes_count: 428,
+        comments_count: 32,
+        post_url: 'https://instagram.com/philzsignature',
+      },
+      {
+        id: 'insta-2',
+        image_url: '/media/products/diffuser-candles/diffuser-candle-1.jpg',
+        caption: 'Elevate your sanctuary with our slow-burning coconut-apricot wax candles and natural rattan reed diffusers. 🕯️ #HomeFragrance #LuxuryLiving',
+        likes_count: 592,
+        comments_count: 45,
+        post_url: 'https://instagram.com/philzsignature',
+      },
+      {
+        id: 'insta-3',
+        image_url: '/media/products/perfume-oils/perfume-oil-6.jpg',
+        caption: 'Oud Royal Extrait: 25-year aged wild agarwood with amber and Damascus rose. The sovereign statement. 👑 #OudEdition #NicheFragrance',
+        likes_count: 814,
+        comments_count: 67,
+        post_url: 'https://instagram.com/philzsignature',
+      },
+      {
+        id: 'insta-4',
+        image_url: '/media/lifestyle/lifestyle-1.jpg',
+        caption: 'Evening rituals: Warm vanilla, smoked amber, and quiet reflection. 🌙 #FragranceRoutine #SelfCareLuxury',
+        likes_count: 349,
+        comments_count: 21,
+        post_url: 'https://instagram.com/philzsignature',
+      },
+      {
+        id: 'insta-5',
+        image_url: '/media/products/diffuser-candles/diffuser-candle-3.jpg',
+        caption: 'Continuous diffusion of pure botanical oils. Effortless elegance for your living spaces. 🌿 #AromaSanctuary #AtelierPhilz',
+        likes_count: 512,
+        comments_count: 38,
+        post_url: 'https://instagram.com/philzsignature',
+      },
+      {
+        id: 'insta-6',
+        image_url: '/media/banners/banner-4.jpg',
+        caption: 'The Complete Wardrobe: Handcrafted extraits, silken body elixirs, and artisanal candles. #TheCollection #PhilzSignature',
+        likes_count: 963,
+        comments_count: 84,
+        post_url: 'https://instagram.com/philzsignature',
+      },
+    ],
+    status: 'published',
   };
 
   public static DEFAULT_HOMEPAGE_SECTIONS: CmsHomepageSection[] = [
@@ -297,7 +380,8 @@ export class CMSService {
     { id: 'sec-featured', type: 'featured_products', title: 'Featured Extrait Creations', is_enabled: true, order: 3, spacing: 'normal', background: 'charcoal', animation: 'fade_in', status: 'published' },
     { id: 'sec-story', type: 'brand_story', title: 'Brand Heritage & Philosophy', is_enabled: true, order: 4, spacing: 'generous', background: 'default', animation: 'fade_in', status: 'published' },
     { id: 'sec-testimonials', type: 'testimonials', title: 'Client Acclaim & Reviews', is_enabled: true, order: 5, spacing: 'normal', background: 'black', animation: 'slide_up', status: 'published' },
-    { id: 'sec-newsletter', type: 'newsletter', title: 'VIP Scent Club Invitation', is_enabled: true, order: 6, spacing: 'compact', background: 'charcoal', animation: 'fade_in', status: 'published' },
+    { id: 'sec-instagram', type: 'instagram', title: 'Instagram Feed Section', is_enabled: true, order: 6, spacing: 'normal', background: 'default', animation: 'fade_in', status: 'published' },
+    { id: 'sec-newsletter', type: 'newsletter', title: 'VIP Scent Club Invitation', is_enabled: true, order: 7, spacing: 'compact', background: 'charcoal', animation: 'fade_in', status: 'published' },
   ];
 
   public static DEFAULT_NAVIGATION_MENU: CmsMenuItem[] = [
@@ -468,6 +552,23 @@ export class CMSService {
     } catch {
       return CMSService.DEFAULT_STORY;
     }
+  }
+
+  async getInstagramSection(): Promise<CmsInstagramSection> {
+    try {
+      const row = await this.repo.getSection('instagram_feed');
+      if (!row || !row.content) return CMSService.DEFAULT_INSTAGRAM;
+      return { ...CMSService.DEFAULT_INSTAGRAM, ...(row.content as Partial<CmsInstagramSection>) };
+    } catch {
+      return CMSService.DEFAULT_INSTAGRAM;
+    }
+  }
+
+  async updateInstagramSection(content: Partial<CmsInstagramSection>): Promise<CmsInstagramSection> {
+    const current = await this.getInstagramSection();
+    const updated = { ...current, ...content };
+    await this.updateSectionContent('instagram_feed', 'marketing', 'Instagram Social Sanctuary', updated as unknown as Record<string, unknown>);
+    return updated;
   }
 
   async getFooterSection(): Promise<CmsFooterContent> {
