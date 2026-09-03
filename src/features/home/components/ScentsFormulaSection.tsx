@@ -1,33 +1,44 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { cmsService, CMSService } from '@/services/CMSService';
 
 export const ScentsFormulaSection: React.FC = () => {
+  const { data: storyData } = useQuery({
+    queryKey: ['scents-formula-story'],
+    queryFn: () => cmsService.getStorySection(),
+    staleTime: 1000 * 10,
+    refetchOnWindowFocus: true,
+  });
+
+  const story = storyData || CMSService.DEFAULT_STORY;
+
   const pillars = [
     {
       numeral: 'I.',
-      title: 'Rooted In Nature',
+      title: 'Fragrance Should Be Personal',
       description:
-        'Pure botanical essences, rare wild-harvested resins, and sustainably sourced florals distilled at peak vitality.',
+        'Scent is one of the most powerful ways to express individuality. Everyone deserves to discover a fragrance that feels truly distinctive and personal.',
     },
     {
       numeral: 'II.',
-      title: 'Crafted To Last',
+      title: 'Quality Should Be Intentional',
       description:
-        'Concentrated Extrait de Parfum formulation ensuring rich olfactory persistence lasting 18+ hours without fading.',
+        'From high-concentration perfume oils to rich home fragrances, our products are crafted with the finest fragrance oils for depth and remarkable sillage.',
     },
     {
       numeral: 'III.',
-      title: 'Combined Perfect Ingredients',
+      title: 'Every Experience Should Be Memorable',
       description:
-        'Harmonized oils sourced directly from the perfume capitals of Grasse, Madagascar, and the Arabian Peninsula.',
+        'From personal daily wear to customized corporate gifts and private-label collections, every scent is designed to leave a lasting impression.',
     },
     {
       numeral: 'IV.',
-      title: 'Built To Embrace Elegance',
+      title: 'Behind Every Signature Is A Story',
       description:
-        'Architected to project a sophisticated, memorable sillage that commands quiet respect and deep admiration.',
+        'Founded in 2018 by Philz the Perfumer, our journey continues to be guided by curiosity, creativity, and a passion for artisanal scent experiences.',
     },
   ];
 
@@ -44,7 +55,7 @@ export const ScentsFormulaSection: React.FC = () => {
               className="text-[10px] sm:text-xs uppercase tracking-luxury-wide text-luxury-gold font-medium flex items-center gap-1.5"
             >
               <Sparkles className="h-3 w-3" />
-              <span>SCENTS FORMULA</span>
+              <span>PHILOSOPHY & FORMULA</span>
             </motion.span>
 
             <motion.h2
@@ -54,7 +65,7 @@ export const ScentsFormulaSection: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="font-serif text-3xl sm:text-5xl text-white font-normal leading-[1.15] tracking-tight"
             >
-              Formulated for depth, intimacy and endurance.
+              A signature is something that belongs to you.
             </motion.h2>
 
             <motion.p
@@ -62,9 +73,10 @@ export const ScentsFormulaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-xs sm:text-sm lg:text-base text-white/70 font-light leading-relaxed"
+              className="text-xs sm:text-sm text-white/70 font-light leading-relaxed max-w-md"
             >
-              Philz Signature is formulated for depth and endurance. The scent does not announce itself loudly, then disappear. It settles into the skin slowly, staying close for hours, like something that truly belongs there.
+              {story.body_paragraphs?.[1] ||
+                'What began with a focus on personal fragrance has evolved into a broader scent lifestyle brand offering perfumes, perfume oils, home fragrances, gifting solutions and private-label services.'}
             </motion.p>
 
             <motion.div
@@ -72,39 +84,41 @@ export const ScentsFormulaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="pt-4"
+              className="pt-2"
             >
-              <Link to="/about">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold hover:text-white transition-colors font-medium border-b border-luxury-gold pb-1 group cursor-pointer"
-                >
-                  <span>Explore The Artisanal Process</span>
-                  <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
-                </button>
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold hover:text-white transition-colors group font-medium"
+              >
+                <span>Read Meet Philz The Perfumer</span>
+                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
           </div>
 
-          {/* Right Column: 4 Roman Numeral Pillars */}
-          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* Right Column: 4 Authentic Philosophy Pillars */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
             {pillars.map((pillar, idx) => (
               <motion.div
-                key={pillar.numeral}
+                key={pillar.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="p-6 sm:p-8 bg-neutral-950/80 border border-white/10 hover:border-luxury-gold/50 rounded-xs transition-all duration-300 shadow-xl space-y-3.5 group"
+                className="p-6 sm:p-8 bg-neutral-950/80 border border-white/10 hover:border-luxury-gold/50 rounded-sm transition-all duration-300 space-y-4 shadow-lg group"
               >
-                <span className="font-serif text-2xl sm:text-3xl text-luxury-gold font-light block group-hover:scale-105 transition-transform duration-300 origin-left">
-                  {pillar.numeral}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-serif text-2xl sm:text-3xl text-luxury-gold/60 group-hover:text-luxury-gold font-light transition-colors">
+                    {pillar.numeral}
+                  </span>
+                  <div className="h-[1px] w-12 bg-white/10 group-hover:bg-luxury-gold/40 transition-colors" />
+                </div>
+
                 <h3 className="font-serif text-lg sm:text-xl text-white font-normal group-hover:text-luxury-gold transition-colors">
                   {pillar.title}
                 </h3>
-                <p className="text-xs text-white/60 font-light leading-relaxed">
+
+                <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
                   {pillar.description}
                 </p>
               </motion.div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Mail, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,20 +18,20 @@ export const NewsletterSection: React.FC = () => {
       <div className="container mx-auto px-4 max-w-xl space-y-6">
         <div className="space-y-2">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Stay In The Loop
+            ✦ PHILZ SIGNATURE PRIVILEGED CIRCLE
           </span>
           <h2 className="font-serif text-3xl text-luxury-cream font-normal">
-            Join Our Newsletter
+            Discover New Scent Experiences
           </h2>
           <p className="text-xs text-luxury-sand font-light leading-relaxed">
-            Be the first to know about new perfumes, special discounts, and exclusive offers.
+            Receive early announcements on new fragrance releases, home scent collections, and corporate gifting portfolios.
           </p>
         </div>
 
         {isSubmitted ? (
           <div className="p-4 bg-luxury-card border border-luxury-gold/50 rounded-sm shadow-xs flex items-center justify-center gap-2 text-xs text-luxury-gold">
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-            <span className="font-medium">You are now subscribed. Thank you!</span>
+            <span className="font-medium">You are now subscribed to Philz Signature. Thank you!</span>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
@@ -53,4 +53,3 @@ export const NewsletterSection: React.FC = () => {
     </section>
   );
 };
-

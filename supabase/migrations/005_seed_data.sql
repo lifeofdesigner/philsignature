@@ -1,6 +1,6 @@
--- ==============================================================================
+﻿-- ==============================================================================
 -- PHILZ SIGNATURE — 005_seed_data.sql
--- Authentic Luxury Seed Data: Catalog, Collections, CMS & Settings
+-- Authentic Client Seed Data: Catalog, Collections, CMS & Settings
 -- ==============================================================================
 
 -- ------------------------------------------------------------------------------
@@ -9,11 +9,11 @@
 INSERT INTO categories (id, name, slug, description, display_order, is_active)
 VALUES
     ('c1111111-1111-1111-1111-111111111111', 'Perfume Body Oils', 'perfume-body-oils', 'High-concentration botanical perfume body oils in Masculine, Feminine, and Unisex profiles.', 1, true),
-    ('c2222222-2222-2222-2222-222222222222', 'Extrait de Parfum', 'extrait-de-parfum', 'Ultra-concentrated pure perfume extraits (25%-35% perfume oil).', 2, true),
-    ('c3333333-3333-3333-3333-333333333333', 'Reed Diffusers', 'reed-diffusers', 'Artisanal natural rattan reed diffusers with slow botanical diffusion.', 3, true),
-    ('c4444444-4444-4444-4444-444444444444', 'Scented Candles', 'scented-candles', 'Slow-burning luxury scented candles in matte black vessels with gold lettering.', 4, true),
+    ('c2222222-2222-2222-2222-222222222222', 'Extrait de Parfum', 'extrait-de-parfum', 'Ultra-concentrated pure perfume extraits crafted for long-lasting sillage.', 2, true),
+    ('c3333333-3333-3333-3333-333333333333', 'Reed Diffusers', 'reed-diffusers', 'Artisanal natural rattan reed diffusers for continuous ambient fragrance.', 3, true),
+    ('c4444444-4444-4444-4444-444444444444', 'Scented Candles', 'scented-candles', 'Slow-burning luxury scented candles in premium vessels.', 4, true),
     ('c5555555-5555-5555-5555-555555555555', 'Room Spray', 'room-spray', 'Instant atmosphere transformations with fine fragrance room mist.', 5, true),
-    ('c6666666-6666-6666-6666-666666666666', 'Home Fragrance', 'home-fragrance', 'Curated home fragrance sanctuary sets, diffusers, and luxury candles.', 6, true)
+    ('c6666666-6666-6666-6666-666666666666', 'Home Fragrance', 'home-fragrance', 'Curated home fragrance living sets, diffusers, candles, and room sprays.', 6, true)
 ON CONFLICT (id) DO NOTHING;
 
 -- ------------------------------------------------------------------------------
@@ -21,14 +21,14 @@ ON CONFLICT (id) DO NOTHING;
 -- ------------------------------------------------------------------------------
 INSERT INTO collections (id, name, slug, tagline, description, is_featured, display_order, is_active)
 VALUES
-    ('b1111111-1111-1111-1111-111111111111', 'The Private Reserve', 'private-reserve', 'Limited harvest extraits of extraordinary rarity and depth.', 'Master-distilled botanical essences aged in French oak barrels.', true, 1, true),
-    ('b2222222-2222-2222-2222-222222222222', 'The Oud Edition', 'oud-edition', 'Sovereign extractions of wild agarwood and dark resins.', 'Sourced sustainably from deep forestry distillations in Cambodia and Assam.', true, 2, true),
-    ('b3333333-3333-3333-3333-333333333333', 'Signature Classics', 'signature-classics', 'The foundational olfactory wardrobe of the House.', 'Iconic flacons embodying timeless luxury and individual presence.', true, 3, true),
-    ('b4444444-4444-4444-4444-444444444444', 'Discovery Portfolios', 'discovery-sets', 'Curated miniature discovery flacons for the discerning collector.', 'Miniature coffrets allowing sensory exploration of the complete house.', false, 4, true)
+    ('b1111111-1111-1111-1111-111111111111', 'Perfume Body Oils', 'perfume-body-oils', 'A signature is something that belongs to you.', 'High-concentration perfume body oils in Masculine, Feminine, and Unisex profiles.', true, 1, true),
+    ('b2222222-2222-2222-2222-222222222222', 'Signature Collection', 'signature-collection', 'Behind every signature is a story.', 'Artisanal perfumes and extraits created to leave a lasting impression.', true, 2, true),
+    ('b3333333-3333-3333-3333-333333333333', 'Home Fragrance & Living', 'home-fragrance', 'Transform your sanctuary with intentional scents.', 'Artisanal reed diffusers, scented candles, and room sprays for elegant interiors.', true, 3, true),
+    ('b4444444-4444-4444-4444-444444444444', 'Private Label & Gifting', 'private-label-gifting', 'Customized fragrance solutions for brands and organizations.', 'Bespoke fragrance development, corporate hampers, and branded products.', false, 4, true)
 ON CONFLICT (id) DO NOTHING;
 
 -- ------------------------------------------------------------------------------
--- 3. SIGNATURE PRODUCTS SEED (7 Signature Extraits)
+-- 3. SIGNATURE PRODUCTS SEED
 -- ------------------------------------------------------------------------------
 INSERT INTO products (
     id, name, slug, tagline, description, details, sku, price, sale_price,
@@ -37,193 +37,193 @@ INSERT INTO products (
     is_featured, is_bestseller, is_new_arrival, is_trending,
     meta_title, meta_description
 ) VALUES
--- 1. Beyond You
+-- 1. Perfume Body Oil (Masculine)
 (
     'a1111111-1111-1111-1111-111111111111',
-    'Beyond You',
-    'beyond-you',
-    'An intoxicating testament to sovereign presence and quiet audacity.',
-    'Beyond You is an avant-garde extrait de parfum engineered around wild Cambodian oud, aged leather, and Damascus rose. A radiant opening of sun-drenched bergamot and cracked pink peppercorn yields to an opulent balsamic heart before lingering on ancient ambergris and smoked resin.',
-    'Pure Extrait de Parfum concentration (32%). Macerated for six months. Hand-poured in heavy faceted glass with a solid brass weighted cap.',
-    'PS-EXT-BY01',
-    185000.00,
+    'Perfume Body Oil (Masculine)',
+    'perfume-body-oil-masculine',
+    'Rich, distinguished woods and warm amber for a commanding presence.',
+    'A high-concentration botanical perfume body oil crafted with the finest fragrance oils. Formulated for long-lasting sillage that evolves beautifully throughout the day.',
+    'Pure Perfume Oil concentration. Handcrafted in Lagos, Nigeria. Nourishing botanical base designed for direct skin application.',
+    'PS-OIL-MAS01',
+    45000.00,
     NULL,
-    45,
-    100,
-    'Extrait de Parfum',
+    50,
+    30,
+    'Perfume Oil',
+    'PHILZ SIGNATURE',
+    'c1111111-1111-1111-1111-111111111111',
+    'b1111111-1111-1111-1111-111111111111',
+    'Woody',
+    ARRAY['Bergamot', 'Cardamom', 'Pink Pepper'],
+    ARRAY['Cedarwood', 'Smoked Leather', 'Nutmeg'],
+    ARRAY['Aged Oud', 'Amber', 'Warm Musk'],
+    'published',
+    true, true, false, true,
+    'Perfume Body Oil (Masculine) | PHILZ SIGNATURE',
+    'Discover our Masculine Perfume Body Oil: Handcrafted with premium fragrance oils for a lasting impression.'
+),
+
+-- 2. Perfume Body Oil (Feminine)
+(
+    'a2222222-2222-2222-2222-222222222222',
+    'Perfume Body Oil (Feminine)',
+    'perfume-body-oil-feminine',
+    'Radiant floral amber and soft vanilla crafted with delicate grace.',
+    'An exquisite feminine perfume body oil crafted for an intimate, lingering scent experience. Smooth, radiant, and undeniably memorable.',
+    'Pure Perfume Oil concentration. Blended with skin-loving botanical carriers for exceptional longevity.',
+    'PS-OIL-FEM02',
+    45000.00,
+    NULL,
+    50,
+    30,
+    'Perfume Oil',
+    'PHILZ SIGNATURE',
+    'c1111111-1111-1111-1111-111111111111',
+    'b1111111-1111-1111-1111-111111111111',
+    'Floral',
+    ARRAY['Sweet Pear', 'Mandarin Zest', 'Orange Blossom'],
+    ARRAY['Jasmine Sambac', 'Rose Damascena', 'Creamy Iris'],
+    ARRAY['Madagascar Vanilla', 'White Musk', 'Golden Amber'],
+    'published',
+    true, true, false, true,
+    'Perfume Body Oil (Feminine) | PHILZ SIGNATURE',
+    'Discover our Feminine Perfume Body Oil: Delicate florals, amber, and vanilla in pure oil concentration.'
+),
+
+-- 3. Perfume Body Oil (Unisex)
+(
+    'a3333333-3333-3333-3333-333333333333',
+    'Perfume Body Oil (Unisex)',
+    'perfume-body-oil-unisex',
+    'A signature is something that belongs to you. Designed for everyone.',
+    'A balanced unisex perfume body oil featuring harmonious spicy woods, crisp florals, and warm resinous amber. Designed to be enjoyed by any fragrance lover.',
+    'Pure Perfume Oil concentration. Universal scent profile suitable for every occasion and mood.',
+    'PS-OIL-UNI03',
+    45000.00,
+    NULL,
+    60,
+    30,
+    'Perfume Oil',
     'PHILZ SIGNATURE',
     'c1111111-1111-1111-1111-111111111111',
     'b1111111-1111-1111-1111-111111111111',
     'Oriental',
-    ARRAY['Calabrian Bergamot', 'Pink Peppercorn', 'Elemi Resin'],
-    ARRAY['Rose Damascena', 'Frankincense Carterii', 'Tuscan Leather'],
-    ARRAY['Cambodian Agarwood', 'Grey Ambergris', 'Laotian Benzoin'],
+    ARRAY['Saffron', 'Grapefruit', 'Coriander'],
+    ARRAY['Black Rose', 'Frankincense', 'Smoked Woods'],
+    ARRAY['Ambergris', 'Sandalwood', 'Clean Cedar'],
     'published',
-    true, true, false, true,
-    'Beyond You Extrait de Parfum | PHILZ SIGNATURE',
-    'Discover Beyond You: A sovereign extrait de parfum blending Cambodian oud, smoky frankincense, and dark rose.'
+    true, false, true, true,
+    'Perfume Body Oil (Unisex) | PHILZ SIGNATURE',
+    'Discover our Unisex Perfume Body Oil: A signature scent crafted for lovers of distinctive fragrance.'
 ),
 
--- 2. Nomad
+-- 4. Philz Signature Extrait de Parfum
 (
-    'a2222222-2222-2222-2222-222222222222',
-    'Nomad',
-    'nomad',
-    'The spirit of boundless journey distilled into smoldering warmth.',
-    'Nomad evokes nocturnal desert winds passing over spice bazaars and ancient cedar groves. Radiant saffron and roasted nutmeg introduce a powdery Florentine iris heart, anchored by smoked dark tobacco leaf and Bourbon vanilla.',
-    'Formulated at 30% concentration. Blended with sustainably sourced botanical absolutes. Features exceptional 14+ hour longevity.',
-    'PS-EXT-NM02',
-    175000.00,
-    NULL,
-    60,
-    100,
-    'Extrait de Parfum',
-    'PHILZ SIGNATURE',
-    'c1111111-1111-1111-1111-111111111111',
-    'b3333333-3333-3333-3333-333333333333',
-    'Woody',
-    ARRAY['Wild Cardamom', 'Grated Nutmeg', 'Persian Saffron'],
-    ARRAY['Atlas Cedarwood', 'Nagarmotha Cypriol', 'Florentine Iris'],
-    ARRAY['Dark Tobacco Leaf', 'Patchouli Coeur', 'Bourbon Vanilla Bean'],
-    'published',
-    true, false, true, false,
-    'Nomad Extrait de Parfum | PHILZ SIGNATURE',
-    'Nomad Extrait de Parfum: A woody oriental masterpiece featuring saffron, Florentine iris, and rich tobacco.'
-),
-
--- 3. Fierce Elixir
-(
-    'a3333333-3333-3333-3333-333333333333',
-    'Fierce Elixir',
-    'fierce-elixir',
-    'Sensual intensity unleashed through spiced rum and dark woods.',
-    'Fierce Elixir commands the room with bold animalic charisma and decadent gourmand warmth. Blood orange zest paired with Jamaican dark rum and crushed cinnamon unfolds into intoxicating midnight jasmine and smoked agarwood.',
-    'Formulated at 35% concentration. High-projection evening extrait with unmatched warmth and sillage.',
-    'PS-EXT-FE03',
-    195000.00,
+    'a4444444-4444-4444-4444-444444444444',
+    'Philz Signature Extrait de Parfum',
+    'philz-signature-extrait-de-parfum',
+    'Our flagship creation: Concentrated luxury perfume that leaves a lasting impression.',
+    'Created by Philz the Perfumer, this master extrait de parfum represents the pinnacle of our fragrance atelier. Exceptional concentration offering all-day persistence and rich sillage.',
+    'Extrait de Parfum concentration (30%+). Presented in a luxury flacon with gold-embossed packaging.',
+    'PS-EXT-SIG04',
+    185000.00,
     NULL,
     30,
     100,
     'Extrait de Parfum',
     'PHILZ SIGNATURE',
-    'c1111111-1111-1111-1111-111111111111',
-    'b1111111-1111-1111-1111-111111111111',
-    'Gourmand',
-    ARRAY['Sicilian Blood Orange', 'Fresh Ginger Root', 'Dark Spiced Rum'],
-    ARRAY['Jasmine Sambac', 'Ceylon Cinnamon', 'Black Orchid'],
-    ARRAY['Smoked Agarwood', 'Cashmeran Wood', 'Roasted Tonka Bean'],
-    'published',
-    true, true, false, true,
-    'Fierce Elixir Extrait de Parfum | PHILZ SIGNATURE',
-    'Fierce Elixir by Philz Signature: A narcotic blend of spiced dark rum, black orchid, and smoked woods.'
-),
-
--- 4. Hera
-(
-    'a4444444-4444-4444-4444-444444444444',
-    'Hera',
-    'hera',
-    'Regal white florals draped in golden amber and silken sandalwood.',
-    'Named after the sovereign queen of antiquity, Hera is an opulent, luminous floral elixir. Radiant Tunisian neroli and luscious white peach open into an intoxicating heart of Indian tuberose and ylang-ylang, floating upon a velvety cushion of Mysore sandalwood.',
-    'Extrait de parfum at 28% concentration. Luminous, feminine, and stately.',
-    'PS-EXT-HR04',
-    165000.00,
-    NULL,
-    55,
-    100,
-    'Extrait de Parfum',
-    'PHILZ SIGNATURE',
-    'c1111111-1111-1111-1111-111111111111',
-    'b3333333-3333-3333-3333-333333333333',
-    'Floral',
-    ARRAY['Tunisian Neroli', 'Mandarin Essence', 'White Peach'],
-    ARRAY['Indian Tuberose', 'Ylang-Ylang Extra', 'Heliotrope'],
-    ARRAY['Velvety White Musk', 'Mysore Sandalwood', 'Bourbon Vanilla Infusion'],
-    'published',
-    true, false, false, false,
-    'Hera Extrait de Parfum | PHILZ SIGNATURE',
-    'Hera Extrait de Parfum: Royal white florals, Indian tuberose, and velvety Mysore sandalwood.'
-),
-
--- 5. Promise
-(
-    'a5555555-5555-5555-5555-555555555555',
-    'Promise',
-    'promise',
-    'An unbreakable vow expressed in crisp green apple and Taif roses.',
-    'Promise is an intimate, deeply emotional creation. A brisk accord of green apple and aromatic clove illuminates a dual heart of legendary Taif rose and Turkish rose absolute, grounded in ancient labdanum, castoreum, and oakmoss.',
-    'Formulated at 30% concentration. A complex Chypre-Floral architecture with aristocratic presence.',
-    'PS-EXT-PR05',
-    190000.00,
-    NULL,
-    35,
-    100,
-    'Extrait de Parfum',
-    'PHILZ SIGNATURE',
-    'c1111111-1111-1111-1111-111111111111',
-    'b1111111-1111-1111-1111-111111111111',
-    'Chypre',
-    ARRAY['Crisp Green Apple', 'Cardamom Pods', 'Madagascar Clove'],
-    ARRAY['Taif Rose Essence', 'Turkish Rose Absolute', 'Cistus Labdanum'],
-    ARRAY['Castoreum Accord', 'Mountain Oakmoss', 'Golden Ambergris'],
-    'published',
-    true, false, true, false,
-    'Promise Extrait de Parfum | PHILZ SIGNATURE',
-    'Promise Extrait: Green apple, legendary Taif rose, and precious amber resins.'
-),
-
--- 6. Guidance
-(
-    'a6666666-6666-6666-6666-666666666666',
-    'Guidance',
-    'guidance',
-    'An ethereal tower of ivory incense, toasted hazelnut, and sweet osmanthus.',
-    'Guidance is a hypnotic and comforting sensory labyrinth. A poetic blend of juicy pear nectar, delicate frankincense haze, and warm roasted hazelnuts melds effortlessly with creamy osmanthus and spicy saffron.',
-    'Formulated at 28% concentration. A modern masterpiece praised for its distinctive sensory signature.',
-    'PS-EXT-GD06',
-    180000.00,
-    NULL,
-    50,
-    100,
-    'Extrait de Parfum',
-    'PHILZ SIGNATURE',
-    'c1111111-1111-1111-1111-111111111111',
-    'b3333333-3333-3333-3333-333333333333',
-    'Floral',
-    ARRAY['Crisp Pear Nectar', 'Silver Incense', 'Roasted Hazelnut'],
-    ARRAY['Osmanthus Blossom', 'Bulgarian Rose', 'Golden Saffron'],
-    ARRAY['Australian Sandalwood', 'Madagascar Vanilla', 'Akigalawood'],
-    'published',
-    true, true, false, true,
-    'Guidance Extrait de Parfum | PHILZ SIGNATURE',
-    'Guidance Extrait de Parfum: Crisp pear, silver incense, and creamy sandalwood.'
-),
-
--- 7. Oud en Botella
-(
-    'a7777777-7777-7777-7777-777777777777',
-    'Oud en Botella',
-    'oud-en-botella',
-    'The crowning jewel: 25-year-old wild Assam oud bottled in pure potency.',
-    'Oud en Botella is the pinnacle of the Philz Signature atelier. Formulated using vintage Assam agarwood wild-harvested over two decades ago. Intense, woody, balsamic, and spiritual, with nuances of violet leaf, birch tar, and warm amber resin.',
-    'Ultra-limited private allocation. Hand-numbered crystal flacon housed in a lacquered piano wood presentation box.',
-    'PS-EXT-OB07',
-    220000.00,
-    NULL,
-    20,
-    100,
-    'Extrait de Parfum',
-    'PHILZ SIGNATURE',
-    'c1111111-1111-1111-1111-111111111111',
+    'c2222222-2222-2222-2222-222222222222',
     'b2222222-2222-2222-2222-222222222222',
     'Woody',
-    ARRAY['French Cistus', 'Dewy Violet Leaf', 'Calabrian Bergamot'],
-    ARRAY['25-Year Vintage Assam Oud', 'Birch Tar', 'Spanish Leather'],
-    ARRAY['Civet Accord', 'Amber Resin', 'Roasted Java Vetiver'],
+    ARRAY['Bergamot', 'Saffron', 'Elemi Resin'],
+    ARRAY['Royal Taif Rose', 'Frankincense', 'Cedarwood'],
+    ARRAY['Aged Cambodian Oud', 'Ambergris', 'Benzoin'],
     'published',
     true, true, false, true,
-    'Oud en Botella Extrait de Parfum | PHILZ SIGNATURE',
-    'Oud en Botella: Vintage Assam oud, Spanish leather, and precious amber resin.'
+    'Philz Signature Extrait de Parfum | PHILZ SIGNATURE',
+    'Flagship Extrait de Parfum: Handcrafted luxury perfume engineered for endurance and distinction.'
+),
+
+-- 5. Artisanal Reed Diffuser
+(
+    'a5555555-5555-5555-5555-555555555555',
+    'Artisanal Reed Diffuser',
+    'artisanal-reed-diffuser',
+    'Continuous, subtle ambient diffusion for refined living spaces.',
+    'Transform your sanctuary with our artisanal reed diffusers. Natural rattan reeds gently disperse fine fragrance oils throughout the room for months of continuous scent.',
+    '200ml vessel with 8 high-absorption rattan reeds. Delivers up to 90 days of continuous room fragrance.',
+    'PS-HOM-DIF05',
+    55000.00,
+    NULL,
+    40,
+    200,
+    'Home Fragrance',
+    'PHILZ SIGNATURE',
+    'c3333333-3333-3333-3333-333333333333',
+    'b3333333-3333-3333-3333-333333333333',
+    'Floral',
+    ARRAY['Citrus Blossom', 'White Tea', 'Crisp Pear'],
+    ARRAY['Midnight Jasmine', 'Orchid', 'Soft Lily'],
+    ARRAY['Blonde Woods', 'Clean Musk', 'Amber'],
+    'published',
+    true, false, true, false,
+    'Artisanal Reed Diffuser | PHILZ SIGNATURE',
+    'Artisanal Reed Diffuser: Elevate your interior ambiance with long-lasting home fragrance.'
+),
+
+-- 6. Luxury Scented Candle
+(
+    'a6666666-6666-6666-6666-666666666666',
+    'Luxury Scented Candle',
+    'luxury-scented-candle',
+    'Slow-burning soy wax infused with rich botanical essences.',
+    'Hand-poured using natural soy wax and lead-free cotton wicks. Releases an inviting aroma that creates a relaxing, memorable atmosphere in any room.',
+    '300g net weight. Approximate burn time: 55-60 hours. Housed in a matte vessel with gold branding.',
+    'PS-HOM-CND06',
+    40000.00,
+    NULL,
+    45,
+    300,
+    'Home Fragrance',
+    'PHILZ SIGNATURE',
+    'c4444444-4444-4444-4444-444444444444',
+    'b3333333-3333-3333-3333-333333333333',
+    'Oriental',
+    ARRAY['Spiced Cinnamon', 'Nutmeg', 'Sweet Orange'],
+    ARRAY['Smoked Vanilla', 'Tonka Bean', 'Clove'],
+    ARRAY['Sandalwood', 'Patchouli', 'Dark Amber'],
+    'published',
+    true, true, false, false,
+    'Luxury Scented Candle | PHILZ SIGNATURE',
+    'Luxury Scented Candle: Hand-poured soy candle infused with fine fragrance oils.'
+),
+
+-- 7. Atmospheric Room Spray
+(
+    'a7777777-7777-7777-7777-777777777777',
+    'Atmospheric Room Spray',
+    'atmospheric-room-spray',
+    'Instant fragrance refreshment for living areas, fabrics, and linen.',
+    'An ultra-fine mist room spray that immediately revives your environment with signature scent. Perfect for pre-hosting, bedrooms, and office spaces.',
+    '150ml fine-mist atomizer bottle. Safe for room air and high-quality home linens.',
+    'PS-HOM-SPR07',
+    35000.00,
+    NULL,
+    50,
+    150,
+    'Room Spray',
+    'PHILZ SIGNATURE',
+    'c5555555-5555-5555-5555-555555555555',
+    'b3333333-3333-3333-3333-333333333333',
+    'Fresh',
+    ARRAY['Calabrian Lemon', 'Crisp Eucalyptus', 'Mint Leaf'],
+    ARRAY['Lavender Provence', 'Geranium', 'Rosemary'],
+    ARRAY['White Cedar', 'Oakmoss', 'Sensual Musk'],
+    'published',
+    true, false, true, false,
+    'Atmospheric Room Spray | PHILZ SIGNATURE',
+    'Atmospheric Room Spray: Instant atmosphere transformation with fine fragrance room mist.'
 )
 ON CONFLICT (id) DO NOTHING;
 
@@ -232,13 +232,13 @@ ON CONFLICT (id) DO NOTHING;
 -- ------------------------------------------------------------------------------
 INSERT INTO product_images (product_id, image_url, alt_text, display_order, is_primary)
 VALUES
-    ('a1111111-1111-1111-1111-111111111111', '/products/philz-oud-royal.jpg', 'Beyond You Flacon Frontal View', 1, true),
-    ('a2222222-2222-2222-2222-222222222222', '/products/philz-body-oil.jpg', 'Nomad Luxury Extrait Flacon', 1, true),
-    ('a3333333-3333-3333-3333-333333333333', '/products/philz-desert-rose.jpg', 'Fierce Elixir Velvet Presentation', 1, true),
-    ('a4444444-4444-4444-4444-444444444444', '/products/philz-scented-candle.jpg', 'Hera Crystal Flacon Portrait', 1, true),
-    ('a5555555-5555-5555-5555-555555555555', '/products/philz-body-oil.jpg', 'Promise Signature Bottle Angle', 1, true),
-    ('a6666666-6666-6666-6666-666666666666', '/products/philz-desert-rose.jpg', 'Guidance Extrait Presentation', 1, true),
-    ('a7777777-7777-7777-7777-777777777777', '/products/philz-oud-royal.jpg', 'Oud en Botella Pure Vintage Agarwood', 1, true)
+    ('a1111111-1111-1111-1111-111111111111', '/media/products/perfume-oils/perfume-oil-1.jpg', 'Perfume Body Oil Masculine Flacon', 1, true),
+    ('a2222222-2222-2222-2222-222222222222', '/media/products/perfume-oils/perfume-oil-2.jpg', 'Perfume Body Oil Feminine Flacon', 1, true),
+    ('a3333333-3333-3333-3333-333333333333', '/media/products/perfume-oils/perfume-oil-3.jpg', 'Perfume Body Oil Unisex Flacon', 1, true),
+    ('a4444444-4444-4444-4444-444444444444', '/media/products/perfume-oils/perfume-oil-4.jpg', 'Philz Signature Extrait de Parfum Bottle', 1, true),
+    ('a5555555-5555-5555-5555-555555555555', '/media/products/diffuser-candles/diffuser-candle-1.jpg', 'Artisanal Reed Diffuser Presentation', 1, true),
+    ('a6666666-6666-6666-6666-666666666666', '/media/products/diffuser-candles/diffuser-candle-2.jpg', 'Luxury Scented Candle Amber Glow', 1, true),
+    ('a7777777-7777-7777-7777-777777777777', '/media/products/perfume-oils/perfume-oil-5.jpg', 'Atmospheric Room Spray Fine Mist', 1, true)
 ON CONFLICT DO NOTHING;
 
 -- ------------------------------------------------------------------------------
@@ -248,23 +248,13 @@ INSERT INTO shipping_methods (name, description, price, free_threshold, estimate
 VALUES
     ('Nationwide Standard Express', 'Insured tracked express delivery to any Nigerian state.', 5000.00, 150000.00, '2-4 Business Days', true),
     ('Lagos VIP Same-Day Concierge', 'Dedicated white-glove messenger delivery within Lagos metropolis.', 8000.00, 200000.00, 'Same Day / 24 Hours', true),
-    ('International DHL Express', 'Worldwide carbon-neutral luxury air courier shipping.', 25000.00, 350000.00, '4-7 Business Days', true)
-ON CONFLICT DO NOTHING;
+    ('Storefront Collection / Pickup', 'Direct collection from our flagship concierge in Lagos.', 0.00, NULL, 'Ready in 2 Hours', true)
+ON CONFLICT (name) DO NOTHING;
 
 -- ------------------------------------------------------------------------------
--- 6. PRIVILEGE COUPONS SEED
+-- 6. CMS SECTIONS SEED
 -- ------------------------------------------------------------------------------
-INSERT INTO coupons (code, discount_type, value, min_spend, max_discount, usage_limit, is_active)
-VALUES
-    ('SIGNATURE10', 'percentage', 10.00, 100000.00, 30000.00, 500, true),
-    ('PRIVILEGE15', 'percentage', 15.00, 200000.00, 50000.00, 200, true),
-    ('WELCOME20K', 'fixed', 20000.00, 150000.00, NULL, 100, true)
-ON CONFLICT (code) DO NOTHING;
-
--- ------------------------------------------------------------------------------
--- 7. CMS CONTENT SEED
--- ------------------------------------------------------------------------------
-INSERT INTO cms_content (key, section, title, content, is_published)
+INSERT INTO cms_sections (key, page, title, content, is_active)
 VALUES
 (
     'announcement_bar',
@@ -272,8 +262,8 @@ VALUES
     'Storefront Top Banner',
     jsonb_build_object(
         'enabled', true,
-        'text', 'COMPLIMENTARY NATIONWIDE DELIVERY ON ALL ORDERS OVER ₦150,000',
-        'link_text', 'SHOP NOW',
+        'text', 'PHILZ SIGNATURE — YOUR SCENT. YOUR SIGNATURE. • BASED IN LAGOS, NIGERIA',
+        'link_text', 'EXPLORE SCENTS',
         'link_url', '/shop'
     ),
     true
@@ -283,13 +273,13 @@ VALUES
     'home',
     'Homepage Hero Billboard',
     jsonb_build_object(
-        'badge', 'Haute Parfumerie',
-        'headline', 'Luxury Perfumes That Last',
-        'subtitle', 'Handcrafted long-lasting perfumes made with the finest fragrance oils. Rich, elegant scents designed to make a statement.',
-        'primary_cta_text', 'Shop Perfumes',
+        'badge', 'PHILZ SIGNATURE',
+        'headline', 'A Signature Is Something That Belongs To You',
+        'subtitle', 'Founded in 2018, Philz Signature offers perfumes, perfume oils, home fragrances, gifting solutions and private-label services crafted to leave a lasting impression.',
+        'primary_cta_text', 'Explore Fragrances',
         'primary_cta_url', '/shop',
-        'secondary_cta_text', 'View Collections',
-        'secondary_cta_url', '/collections',
+        'secondary_cta_text', 'Our Story',
+        'secondary_cta_url', '/about',
         'background_image', '/brand/hero-oud-luxury.jpg'
     ),
     true
@@ -374,7 +364,7 @@ VALUES
     'faq',
     'Frequently Asked Questions',
     jsonb_build_object(
-        'title', 'Frequently Asked Questions',
+        'title', 'FREQUENTLY ASKED QUESTIONS',
         'subtitle', 'Everything you need to know about our fragrance collections, bespoke solutions, orders and delivery.',
         'items', jsonb_build_array(
             jsonb_build_object('question', 'What type of fragrances does Philz Signature offer?', 'answer', 'We offer perfume oils, Eau de Parfum and a variety of home and lifestyle fragrances, including scented candles, reed diffusers, room sprays and car fragrances.'),
@@ -410,7 +400,7 @@ VALUES
         'shop_links', jsonb_build_array(
             jsonb_build_object('label', 'Perfume Oils', 'url', '/shop?category=perfume-body-oils'),
             jsonb_build_object('label', 'Niche Collection', 'url', '/collections/niche-collection'),
-            jsonb_build_object('label', 'Signature Collection', 'url', '/collections/signature-classics'),
+            jsonb_build_object('label', 'Signature Collection', 'url', '/collections/signature-collection'),
             jsonb_build_object('label', 'Home Fragrance', 'url', '/shop?category=home-fragrance'),
             jsonb_build_object('label', 'Gifts', 'url', '/shop?category=gifts-and-hampers')
         ),
@@ -434,7 +424,7 @@ ON CONFLICT (key) DO UPDATE SET
     updated_at = NOW();
 
 -- ------------------------------------------------------------------------------
--- 8. SITE SETTINGS SEED
+-- 7. SITE SETTINGS SEED
 -- ------------------------------------------------------------------------------
 INSERT INTO site_settings (key, value, description)
 VALUES
@@ -449,4 +439,3 @@ VALUES
 ON CONFLICT (key) DO UPDATE SET
     value = EXCLUDED.value,
     updated_at = NOW();
-

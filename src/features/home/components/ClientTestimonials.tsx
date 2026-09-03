@@ -1,25 +1,25 @@
-import React from 'react';
-import { Star, ShieldCheck } from 'lucide-react';
+﻿import React from 'react';
+import { Star } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/common/MotionWrapper';
 
 const TESTIMONIALS = [
   {
-    quote: 'Beyond You is an absolute masterpiece. The scent has a commanding presence and lasts from morning till night. People kept asking me what I was wearing.',
+    quote: 'The perfume body oils are extraordinary. The sillage lasts all day and leaves an incredible impression without being overpowering.',
     author: 'Victoria D.',
-    location: 'Ikoyi, Lagos',
-    scent: 'Beyond You • 100ml',
+    location: 'Lagos, Nigeria',
+    scent: 'Perfume Body Oil • Unisex',
   },
   {
-    quote: 'Nomad is easily one of the best perfumes in my collection. Warm, rich, and very smooth. The compliments have been non-stop.',
-    author: 'Chief Adebayo O.',
-    location: 'Abuja, FCT',
-    scent: 'Nomad • 100ml',
-  },
-  {
-    quote: 'Oud en Botella is in a league of its own. The depth of the oud is incredible. You can immediately tell it is made with genuine, premium oils.',
-    author: 'Dr. Tariq M.',
+    quote: 'We commissioned customized corporate fragrance gift sets for our end-of-year executive clients. The presentation and scent quality were unmatched.',
+    author: 'Adebayo O.',
     location: 'Victoria Island, Lagos',
-    scent: 'Oud en Botella • 100ml',
+    scent: 'Corporate Gifting & Hamper Project',
+  },
+  {
+    quote: 'The reed diffusers and scented candles transformed the entire atmosphere of my home. Rich, soothing, and truly long-lasting.',
+    author: 'Dr. Tariq M.',
+    location: 'Ikoyi, Lagos',
+    scent: 'Reed Diffuser & Candle Set',
   },
 ];
 
@@ -30,10 +30,10 @@ export const ClientTestimonials: React.FC = () => {
         <FadeIn direction="up" distance={16}>
           <div className="space-y-2">
             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-              What Our Customers Say
+              ✦ Customer Experiences
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl text-luxury-cream font-normal">
-              Customer Reviews
+              What Clients Say About Philz Signature
             </h2>
           </div>
         </FadeIn>
@@ -58,10 +58,11 @@ export const ClientTestimonials: React.FC = () => {
                 <div className="pt-4 border-t border-luxury-border/50 space-y-1">
                   <div className="flex items-center gap-1.5 text-xs text-luxury-cream font-medium">
                     <span>{t.author}</span>
-                    <ShieldCheck className="h-3.5 w-3.5 text-luxury-gold" />
+                    <span className="text-[10px] text-luxury-muted">• {t.location}</span>
                   </div>
-                  <div className="text-[10px] text-luxury-muted">{t.location}</div>
-                  <div className="text-[10px] text-luxury-gold/80 font-mono tracking-wider pt-0.5">{t.scent}</div>
+                  <span className="text-[10px] uppercase tracking-wider text-luxury-gold font-mono block">
+                    {t.scent}
+                  </span>
                 </div>
               </div>
             </StaggerItem>
