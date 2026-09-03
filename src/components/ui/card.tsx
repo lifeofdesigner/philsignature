@@ -8,7 +8,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'bg-luxury-card border border-luxury-border text-luxury-cream rounded-sm shadow-xs transition-all',
+      'bg-white border border-slate-200 text-slate-900 rounded-xl shadow-2xs transition-all',
       className
     )}
     {...props}
@@ -22,7 +22,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col space-y-1.5 p-6 border-b border-luxury-border/40', className)}
+    className={cn('flex flex-col space-y-1.5 p-5 border-b border-slate-100', className)}
     {...props}
   />
 ));
@@ -34,7 +34,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn('font-serif text-xl font-normal tracking-wide text-luxury-cream', className)}
+    className={cn('font-sans text-lg font-semibold tracking-tight text-slate-900', className)}
     {...props}
   />
 ));
@@ -46,7 +46,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-xs text-luxury-muted leading-relaxed', className)}
+    className={cn('text-xs text-slate-500 leading-relaxed', className)}
     {...props}
   />
 ));
@@ -56,7 +56,7 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('p-6 pt-6', className)} {...props} />
+  <div ref={ref} className={cn('p-5', className)} {...props} />
 ));
 CardContent.displayName = 'CardContent';
 
@@ -66,11 +66,10 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex items-center p-6 pt-0 border-t border-luxury-border/40 mt-4', className)}
+    className={cn('flex items-center p-5 pt-0 border-t border-slate-100 mt-3', className)}
     {...props}
   />
 ));
 CardFooter.displayName = 'CardFooter';
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };
-

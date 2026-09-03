@@ -1,16 +1,93 @@
 export type UserRole =
   | 'super_admin'
+  | 'admin'
   | 'administrator'
+  | 'store_manager'
   | 'manager'
+  | 'content_manager'
   | 'content_editor'
-  | 'inventory_staff'
-  | 'order_staff'
+  | 'marketing'
   | 'customer_support'
+  | 'finance'
+  | 'inventory_staff'
+  | 'sales_staff'
+  | 'order_staff'
   | 'staff'
   | 'customer';
 
 export type ProductStatus = 'draft' | 'published' | 'archived';
 export type FragranceFamily = 'Woody' | 'Oriental' | 'Floral' | 'Fresh' | 'Gourmand' | 'Chypre' | 'Aromatic';
+
+export interface Role {
+  id: string;
+  key: string;
+  name: string;
+  description: string | null;
+  is_system: boolean;
+  created_at: string;
+  updated_at: string;
+  permissions?: Permission[];
+}
+
+export interface Permission {
+  id: string;
+  key: string;
+  name: string;
+  group_name: string;
+  description: string | null;
+  created_at: string;
+}
+
+export interface FeatureFlag {
+  id: string;
+  key: string;
+  name: string;
+  description: string | null;
+  is_enabled: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TrashItem {
+  id: string;
+  entity_type: string;
+  entity_id: string;
+  entity_name: string;
+  payload: Record<string, unknown>;
+  deleted_by: string | null;
+  created_at: string;
+}
+
+export interface CmsVersion {
+  id: string;
+  entity_type: string;
+  entity_id: string;
+  version_number: number;
+  title: string | null;
+  content: Record<string, unknown>;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface AdminNotification {
+  id: string;
+  user_id: string | null;
+  type: string;
+  title: string;
+  message: string;
+  link: string | null;
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface EntityLock {
+  id: string;
+  entity_type: string;
+  entity_id: string;
+  locked_by: string;
+  locked_by_name: string;
+  updated_at: string;
+}
 
 export interface Profile {
   id: string;

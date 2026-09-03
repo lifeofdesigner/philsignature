@@ -17,6 +17,7 @@ import {
   Shield,
   Settings,
   Globe,
+  Trash2,
   ExternalLink,
   LogOut,
 } from 'lucide-react';
@@ -27,23 +28,59 @@ import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
 import type { UserRole } from '@/types/database';
 import { canAccessAdminPath, ROLE_LABELS } from '@/lib/permissions';
 
-export const adminNavItems = [
-  { title: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
-  { title: 'Products', href: '/admin/products', icon: Package },
-  { title: 'Collections', href: '/admin/collections', icon: Layers },
-  { title: 'Categories', href: '/admin/categories', icon: Tags },
-  { title: 'Orders', href: '/admin/orders', icon: ShoppingBag },
-  { title: 'Customers', href: '/admin/customers', icon: Users },
-  { title: 'CMS Content', href: '/admin/cms', icon: FileText },
-  { title: 'Media Library', href: '/admin/media', icon: ImageIcon },
-  { title: 'Coupons', href: '/admin/coupons', icon: TicketPercent },
-  { title: 'Reviews', href: '/admin/reviews', icon: Star },
-  { title: 'Payments', href: '/admin/payments', icon: CreditCard },
-  { title: 'Shipping', href: '/admin/shipping', icon: Truck },
-  { title: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
-  { title: 'Users & Roles', href: '/admin/users', icon: Shield },
-  { title: 'Settings', href: '/admin/settings', icon: Settings },
-  { title: 'SEO Engine', href: '/admin/seo', icon: Globe },
+export interface AdminSidebarGroup {
+  category: string;
+  items: {
+    title: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    exact?: boolean;
+  }[];
+}
+
+export const adminNavGroups: AdminSidebarGroup[] = [
+  {
+    category: 'Overview',
+    items: [
+      { title: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
+    ],
+  },
+  {
+    category: 'Commerce & Catalog',
+    items: [
+      { title: 'Products', href: '/admin/products', icon: Package },
+      { title: 'Collections', href: '/admin/collections', icon: Layers },
+      { title: 'Categories', href: '/admin/categories', icon: Tags },
+      { title: 'Orders', href: '/admin/orders', icon: ShoppingBag },
+      { title: 'Customers', href: '/admin/customers', icon: Users },
+      { title: 'Coupons', href: '/admin/coupons', icon: TicketPercent },
+      { title: 'Reviews', href: '/admin/reviews', icon: Star },
+    ],
+  },
+  {
+    category: 'Content & Brand',
+    items: [
+      { title: 'CMS Content', href: '/admin/cms', icon: FileText },
+      { title: 'Media Library', href: '/admin/media', icon: ImageIcon },
+      { title: 'SEO Engine', href: '/admin/seo', icon: Globe },
+    ],
+  },
+  {
+    category: 'Operations & Finance',
+    items: [
+      { title: 'Payments', href: '/admin/payments', icon: CreditCard },
+      { title: 'Shipping', href: '/admin/shipping', icon: Truck },
+      { title: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
+    ],
+  },
+  {
+    category: 'System & Security',
+    items: [
+      { title: 'Users & Roles', href: '/admin/users', icon: Shield },
+      { title: 'Settings', href: '/admin/settings', icon: Settings },
+      { title: 'Recycle Bin', href: '/admin/users?tab=trash', icon: Trash2 },
+    ],
+  },
 ];
 
 export interface AdminSidebarProps {
@@ -59,8 +96,9 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   const { appearance } = useStoreAppearance();
   const navigate = useNavigate();
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
-  const visibleNavItems = adminNavItems.filter((item) => canAccessAdminPath(currentRole, item.href));
-  const logoUrl = appearance.logo_dark_url || appearance.logo_url;
+
+  const logoUrl = appearance.logo_url || appearance.logo_dark_url;
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -76,84 +114,96 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-xs lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
         className={cn(
-          'fixed top-0 left-0 z-50 h-screen w-64 bg-luxury-charcoal border-r border-luxury-border flex flex-col transition-transform duration-300 lg:translate-x-0',
+          'fixed top-0 left-0 z-50 h-screen w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-300 lg:translate-x-0 shadow-xs',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
         {/* Brand Header */}
-        <div className="h-16 px-6 flex items-center justify-between border-b border-luxury-border/60">
+        <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
           <div className="flex items-center gap-3 min-w-0">
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt="Store Logo"
-                className="h-8 max-h-8 w-auto max-w-[120px] object-contain shrink-0"
+                className="h-7 max-h-7 w-auto max-w-[100px] object-contain shrink-0"
               />
             ) : null}
             <div className="flex flex-col min-w-0">
-              <span className="font-serif text-sm tracking-widest text-white uppercase font-medium truncate">
+              <span className="font-semibold text-xs tracking-wider text-slate-900 uppercase truncate">
                 PHILZ SIGNATURE
               </span>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[9px] uppercase tracking-luxury text-luxury-gold font-medium truncate">
-                  {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole as UserRole] : 'ADMIN WORKSPACE'}
-                </span>
-              </div>
+              <span className="text-[10px] text-amber-700 font-semibold tracking-wider uppercase truncate">
+                {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole] : 'ADMIN PORTAL'}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Navigation Items */}
-        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-          {visibleNavItems.map((item) => {
-            const Icon = item.icon;
+        {/* Categorized Navigation Groups */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+          {adminNavGroups.map((group) => {
+            const filteredItems = group.items.filter((item) => canAccessAdminPath(currentRole, item.href));
+            if (filteredItems.length === 0) return null;
+
             return (
-              <NavLink
-                key={item.href}
-                to={item.href}
-                end={item.exact}
-                onClick={onClose}
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-3 px-3 py-2 text-xs uppercase tracking-luxury transition-all rounded-sm font-medium',
-                    isActive
-                      ? 'bg-luxury-gold/15 text-luxury-gold border-l-2 border-luxury-gold pl-2.5 font-semibold'
-                      : 'text-luxury-muted hover:text-luxury-cream hover:bg-luxury-border/40'
-                  )
-                }
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                <span>{item.title}</span>
-              </NavLink>
+              <div key={group.category} className="space-y-1">
+                <div className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  {group.category}
+                </div>
+                <div className="space-y-0.5 mt-1">
+                  {filteredItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <NavLink
+                        key={item.href}
+                        to={item.href}
+                        end={item.exact}
+                        onClick={onClose}
+                        className={({ isActive }) =>
+                          cn(
+                            'flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-lg transition-all',
+                            isActive
+                              ? 'bg-amber-50 text-amber-950 font-semibold border-r-2 border-amber-600 shadow-2xs'
+                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                          )
+                        }
+                      >
+                        <Icon className="h-4 w-4 shrink-0 text-slate-500" />
+                        <span>{item.title}</span>
+                      </NavLink>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
         </nav>
 
-        {/* View Live Store & Sign Out Footer */}
-        <div className="p-3 border-t border-luxury-border/60 space-y-1">
+        {/* Footer Quick Actions */}
+        <div className="p-3 border-t border-slate-100 bg-slate-50/50 space-y-1">
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-3 py-2 text-xs text-luxury-muted hover:text-luxury-gold transition-colors rounded-sm"
+            className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-600 hover:text-amber-800 transition-colors rounded-lg hover:bg-white"
           >
-            <span className="uppercase tracking-luxury">Live Storefront</span>
+            <span className="font-medium">Live Storefront</span>
             <ExternalLink className="h-3.5 w-3.5" />
           </a>
 
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full flex items-center justify-between px-3 py-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-950/25 rounded-sm transition-colors cursor-pointer"
+            className="w-full flex items-center justify-between px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer font-medium"
           >
-            <span className="uppercase tracking-luxury font-medium">Sign Out</span>
+            <span>Sign Out</span>
             <LogOut className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -161,4 +211,3 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     </>
   );
 };
-

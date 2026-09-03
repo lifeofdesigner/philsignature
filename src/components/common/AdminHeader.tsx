@@ -1,20 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, Bell, Shield, LogOut } from 'lucide-react';
+import { Menu, Bell, Search, ExternalLink, LogOut, CheckCheck, Command } from 'lucide-react';
 import { toast } from 'sonner';
-import { useAuth } from '@/providers/AuthProvider';
-import { ThemeToggle } from './ThemeToggle';
+import { useAuth } from '@/hooks/useAuth';
 import { ROLE_LABELS } from '@/lib/permissions';
+import { notificationService } from '@/services/NotificationService';
+import type { AdminNotification, UserRole } from '@/types/database';
 
 interface AdminHeaderProps {
   onToggleSidebar: () => void;
+  onOpenCommandPalette: () => void;
 }
 
 export const AdminHeader: React.FC<AdminHeaderProps> = ({
   onToggleSidebar,
+  onOpenCommandPalette,
 }) => {
-  const { profile, logout } = useAuth();
+  const { profile, role, logout } = useAuth();
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState<AdminNotification[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
+
+  useEffect(() => {
+    const load = async () => {
+      const data = await notificationService.fetchNotifications(profile?.id);
+      setNotifications(data);
+    };
+    load();
+  }, [profile?.id]);
+
+  const unreadCount = notifications.filter((n) => !n.is_read).length;
+
+  const handleMarkAllRead = async () => {
+    await notificationService.markAllRead();
+    setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+    toast.success('All notifications marked as read.');
+  };
 
   const handleLogout = async () => {
     try {
@@ -26,68 +49,130 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
     }
   };
 
-  const roleLabel = profile?.role && profile.role in ROLE_LABELS
-    ? ROLE_LABELS[profile.role]
+  const roleLabel = currentRole && currentRole in ROLE_LABELS
+    ? ROLE_LABELS[currentRole]
     : 'Administrator';
 
   return (
-    <header className="h-16 bg-luxury-charcoal/80 backdrop-blur-md border-b border-luxury-border/60 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
-      <div className="flex items-center gap-4">
+    <header className="h-16 bg-white border-b border-slate-200 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
+      <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="p-2 text-luxury-muted hover:text-luxury-cream lg:hidden"
+          className="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 lg:hidden"
           aria-label="Toggle Sidebar"
         >
           <Menu className="h-5 w-5" />
         </button>
-        <div className="flex items-center gap-2">
-          <span className="text-xs uppercase tracking-luxury text-luxury-gold font-medium">
-            Control Center
-          </span>
-          <span className="text-luxury-border">/</span>
-          <span className="text-xs uppercase tracking-luxury text-luxury-muted">
-            Haute Atelier
-          </span>
-        </div>
+
+        {/* Global Command Search Bar Trigger */}
+        <button
+          onClick={onOpenCommandPalette}
+          className="flex items-center gap-3 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 rounded-lg text-slate-500 text-xs transition-all w-48 sm:w-80 justify-between group"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <Search className="h-4 w-4 text-slate-400 group-hover:text-amber-700 transition-colors" />
+            <span className="truncate">Search products, orders, CMS...</span>
+          </div>
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-slate-500 rounded border border-slate-200">
+            <Command className="h-2.5 w-2.5" /> K
+          </kbd>
+        </button>
       </div>
 
-      <div className="flex items-center space-x-2 sm:space-x-4">
-        {/* Theme Toggle */}
-        <ThemeToggle />
+      <div className="flex items-center space-x-2 sm:space-x-3">
+        {/* Live Storefront Link */}
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 hover:text-amber-800 bg-slate-100 hover:bg-amber-50 rounded-lg transition-colors border border-slate-200"
+        >
+          <span>Live Store</span>
+          <ExternalLink className="h-3.5 w-3.5" />
+        </a>
 
-        {/* Notification Bell */}
-        <button className="p-2 text-luxury-muted hover:text-luxury-gold transition-colors relative" aria-label="Notifications">
-          <Bell className="h-4 w-4" />
-          <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-luxury-gold" />
-        </button>
+        {/* Notifications Bell Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setShowNotifications(!showNotifications)}
+            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors relative"
+            aria-label="Notifications"
+          >
+            <Bell className="h-4 w-4" />
+            {unreadCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-amber-600 ring-2 ring-white" />
+            )}
+          </button>
 
-        {/* Administrator Badge */}
-        <div className="flex items-center gap-2.5 pl-2 sm:pl-4 border-l border-luxury-border">
-          <div className="h-8 w-8 rounded-full border border-luxury-gold/40 bg-luxury-black flex items-center justify-center text-luxury-gold">
-            <Shield className="h-4 w-4" />
+          {showNotifications && (
+            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-slate-200 z-50 overflow-hidden animate-fade-in">
+              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  Notifications ({unreadCount} unread)
+                </span>
+                {unreadCount > 0 && (
+                  <button
+                    onClick={handleMarkAllRead}
+                    className="text-[11px] text-amber-700 hover:underline flex items-center gap-1"
+                  >
+                    <CheckCheck className="h-3 w-3" /> Mark all read
+                  </button>
+                )}
+              </div>
+
+              <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
+                {notifications.length === 0 ? (
+                  <div className="p-6 text-center text-xs text-slate-400">
+                    No recent notifications.
+                  </div>
+                ) : (
+                  notifications.map((n) => (
+                    <div
+                      key={n.id}
+                      className={`p-3 text-xs transition-colors ${
+                        !n.is_read ? 'bg-amber-50/50 font-medium' : 'hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between font-semibold text-slate-900">
+                        <span>{n.title}</span>
+                        <span className="text-[10px] text-slate-400 font-normal">
+                          {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                      <p className="text-slate-600 mt-0.5 leading-tight">{n.message}</p>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* User Role Tag & Avatar */}
+        <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200">
+          <div className="h-8 w-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
+            {(profile?.first_name?.[0] || 'A').toUpperCase()}
           </div>
-          <div className="hidden md:flex flex-col">
-            <span className="text-xs font-medium text-luxury-cream leading-tight">
-              {profile?.first_name || 'Staff Member'}
+          <div className="hidden md:flex flex-col text-left">
+            <span className="text-xs font-semibold text-slate-900 leading-tight">
+              {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Staff Member'}
             </span>
-            <span className="text-[9px] uppercase tracking-luxury text-luxury-gold">
+            <span className="text-[10px] text-amber-700 font-semibold uppercase tracking-wider">
               {roleLabel}
             </span>
           </div>
         </div>
 
-        {/* Sign Out Action Button */}
+        {/* Sign Out Button */}
         <button
           onClick={handleLogout}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-red-400 hover:text-red-300 hover:bg-red-950/30 border border-red-500/20 rounded-sm transition-colors cursor-pointer"
-          title="Sign Out of Admin"
+          className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+          title="Sign Out"
           aria-label="Sign Out"
         >
-          <LogOut className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline text-[11px] uppercase tracking-luxury font-medium">Sign Out</span>
+          <LogOut className="h-4 w-4" />
         </button>
       </div>
     </header>
   );
 };
-

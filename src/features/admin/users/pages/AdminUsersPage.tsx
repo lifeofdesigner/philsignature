@@ -1,23 +1,31 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Shield, Search, Loader2, ChevronDown, Check, X } from 'lucide-react';
+import { Shield, Search, Loader2, Check, X, History, Trash2, RefreshCw, Lock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { EmptyState } from '@/components/feedback/EmptyState';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminUsers } from '../hooks/useAdminUsers';
 import { useAuth } from '@/hooks/useAuth';
-import type { UserRole } from '@/types/database';
-import { ROLE_LABELS, ROLE_DESCRIPTIONS, ROLE_PERMISSIONS, type Permission } from '@/lib/permissions';
+import type { UserRole, TrashItem } from '@/types/database';
+import { ROLE_LABELS, ROLE_PERMISSIONS, type Permission } from '@/lib/permissions';
+import { auditLogService } from '@/services/AuditLogService';
+import { trashService } from '@/services/TrashService';
+import type { ExtendedActivityLog } from '@/repositories/AuditLogRepository';
 
 const ROLE_ORDER: UserRole[] = [
   'super_admin',
+  'admin',
   'administrator',
-  'manager',
-  'content_editor',
-  'inventory_staff',
-  'order_staff',
+  'store_manager',
+  'content_manager',
+  'marketing',
   'customer_support',
+  'finance',
+  'inventory_staff',
+  'sales_staff',
+  'order_staff',
   'staff',
   'customer',
 ];
@@ -80,14 +88,31 @@ const PERMISSION_GROUPS: { label: string; permissions: { key: Permission; label:
   },
 ];
 
-const formatDate = (isoString: string) =>
-  new Date(isoString).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-
 export const AdminUsersPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab = searchParams.get('tab') || 'staff';
   const { user: currentUser } = useAuth();
-  const { users, isLoading, isError, setRole, isSettingRoleId, setActiveStatus, isSettingActiveId } = useAdminUsers();
+  const { users, isLoading, setRole, isSettingRoleId, setActiveStatus, isSettingActiveId } = useAdminUsers();
   const [search, setSearch] = useState('');
-  const [showMatrix, setShowMatrix] = useState(false);
+  const [auditLogs, setAuditLogs] = useState<ExtendedActivityLog[]>([]);
+  const [trashItems, setTrashItems] = useState<TrashItem[]>([]);
+  const [isLoadingLogs, setIsLoadingLogs] = useState(false);
+
+  useEffect(() => {
+    if (currentTab === 'audit') {
+      setIsLoadingLogs(true);
+      auditLogService.fetchLogs(100).then((res) => {
+        setAuditLogs(res);
+        setIsLoadingLogs(false);
+      });
+    } else if (currentTab === 'trash') {
+      setIsLoadingLogs(true);
+      trashService.getTrashItems().then((res) => {
+        setTrashItems(res);
+        setIsLoadingLogs(false);
+      });
+    }
+  }, [currentTab]);
 
   const filteredUsers = useMemo(() => {
     const query = search.toLowerCase().trim();
@@ -102,7 +127,8 @@ export const AdminUsersPage: React.FC = () => {
   const handleRoleChange = async (userId: string, name: string, role: UserRole) => {
     try {
       await setRole({ userId, role });
-      toast.success(`${name} is now ${role.replace('_', ' ')}.`);
+      await auditLogService.recordAction('CHANGE_ROLE', 'user', userId, { new_role: role }, currentUser?.id);
+      toast.success(`${name} role updated to ${ROLE_LABELS[role] || role}.`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to update role.');
     }
@@ -111,199 +137,203 @@ export const AdminUsersPage: React.FC = () => {
   const handleToggleActive = async (userId: string, name: string, current: boolean) => {
     try {
       await setActiveStatus({ userId, isActive: !current });
-      toast.success(`${name} was ${!current ? 'reactivated' : 'deactivated'}.`);
+      await auditLogService.recordAction('TOGGLE_ACTIVE', 'user', userId, { is_active: !current }, currentUser?.id);
+      toast.success(`${name} status set to ${!current ? 'Active' : 'Suspended'}.`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to update account status.');
     }
   };
 
-  if (isLoading) return <PageSkeleton />;
+  const handleRestoreTrash = async (item: TrashItem) => {
+    try {
+      await trashService.restoreItem(item);
+      setTrashItems((prev) => prev.filter((i) => i.id !== item.id));
+      await auditLogService.recordAction('RESTORE_TRASH', item.entity_type, item.entity_id, { name: item.entity_name }, currentUser?.id);
+      toast.success(`Restored ${item.entity_name} successfully.`);
+    } catch (err) {
+      toast.error('Failed to restore item.');
+    }
+  };
 
-  if (isError) {
-    return (
-      <EmptyState
-        icon={<Shield className="h-5 w-5" />}
-        title="Unable to Load Users"
-        description="The staff directory could not be retrieved from Supabase. Please retry."
-      />
-    );
-  }
+  if (isLoading) return <PageSkeleton />;
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Page Title */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <span className="text-[10px] uppercase tracking-luxury text-luxury-gold font-medium">Staff & Permissions</span>
-          <h1 className="font-serif text-3xl text-white font-normal mt-1">Users & Roles (RBAC)</h1>
-          <p className="text-xs text-luxury-muted font-light mt-1">
-            Promote, demote, and manage access for every registered account.
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Users, Roles & Audit Security (RBAC)
+          </h1>
+          <p className="text-xs text-slate-500 font-medium mt-1">
+            Database-driven permission matrix, staff directory, audit trail logs, and recycle bin.
           </p>
         </div>
       </div>
 
-      {users.length > 0 && (
-        <div className="bg-luxury-card border border-luxury-border p-4">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-luxury-muted" />
-            <Input
-              placeholder="Search by name or email..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 bg-luxury-charcoal"
-            />
-          </div>
-        </div>
-      )}
+      {/* Tabs Navigation Header */}
+      <div className="flex items-center gap-2 border-b border-slate-200 text-xs font-semibold">
+        {[
+          { id: 'staff', label: 'Staff Directory & Roles', icon: Shield },
+          { id: 'matrix', label: 'RBAC Permission Matrix', icon: Lock },
+          { id: 'audit', label: 'Audit Trail Logs', icon: History },
+          { id: 'trash', label: 'Recycle Bin / Trash', icon: Trash2 },
+        ].map((tab) => {
+          const Icon = tab.icon;
+          const isActive = currentTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setSearchParams({ tab: tab.id })}
+              className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer ${
+                isActive
+                  ? 'border-amber-700 text-amber-950 font-bold bg-amber-50/50'
+                  : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300'
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              <span>{tab.label}</span>
+            </button>
+          );
+        })}
+      </div>
 
-      {filteredUsers.length === 0 ? (
-        <EmptyState
-          icon={<Shield className="h-5 w-5" />}
-          title={users.length === 0 ? 'No Users Found' : 'No Matching Users'}
-          description={
-            users.length === 0
-              ? 'Registered accounts will appear here once patrons sign up or staff are provisioned.'
-              : 'Try adjusting your search query.'
-          }
-        />
-      ) : (
-        <div className="bg-luxury-card border border-luxury-border overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-luxury-border text-left text-[10px] uppercase tracking-wider text-luxury-muted">
-                <th className="p-4 font-medium">User</th>
-                <th className="p-4 font-medium">Joined</th>
-                <th className="p-4 font-medium">Role</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((u) => {
-                const name = [u.first_name, u.last_name].filter(Boolean).join(' ') || '—';
-                const isSelf = u.id === currentUser?.id;
-                return (
-                  <tr key={u.id} className="border-b border-luxury-border/60 last:border-0 hover:bg-luxury-charcoal/40">
-                    <td className="p-4">
-                      <div className="text-white font-medium">{name}</div>
-                      <div className="text-[11px] text-luxury-muted font-mono">{u.email}</div>
-                    </td>
-                    <td className="p-4 text-luxury-muted text-xs">{formatDate(u.created_at)}</td>
-                    <td className="p-4">
-                      <select
-                        value={u.role}
-                        disabled={isSelf || isSettingRoleId === u.id}
-                        onChange={(e) => handleRoleChange(u.id, name, e.target.value as UserRole)}
-                        className="bg-luxury-card border border-luxury-border text-[11px] text-luxury-cream px-2 py-1 rounded-sm focus:ring-1 focus:ring-luxury-gold focus:outline-none cursor-pointer"
-                      >
-                        {ROLE_ORDER.map((role) => (
-                          <option key={role} value={role}>{ROLE_LABELS[role]}</option>
-                        ))}
-                      </select>
-                    </td>
-                    <td className="p-4">
-                      <span
-                        className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded font-medium border ${
-                          u.is_active
-                            ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                            : 'text-red-400 border-red-500/30 bg-red-500/10'
-                        }`}
-                      >
-                        {u.is_active ? 'active' : 'deactivated'}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      {isSelf ? (
-                        <span className="text-[10px] text-luxury-muted italic">Current session</span>
-                      ) : isSettingRoleId === u.id || isSettingActiveId === u.id ? (
-                        <div className="flex justify-end">
-                          <Loader2 className="h-4 w-4 animate-spin text-luxury-muted" />
-                        </div>
-                      ) : (
-                        <div className="flex items-center justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-[10px] h-7 px-2"
-                            onClick={() => handleToggleActive(u.id, name, u.is_active)}
-                          >
-                            {u.is_active ? 'Deactivate' : 'Reactivate'}
-                          </Button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      <div className="bg-luxury-card border border-luxury-border">
-        <button
-          type="button"
-          onClick={() => setShowMatrix((p) => !p)}
-          className="w-full flex items-center justify-between p-4 cursor-pointer"
-        >
-          <div className="text-left">
-            <h3 className="font-serif text-lg text-white font-normal">What Each Role Can Do</h3>
-            <p className="text-xs text-luxury-muted font-light mt-0.5">
-              A plain-English breakdown of what every role is allowed to access.
-            </p>
-          </div>
-          <ChevronDown className={`h-4 w-4 text-luxury-muted transition-transform ${showMatrix ? 'rotate-180' : ''}`} />
-        </button>
-
-        {showMatrix && (
-          <div className="border-t border-luxury-border/60 p-4 space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {ROLE_ORDER.filter((r) => r !== 'customer').map((role) => (
-                <div key={role} className="bg-luxury-charcoal/40 border border-luxury-border p-3">
-                  <p className="text-xs font-medium text-luxury-gold">{ROLE_LABELS[role]}</p>
-                  <p className="text-[11px] text-luxury-muted mt-1 leading-relaxed">{ROLE_DESCRIPTIONS[role]}</p>
-                </div>
-              ))}
+      {/* Tab 1: Staff Directory */}
+      {currentTab === 'staff' && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="relative max-w-md w-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+              <Input
+                placeholder="Search staff by name or email..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-9 text-xs bg-white border-slate-200 focus:border-amber-600"
+              />
             </div>
+            <div className="text-xs text-slate-500 font-medium">
+              Total Accounts: <span className="font-bold text-slate-900">{filteredUsers.length}</span>
+            </div>
+          </div>
 
+          <Card>
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200 font-medium">
+                    <tr>
+                      <th className="py-3 px-4">User</th>
+                      <th className="py-3 px-4">Role Tag</th>
+                      <th className="py-3 px-4">Status</th>
+                      <th className="py-3 px-4">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-normal">
+                    {filteredUsers.map((u) => {
+                      const name = `${u.first_name || ''} ${u.last_name || ''}`.trim() || u.email;
+                      const isMe = u.id === currentUser?.id;
+                      const isUpdatingRole = isSettingRoleId === u.id;
+                      const isUpdatingActive = isSettingActiveId === u.id;
+
+                      return (
+                        <tr key={u.id} className="hover:bg-slate-50/80 transition-colors">
+                          <td className="py-3.5 px-4">
+                            <div className="font-semibold text-slate-900">{name}</div>
+                            <div className="text-[11px] text-slate-500 font-mono">{u.email}</div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <select
+                              value={u.role}
+                              disabled={isMe || isUpdatingRole}
+                              onChange={(e) => handleRoleChange(u.id, name, e.target.value as UserRole)}
+                              className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-slate-800 font-semibold focus:outline-hidden focus:border-amber-600 disabled:opacity-50"
+                            >
+                              {ROLE_ORDER.map((r) => (
+                                <option key={r} value={r}>
+                                  {ROLE_LABELS[r] || r}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span
+                              className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                                u.is_active
+                                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                  : 'bg-red-50 text-red-800 border border-red-200'
+                              }`}
+                            >
+                              {u.is_active ? 'Active' : 'Suspended'}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={isMe || isUpdatingActive}
+                              onClick={() => handleToggleActive(u.id, name, u.is_active)}
+                              className="text-xs h-7 px-2.5 border-slate-200 text-slate-700"
+                            >
+                              {isUpdatingActive ? <Loader2 className="h-3 w-3 animate-spin" /> : u.is_active ? 'Suspend' : 'Activate'}
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Tab 2: Permission Matrix */}
+      {currentTab === 'matrix' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold text-slate-900">Database Role & Permission Matrix</CardTitle>
+            <CardDescription>Visual matrix of default permission definitions stored in Supabase</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <table className="w-full text-xs border-collapse">
-                <thead>
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="bg-slate-50 text-slate-700 uppercase tracking-wider border-b border-slate-200">
                   <tr>
-                    <th className="sticky left-0 bg-luxury-card p-2 text-left text-[10px] uppercase tracking-wider text-luxury-muted font-medium border-b border-luxury-border">
-                      Permission
-                    </th>
-                    {ROLE_ORDER.filter((r) => r !== 'customer').map((role) => (
-                      <th
-                        key={role}
-                        className="p-2 text-center text-[9px] uppercase tracking-wider text-luxury-muted font-medium border-b border-luxury-border whitespace-nowrap"
-                      >
-                        {ROLE_LABELS[role]}
+                    <th className="py-3 px-4 font-semibold border-r border-slate-200 w-64">Permission Name</th>
+                    {ROLE_ORDER.slice(0, 7).map((r) => (
+                      <th key={r} className="py-3 px-3 font-semibold text-center border-r border-slate-200 min-w-[100px]">
+                        {ROLE_LABELS[r]}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-slate-100">
                   {PERMISSION_GROUPS.map((group) => (
                     <React.Fragment key={group.label}>
-                      <tr>
-                        <td
-                          colSpan={ROLE_ORDER.length}
-                          className="pt-4 pb-1 px-2 text-[10px] uppercase tracking-wider text-luxury-gold font-medium"
-                        >
+                      <tr className="bg-slate-100/70 text-slate-900 font-bold uppercase tracking-wider text-[10px]">
+                        <td colSpan={8} className="py-2 px-4 border-y border-slate-200">
                           {group.label}
                         </td>
                       </tr>
-                      {group.permissions.map(({ key, label }) => (
-                        <tr key={key} className="border-b border-luxury-border/40 hover:bg-luxury-charcoal/30">
-                          <td className="sticky left-0 bg-luxury-card p-2 text-luxury-cream whitespace-nowrap">{label}</td>
-                          {ROLE_ORDER.filter((r) => r !== 'customer').map((role) => {
-                            const granted = ROLE_PERMISSIONS[role].includes(key);
+                      {group.permissions.map((perm) => (
+                        <tr key={perm.key} className="hover:bg-slate-50">
+                          <td className="py-2.5 px-4 font-medium text-slate-800 border-r border-slate-200">
+                            <div>{perm.label}</div>
+                            <div className="text-[10px] text-slate-400 font-mono">{perm.key}</div>
+                          </td>
+                          {ROLE_ORDER.slice(0, 7).map((r) => {
+                            const has = ROLE_PERMISSIONS[r]?.includes(perm.key);
                             return (
-                              <td key={role} className="p-2 text-center">
-                                {granted ? (
-                                  <Check className="h-3.5 w-3.5 text-emerald-400 inline-block" />
+                              <td key={r} className="py-2.5 px-3 text-center border-r border-slate-100">
+                                {has ? (
+                                  <span className="inline-flex p-1 rounded bg-emerald-100 text-emerald-800">
+                                    <Check className="h-3.5 w-3.5" />
+                                  </span>
                                 ) : (
-                                  <X className="h-3.5 w-3.5 text-luxury-muted/30 inline-block" />
+                                  <span className="inline-flex p-1 rounded text-slate-300">
+                                    <X className="h-3.5 w-3.5" />
+                                  </span>
                                 )}
                               </td>
                             );
@@ -315,9 +345,115 @@ export const AdminUsersPage: React.FC = () => {
                 </tbody>
               </table>
             </div>
-          </div>
-        )}
-      </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Tab 3: Audit Trail Logs */}
+      {currentTab === 'audit' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+              <History className="h-4 w-4 text-amber-700" />
+              <span>Audit Trail Activity Logs</span>
+            </CardTitle>
+            <CardDescription>Immutable record of all admin edits, role changes, and system events</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            {isLoadingLogs ? (
+              <div className="p-8 text-center"><Loader2 className="h-5 w-5 animate-spin mx-auto text-amber-600" /></div>
+            ) : auditLogs.length === 0 ? (
+              <div className="p-8 text-center text-xs text-slate-400">No activity logs recorded yet.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200 font-medium">
+                    <tr>
+                      <th className="py-3 px-4">Date & Time</th>
+                      <th className="py-3 px-4">User</th>
+                      <th className="py-3 px-4">Action</th>
+                      <th className="py-3 px-4">Entity</th>
+                      <th className="py-3 px-4">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {auditLogs.map((log) => (
+                      <tr key={log.id} className="hover:bg-slate-50">
+                        <td className="py-3 px-4 font-mono text-slate-500 text-[11px]">
+                          {new Date(log.created_at).toLocaleString()}
+                        </td>
+                        <td className="py-3 px-4 font-semibold text-slate-900">{log.user_email}</td>
+                        <td className="py-3 px-4">
+                          <span className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-800 uppercase">
+                            {log.action}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-slate-600 font-mono text-[11px]">{log.entity_type}</td>
+                        <td className="py-3 px-4 text-slate-600 font-mono text-[11px]">
+                          {JSON.stringify(log.details)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Tab 4: Recycle Bin */}
+      {currentTab === 'trash' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+              <Trash2 className="h-4 w-4 text-amber-700" />
+              <span>Soft Delete Recycle Bin</span>
+            </CardTitle>
+            <CardDescription>Recover deleted products, pages, menus, or media instantly</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            {isLoadingLogs ? (
+              <div className="p-8 text-center"><Loader2 className="h-5 w-5 animate-spin mx-auto text-amber-600" /></div>
+            ) : trashItems.length === 0 ? (
+              <div className="p-8 text-center text-xs text-slate-400">Recycle Bin is currently empty.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider border-b border-slate-200 font-medium">
+                    <tr>
+                      <th className="py-3 px-4">Item Name</th>
+                      <th className="py-3 px-4">Type</th>
+                      <th className="py-3 px-4">Deleted Date</th>
+                      <th className="py-3 px-4">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {trashItems.map((item) => (
+                      <tr key={item.id} className="hover:bg-slate-50">
+                        <td className="py-3 px-4 font-semibold text-slate-900">{item.entity_name}</td>
+                        <td className="py-3 px-4 font-mono text-slate-500 text-[11px]">{item.entity_type}</td>
+                        <td className="py-3 px-4 text-slate-500 text-[11px]">{new Date(item.created_at).toLocaleString()}</td>
+                        <td className="py-3 px-4">
+                          <Button
+                            size="sm"
+                            onClick={() => handleRestoreTrash(item)}
+                            className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs h-7 px-2.5 gap-1"
+                          >
+                            <RefreshCw className="h-3 w-3" /> Restore
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
+
+export default AdminUsersPage;

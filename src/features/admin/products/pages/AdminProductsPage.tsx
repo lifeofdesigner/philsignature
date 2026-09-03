@@ -196,27 +196,27 @@ export const AdminProductsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <span className="text-[10px] uppercase tracking-luxury text-luxury-gold font-medium">
-            Catalog Management
-          </span>
-          <h1 className="font-serif text-3xl text-white font-normal mt-1">
-            Fragrance Products
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Fragrance Products & Catalog
           </h1>
+          <p className="text-xs text-slate-500 font-medium mt-1">
+            Manage formulations, SKU codes, pricing, batch stock levels, and publication status.
+          </p>
         </div>
-        <Button variant="luxury" size="sm" className="gap-1.5" onClick={openCreateForm}>
+        <Button size="sm" className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs" onClick={openCreateForm}>
           <Plus className="h-3.5 w-3.5" />
           <span>Add Formulation</span>
         </Button>
       </div>
 
-      <div className="bg-luxury-card border border-luxury-border p-4 flex flex-col sm:flex-row gap-4">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 shadow-2xs">
         <Input
           placeholder="Search fragrances by title, notes, SKU, or family..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-md bg-luxury-charcoal"
+          className="max-w-md bg-white border-slate-200 text-xs"
         />
       </div>
 
@@ -233,69 +233,71 @@ export const AdminProductsPage: React.FC = () => {
           onAction={products.length === 0 ? openCreateForm : undefined}
         />
       ) : (
-        <div className="bg-luxury-card border border-luxury-border overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-luxury-border text-left text-[10px] uppercase tracking-wider text-luxury-muted">
-                <th className="p-4 font-medium">Fragrance</th>
-                <th className="p-4 font-medium">SKU</th>
-                <th className="p-4 font-medium">Price</th>
-                <th className="p-4 font-medium">Stock</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.map((product) => (
-                <tr key={product.id} className="border-b border-luxury-border/60 last:border-0 hover:bg-luxury-charcoal/40">
-                  <td className="p-4">
-                    <div className="text-white font-medium">{product.name}</div>
-                    <div className="text-[11px] text-luxury-muted">{product.fragrance_family || '—'}</div>
-                  </td>
-                  <td className="p-4 font-mono text-xs text-luxury-muted">{product.sku}</td>
-                  <td className="p-4 text-luxury-gold font-medium">{formatCurrency(product.price)}</td>
-                  <td className="p-4">
-                    <span className={product.stock_quantity === 0 ? 'text-red-400' : 'text-white'}>
-                      {product.stock_quantity}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <span
-                      className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded font-medium border ${
-                        product.status === 'published'
-                          ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                          : product.status === 'draft'
-                          ? 'text-amber-400 border-amber-500/30 bg-amber-500/10'
-                          : 'text-luxury-muted border-luxury-border bg-luxury-charcoal'
-                      }`}
-                    >
-                      {product.status}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        type="button"
-                        onClick={() => openEditForm(product)}
-                        className="p-1.5 text-luxury-muted hover:text-luxury-gold transition-colors cursor-pointer"
-                        aria-label="Edit product"
-                      >
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDeleteTarget(product)}
-                        className="p-1.5 text-luxury-muted hover:text-red-400 transition-colors cursor-pointer"
-                        aria-label="Delete product"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </td>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold">
+                  <th className="p-3.5">Fragrance</th>
+                  <th className="p-3.5">SKU</th>
+                  <th className="p-3.5">Price</th>
+                  <th className="p-3.5">Stock</th>
+                  <th className="p-3.5">Status</th>
+                  <th className="p-3.5 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredProducts.map((product) => (
+                  <tr key={product.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="p-3.5">
+                      <div className="text-slate-900 font-semibold">{product.name}</div>
+                      <div className="text-[11px] text-slate-500 font-medium">{product.fragrance_family || '—'}</div>
+                    </td>
+                    <td className="p-3.5 font-mono text-xs text-slate-600">{product.sku}</td>
+                    <td className="p-3.5 text-slate-900 font-bold">{formatCurrency(product.price)}</td>
+                    <td className="p-3.5">
+                      <span className={product.stock_quantity === 0 ? 'text-red-600 font-semibold' : 'text-slate-700'}>
+                        {product.stock_quantity}
+                      </span>
+                    </td>
+                    <td className="p-3.5">
+                      <span
+                        className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-bold border ${
+                          product.status === 'published'
+                            ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
+                            : product.status === 'draft'
+                            ? 'text-amber-800 border-amber-200 bg-amber-50'
+                            : 'text-slate-600 border-slate-200 bg-slate-100'
+                        }`}
+                      >
+                        {product.status}
+                      </span>
+                    </td>
+                    <td className="p-3.5 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          onClick={() => openEditForm(product)}
+                          className="p-1.5 text-slate-500 hover:text-amber-800 transition-colors cursor-pointer rounded hover:bg-slate-100"
+                          aria-label="Edit product"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteTarget(product)}
+                          className="p-1.5 text-slate-500 hover:text-red-600 transition-colors cursor-pointer rounded hover:bg-red-50"
+                          aria-label="Delete product"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
