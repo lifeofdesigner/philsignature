@@ -230,13 +230,13 @@ ON CONFLICT (id) DO NOTHING;
 -- ------------------------------------------------------------------------------
 INSERT INTO product_images (product_id, image_url, alt_text, display_order, is_primary)
 VALUES
-    ('a1111111-1111-1111-1111-111111111111', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85', 'Beyond You Flacon Frontal View', 1, true),
-    ('a2222222-2222-2222-2222-222222222222', 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=85', 'Nomad Luxury Extrait Flacon', 1, true),
-    ('a3333333-3333-3333-3333-333333333333', 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1000&q=85', 'Fierce Elixir Velvet Presentation', 1, true),
-    ('a4444444-4444-4444-4444-444444444444', 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=85', 'Hera Crystal Flacon Portrait', 1, true),
-    ('a5555555-5555-5555-5555-555555555555', 'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1000&q=85', 'Promise Signature Bottle Angle', 1, true),
-    ('a6666666-6666-6666-6666-666666666666', 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=1000&q=85', 'Guidance Extrait Presentation', 1, true),
-    ('a7777777-7777-7777-7777-777777777777', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=85', 'Oud en Botella Pure Vintage Agarwood', 1, true)
+    ('a1111111-1111-1111-1111-111111111111', '/products/philz-oud-royal.jpg', 'Beyond You Flacon Frontal View', 1, true),
+    ('a2222222-2222-2222-2222-222222222222', '/products/philz-body-oil.jpg', 'Nomad Luxury Extrait Flacon', 1, true),
+    ('a3333333-3333-3333-3333-333333333333', '/products/philz-desert-rose.jpg', 'Fierce Elixir Velvet Presentation', 1, true),
+    ('a4444444-4444-4444-4444-444444444444', '/products/philz-scented-candle.jpg', 'Hera Crystal Flacon Portrait', 1, true),
+    ('a5555555-5555-5555-5555-555555555555', '/products/philz-body-oil.jpg', 'Promise Signature Bottle Angle', 1, true),
+    ('a6666666-6666-6666-6666-666666666666', '/products/philz-desert-rose.jpg', 'Guidance Extrait Presentation', 1, true),
+    ('a7777777-7777-7777-7777-777777777777', '/products/philz-oud-royal.jpg', 'Oud en Botella Pure Vintage Agarwood', 1, true)
 ON CONFLICT DO NOTHING;
 
 -- ------------------------------------------------------------------------------
