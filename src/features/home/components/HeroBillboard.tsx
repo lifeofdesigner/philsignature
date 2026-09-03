@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play, ChevronDown, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { CmsHeroContent, CmsHeroSlide } from '@/services/CMSService';
 
@@ -9,7 +9,7 @@ export interface HeroBillboardProps {
 }
 
 export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
-  // Extract active slides or build default fallback
+  // Extract active slides or build default luxury fallback
   const rawSlides = Array.isArray(hero.slides) && hero.slides.length > 0 ? hero.slides : undefined;
   const activeSlides: CmsHeroSlide[] = React.useMemo(() => {
     if (rawSlides) {
@@ -28,8 +28,51 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         secondary_cta_url: hero.secondary_cta_url || '/collections',
         desktop_image: hero.background_image || '/brand/hero-oud-luxury.jpg',
         mobile_image: hero.background_image || '/brand/hero-oud-luxury.jpg',
+        featured_product_title: 'Perfume Body Oil',
+        featured_product_subtitle: 'Private Reserve • 30ml',
+        featured_product_price: '₦45,000',
+        featured_product_image: '/media/products/perfume-oils/perfume-oil-1.jpg',
+        featured_product_url: '/shop?category=perfume-body-oils',
         is_active: true,
         order: 1,
+      },
+      {
+        id: 'fallback-2',
+        badge: 'Private Reserve',
+        headline: 'Rare Cambodian Oud & Amber',
+        subtitle: 'Intense, smoky woods aged for decades and infused with royal Taif rose petals. An aura of pure prestige.',
+        primary_cta_text: 'Discover Oud Line',
+        primary_cta_url: '/shop',
+        secondary_cta_text: 'Our Story',
+        secondary_cta_url: '/about',
+        desktop_image: '/brand/hero-private-reserve.jpg',
+        mobile_image: '/brand/hero-private-reserve.jpg',
+        featured_product_title: 'Oud Royal Extrait',
+        featured_product_subtitle: 'Haute Parfumerie • 100ml',
+        featured_product_price: '₦185,000',
+        featured_product_image: '/media/products/perfume-oils/perfume-oil-2.jpg',
+        featured_product_url: '/shop',
+        is_active: true,
+        order: 2,
+      },
+      {
+        id: 'fallback-3',
+        badge: 'The Extrait Collection',
+        headline: 'Pure Elegance in Every Flacon',
+        subtitle: 'Formulated at 35% extrait concentration. Exceptional sillage that lingers from morning to evening.',
+        primary_cta_text: 'Shop Extraits',
+        primary_cta_url: '/shop',
+        secondary_cta_text: 'Client Favorites',
+        secondary_cta_url: '/shop',
+        desktop_image: '/brand/hero-extrait-collection.jpg',
+        mobile_image: '/brand/hero-extrait-collection.jpg',
+        featured_product_title: 'Scented Candle Duo',
+        featured_product_subtitle: 'Artisanal Home • 300g',
+        featured_product_price: '₦65,000',
+        featured_product_image: '/media/products/diffuser-candles/diffuser-candle-1.jpg',
+        featured_product_url: '/shop?category=scented-candles',
+        is_active: true,
+        order: 3,
       },
     ];
   }, [rawSlides, hero]);
@@ -40,7 +83,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
 
   // Settings
   const autoplayEnabled = hero.settings?.autoplay ?? true;
-  const intervalMs = Math.max(3000, hero.settings?.autoplay_interval_ms ?? 6000);
+  const intervalMs = Math.max(3000, hero.settings?.autoplay_interval_ms ?? 6500);
   const slideCount = activeSlides.length;
 
   const currentSlide = activeSlides[currentIndex] || activeSlides[0];
@@ -102,7 +145,6 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
-    // Only trigger if horizontal swipe is significantly stronger than vertical scroll
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
       if (deltaX < 0) {
         handleNext();
@@ -116,28 +158,37 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
     setIsPaused(false);
   };
 
+  const scrollToNextSection = () => {
+    window.scrollTo({
+      top: window.innerHeight - 60,
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <section
       ref={containerRef}
       role="region"
       aria-roledescription="carousel"
-      aria-label="Featured Perfume Collections"
+      aria-label="Philz Signature Luxury Fragrance Showcase"
       tabIndex={0}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className="group relative min-h-[92vh] sm:min-h-screen flex flex-col justify-end overflow-hidden bg-black focus:outline-none select-none"
+      className="group relative h-screen min-h-[700px] w-full flex flex-col justify-between overflow-hidden bg-black focus:outline-none select-none"
     >
-      {/* Background Slides with AnimatePresence */}
+      {/* =========================================================================
+          1. CINEMATIC FULLSCREEN BACKGROUND WITH KEN BURNS MOTION & VIDEO SUPPORT
+         ========================================================================= */}
       <AnimatePresence initial={false} mode="sync">
         <motion.div
           key={`bg-${currentSlide.id}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 z-0"
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0 z-0 overflow-hidden"
         >
           {currentSlide.video_url ? (
             <video
@@ -146,7 +197,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               muted
               loop
               playsInline
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center scale-105"
             />
           ) : (
             <picture className="w-full h-full block">
@@ -155,9 +206,9 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               )}
               <motion.img
                 key={`img-${currentSlide.id}`}
-                initial={{ scale: 1.06 }}
-                animate={{ scale: isPaused ? 1.02 : 1.06 }}
-                transition={{ duration: intervalMs / 1000 + 1, ease: 'linear' }}
+                initial={{ scale: 1.05 }}
+                animate={{ scale: 1.12 }}
+                transition={{ duration: 10, ease: 'easeOut' }}
                 src={currentSlide.desktop_image}
                 alt={currentSlide.headline}
                 className="w-full h-full object-cover object-center"
@@ -167,198 +218,246 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
             </picture>
           )}
 
-          {/* Delicate Vignette Overlays for Flawless Readability & Luminous Warmth (ÁRUM Framer Styling) */}
-          <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-black/60 via-black/20 to-transparent pointer-events-none z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none" />
+          {/* Dynamic Multi-Layer Vignette Lighting for High-End Contrast & Warmth */}
+          {/* Top Navbar Veil */}
+          <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-black/75 via-black/30 to-transparent pointer-events-none z-10" />
+          {/* Left-Side Typography Reading Shield */}
+          <div className="absolute inset-y-0 left-0 w-full md:w-3/5 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none z-10" />
+          {/* Bottom Ambient Fade */}
+          <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10" />
         </motion.div>
       </AnimatePresence>
 
-      {/* Main Editorial Content & Floating Product Card Row (ÁRUM Framer Architecture) */}
-      <div className="relative z-20 container mx-auto px-5 sm:px-12 lg:px-16 pb-12 sm:pb-20 pt-24 sm:pt-32 w-full flex flex-col md:flex-row items-start md:items-end justify-between gap-6 sm:gap-8">
-        {/* Bottom-Left Editorial Typography */}
+      {/* Top Spacer for floating transparent header */}
+      <div className="relative z-10 h-24 sm:h-28 w-full shrink-0" />
+
+      {/* =========================================================================
+          2. MAIN EDITORIAL CONTENT & FLOATING PRODUCT SHOWCASE
+         ========================================================================= */}
+      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex-1 flex flex-col md:flex-row items-start md:items-end justify-between gap-8 pb-20 sm:pb-24">
+        
+        {/* Left-Aligned Editorial Headline & Narrative */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={`content-${currentSlide.id}`}
-            initial={{ opacity: 0, y: direction * 16 }}
+            initial={{ opacity: 0, y: direction * 24 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -direction * 16 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-xl text-left space-y-3.5 sm:space-y-5"
+            exit={{ opacity: 0, y: -direction * 20 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-2xl text-left space-y-4 sm:space-y-6"
           >
-            {/* Badge */}
+            {/* Eyebrow / Collection Tag */}
             {currentSlide.badge && (
-              <motion.span
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="inline-block text-[10px] sm:text-xs uppercase tracking-luxury-wide font-medium text-luxury-gold drop-shadow-sm"
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-medium text-luxury-gold drop-shadow-sm"
               >
-                ✦ {currentSlide.badge}
-              </motion.span>
+                <Sparkles className="h-3 w-3 text-luxury-gold" />
+                <span>{currentSlide.badge}</span>
+              </motion.div>
             )}
 
-            {/* Editorial Headline */}
+            {/* Large Editorial Headline */}
             <motion.h1
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-serif text-2xl sm:text-4xl lg:text-6xl text-white font-normal tracking-tight leading-[1.15] drop-shadow-md"
+              transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl text-white font-normal tracking-tight leading-[1.08] drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]"
             >
               {currentSlide.headline}
             </motion.h1>
 
-            {/* Subtitle */}
+            {/* Subtitle Paragraph */}
             {currentSlide.subtitle && (
               <motion.p
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-[11px] sm:text-sm lg:text-base text-white/85 font-light max-w-lg leading-relaxed line-clamp-2 sm:line-clamp-none drop-shadow-sm"
+                transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="text-xs sm:text-base lg:text-lg text-white/85 font-light max-w-xl leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
               >
                 {currentSlide.subtitle}
               </motion.p>
             )}
 
-            {/* Minimalist Frosted Glass Action Button (ÁRUM Framer Style) */}
+            {/* Dual Luxury Action Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="pt-1 sm:pt-2 flex items-center gap-4"
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3.5 sm:gap-5"
             >
               <Link to={currentSlide.primary_cta_url || '/shop'}>
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-xs border border-white/40 bg-white/10 hover:bg-white hover:text-black hover:border-white backdrop-blur-md text-white text-xs font-semibold uppercase tracking-luxury transition-all duration-300 shadow-lg cursor-pointer"
+                  className="px-7 sm:px-8 py-3.5 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-[0.2em] hover:bg-luxury-gold hover:text-black transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.6)] cursor-pointer flex items-center gap-2 group"
                 >
-                  {currentSlide.primary_cta_text || 'Shop Now'}
+                  <span>{currentSlide.primary_cta_text || 'Shop Perfumes'}</span>
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
                 </motion.button>
               </Link>
+
+              {currentSlide.secondary_cta_text && (
+                <Link to={currentSlide.secondary_cta_url || '/collections'}>
+                  <motion.button
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="px-7 sm:px-8 py-3.5 rounded-full border border-white/30 hover:border-white bg-black/30 hover:bg-white/10 backdrop-blur-md text-white font-medium text-xs uppercase tracking-[0.2em] transition-all duration-300 shadow-md cursor-pointer"
+                  >
+                    {currentSlide.secondary_cta_text}
+                  </motion.button>
+                </Link>
+              )}
             </motion.div>
           </motion.div>
         </AnimatePresence>
 
-        {/* Bottom-Right Floating Product Spotlight Card (Hidden on extra small mobile, visible on tablet/desktop) */}
+        {/* Right-Floating Spotlight Product Card */}
         <AnimatePresence mode="wait">
-          <motion.div
-            key={`product-card-${currentSlide.id}`}
-            initial={{ opacity: 0, x: 20, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 20, scale: 0.95 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="hidden md:block self-auto shrink-0"
-          >
-            <Link
-              to={currentSlide.featured_product_url || currentSlide.primary_cta_url || '/shop'}
-              className="group block bg-[#f6f4ef] text-black p-3.5 sm:p-4 rounded-xs shadow-[0_20px_50px_rgba(0,0,0,0.6)] border border-white/40 hover:border-luxury-gold transition-all duration-300 w-full sm:w-72 md:w-80 cursor-pointer"
+          {currentSlide.featured_product_title && (
+            <motion.div
+              key={`product-card-${currentSlide.id}`}
+              initial={{ opacity: 0, x: 30, scale: 0.92 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 30, scale: 0.92 }}
+              transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="hidden md:block shrink-0"
             >
-              <div className="flex items-center gap-3.5">
-                {/* Product Thumbnail */}
-                <div className="w-14 h-16 sm:w-16 sm:h-20 bg-[#eae6dc] rounded-xs overflow-hidden flex items-center justify-center p-1.5 shrink-0 border border-black/5">
-                  <img
-                    src={
-                      currentSlide.featured_product_image ||
-                      'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=400&q=90'
-                    }
-                    alt={currentSlide.featured_product_title || 'Featured Creation'}
-                    className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
+              <motion.div
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <Link
+                  to={currentSlide.featured_product_url || currentSlide.primary_cta_url || '/shop'}
+                  className="group block bg-black/60 hover:bg-black/80 backdrop-blur-2xl text-white p-4 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] border border-white/20 hover:border-luxury-gold/70 transition-all duration-300 w-72 sm:w-80 cursor-pointer"
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Flacon Thumbnail */}
+                    <div className="w-16 h-20 bg-white/5 rounded-lg overflow-hidden flex items-center justify-center p-1.5 shrink-0 border border-white/10 group-hover:border-luxury-gold/50 transition-colors">
+                      <img
+                        src={
+                          currentSlide.featured_product_image ||
+                          '/media/products/perfume-oils/perfume-oil-1.jpg'
+                        }
+                        alt={currentSlide.featured_product_title || 'Featured Fragrance'}
+                        className="w-full h-full object-cover rounded-sm group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
 
-                {/* Product Details */}
-                <div className="flex-1 min-w-0 pr-1">
-                  <span className="text-[10px] text-gray-500 font-mono uppercase tracking-wider block truncate">
-                    {currentSlide.featured_product_subtitle || 'Haute Parfumerie • 100ml'}
-                  </span>
-                  <h4 className="font-serif text-sm sm:text-base font-semibold text-black truncate group-hover:text-[#A17836] transition-colors">
-                    {currentSlide.featured_product_title || 'Oud Royal Extrait'}
-                  </h4>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs sm:text-sm font-semibold text-black font-mono">
-                      {currentSlide.featured_product_price || '₦185,000'}
-                    </span>
+                    {/* Product Details */}
+                    <div className="flex-1 min-w-0">
+                      <span className="text-[9px] text-luxury-gold font-mono uppercase tracking-widest block truncate font-medium">
+                        {currentSlide.featured_product_subtitle || 'Haute Parfumerie • 100ml'}
+                      </span>
+                      <h4 className="font-serif text-sm sm:text-base font-normal text-white truncate group-hover:text-luxury-gold transition-colors mt-0.5">
+                        {currentSlide.featured_product_title}
+                      </h4>
+                      <div className="flex items-center justify-between mt-2 pt-1 border-t border-white/10">
+                        <span className="text-xs sm:text-sm font-medium text-white/90 font-mono">
+                          {currentSlide.featured_product_price || '₦45,000'}
+                        </span>
+                        <div className="h-7 w-7 rounded-full bg-white/10 group-hover:bg-luxury-gold group-hover:text-black flex items-center justify-center transition-all duration-300">
+                          <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                {/* Arrow Action Icon */}
-                <div className="h-8 w-8 rounded-full bg-black/5 group-hover:bg-[#A17836] group-hover:text-white flex items-center justify-center transition-colors shrink-0">
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </div>
-              </div>
-            </Link>
-          </motion.div>
+                </Link>
+              </motion.div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
 
-      {/* Slide Navigation Arrows - Visible on Mouse Over */}
-      {slideCount > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={handlePrev}
-            aria-label="Previous fragrance slide"
-            className="absolute left-3 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
-          >
-            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 transition-transform hover:-translate-x-0.5" />
-          </button>
-
-          <button
-            type="button"
-            onClick={handleNext}
-            aria-label="Next fragrance slide"
-            className="absolute right-3 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
-          >
-            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 transition-transform hover:translate-x-0.5" />
-          </button>
-        </>
-      )}
-
-      {/* Bottom Minimalist Slide Indicator Dots & Pause Button */}
-      {slideCount > 1 && (
-        <div className="absolute bottom-5 left-0 right-0 z-20 flex items-center justify-center gap-4 px-4 pointer-events-auto">
-          <div className="flex items-center gap-2">
-            {activeSlides.map((slide, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <button
-                  key={`indicator-${slide.id}`}
-                  type="button"
-                  onClick={() => handleGoTo(idx)}
-                  aria-label={`Go to slide ${idx + 1}: ${slide.headline}`}
-                  className="relative h-1 w-8 sm:w-10 bg-white/30 rounded-full overflow-hidden cursor-pointer transition-all"
-                >
-                  {isActive ? (
-                    <motion.div
-                      layoutId="activeSlideBar"
-                      className="absolute inset-0 bg-white"
-                      initial={{ width: '0%' }}
-                      animate={{ width: '100%' }}
-                      transition={{
-                        duration: autoplayEnabled && !isPaused ? intervalMs / 1000 : 0.4,
-                        ease: 'linear',
-                      }}
-                    />
-                  ) : null}
-                </button>
-              );
-            })}
+      {/* =========================================================================
+          3. BOTTOM CONTROLS, PROGRESS INDICATOR & CENTERED SCROLL PROMPT
+         ========================================================================= */}
+      <div className="relative z-30 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full pb-6 flex items-center justify-between pointer-events-auto">
+        
+        {/* Slide Counter & Progress Bars */}
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-xs text-white/80 tracking-wider">
+            0{currentIndex + 1}
+          </span>
+          <div className="flex items-center gap-1.5">
+            {activeSlides.map((slide, idx) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => handleGoTo(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className="h-1.5 rounded-full transition-all duration-500 cursor-pointer overflow-hidden bg-white/20 hover:bg-white/40"
+                style={{ width: currentIndex === idx ? '32px' : '8px' }}
+              >
+                {currentIndex === idx && (
+                  <motion.div
+                    className="h-full bg-luxury-gold"
+                    initial={{ width: '0%' }}
+                    animate={{ width: isPaused ? '100%' : '100%' }}
+                    transition={{ duration: intervalMs / 1000, ease: 'linear' }}
+                  />
+                )}
+              </button>
+            ))}
           </div>
+          <span className="font-mono text-xs text-white/40 tracking-wider">
+            0{slideCount}
+          </span>
 
-          {autoplayEnabled && (
+          {/* Autoplay Pause / Play Toggle */}
+          {slideCount > 1 && (
             <button
               type="button"
-              onClick={() => setIsPaused((p) => !p)}
+              onClick={() => setIsPaused(!isPaused)}
               aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
-              className="p-1 text-white/50 hover:text-white transition-colors cursor-pointer"
+              className="p-1 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors ml-2"
             >
               {isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
             </button>
           )}
         </div>
-      )}
+
+        {/* Centered Luxury Scroll Indicator */}
+        <button
+          type="button"
+          onClick={scrollToNextSection}
+          className="hidden sm:flex items-center gap-2 text-white/60 hover:text-luxury-gold transition-colors text-[10px] uppercase tracking-[0.24em] font-medium cursor-pointer"
+        >
+          <span>Scroll to explore</span>
+          <motion.div
+            animate={{ y: [0, 4, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown className="h-3.5 w-3.5" />
+          </motion.div>
+        </button>
+
+        {/* Navigation Arrows */}
+        {slideCount > 1 ? (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous slide"
+              className="h-9 w-9 rounded-full bg-black/40 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold backdrop-blur-md text-white flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next slide"
+              className="h-9 w-9 rounded-full bg-black/40 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold backdrop-blur-md text-white flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        ) : (
+          <div className="w-16" />
+        )}
+      </div>
     </section>
   );
 };
-

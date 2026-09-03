@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, ArrowRight, LogOut, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -112,9 +112,6 @@ export const Navbar: React.FC = () => {
         { name: 'Private Label & Gifting', href: '/contact' },
       ];
 
-  // Intelligent navigation partitioning:
-  // Primary links (first 4) stay in center navigation bar
-  // Secondary links (5+) move gracefully into "More" dropdown to guarantee ZERO overflow
   const primaryNavLinks = rawNavLinks.slice(0, 4);
   const secondaryNavLinks = rawNavLinks.slice(4);
 
@@ -132,15 +129,12 @@ export const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 sm:gap-6 lg:gap-10">
         
-        {/* =========================================================================
-            COLUMN 1 (LEFT): BRAND LOGO & ELEGANT WORDMARK
-           ========================================================================= */}
+        {/* COLUMN 1 (LEFT): BRAND LOGO & ELEGANT WORDMARK */}
         <div className="flex items-center gap-3 shrink-0">
           <Link
             to="/"
             className="flex items-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold gap-3 sm:gap-3.5 text-decoration-none shrink-0"
           >
-            {/* Prominent, Highly Legible Crest Logo Icon */}
             {logoUrl && !logoLoadError ? (
               <motion.div
                 className="flex items-center justify-center shrink-0"
@@ -168,7 +162,6 @@ export const Navbar: React.FC = () => {
               </motion.div>
             ) : null}
 
-            {/* Medium-Sized, High-Contrast Business Name */}
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
               <div className="flex flex-col items-start select-none text-left leading-tight">
                 <span className="font-serif text-base sm:text-lg lg:text-[18px] tracking-[0.22em] sm:tracking-[0.26em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
@@ -182,9 +175,7 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* =========================================================================
-            COLUMN 2 (CENTER): PRIMARY NAVIGATION WITH LUXURY LETTER-SPACING
-           ========================================================================= */}
+        {/* COLUMN 2 (CENTER): PRIMARY NAVIGATION */}
         <nav
           className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 2xl:gap-10 min-w-0"
           onMouseLeave={() => setHoveredNav(null)}
@@ -201,7 +192,6 @@ export const Navbar: React.FC = () => {
                   isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/80 hover:text-white'
                 )}
               >
-                {/* Subtle Hover Underline/Capsule Indicator */}
                 {hoveredNav === link.name && (
                   <motion.span
                     layoutId="navbar-hover-capsule"
@@ -209,7 +199,6 @@ export const Navbar: React.FC = () => {
                     transition={{ type: 'spring', stiffness: 450, damping: 30 }}
                   />
                 )}
-                {/* Active Route Indicator */}
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-dot"
@@ -222,7 +211,6 @@ export const Navbar: React.FC = () => {
             );
           })}
 
-          {/* Luxury "More" Dropdown for Secondary Menu Items */}
           {secondaryNavLinks.length > 0 && (
             <div
               className="relative shrink-0"
@@ -264,17 +252,12 @@ export const Navbar: React.FC = () => {
           )}
         </nav>
 
-        {/* =========================================================================
-            COLUMN 3 (RIGHT): REFINED UTILITY ACTION CLUSTER
-           ========================================================================= */}
+        {/* COLUMN 3 (RIGHT): UTILITY ACTION CLUSTER */}
         <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-3.5 shrink-0">
-          
-          {/* Theme Switcher */}
           <div className="shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]">
             <ThemeToggle />
           </div>
 
-          {/* Search Icon */}
           <Link
             to="/shop"
             className="h-8.5 w-8.5 rounded-full flex items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
@@ -284,7 +267,6 @@ export const Navbar: React.FC = () => {
             <Search className="h-4 w-4" />
           </Link>
 
-          {/* Wishlist Icon */}
           <Link
             to="/wishlist"
             className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
@@ -299,7 +281,6 @@ export const Navbar: React.FC = () => {
             )}
           </Link>
 
-          {/* Account Icon & Dropdown */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -367,7 +348,6 @@ export const Navbar: React.FC = () => {
             </Link>
           )}
 
-          {/* Prominent Yet Refined Luxury Cart Pill */}
           <Link
             to="/cart"
             className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold transition-all text-xs font-medium text-white flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group"
@@ -379,7 +359,6 @@ export const Navbar: React.FC = () => {
             <span className="font-mono text-xs font-semibold">({cartCount})</span>
           </Link>
 
-          {/* Mobile Menu Toggle Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -391,9 +370,7 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* =========================================================================
-          MOBILE LUXURY SLIDE-OUT DRAWER
-         ========================================================================= */}
+      {/* MOBILE DRAWER */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -404,7 +381,6 @@ export const Navbar: React.FC = () => {
             className="lg:hidden mt-2 mx-4 bg-black/98 backdrop-blur-2xl border border-luxury-gold/30 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto"
           >
             <div className="p-6 space-y-6">
-              {/* Navigation Links */}
               <div className="space-y-3">
                 {rawNavLinks.map((link) => {
                   const isActive = location.pathname === link.href;
@@ -424,7 +400,6 @@ export const Navbar: React.FC = () => {
                 })}
               </div>
 
-              {/* Mobile Quick Action Buttons */}
               <div className="pt-2 grid grid-cols-2 gap-3 text-xs">
                 <Link
                   to="/wishlist"
