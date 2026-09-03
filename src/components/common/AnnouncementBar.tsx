@@ -19,7 +19,7 @@ export const AnnouncementBar: React.FC = () => {
   }
 
   return (
-    <div className="bg-black/80 backdrop-blur-md text-luxury-gold px-4 py-1.5 text-center text-[10px] sm:text-xs tracking-luxury-wide font-medium relative z-50 flex items-center justify-center gap-2 border-b border-white/10">
+    <div className="bg-black/40 backdrop-blur-xs text-luxury-gold/90 px-4 py-1.5 text-center text-[10px] sm:text-xs tracking-luxury-wide font-light relative z-50 flex items-center justify-center gap-2 border-b border-white/5 drop-shadow-sm">
       <Sparkles className="h-3 w-3 shrink-0 text-luxury-gold" />
       <span className="truncate">{announcement.text}</span>
       {announcement.link_text && announcement.link_url && (

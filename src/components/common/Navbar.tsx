@@ -114,12 +114,12 @@ export const Navbar: React.FC = () => {
       ];
 
   return (
-    <motion.header
+    <motion.nav
       className={cn(
-        'sticky top-0 z-40 w-full transition-all duration-500',
+        'w-full transition-all duration-500 select-none',
         isScrolled
           ? 'bg-black/95 backdrop-blur-xl border-b border-luxury-gold/25 py-2.5 sm:py-3 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
-          : 'bg-gradient-to-b from-black/70 via-black/35 to-transparent backdrop-blur-[2.5px] border-b border-white/5 py-4 sm:py-5.5'
+          : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
@@ -565,6 +565,6 @@ export const Navbar: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </motion.nav>
   );
 };
