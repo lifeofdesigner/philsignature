@@ -8,10 +8,12 @@
 -- ------------------------------------------------------------------------------
 INSERT INTO categories (id, name, slug, description, display_order, is_active)
 VALUES
-    ('c1111111-1111-1111-1111-111111111111', 'Extrait de Parfum', 'extrait-de-parfum', 'Ultra-concentrated pure perfume extraits (25%-35% perfume oil).', 1, true),
-    ('c2222222-2222-2222-2222-222222222222', 'Eau de Parfum', 'eau-de-parfum', 'Refined daily olfactory compositions with sophisticated sillage.', 2, true),
-    ('c3333333-3333-3333-3333-333333333333', 'Home Fragrance', 'home-fragrance', 'Artisanal reed diffusers, room sprays, and olfactory sanctuary stones.', 3, true),
-    ('c4444444-4444-4444-4444-444444444444', 'Body Elixirs', 'body-elixir', 'Silken botanical dry body oils and hair mist infusions.', 4, true)
+    ('c1111111-1111-1111-1111-111111111111', 'Perfume Body Oils', 'perfume-body-oils', 'High-concentration botanical perfume body oils in Masculine, Feminine, and Unisex profiles.', 1, true),
+    ('c2222222-2222-2222-2222-222222222222', 'Extrait de Parfum', 'extrait-de-parfum', 'Ultra-concentrated pure perfume extraits (25%-35% perfume oil).', 2, true),
+    ('c3333333-3333-3333-3333-333333333333', 'Reed Diffusers', 'reed-diffusers', 'Artisanal natural rattan reed diffusers with slow botanical diffusion.', 3, true),
+    ('c4444444-4444-4444-4444-444444444444', 'Scented Candles', 'scented-candles', 'Slow-burning luxury scented candles in matte black vessels with gold lettering.', 4, true),
+    ('c5555555-5555-5555-5555-555555555555', 'Room Spray', 'room-spray', 'Instant atmosphere transformations with fine fragrance room mist.', 5, true),
+    ('c6666666-6666-6666-6666-666666666666', 'Home Fragrance', 'home-fragrance', 'Curated home fragrance sanctuary sets, diffusers, and luxury candles.', 6, true)
 ON CONFLICT (id) DO NOTHING;
 
 -- ------------------------------------------------------------------------------
@@ -270,8 +272,8 @@ VALUES
     'Storefront Top Banner',
     jsonb_build_object(
         'enabled', true,
-        'text', 'COMPLIMENTARY NATIONWIDE EXPRESS DELIVERY ON ALL ACQUISITIONS OVER ₦150,000',
-        'link_text', 'EXPLORE CREATIONS',
+        'text', 'COMPLIMENTARY NATIONWIDE DELIVERY ON ALL ORDERS OVER ₦150,000',
+        'link_text', 'SHOP NOW',
         'link_url', '/shop'
     ),
     true
@@ -281,26 +283,111 @@ VALUES
     'home',
     'Homepage Hero Billboard',
     jsonb_build_object(
-        'badge', 'The Private Reserve Collection',
-        'headline', 'Transcendence in Every Note',
-        'subtitle', 'Handcrafted extraits de parfum, artisanal home scents, and rare oud elixirs born from the rarest botanical essences.',
-        'primary_cta_text', 'Explore Creations',
+        'badge', 'Haute Parfumerie',
+        'headline', 'Luxury Perfumes That Last',
+        'subtitle', 'Handcrafted long-lasting perfumes made with the finest fragrance oils. Rich, elegant scents designed to make a statement.',
+        'primary_cta_text', 'Shop Perfumes',
         'primary_cta_url', '/shop',
         'secondary_cta_text', 'View Collections',
         'secondary_cta_url', '/collections',
-        'background_image', 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=2000&q=90'
+        'background_image', '/brand/hero-oud-luxury.jpg'
     ),
     true
 ),
 (
     'brand_story',
     'about',
-    'Our Heritage & Sourcing Ethos',
+    'About Philz Signature & Our Story',
     jsonb_build_object(
-        'title', 'The Art of Philz Signature',
-        'quote', 'Perfume is not mere scent; it is an invisible crown of memory, presence, and individuality.',
-        'philosophy', 'PHILZ SIGNATURE was conceived to redefine the olfactory landscape through artisanal integrity. Every flacon is formulated using pure extraits, ensuring longevity, complexity, and undeniable presence.',
-        'sourcing', 'From the deep woods of Cambodia to the rose fields of Taif and Mediterranean bergamot groves, our distillations honor the natural spirit of each botanical harvest.'
+        'title', 'ABOUT PHILZ SIGNATURE',
+        'subtitle', 'A SIGNATURE IS SOMETHING THAT BELONGS TO YOU.',
+        'body_paragraphs', jsonb_build_array(
+            'Founded in 2018, Philz Signature was created from a passion for fragrance and the belief that scent is one of the most powerful ways to express individuality.',
+            'What began with a focus on personal fragrance has evolved into a broader scent lifestyle brand offering perfumes, perfume oils, home fragrances, gifting solutions and private-label services.'
+        ),
+        'philosophy_title', 'Our Philosophy',
+        'philosophy_points', jsonb_build_array(
+            'Fragrance should be personal.',
+            'Quality should be intentional.',
+            'Every experience should be memorable.'
+        ),
+        'story_title', 'OUR STORY',
+        'story_body', jsonb_build_array(
+            'At the heart of Philz Signature is Philz the Perfumer, whose passion for fragrance inspired the creation of a brand focused on helping people discover scents that feel personal and distinctive.',
+            'Over the years, Philz Signature has continued to evolve—expanding from personal fragrance into home fragrance, corporate gifting and customized fragrance solutions for businesses.'
+        ),
+        'story_goal', 'To create fragrance experiences that leave a lasting impression.',
+        'perfumer_title', 'MEET PHILZ THE PERFUMER',
+        'perfumer_subtitle', 'BEHIND EVERY SIGNATURE IS A STORY.',
+        'perfumer_body', jsonb_build_array(
+            'Philz the Perfumer is the founder and creative force behind Philz Signature.',
+            'Driven by a passion for fragrance and entrepreneurship, he has built Philz Signature around a simple belief: Everyone deserves to have a scent that feels like their own.',
+            'From fragrance creation to brand development, the journey continues to be guided by curiosity, creativity and a commitment to creating memorable scent experiences.'
+        ),
+        'closing_brand', 'PHILZ SIGNATURE',
+        'closing_statement', 'Your scent. Your signature.',
+        'image1_url', '/media/banners/banner-4.jpg',
+        'image2_url', '/media/lifestyle/lifestyle-1.jpg'
+    ),
+    true
+),
+(
+    'contact_data',
+    'contact',
+    'Concierge & Bespoke Scent Services',
+    jsonb_build_object(
+        'title', 'LET''S CREATE YOUR SIGNATURE',
+        'subtitle', 'Whether you''re looking for your next fragrance, planning a corporate gift project or interested in creating your own fragrance brand, we''d love to hear from you.',
+        'email', 'Philzsignature1@gmail.com',
+        'phone', '+2347038399764',
+        'whatsapp', 'https://wa.me/message/OJXETPKJE7L4M1',
+        'address', 'Lagos, Nigeria',
+        'hours', 'Monday – Saturday: 9:00 AM – 7:00 PM WAT',
+        'pillars', jsonb_build_array(
+            jsonb_build_object(
+                'title', 'Customer Enquiries',
+                'description', 'Questions about our products, orders or fragrances?',
+                'button_text', 'CONTACT US',
+                'action_type', 'contact',
+                'action_url', '#inquiry-form'
+            ),
+            jsonb_build_object(
+                'title', 'Private Label',
+                'description', 'Ready to create your own fragrance collection?',
+                'button_text', 'START A PROJECT',
+                'action_type', 'project',
+                'action_url', 'https://wa.me/message/OJXETPKJE7L4M1'
+            ),
+            jsonb_build_object(
+                'title', 'Corporate Gifting',
+                'description', 'Planning gifts for your company, clients or team?',
+                'button_text', 'REQUEST A QUOTE',
+                'action_type', 'quote',
+                'action_url', 'https://wa.me/message/OJXETPKJE7L4M1'
+            )
+        )
+    ),
+    true
+),
+(
+    'faq_data',
+    'faq',
+    'Frequently Asked Questions',
+    jsonb_build_object(
+        'title', 'Frequently Asked Questions',
+        'subtitle', 'Everything you need to know about our fragrance collections, bespoke solutions, orders and delivery.',
+        'items', jsonb_build_array(
+            jsonb_build_object('question', 'What type of fragrances does Philz Signature offer?', 'answer', 'We offer perfume oils, Eau de Parfum and a variety of home and lifestyle fragrances, including scented candles, reed diffusers, room sprays and car fragrances.'),
+            jsonb_build_object('question', 'Are Philz Signature fragrances for men or women?', 'answer', 'Our collections are designed for fragrance lovers of different preferences. Many of our fragrances can be enjoyed by anyone, regardless of gender.'),
+            jsonb_build_object('question', 'How do I choose a fragrance?', 'answer', 'You can explore fragrances by collection, fragrance family, mood and occasion. If you''re still unsure, contact us and we''ll help you find a suitable option.'),
+            jsonb_build_object('question', 'Do you offer private labeling?', 'answer', 'Yes. We offer private-label and white-label fragrance solutions for businesses and entrepreneurs.'),
+            jsonb_build_object('question', 'What products can be private labeled?', 'answer', 'Depending on your requirements, we can provide perfumes, perfume oils, candles, reed diffusers, room sprays and other fragrance products.'),
+            jsonb_build_object('question', 'Do you offer corporate gifting?', 'answer', 'Yes. We create customized corporate fragrance gifts, hampers and branded products for businesses and organizations.'),
+            jsonb_build_object('question', 'Can products be customized with my company''s branding?', 'answer', 'Yes. Branding and packaging customization can be incorporated into qualifying corporate and private-label projects.'),
+            jsonb_build_object('question', 'Where is Philz Signature located?', 'answer', 'Philz Signature is based in Lagos, Nigeria.'),
+            jsonb_build_object('question', 'How can I place an order?', 'answer', 'Browse our online collection, select your preferred products and follow the checkout process. For bulk, corporate or private-label orders, contact our team directly.'),
+            jsonb_build_object('question', 'Do you deliver?', 'answer', 'Yes. Delivery options are available for customers and business clients. Delivery timelines depend on the order and destination.')
+        )
     ),
     true
 ),
@@ -309,11 +396,36 @@ VALUES
     'footer',
     'Global Boutique Footer',
     jsonb_build_object(
-        'brand_description', 'Haute Parfumerie & Artisanal Olfactory Creations. Handcrafted in limited private allocations.',
-        'instagram', 'https://instagram.com/philzsignature',
-        'whatsapp', '+2348000000000',
-        'concierge_email', 'concierge@philzsignature.com',
-        'flagship_location', 'Victoria Island, Lagos, Nigeria'
+        'brand_name', 'PHILZ SIGNATURE',
+        'tagline', 'YOUR SCENT. YOUR SIGNATURE.',
+        'brand_description', 'Luxury fragrances and scent experiences crafted for those who want to leave a lasting impression.',
+        'closing_line', 'PHILZ SIGNATURE — Signature by nature, crafted for you.',
+        'instagram', 'https://instagram.com/philztheperfumer',
+        'instagram_handle', '@philztheperfumer',
+        'whatsapp', 'https://wa.me/message/OJXETPKJE7L4M1',
+        'concierge_email', 'Philzsignature1@gmail.com',
+        'phone', '+2347038399764',
+        'flagship_location', 'Lagos, Nigeria',
+        'copyright_text', '© 2026 PHILZ SIGNATURE. ALL RIGHTS RESERVED.',
+        'shop_links', jsonb_build_array(
+            jsonb_build_object('label', 'Perfume Oils', 'url', '/shop?category=perfume-body-oils'),
+            jsonb_build_object('label', 'Niche Collection', 'url', '/collections/niche-collection'),
+            jsonb_build_object('label', 'Signature Collection', 'url', '/collections/signature-classics'),
+            jsonb_build_object('label', 'Home Fragrance', 'url', '/shop?category=home-fragrance'),
+            jsonb_build_object('label', 'Gifts', 'url', '/shop?category=gifts-and-hampers')
+        ),
+        'services_links', jsonb_build_array(
+            jsonb_build_object('label', 'Private Label', 'url', '/contact?subject=Private Label Fragrance Project'),
+            jsonb_build_object('label', 'Corporate Gifting', 'url', '/contact?subject=Corporate Fragrance Gifting'),
+            jsonb_build_object('label', 'Bulk Orders', 'url', '/contact?subject=Bulk Fragrance Orders'),
+            jsonb_build_object('label', 'Perfume Bar & Luxury Gifts', 'url', '/contact?subject=Perfume Bar & Luxury Gifts')
+        ),
+        'company_links', jsonb_build_array(
+            jsonb_build_object('label', 'About Us', 'url', '/about'),
+            jsonb_build_object('label', 'Our Story', 'url', '/about#our-story'),
+            jsonb_build_object('label', 'Contact', 'url', '/contact'),
+            jsonb_build_object('label', 'FAQs', 'url', '/faq')
+        )
     ),
     true
 )
@@ -327,12 +439,12 @@ ON CONFLICT (key) DO UPDATE SET
 INSERT INTO site_settings (key, value, description)
 VALUES
     ('store_name', '"PHILZ SIGNATURE"', 'Official brand and storefront business name'),
-    ('store_slogan', '"Artisanal Parfums & Haute Fragrance"', 'Brand tagline'),
+    ('store_slogan', '"YOUR SCENT. YOUR SIGNATURE."', 'Brand tagline'),
     ('currency_code', '"NGN"', 'Primary operational currency'),
     ('currency_symbol', '"₦"', 'Primary currency display glyph'),
-    ('concierge_email', '"concierge@philzsignature.com"', 'Primary concierge customer service inbox'),
-    ('concierge_phone', '"+234 (0) 800 PHILZ SIG"', 'Official concierge telephone line'),
-    ('concierge_whatsapp', '"+2348000000000"', 'Direct private WhatsApp messenger hotline'),
+    ('concierge_email', '"Philzsignature1@gmail.com"', 'Primary concierge customer service inbox'),
+    ('concierge_phone', '"+2347038399764"', 'Official concierge telephone line'),
+    ('concierge_whatsapp', '"https://wa.me/message/OJXETPKJE7L4M1"', 'Direct private WhatsApp messenger hotline'),
     ('free_shipping_threshold', '150000', 'Subtotal threshold for complimentary delivery')
 ON CONFLICT (key) DO UPDATE SET
     value = EXCLUDED.value,

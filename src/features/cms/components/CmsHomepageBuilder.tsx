@@ -184,7 +184,6 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   <option value="featured_products">Featured Perfumes Grid</option>
                   <option value="brand_story">Brand Heritage Story</option>
                   <option value="testimonials">Client Testimonials</option>
-                  <option value="instagram">Instagram Social Sanctuary</option>
                   <option value="newsletter">VIP Newsletter Invitation</option>
                   <option value="custom_html">Custom HTML / Spotlight</option>
                 </select>

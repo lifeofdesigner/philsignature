@@ -61,7 +61,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
           <span className="text-xs uppercase tracking-luxury text-luxury-gold font-medium">
             Filters
           </span>
-          <button onClick={onClose} className="p-1 text-luxury-muted hover:text-luxury-cream" aria-label="Close filters">
+          <button onClick={onClose} className="p-1 text-luxury-muted hover:text-white" aria-label="Close filters">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -91,10 +91,10 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
             <button
               type="button"
               onClick={() => onFamilyChange('all')}
-              className={`w-full text-left text-xs py-2 px-3 rounded-sm transition-colors flex items-center justify-between cursor-pointer ${
+              className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between ${
                 family === 'all'
                   ? 'bg-luxury-gold text-black font-semibold'
-                  : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-graphite'
+                  : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
               }`}
             >
               <span>All Fragrance Families</span>
@@ -104,10 +104,10 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                 key={fam}
                 type="button"
                 onClick={() => onFamilyChange(fam)}
-                className={`w-full text-left text-xs py-2 px-3 rounded-sm transition-colors flex items-center justify-between cursor-pointer ${
+                className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between ${
                   family === fam
                     ? 'bg-luxury-gold text-black font-semibold'
-                    : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-graphite'
+                    : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
                 }`}
               >
                 <span>{fam}</span>
@@ -126,10 +126,10 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
               <button
                 type="button"
                 onClick={() => onCollectionChange('all')}
-                className={`w-full text-left text-xs py-2 px-3 rounded-sm transition-colors cursor-pointer ${
+                className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors ${
                   collectionId === 'all'
                     ? 'bg-luxury-gold text-black font-semibold'
-                    : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-graphite'
+                    : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
                 }`}
               >
                 <span>All Collections</span>
@@ -139,10 +139,10 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                   key={col.id}
                   type="button"
                   onClick={() => onCollectionChange(col.id)}
-                  className={`w-full text-left text-xs py-2 px-3 rounded-sm transition-colors truncate cursor-pointer ${
+                  className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors truncate ${
                     collectionId === col.id
                       ? 'bg-luxury-gold text-black font-semibold'
-                      : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-graphite'
+                      : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
                   }`}
                 >
                   <span className="truncate">{col.name}</span>
@@ -154,13 +154,14 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
 
         {/* 3. In-Stock Filter */}
         <div className="pt-4 border-t border-luxury-border/50">
-          <label className="flex items-center gap-3 cursor-pointer text-xs text-luxury-sand hover:text-luxury-cream">
+          <label className="flex items-center gap-3 cursor-pointer text-xs text-luxury-sand hover:text-white">
             <input
               type="checkbox"
               checked={inStockOnly}
               onChange={(e) => onInStockChange(e.target.checked)}
-              className="accent-luxury-gold h-4 w-4 rounded-sm"
+              className="accent-luxury-gold h-4 w-4 rounded-none"
             />
+            <span>Immediate Allocations Only (In-Stock)</span>
             <span>In-Stock Only</span>
           </label>
         </div>
@@ -168,6 +169,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
         {/* Mobile Apply Button */}
         <div className="lg:hidden pt-4 border-t border-luxury-border">
           <Button variant="luxury" size="default" onClick={onClose} className="w-full text-xs">
+            Show Filtered Creations
             View Results
           </Button>
         </div>

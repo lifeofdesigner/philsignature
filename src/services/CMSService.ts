@@ -61,19 +61,47 @@ export interface CmsAnnouncementContent {
 
 export interface CmsStoryContent {
   title: string;
-  quote: string;
-  philosophy: string;
-  sourcing: string;
+  subtitle?: string;
+  body_paragraphs?: string[];
+  philosophy_title?: string;
+  philosophy_points?: string[];
+  story_title?: string;
+  story_body?: string[];
+  story_goal?: string;
+  perfumer_title?: string;
+  perfumer_subtitle?: string;
+  perfumer_body?: string[];
+  closing_brand?: string;
+  closing_statement?: string;
+  quote?: string;
+  philosophy?: string;
+  sourcing?: string;
   image1_url?: string;
+  image2_url?: string;
   status?: CmsPublishStatus;
 }
 
+export interface CmsFooterLink {
+  label: string;
+  url: string;
+  target?: '_self' | '_blank';
+}
+
 export interface CmsFooterContent {
+  brand_name?: string;
+  tagline?: string;
   brand_description: string;
+  closing_line?: string;
   instagram: string;
+  instagram_handle?: string;
   whatsapp: string;
   concierge_email: string;
+  phone?: string;
   flagship_location: string;
+  copyright_text?: string;
+  shop_links?: CmsFooterLink[];
+  services_links?: CmsFooterLink[];
+  company_links?: CmsFooterLink[];
 }
 
 // Menu Builder Models
@@ -206,6 +234,14 @@ export interface CmsFaqContent {
   status: CmsPublishStatus;
 }
 
+export interface CmsInquiryPillar {
+  title: string;
+  description: string;
+  button_text: string;
+  action_type?: 'contact' | 'project' | 'quote' | 'link';
+  action_url?: string;
+}
+
 export interface CmsContactContent {
   title: string;
   subtitle: string;
@@ -214,6 +250,7 @@ export interface CmsContactContent {
   address: string;
   hours: string;
   whatsapp: string;
+  pillars?: CmsInquiryPillar[];
 }
 
 export class CMSService {
@@ -305,70 +342,98 @@ export class CMSService {
     link_url: '/shop',
   };
 
-  private static DEFAULT_STORY: CmsStoryContent = {
-    title: 'The Art of Philz Signature',
-    quote: 'Perfume is more than just a scent; it is a sign of confidence, presence, and personal style.',
-    philosophy: 'PHILZ SIGNATURE was created to bring you authentic luxury perfumes. Every bottle is made with high-concentration perfume oils, ensuring your scent lasts all day and leaves a lasting impression.',
-    sourcing: 'From rare Cambodian woods to the rose fields of Taif and fresh Mediterranean bergamot, our ingredients are carefully selected from the finest sources around the world.',
+  public static DEFAULT_STORY: CmsStoryContent = {
+    title: 'ABOUT PHILZ SIGNATURE',
+    subtitle: 'A SIGNATURE IS SOMETHING THAT BELONGS TO YOU.',
+    body_paragraphs: [
+      'Founded in 2018, Philz Signature was created from a passion for fragrance and the belief that scent is one of the most powerful ways to express individuality.',
+      'What began with a focus on personal fragrance has evolved into a broader scent lifestyle brand offering perfumes, perfume oils, home fragrances, gifting solutions and private-label services.',
+    ],
+    philosophy_title: 'Our Philosophy',
+    philosophy_points: [
+      'Fragrance should be personal.',
+      'Quality should be intentional.',
+      'Every experience should be memorable.',
+    ],
+    story_title: 'OUR STORY',
+    story_body: [
+      'At the heart of Philz Signature is Philz the Perfumer, whose passion for fragrance inspired the creation of a brand focused on helping people discover scents that feel personal and distinctive.',
+      'Over the years, Philz Signature has continued to evolve—expanding from personal fragrance into home fragrance, corporate gifting and customized fragrance solutions for businesses.',
+    ],
+    story_goal: 'To create fragrance experiences that leave a lasting impression.',
+    perfumer_title: 'MEET PHILZ THE PERFUMER',
+    perfumer_subtitle: 'BEHIND EVERY SIGNATURE IS A STORY.',
+    perfumer_body: [
+      'Philz the Perfumer is the founder and creative force behind Philz Signature.',
+      'Driven by a passion for fragrance and entrepreneurship, he has built Philz Signature around a simple belief: Everyone deserves to have a scent that feels like their own.',
+      'From fragrance creation to brand development, the journey continues to be guided by curiosity, creativity and a commitment to creating memorable scent experiences.',
+    ],
+    closing_brand: 'PHILZ SIGNATURE',
+    closing_statement: 'Your scent. Your signature.',
+    quote: 'A signature is something that belongs to you.',
+    philosophy: 'Fragrance should be personal. Quality should be intentional. Every experience should be memorable.',
+    sourcing: 'Handcrafted perfume oils, bespoke home fragrances, and master-crafted personal scents.',
     image1_url: '/media/banners/banner-4.jpg',
+    image2_url: '/media/lifestyle/lifestyle-1.jpg',
+    status: 'published',
   };
 
   public static DEFAULT_INSTAGRAM: CmsInstagramSection = {
     enabled: true,
     title: 'Follow Our Olfactory Journey',
-    subtitle: 'Behind the atelier, seasonal harvests, and haute fragrance moments.',
-    handle: '@philzsignature',
-    profile_url: 'https://instagram.com/philzsignature',
+    subtitle: 'Behind the atelier with Philz the Perfumer, bespoke formulation, and olfactory art.',
+    handle: '@philztheperfumer',
+    profile_url: 'https://instagram.com/philztheperfumer',
     layout: 'slider',
     post_count: 6,
     posts: [
       {
         id: 'insta-1',
         image_url: '/media/products/perfume-oils/perfume-oil-1.jpg',
-        caption: 'Pure botanical essence extracted in small batches. Our signature Perfume Body Oil on rough travertine. ✨ #PhilzSignature #HauteParfumerie',
-        likes_count: 428,
-        comments_count: 32,
-        post_url: 'https://instagram.com/philzsignature',
+        caption: 'Pure botanical essence extracted in small batches. Our signature Perfume Body Oil on rough travertine. ✨ #PhilzSignature #PhilzThePerfumer',
+        likes_count: 512,
+        comments_count: 38,
+        post_url: 'https://instagram.com/philztheperfumer',
       },
       {
         id: 'insta-2',
         image_url: '/media/products/diffuser-candles/diffuser-candle-1.jpg',
-        caption: 'Elevate your sanctuary with our slow-burning coconut-apricot wax candles and natural rattan reed diffusers. 🕯️ #HomeFragrance #LuxuryLiving',
-        likes_count: 592,
-        comments_count: 45,
-        post_url: 'https://instagram.com/philzsignature',
+        caption: 'Elevate your sanctuary with our slow-burning scented candles and natural rattan reed diffusers. 🕯️ #HomeFragrance #PhilzSignature',
+        likes_count: 684,
+        comments_count: 49,
+        post_url: 'https://instagram.com/philztheperfumer',
       },
       {
         id: 'insta-3',
         image_url: '/media/products/perfume-oils/perfume-oil-6.jpg',
-        caption: 'Oud Royal Extrait: 25-year aged wild agarwood with amber and Damascus rose. The sovereign statement. 👑 #OudEdition #NicheFragrance',
-        likes_count: 814,
-        comments_count: 67,
-        post_url: 'https://instagram.com/philzsignature',
+        caption: 'Bespoke Private Label & Extrait formulations. Crafted to leave an indelible signature. 👑 #PhilzThePerfumer #LuxuryFragrance',
+        likes_count: 920,
+        comments_count: 73,
+        post_url: 'https://instagram.com/philztheperfumer',
       },
       {
         id: 'insta-4',
         image_url: '/media/lifestyle/lifestyle-1.jpg',
-        caption: 'Evening rituals: Warm vanilla, smoked amber, and quiet reflection. 🌙 #FragranceRoutine #SelfCareLuxury',
-        likes_count: 349,
-        comments_count: 21,
-        post_url: 'https://instagram.com/philzsignature',
+        caption: 'Evening rituals: Warm vanilla, smoked amber, and quiet reflection. 🌙 #YourScentYourSignature #ScentLifestyle',
+        likes_count: 410,
+        comments_count: 27,
+        post_url: 'https://instagram.com/philztheperfumer',
       },
       {
         id: 'insta-5',
         image_url: '/media/products/diffuser-candles/diffuser-candle-3.jpg',
-        caption: 'Continuous diffusion of pure botanical oils. Effortless elegance for your living spaces. 🌿 #AromaSanctuary #AtelierPhilz',
-        likes_count: 512,
-        comments_count: 38,
-        post_url: 'https://instagram.com/philzsignature',
+        caption: 'Continuous diffusion of pure botanical oils. Effortless elegance for corporate & residential spaces. 🌿 #PhilzSignature',
+        likes_count: 576,
+        comments_count: 41,
+        post_url: 'https://instagram.com/philztheperfumer',
       },
       {
         id: 'insta-6',
         image_url: '/media/banners/banner-4.jpg',
-        caption: 'The Complete Wardrobe: Handcrafted extraits, silken body elixirs, and artisanal candles. #TheCollection #PhilzSignature',
-        likes_count: 963,
-        comments_count: 84,
-        post_url: 'https://instagram.com/philzsignature',
+        caption: 'The Complete Wardrobe: Perfumes, perfume oils, reed diffusers, and luxury gifting hampers. #PhilzSignature #PhilzThePerfumer',
+        likes_count: 1042,
+        comments_count: 95,
+        post_url: 'https://instagram.com/philztheperfumer',
       },
     ],
     status: 'published',
@@ -377,19 +442,19 @@ export class CMSService {
   public static DEFAULT_HOMEPAGE_SECTIONS: CmsHomepageSection[] = [
     { id: 'sec-hero', type: 'hero', title: 'Hero Billboard Slider', is_enabled: true, order: 1, spacing: 'normal', background: 'default', animation: 'fade_in', status: 'published' },
     { id: 'sec-collections', type: 'collections', title: 'Curated Collections', is_enabled: true, order: 2, spacing: 'normal', background: 'default', animation: 'slide_up', status: 'published' },
-    { id: 'sec-featured', type: 'featured_products', title: 'Featured Extrait Creations', is_enabled: true, order: 3, spacing: 'normal', background: 'charcoal', animation: 'fade_in', status: 'published' },
-    { id: 'sec-story', type: 'brand_story', title: 'Brand Heritage & Philosophy', is_enabled: true, order: 4, spacing: 'generous', background: 'default', animation: 'fade_in', status: 'published' },
+    { id: 'sec-featured', type: 'featured_products', title: 'Featured Signature Creations', is_enabled: true, order: 3, spacing: 'normal', background: 'charcoal', animation: 'fade_in', status: 'published' },
+    { id: 'sec-story', type: 'brand_story', title: 'About Philz Signature & Our Story', is_enabled: true, order: 4, spacing: 'generous', background: 'default', animation: 'fade_in', status: 'published' },
     { id: 'sec-testimonials', type: 'testimonials', title: 'Client Acclaim & Reviews', is_enabled: true, order: 5, spacing: 'normal', background: 'black', animation: 'slide_up', status: 'published' },
     { id: 'sec-instagram', type: 'instagram', title: 'Instagram Feed Section', is_enabled: true, order: 6, spacing: 'normal', background: 'default', animation: 'fade_in', status: 'published' },
     { id: 'sec-newsletter', type: 'newsletter', title: 'VIP Scent Club Invitation', is_enabled: true, order: 7, spacing: 'compact', background: 'charcoal', animation: 'fade_in', status: 'published' },
   ];
 
   public static DEFAULT_NAVIGATION_MENU: CmsMenuItem[] = [
-    { id: 'nav-1', label: 'Collections', url: '/collections', is_active: true, order: 1, target: '_self' },
+    { id: 'nav-1', label: 'Perfume Oils', url: '/shop?category=perfume-body-oils', is_active: true, order: 1, target: '_self' },
     { id: 'nav-2', label: 'All Perfumes', url: '/shop', is_active: true, order: 2, target: '_self', badge: 'Popular' },
-    { id: 'nav-3', label: 'Woody & Oud', url: '/shop?family=Woody', is_active: true, order: 3, target: '_self' },
-    { id: 'nav-4', label: 'Oriental & Amber', url: '/shop?family=Oriental', is_active: true, order: 4, target: '_self' },
-    { id: 'nav-5', label: 'About Us', url: '/about', is_active: true, order: 5, target: '_self' },
+    { id: 'nav-3', label: 'Home Fragrance', url: '/shop?category=home-fragrance', is_active: true, order: 3, target: '_self' },
+    { id: 'nav-4', label: 'Our Story', url: '/about', is_active: true, order: 4, target: '_self' },
+    { id: 'nav-5', label: 'Private Label & Gifting', url: '/contact', is_active: true, order: 5, target: '_self' },
   ];
 
   public static DEFAULT_APPEARANCE: CmsAppearanceConfig = {
@@ -406,12 +471,37 @@ export class CMSService {
     show_business_name: true,
   };
 
-  private static DEFAULT_FOOTER: CmsFooterContent = {
-    brand_description: 'Luxury perfumes and signature fragrances. Made with high-concentration oils for long-lasting performance.',
-    instagram: 'https://instagram.com/philzsignature',
-    whatsapp: '+2348000000000',
-    concierge_email: 'support@philzsignature.com',
-    flagship_location: 'Victoria Island, Lagos, Nigeria',
+  public static DEFAULT_FOOTER: CmsFooterContent = {
+    brand_name: 'PHILZ SIGNATURE',
+    tagline: 'YOUR SCENT. YOUR SIGNATURE.',
+    brand_description: 'Luxury fragrances and scent experiences crafted for those who want to leave a lasting impression.',
+    closing_line: 'PHILZ SIGNATURE — Signature by nature, crafted for you.',
+    instagram: 'https://instagram.com/philztheperfumer',
+    instagram_handle: '@philztheperfumer',
+    whatsapp: 'https://wa.me/message/OJXETPKJE7L4M1',
+    concierge_email: 'Philzsignature1@gmail.com',
+    phone: '+2347038399764',
+    flagship_location: 'Lagos, Nigeria',
+    copyright_text: '© 2026 PHILZ SIGNATURE. ALL RIGHTS RESERVED.',
+    shop_links: [
+      { label: 'Perfume Oils', url: '/shop?category=perfume-body-oils' },
+      { label: 'Niche Collection', url: '/collections/niche-collection' },
+      { label: 'Signature Collection', url: '/collections/signature-classics' },
+      { label: 'Home Fragrance', url: '/shop?category=home-fragrance' },
+      { label: 'Gifts', url: '/shop?category=gifts-and-hampers' },
+    ],
+    services_links: [
+      { label: 'Private Label', url: '/contact?subject=private-label' },
+      { label: 'Corporate Gifting', url: '/contact?subject=corporate-gifting' },
+      { label: 'Bulk Orders', url: '/contact?subject=bulk-orders' },
+      { label: 'Perfume Bar & Luxury Gifts', url: '/contact?subject=perfume-bar' },
+    ],
+    company_links: [
+      { label: 'About Us', url: '/about' },
+      { label: 'Our Story', url: '/about#our-story' },
+      { label: 'Contact', url: '/contact' },
+      { label: 'FAQs', url: '/faq' },
+    ],
   };
 
   /**
@@ -608,41 +698,105 @@ export class CMSService {
     };
   }
 
+  public static DEFAULT_FAQ: CmsFaqContent = {
+    title: 'Frequently Asked Questions',
+    subtitle: 'Everything you need to know about our fragrance collections, bespoke solutions, orders and delivery.',
+    status: 'published',
+    items: [
+      {
+        question: 'What type of fragrances does Philz Signature offer?',
+        answer: 'We offer perfume oils, Eau de Parfum and a variety of home and lifestyle fragrances, including scented candles, reed diffusers, room sprays and car fragrances.',
+      },
+      {
+        question: 'Are Philz Signature fragrances for men or women?',
+        answer: 'Our collections are designed for fragrance lovers of different preferences. Many of our fragrances can be enjoyed by anyone, regardless of gender.',
+      },
+      {
+        question: 'How do I choose a fragrance?',
+        answer: "You can explore fragrances by collection, fragrance family, mood and occasion. If you're still unsure, contact us and we'll help you find a suitable option.",
+      },
+      {
+        question: 'Do you offer private labeling?',
+        answer: 'Yes. We offer private-label and white-label fragrance solutions for businesses and entrepreneurs.',
+      },
+      {
+        question: 'What products can be private labeled?',
+        answer: 'Depending on your requirements, we can provide perfumes, perfume oils, candles, reed diffusers, room sprays and other fragrance products.',
+      },
+      {
+        question: 'Do you offer corporate gifting?',
+        answer: 'Yes. We create customized corporate fragrance gifts, hampers and branded products for businesses and organizations.',
+      },
+      {
+        question: 'Can products be customized with my company\'s branding?',
+        answer: 'Yes. Branding and packaging customization can be incorporated into qualifying corporate and private-label projects.',
+      },
+      {
+        question: 'Where is Philz Signature located?',
+        answer: 'Philz Signature is based in Lagos, Nigeria.',
+      },
+      {
+        question: 'How can I place an order?',
+        answer: 'Browse our online collection, select your preferred products and follow the checkout process. For bulk, corporate or private-label orders, contact our team directly.',
+      },
+      {
+        question: 'Do you deliver?',
+        answer: 'Yes. Delivery options are available for customers and business clients. Delivery timelines depend on the order and destination.',
+      },
+    ],
+  };
+
+  public static DEFAULT_CONTACT: CmsContactContent = {
+    title: "LET'S CREATE YOUR SIGNATURE",
+    subtitle: "Whether you're looking for your next fragrance, planning a corporate gift project or interested in creating your own fragrance brand, we'd love to hear from you.",
+    email: 'Philzsignature1@gmail.com',
+    phone: '+2347038399764',
+    whatsapp: 'https://wa.me/message/OJXETPKJE7L4M1',
+    address: 'Lagos, Nigeria',
+    hours: 'Monday – Saturday: 9:00 AM – 7:00 PM WAT',
+    pillars: [
+      {
+        title: 'Customer Enquiries',
+        description: 'Questions about our products, orders or fragrances?',
+        button_text: 'CONTACT US',
+        action_type: 'contact',
+        action_url: '#inquiry-form',
+      },
+      {
+        title: 'Private Label',
+        description: 'Ready to create your own fragrance collection?',
+        button_text: 'START A PROJECT',
+        action_type: 'project',
+        action_url: 'https://wa.me/message/OJXETPKJE7L4M1',
+      },
+      {
+        title: 'Corporate Gifting',
+        description: 'Planning gifts for your company, clients or team?',
+        button_text: 'REQUEST A QUOTE',
+        action_type: 'quote',
+        action_url: 'https://wa.me/message/OJXETPKJE7L4M1',
+      },
+    ],
+  };
+
   async getFaqContent(): Promise<CmsFaqContent> {
     try {
       const row = await this.repo.getSection('faq_data');
-      if (row && row.content) return row.content as unknown as CmsFaqContent;
+      if (row && row.content) return { ...CMSService.DEFAULT_FAQ, ...(row.content as Partial<CmsFaqContent>) };
     } catch {
       // Fallback
     }
-    return {
-      title: 'Frequently Asked Questions',
-      subtitle: 'Everything you need to know about our formulations, sillage, orders, and delivery.',
-      status: 'published',
-      items: [
-        { question: 'How long do Philz Signature perfumes last on the skin?', answer: 'Our perfumes are formulated at high extrait concentrations (30% to 35% pure oil), lasting 12 to 24+ hours on skin and multiple days on apparel.' },
-        { question: 'Do you offer nationwide express delivery in Nigeria?', answer: 'Yes! We deliver across Lagos within 24 to 48 hours, and nationwide via priority dispatch within 2 to 4 business days.' },
-        { question: 'Can I exchange a fragrance if I want a different scent?', answer: 'Due to hygiene and luxury quality standards, bottles whose security seal has been broken cannot be returned. We include sample testers with qualifying acquisitions so you can trial before unsealing.' },
-      ],
-    };
+    return CMSService.DEFAULT_FAQ;
   }
 
   async getContactContent(): Promise<CmsContactContent> {
     try {
       const row = await this.repo.getSection('contact_data');
-      if (row && row.content) return row.content as unknown as CmsContactContent;
+      if (row && row.content) return { ...CMSService.DEFAULT_CONTACT, ...(row.content as Partial<CmsContactContent>) };
     } catch {
       // Fallback
     }
-    return {
-      title: 'Concierge & Client Relations',
-      subtitle: 'Our fragrance advisors are at your service for personal curation, bespoke gifts, and order inquiries.',
-      email: 'concierge@philzsignature.com',
-      phone: '+234 800 000 0000',
-      whatsapp: '+234 800 000 0000',
-      address: 'Victoria Island, Lagos, Nigeria',
-      hours: 'Monday – Saturday: 9:00 AM – 7:00 PM WAT',
-    };
+    return CMSService.DEFAULT_CONTACT;
   }
 
   async updateSectionContent(key: string, section: string, title: string, content: Record<string, unknown>): Promise<CmsContent> {
