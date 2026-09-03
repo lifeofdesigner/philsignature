@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, ArrowRight, LogOut, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -53,13 +53,13 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Visual size of the crest icon: prominent yet balanced
+  // Visual size of the crest icon: prominent, crisp, and easily readable
   const SIZE_PRESETS: Record<string, { desktop: number; mobile: number }> = {
-    small: { desktop: 38, mobile: 32 },
-    medium: { desktop: 46, mobile: 36 },
-    large: { desktop: 58, mobile: 44 },
-    xl: { desktop: 70, mobile: 50 },
-    huge: { desktop: 84, mobile: 58 },
+    small: { desktop: 54, mobile: 40 },
+    medium: { desktop: 72, mobile: 52 },
+    large: { desktop: 90, mobile: 62 },
+    xl: { desktop: 108, mobile: 74 },
+    huge: { desktop: 128, mobile: 86 },
   };
 
   const currentSizePreset = appearance.logo_size && SIZE_PRESETS[appearance.logo_size]
@@ -69,8 +69,8 @@ export const Navbar: React.FC = () => {
   const baseDesktopHeight = appearance.logo_height || currentSizePreset.desktop;
   const baseMobileHeight = appearance.logo_mobile_height || currentSizePreset.mobile;
 
-  const desktopLogoHeight = isScrolled ? Math.max(36, Math.round(baseDesktopHeight * 0.86)) : baseDesktopHeight;
-  const mobileLogoHeight = isScrolled ? Math.max(30, Math.round(baseMobileHeight * 0.88)) : baseMobileHeight;
+  const desktopLogoHeight = isScrolled ? Math.max(48, Math.round(baseDesktopHeight * 0.82)) : baseDesktopHeight;
+  const mobileLogoHeight = isScrolled ? Math.max(38, Math.round(baseMobileHeight * 0.85)) : baseMobileHeight;
 
   useEffect(() => {
     setLogoLoadError(false);
@@ -138,9 +138,9 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center gap-3 shrink-0">
           <Link
             to="/"
-            className="flex items-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold gap-2.5 sm:gap-3 text-decoration-none shrink-0"
+            className="flex items-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold gap-3 sm:gap-3.5 text-decoration-none shrink-0"
           >
-            {/* Prominent Crest Logo Icon */}
+            {/* Prominent, Highly Legible Crest Logo Icon */}
             {logoUrl && !logoLoadError ? (
               <motion.div
                 className="flex items-center justify-center shrink-0"
@@ -151,30 +151,30 @@ export const Navbar: React.FC = () => {
                   src={logoUrl}
                   alt={settings.store_name || 'Philz Signature'}
                   onError={() => setLogoLoadError(true)}
-                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)]"
                 />
                 <style>{`
                   .brand-navbar-logo {
                     height: ${mobileLogoHeight}px !important;
-                    max-height: 52px !important;
+                    max-height: 80px !important;
                   }
                   @media (min-width: 640px) {
                     .brand-navbar-logo {
                       height: ${desktopLogoHeight}px !important;
-                      max-height: 62px !important;
+                      max-height: 120px !important;
                     }
                   }
                 `}</style>
               </motion.div>
             ) : null}
 
-            {/* Medium-Sized, Refined Business Name */}
+            {/* Medium-Sized, High-Contrast Business Name */}
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
               <div className="flex flex-col items-start select-none text-left leading-tight">
-                <span className="font-serif text-sm sm:text-base lg:text-[16px] tracking-[0.22em] sm:tracking-[0.25em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]">
+                <span className="font-serif text-base sm:text-lg lg:text-[18px] tracking-[0.22em] sm:tracking-[0.26em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
                   {settings.store_name || 'PHILZ SIGNATURE'}
                 </span>
-                <span className="hidden xl:block text-[7px] tracking-[0.3em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] opacity-90">
+                <span className="hidden xl:block text-[7.5px] sm:text-[8.5px] tracking-[0.32em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1.5px_4px_rgba(0,0,0,0.9)] opacity-95">
                   {settings.store_slogan || 'HAUTE PARFUMERIE'}
                 </span>
               </div>
