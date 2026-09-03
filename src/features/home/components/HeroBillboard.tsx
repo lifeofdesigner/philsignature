@@ -127,7 +127,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-end overflow-hidden bg-black focus:outline-none select-none"
+      className="group relative min-h-[92vh] sm:min-h-screen flex flex-col justify-end overflow-hidden bg-black focus:outline-none select-none"
     >
       {/* Background Slides with AnimatePresence */}
       <AnimatePresence initial={false} mode="sync">
@@ -291,25 +291,25 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         </AnimatePresence>
       </div>
 
-      {/* Slide Navigation Arrows - Always Visible */}
+      {/* Slide Navigation Arrows - Visible on Mouse Over */}
       {slideCount > 1 && (
         <>
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous fragrance slide"
-            className="absolute left-3 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 group"
+            className="absolute left-3 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
           >
-            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:-translate-x-0.5" />
+            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 transition-transform hover:-translate-x-0.5" />
           </button>
 
           <button
             type="button"
             onClick={handleNext}
             aria-label="Next fragrance slide"
-            className="absolute right-3 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 group"
+            className="absolute right-3 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto"
           >
-            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:translate-x-0.5" />
+            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 transition-transform hover:translate-x-0.5" />
           </button>
         </>
       )}
