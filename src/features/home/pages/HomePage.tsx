@@ -2,8 +2,10 @@ import React from 'react';
 import { useHomeData } from '../hooks/useHomeData';
 import { useModularHome } from '../hooks/useModularHome';
 import { HeroBillboard } from '../components/HeroBillboard';
+import { BrandManifestoBanner } from '../components/BrandManifestoBanner';
 import { CollectionsShowcase } from '../components/CollectionsShowcase';
 import { FeaturedProductsGrid } from '../components/FeaturedProductsGrid';
+import { ScentsFormulaSection } from '../components/ScentsFormulaSection';
 import { BrandStorySection } from '../components/BrandStorySection';
 import { ClientTestimonials } from '../components/ClientTestimonials';
 import { NewsletterSection } from '../components/NewsletterSection';
@@ -49,7 +51,12 @@ export const HomePage: React.FC = () => {
 
     switch (section.type) {
       case 'hero':
-        return <HeroBillboard key={section.id} hero={data.hero} />;
+        return (
+          <React.Fragment key={section.id}>
+            <HeroBillboard hero={data.hero} />
+            <BrandManifestoBanner />
+          </React.Fragment>
+        );
       case 'collections':
         return (
           <div key={section.id} className={cn(spacingClasses, bgClasses)}>
@@ -58,9 +65,12 @@ export const HomePage: React.FC = () => {
         );
       case 'featured_products':
         return (
-          <div key={section.id} className={cn(spacingClasses, bgClasses)}>
-            <FeaturedProductsGrid products={data.featuredProducts} />
-          </div>
+          <React.Fragment key={section.id}>
+            <div className={cn(spacingClasses, bgClasses)}>
+              <FeaturedProductsGrid products={data.featuredProducts} />
+            </div>
+            <ScentsFormulaSection />
+          </React.Fragment>
         );
       case 'brand_story':
         return (
