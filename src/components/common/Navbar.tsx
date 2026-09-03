@@ -116,10 +116,10 @@ export const Navbar: React.FC = () => {
   return (
     <motion.header
       className={cn(
-        'sticky top-0 z-40 w-full transition-all duration-400',
+        'sticky top-0 z-40 w-full transition-all duration-500',
         isScrolled
           ? 'bg-black/95 backdrop-blur-xl border-b border-luxury-gold/25 py-2.5 sm:py-3 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
-          : 'bg-transparent border-b border-transparent py-4 sm:py-6'
+          : 'bg-gradient-to-b from-black/70 via-black/35 to-transparent backdrop-blur-[2.5px] border-b border-white/5 py-4 sm:py-5.5'
       )}
     >
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
@@ -130,7 +130,7 @@ export const Navbar: React.FC = () => {
             type="button"
             whileTap={{ scale: 0.92 }}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden h-9 w-9 -ml-1 flex items-center justify-center text-white hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0"
+            className="lg:hidden h-9 w-9 -ml-1 flex items-center justify-center text-white hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
             aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -182,7 +182,7 @@ export const Navbar: React.FC = () => {
                   src={logoUrl}
                   alt={settings.store_name || 'Philz Signature Logo'}
                   onError={() => setLogoLoadError(true)}
-                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]"
                 />
                 <style>{`
                   .brand-navbar-logo {
@@ -202,10 +202,10 @@ export const Navbar: React.FC = () => {
             {/* Brand Name Typography */}
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
               <div className="flex flex-col items-start select-none text-left leading-none">
-                <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.2em] sm:tracking-[0.26em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-sm">
+                <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.2em] sm:tracking-[0.26em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]">
                   {settings.store_name || 'PHILZ SIGNATURE'}
                 </span>
-                <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.28em] sm:tracking-[0.34em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap opacity-90">
+                <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.28em] sm:tracking-[0.34em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] opacity-95">
                   {settings.store_slogan || 'HAUTE PARFUMERIE'}
                 </span>
               </div>
@@ -226,15 +226,15 @@ export const Navbar: React.FC = () => {
                 to={link.href}
                 onMouseEnter={() => setHoveredNav(link.name)}
                 className={cn(
-                  'relative py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1 shrink-0 whitespace-nowrap',
-                  isActive ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  'relative py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1 shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                  isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/90 hover:text-white'
                 )}
               >
                 {/* Sliding Hover Capsule */}
                 {hoveredNav === link.name && (
                   <motion.span
                     layoutId="navbar-hover-capsule"
-                    className="absolute -inset-x-3 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-xs -z-10 shadow-xs"
+                    className="absolute -inset-x-3 -inset-y-1 rounded-full bg-black/40 border border-white/20 backdrop-blur-md -z-10 shadow-lg"
                     transition={{ type: 'spring', stiffness: 450, damping: 30 }}
                   />
                 )}
@@ -242,7 +242,7 @@ export const Navbar: React.FC = () => {
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-dot"
-                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.95)]"
                     transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                   />
                 )}
@@ -255,12 +255,12 @@ export const Navbar: React.FC = () => {
         {/* Right Side: Currency, Theme, Search, User & Cart */}
         <div className="flex items-center space-x-2 sm:space-x-3 flex-nowrap shrink-0">
           {/* Currency Indicator (ÁRUM Framer Style) */}
-          <div className="hidden xl:flex items-center text-xs font-mono text-white/70 tracking-wider pr-1 cursor-default select-none shrink-0">
+          <div className="hidden xl:flex items-center text-xs font-mono text-white/90 tracking-wider pr-1 cursor-default select-none shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]">
             <span>NGN ₦</span>
           </div>
 
           {/* Theme Switcher */}
-          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="shrink-0">
+          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]">
             <ThemeToggle />
           </motion.div>
 
@@ -268,7 +268,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="shrink-0">
             <Link
               to="/shop"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-white/90 hover:text-luxury-gold hover:bg-black/40 backdrop-blur-xs transition-colors drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
               title="Search Perfumes"
               aria-label="Search perfumes"
             >
@@ -280,7 +280,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block shrink-0">
             <Link
               to="/wishlist"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-white/90 hover:text-luxury-gold hover:bg-black/40 backdrop-blur-xs transition-colors relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
               title="Wishlist"
               aria-label="View saved perfumes"
             >
@@ -305,7 +305,7 @@ export const Navbar: React.FC = () => {
                   type="button"
                   whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.92 }}
-                  className="hidden sm:flex h-9 w-9 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative cursor-pointer shrink-0"
+                  className="hidden sm:flex h-9 w-9 rounded-full items-center justify-center text-white/90 hover:text-luxury-gold hover:bg-black/40 backdrop-blur-xs transition-colors relative cursor-pointer shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
                   title="My Account"
                   aria-label="Customer account portal"
                 >
@@ -360,7 +360,7 @@ export const Navbar: React.FC = () => {
             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block shrink-0">
               <Link
                 to="/login"
-                className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
+                className="h-9 w-9 rounded-full flex items-center justify-center text-white/90 hover:text-luxury-gold hover:bg-black/40 backdrop-blur-xs transition-colors drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
                 title="Sign In"
                 aria-label="Sign in to your account"
               >
@@ -369,11 +369,11 @@ export const Navbar: React.FC = () => {
             </motion.div>
           )}
 
-          {/* Minimalist Cart Pill (ÁRUM Framer Style) */}
+          {/* Minimalist Cart Pill (ÁRUM Framer Style with Contrast Protection) */}
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="shrink-0">
             <Link
               to="/cart"
-              className="px-3.5 py-1.5 rounded-full border border-white/30 hover:border-luxury-gold hover:bg-luxury-gold hover:text-black transition-all text-xs font-medium text-white flex items-center gap-1.5 shadow-sm backdrop-blur-xs shrink-0"
+              className="px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/25 hover:border-luxury-gold hover:bg-luxury-gold hover:text-black transition-all text-xs font-medium text-white flex items-center gap-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.6)] shrink-0"
               title="Shopping Cart"
               aria-label="View shopping cart"
             >
