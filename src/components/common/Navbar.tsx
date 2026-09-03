@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Heart, User, Menu, X, ArrowRight, LogOut, Shield } from 'lucide-react';
+import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, ArrowRight, LogOut, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -23,6 +23,7 @@ import { ThemeToggle } from './ThemeToggle';
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
@@ -42,21 +43,23 @@ export const Navbar: React.FC = () => {
     (isDarkChrome ? '/brand/philz-logo-dark.png' : '/brand/philz-logo-light.png');
   const [logoLoadError, setLogoLoadError] = useState(false);
 
+  // Smooth scroll listener
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 25);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Visual size of the crest icon: prominent yet balanced
   const SIZE_PRESETS: Record<string, { desktop: number; mobile: number }> = {
-    small: { desktop: 36, mobile: 30 },
-    medium: { desktop: 44, mobile: 34 },
-    large: { desktop: 56, mobile: 40 },
-    xl: { desktop: 68, mobile: 46 },
-    huge: { desktop: 80, mobile: 52 },
+    small: { desktop: 38, mobile: 32 },
+    medium: { desktop: 46, mobile: 36 },
+    large: { desktop: 58, mobile: 44 },
+    xl: { desktop: 70, mobile: 50 },
+    huge: { desktop: 84, mobile: 58 },
   };
 
   const currentSizePreset = appearance.logo_size && SIZE_PRESETS[appearance.logo_size]
@@ -66,8 +69,8 @@ export const Navbar: React.FC = () => {
   const baseDesktopHeight = appearance.logo_height || currentSizePreset.desktop;
   const baseMobileHeight = appearance.logo_mobile_height || currentSizePreset.mobile;
 
-  const desktopLogoHeight = isScrolled ? Math.max(34, Math.round(baseDesktopHeight * 0.88)) : baseDesktopHeight;
-  const mobileLogoHeight = isScrolled ? Math.max(28, Math.round(baseMobileHeight * 0.90)) : baseMobileHeight;
+  const desktopLogoHeight = isScrolled ? Math.max(36, Math.round(baseDesktopHeight * 0.86)) : baseDesktopHeight;
+  const mobileLogoHeight = isScrolled ? Math.max(30, Math.round(baseMobileHeight * 0.88)) : baseMobileHeight;
 
   useEffect(() => {
     setLogoLoadError(false);
@@ -85,6 +88,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    setMoreDropdownOpen(false);
   }, [location.pathname]);
 
   useEffect(() => {
@@ -98,7 +102,7 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  const navLinks = dynamicNavItems.length > 0
+  const rawNavLinks = dynamicNavItems.length > 0
     ? dynamicNavItems.map((item) => ({ name: item.label, href: item.url }))
     : [
         { name: 'Perfume Oils', href: '/shop?category=perfume-body-oils' },
@@ -108,66 +112,69 @@ export const Navbar: React.FC = () => {
         { name: 'Private Label & Gifting', href: '/contact' },
       ];
 
+  // Intelligent navigation partitioning:
+  // Primary links (first 4) stay in center navigation bar
+  // Secondary links (5+) move gracefully into "More" dropdown to guarantee ZERO overflow
+  const primaryNavLinks = rawNavLinks.slice(0, 4);
+  const secondaryNavLinks = rawNavLinks.slice(4);
+
   return (
     <motion.nav
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'w-full transition-all duration-300 select-none pointer-events-auto',
+        'w-full transition-all duration-400 select-none pointer-events-auto z-40',
         isScrolled
-          ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 py-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
-          : 'bg-transparent border-b border-transparent py-3 sm:py-4'
+          ? 'bg-black/85 backdrop-blur-2xl border-b border-white/10 py-3 sm:py-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+          : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between gap-3 lg:gap-6">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 sm:gap-6 lg:gap-10">
         
-        {/* Left Side: Brand Logo & Wordmark */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        {/* =========================================================================
+            COLUMN 1 (LEFT): BRAND LOGO & ELEGANT WORDMARK
+           ========================================================================= */}
+        <div className="flex items-center gap-3 shrink-0">
           <Link
             to="/"
-            className="flex items-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold gap-2 sm:gap-2.5 text-decoration-none shrink-0"
+            className="flex items-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold gap-2.5 sm:gap-3 text-decoration-none shrink-0"
           >
+            {/* Prominent Crest Logo Icon */}
             {logoUrl && !logoLoadError ? (
-              <motion.picture
+              <motion.div
                 className="flex items-center justify-center shrink-0"
-                whileHover={{ scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 350, damping: 24 }}
               >
-                {appearance.logo_mobile_url && (
-                  <source media="(max-width: 640px)" srcSet={appearance.logo_mobile_url} />
-                )}
-                {isDarkChrome && appearance.logo_dark_url && (
-                  <source srcSet={appearance.logo_dark_url} />
-                )}
-                {!isDarkChrome && appearance.logo_light_url && (
-                  <source srcSet={appearance.logo_light_url} />
-                )}
                 <img
                   src={logoUrl}
                   alt={settings.store_name || 'Philz Signature'}
                   onError={() => setLogoLoadError(true)}
-                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]"
+                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
                 />
                 <style>{`
                   .brand-navbar-logo {
                     height: ${mobileLogoHeight}px !important;
-                    max-height: 48px !important;
+                    max-height: 52px !important;
                   }
                   @media (min-width: 640px) {
                     .brand-navbar-logo {
                       height: ${desktopLogoHeight}px !important;
-                      max-height: 56px !important;
+                      max-height: 62px !important;
                     }
                   }
                 `}</style>
-              </motion.picture>
+              </motion.div>
             ) : null}
 
-            {/* Brand Title */}
+            {/* Medium-Sized, Refined Business Name */}
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
-              <div className="flex flex-col items-start select-none text-left leading-none">
-                <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.2em] sm:tracking-[0.24em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]">
+              <div className="flex flex-col items-start select-none text-left leading-tight">
+                <span className="font-serif text-sm sm:text-base lg:text-[16px] tracking-[0.22em] sm:tracking-[0.25em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.95)]">
                   {settings.store_name || 'PHILZ SIGNATURE'}
                 </span>
-                <span className="hidden 2xl:block text-[7px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] opacity-90">
+                <span className="hidden xl:block text-[7px] tracking-[0.3em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] opacity-90">
                   {settings.store_slogan || 'HAUTE PARFUMERIE'}
                 </span>
               </div>
@@ -175,12 +182,14 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* Center: Desktop Navigation Links */}
+        {/* =========================================================================
+            COLUMN 2 (CENTER): PRIMARY NAVIGATION WITH LUXURY LETTER-SPACING
+           ========================================================================= */}
         <nav
-          className="hidden lg:flex items-center justify-center gap-4 xl:gap-6 2xl:gap-8 flex-1 min-w-0"
+          className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 2xl:gap-10 min-w-0"
           onMouseLeave={() => setHoveredNav(null)}
         >
-          {navLinks.map((link) => {
+          {primaryNavLinks.map((link) => {
             const isActive = location.pathname === link.href;
             return (
               <Link
@@ -188,19 +197,19 @@ export const Navbar: React.FC = () => {
                 to={link.href}
                 onMouseEnter={() => setHoveredNav(link.name)}
                 className={cn(
-                  'relative py-1 text-[11px] xl:text-xs uppercase tracking-[0.16em] xl:tracking-[0.2em] font-medium transition-colors duration-200 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
-                  isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/85 hover:text-white'
+                  'relative py-1 text-[11px] xl:text-[12px] uppercase tracking-[0.2em] xl:tracking-[0.24em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                  isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/80 hover:text-white'
                 )}
               >
-                {/* Subtle Hover Capsule */}
+                {/* Subtle Hover Underline/Capsule Indicator */}
                 {hoveredNav === link.name && (
                   <motion.span
                     layoutId="navbar-hover-capsule"
-                    className="absolute -inset-x-2.5 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-md -z-10"
+                    className="absolute -inset-x-3 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-md -z-10"
                     transition={{ type: 'spring', stiffness: 450, damping: 30 }}
                   />
                 )}
-                {/* Active Route Dot */}
+                {/* Active Route Indicator */}
                 {isActive && (
                   <motion.span
                     layoutId="navbar-active-dot"
@@ -212,15 +221,54 @@ export const Navbar: React.FC = () => {
               </Link>
             );
           })}
+
+          {/* Luxury "More" Dropdown for Secondary Menu Items */}
+          {secondaryNavLinks.length > 0 && (
+            <div
+              className="relative shrink-0"
+              onMouseEnter={() => setMoreDropdownOpen(true)}
+              onMouseLeave={() => setMoreDropdownOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                className="inline-flex items-center gap-1.5 py-1 text-[11px] xl:text-[12px] uppercase tracking-[0.2em] xl:tracking-[0.24em] font-medium text-white/80 hover:text-luxury-gold transition-colors cursor-pointer select-none drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
+              >
+                <span>More</span>
+                <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-300', moreDropdownOpen && 'rotate-180 text-luxury-gold')} />
+              </button>
+
+              <AnimatePresence>
+                {moreDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 6, scale: 0.96 }}
+                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-52 bg-black/95 backdrop-blur-2xl border border-white/15 rounded-xl shadow-2xl p-2 z-50 space-y-1"
+                  >
+                    {secondaryNavLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        to={link.href}
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs uppercase tracking-wider text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-all font-light"
+                      >
+                        <span>{link.name}</span>
+                        <ArrowRight className="h-3 w-3 opacity-50" />
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
         </nav>
 
-        {/* Right Side: Theme, Search, Wishlist, User & Cart */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          {/* Currency Indicator */}
-          <div className="hidden 2xl:flex items-center text-[11px] font-mono text-white/70 tracking-wider pr-1 cursor-default select-none shrink-0">
-            <span>NGN ₦</span>
-          </div>
-
+        {/* =========================================================================
+            COLUMN 3 (RIGHT): REFINED UTILITY ACTION CLUSTER
+           ========================================================================= */}
+        <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-3.5 shrink-0">
+          
           {/* Theme Switcher */}
           <div className="shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]">
             <ThemeToggle />
@@ -229,21 +277,21 @@ export const Navbar: React.FC = () => {
           {/* Search Icon */}
           <Link
             to="/shop"
-            className="h-8 w-8 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
-            title="Search Perfumes"
-            aria-label="Search perfumes"
+            className="h-8.5 w-8.5 rounded-full flex items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
+            title="Search Fragrances"
+            aria-label="Search fragrances"
           >
-            <Search className="h-3.5 w-3.5" />
+            <Search className="h-4 w-4" />
           </Link>
 
           {/* Wishlist Icon */}
           <Link
             to="/wishlist"
-            className="hidden sm:flex h-8 w-8 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
-            title="Wishlist"
+            className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
+            title="My Wishlist"
             aria-label="View saved perfumes"
           >
-            <Heart className="h-3.5 w-3.5" />
+            <Heart className="h-4 w-4" />
             {wishlistCount > 0 && (
               <span className="absolute top-0.5 right-0.5 h-3.5 w-3.5 rounded-full bg-luxury-gold text-black text-[8px] font-bold flex items-center justify-center shadow-xs">
                 {wishlistCount}
@@ -251,21 +299,21 @@ export const Navbar: React.FC = () => {
             )}
           </Link>
 
-          {/* Account Icon */}
+          {/* Account Icon & Dropdown */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  className="hidden sm:flex h-8 w-8 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative cursor-pointer shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
+                  className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative cursor-pointer shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
                   title="My Account"
                   aria-label="Customer account portal"
                 >
-                  <User className="h-3.5 w-3.5" />
+                  <User className="h-4 w-4" />
                   <span className="absolute bottom-0.5 right-0.5 h-1.5 w-1.5 rounded-full bg-luxury-gold ring-1 ring-black" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 p-2 space-y-1 bg-black/95 backdrop-blur-xl border border-white/15 shadow-2xl">
+              <DropdownMenuContent align="end" className="w-56 p-2 space-y-1 bg-black/95 backdrop-blur-2xl border border-white/15 shadow-2xl">
                 <div className="px-2.5 py-2 border-b border-white/10 mb-1">
                   <p className="text-xs font-serif font-medium text-white truncate">
                     {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
@@ -311,21 +359,22 @@ export const Navbar: React.FC = () => {
           ) : (
             <Link
               to="/login"
-              className="hidden sm:flex h-8 w-8 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
+              className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
               title="Sign In"
               aria-label="Sign in to your account"
             >
-              <User className="h-3.5 w-3.5" />
+              <User className="h-4 w-4" />
             </Link>
           )}
 
-          {/* Minimalist Cart Pill */}
+          {/* Prominent Yet Refined Luxury Cart Pill */}
           <Link
             to="/cart"
-            className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold transition-all text-xs font-medium text-white flex items-center gap-1.5 shadow-md backdrop-blur-md shrink-0"
+            className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold transition-all text-xs font-medium text-white flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group"
             title="Shopping Cart"
             aria-label="View shopping cart"
           >
+            <ShoppingBag className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
             <span className="text-[11px] uppercase tracking-wider font-semibold">Cart</span>
             <span className="font-mono text-xs font-semibold">({cartCount})</span>
           </Link>
@@ -334,35 +383,37 @@ export const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden h-8 w-8 flex items-center justify-center text-white hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] ml-0.5"
+            className="lg:hidden h-8.5 w-8.5 flex items-center justify-center text-white hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] ml-0.5"
             aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
           >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {mobileMenuOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Animated Luxury Drawer Menu */}
+      {/* =========================================================================
+          MOBILE LUXURY SLIDE-OUT DRAWER
+         ========================================================================= */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="lg:hidden mt-2 mx-4 bg-black/95 backdrop-blur-2xl border border-luxury-gold/30 rounded-xl overflow-hidden shadow-2xl pointer-events-auto"
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden mt-2 mx-4 bg-black/98 backdrop-blur-2xl border border-luxury-gold/30 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto"
           >
             <div className="p-6 space-y-6">
               {/* Navigation Links */}
               <div className="space-y-3">
-                {navLinks.map((link) => {
+                {rawNavLinks.map((link) => {
                   const isActive = location.pathname === link.href;
                   return (
                     <Link
                       key={link.name}
                       to={link.href}
                       className={cn(
-                        'flex items-center justify-between py-2 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                        'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
                         isActive ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
                       )}
                     >
@@ -373,7 +424,7 @@ export const Navbar: React.FC = () => {
                 })}
               </div>
 
-              {/* Mobile Quick Action Links */}
+              {/* Mobile Quick Action Buttons */}
               <div className="pt-2 grid grid-cols-2 gap-3 text-xs">
                 <Link
                   to="/wishlist"
