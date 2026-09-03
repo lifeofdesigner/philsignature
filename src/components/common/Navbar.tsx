@@ -116,18 +116,13 @@ export const Navbar: React.FC = () => {
   return (
     <motion.nav
       className={cn(
-        'w-full transition-all duration-500 select-none px-3 sm:px-6 lg:px-8 pointer-events-none',
-        isScrolled ? 'pt-1.5 sm:pt-2' : 'pt-2 sm:pt-4'
+        'w-full transition-all duration-400 select-none pointer-events-auto',
+        isScrolled
+          ? 'bg-black/95 backdrop-blur-xl border-b border-luxury-gold/25 py-2.5 sm:py-3 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+          : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
-      <div
-        className={cn(
-          'container max-w-6xl mx-auto rounded-full transition-all duration-500 flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-7 py-2 sm:py-2.5 pointer-events-auto',
-          isScrolled
-            ? 'bg-black/90 backdrop-blur-2xl border border-luxury-gold/35 shadow-[0_16px_40px_rgba(0,0,0,0.85)]'
-            : 'bg-black/45 backdrop-blur-2xl border border-white/20 shadow-[0_12px_35px_rgba(0,0,0,0.6)] hover:border-white/35 hover:bg-black/55'
-        )}
-      >
+      <div className="container mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
         {/* Left Side: Brand Crest & Wordmark */}
         <div className="flex items-center gap-3 shrink-0">
           {/* Mobile Menu Toggle Button */}
