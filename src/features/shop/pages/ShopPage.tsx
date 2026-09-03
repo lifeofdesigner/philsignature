@@ -9,6 +9,8 @@ import { CatalogPagination } from '../components/CatalogPagination';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
 
+import type { FragranceFamily } from '@/types/database';
+
 export const ShopPage: React.FC = () => {
   const {
     products,
@@ -37,35 +39,65 @@ export const ShopPage: React.FC = () => {
     refetch,
   } = useShopCatalog();
 
+  const fragranceFamilies: { label: string; value: FragranceFamily | 'all' }[] = [
+    { label: 'All Fragrances', value: 'all' },
+    { label: 'Woody & Oud', value: 'Woody' },
+    { label: 'Oriental & Amber', value: 'Oriental' },
+    { label: 'Fresh & Citrus', value: 'Fresh' },
+    { label: 'Floral & Rose', value: 'Floral' },
+    { label: 'Gourmand & Vanilla', value: 'Gourmand' },
+  ];
+
   return (
-    <div className="min-h-screen bg-luxury-black text-luxury-cream py-12 sm:py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="min-h-screen bg-black text-luxury-cream py-12 sm:py-20">
+      <div className="container mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
         {/* Header Title */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Our Collection
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          <span className="text-[10px] sm:text-xs uppercase tracking-luxury-wide text-luxury-gold font-medium block">
+            ✦ The Haute Parfumerie Collection
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
-            Shop All Perfumes
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight">
+            All Perfumes & Extraits
           </h1>
-          <p className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
-            Browse our full range of premium perfumes — from rich ouds to fresh citrus blends and everything in between.
+          <p className="text-xs sm:text-sm lg:text-base text-white/70 font-light leading-relaxed max-w-xl mx-auto">
+            Handcrafted with rare botanical extracts and high-concentration perfume oils for lasting elegance and distinctive sillage.
           </p>
+
+          {/* Quick Fragrance Family Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+            {fragranceFamilies.map((f) => {
+              const isSelected = family === f.value;
+              return (
+                <button
+                  key={f.label}
+                  type="button"
+                  onClick={() => setFamily(f.value)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer ${
+                    isSelected
+                      ? 'bg-luxury-gold text-black font-semibold shadow-md'
+                      : 'bg-white/5 border border-white/10 text-white/80 hover:text-white hover:border-luxury-gold/50'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Top Controls: Search, Filter Toggle, Sort */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-luxury-card border border-luxury-border">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-neutral-950/80 border border-white/10 rounded-xs shadow-xl backdrop-blur-md">
           <CatalogSearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search by name or scent type..."
+            placeholder="Search by name, notes, or scent..."
           />
 
           <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
             <button
               type="button"
               onClick={() => setIsFilterOpen(true)}
-              className="lg:hidden min-h-[44px] flex items-center gap-2 text-xs py-2 px-3.5 border border-luxury-border bg-luxury-card text-luxury-sand hover:text-luxury-cream rounded-sm cursor-pointer"
+              className="lg:hidden min-h-[42px] flex items-center gap-2 text-xs py-2 px-4 border border-white/20 bg-white/5 text-white hover:text-luxury-gold rounded-xs cursor-pointer"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-luxury-gold" />
               <span>Filters {hasActiveFilters && '•'}</span>
@@ -109,9 +141,9 @@ export const ShopPage: React.FC = () => {
               />
             ) : (
               <>
-                <div className="text-[11px] uppercase tracking-wider text-luxury-muted flex items-center justify-between">
+                <div className="text-[11px] uppercase tracking-wider text-white/50 flex items-center justify-between font-mono">
                   <span>
-                    Showing {products.length} of {allFilteredCount} Perfumes
+                    Showing {products.length} of {allFilteredCount} Flacons
                   </span>
                 </div>
 
