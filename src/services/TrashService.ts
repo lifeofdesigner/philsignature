@@ -45,3 +45,4 @@ export class TrashService {
 }
 
 export const trashService = new TrashService();
+

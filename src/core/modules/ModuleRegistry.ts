@@ -66,3 +66,4 @@ class ModuleRegistryClass {
 }
 
 export const ModuleRegistry = new ModuleRegistryClass();
+

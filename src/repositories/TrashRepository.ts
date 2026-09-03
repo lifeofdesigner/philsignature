@@ -47,3 +47,4 @@ export class TrashRepository {
 }
 
 export const trashRepository = new TrashRepository();
+

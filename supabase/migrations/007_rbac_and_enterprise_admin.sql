@@ -146,3 +146,4 @@ INSERT INTO public.feature_flags (key, name, description, is_enabled) VALUES
 ON CONFLICT (key) DO UPDATE SET is_enabled = EXCLUDED.is_enabled;
 
 NOTIFY pgrst, 'reload schema';
+

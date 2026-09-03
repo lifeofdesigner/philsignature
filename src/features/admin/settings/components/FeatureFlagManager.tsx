@@ -1,0 +1,103 @@
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Flag, Loader2, RefreshCw } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { featureFlagService } from '@/services/FeatureFlagService';
+import { auditLogService } from '@/services/AuditLogService';
+import { useAuth } from '@/hooks/useAuth';
+import type { FeatureFlag } from '@/types/database';
+
+export const FeatureFlagManager: React.FC = () => {
+  const { user } = useAuth();
+  const [flags, setFlags] = useState<FeatureFlag[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [updatingKey, setUpdatingKey] = useState<string | null>(null);
+
+  const loadFlags = async () => {
+    setIsLoading(true);
+    const data = await featureFlagService.fetchFlags();
+    setFlags(data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    loadFlags();
+  }, []);
+
+  const handleToggle = async (flag: FeatureFlag) => {
+    setUpdatingKey(flag.key);
+    try {
+      const updated = await featureFlagService.toggleFlag(flag.key, !flag.is_enabled);
+      setFlags((prev) => prev.map((f) => (f.key === flag.key ? updated : f)));
+      await auditLogService.recordAction('TOGGLE_FEATURE_FLAG', 'feature_flag', flag.key, { is_enabled: !flag.is_enabled }, user?.id);
+      toast.success(`Feature "${flag.name}" is now ${!flag.is_enabled ? 'ENABLED' : 'DISABLED'}.`);
+    } catch {
+      toast.error('Failed to update feature flag.');
+    } finally {
+      setUpdatingKey(null);
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100">
+        <div>
+          <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+            <Flag className="h-4 w-4 text-amber-700" />
+            <span>Feature Flags Control Engine</span>
+          </CardTitle>
+          <CardDescription>Instantly toggle storefront features live without code deployment</CardDescription>
+        </div>
+        <button
+          onClick={loadFlags}
+          className="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+          title="Refresh Flags"
+        >
+          <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+        </button>
+      </CardHeader>
+      <CardContent className="p-0 divide-y divide-slate-100">
+        {isLoading ? (
+          <div className="p-8 text-center"><Loader2 className="h-5 w-5 animate-spin mx-auto text-amber-600" /></div>
+        ) : flags.length === 0 ? (
+          <div className="p-6 text-center text-xs text-slate-400">No feature flags registered.</div>
+        ) : (
+          flags.map((flag) => (
+            <div key={flag.key} className="p-4 flex items-center justify-between hover:bg-slate-50/60 transition-colors">
+              <div className="space-y-0.5 min-w-0 pr-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-xs text-slate-900">{flag.name}</span>
+                  <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                    {flag.key}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500">{flag.description}</p>
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <span
+                  className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
+                    flag.is_enabled
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : 'bg-slate-100 text-slate-500 border border-slate-200'
+                  }`}
+                >
+                  {flag.is_enabled ? 'Active' : 'Disabled'}
+                </span>
+                {updatingKey === flag.key ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-amber-700" />
+                ) : (
+                  <Switch
+                    checked={flag.is_enabled}
+                    onCheckedChange={() => handleToggle(flag)}
+                  />
+                )}
+              </div>
+            </div>
+          ))
+        )}
+      </CardContent>
+    </Card>
+  );
+};

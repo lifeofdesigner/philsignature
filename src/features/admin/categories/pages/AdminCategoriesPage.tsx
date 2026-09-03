@@ -162,30 +162,30 @@ export const AdminCategoriesPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <span className="text-[10px] uppercase tracking-luxury text-luxury-gold font-medium">Formulation Hierarchy</span>
-          <h1 className="font-serif text-3xl text-white font-normal mt-1">Categories</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Fragrance Categories</h1>
+          <p className="text-xs text-slate-500 font-medium mt-1">Organize catalog formulations into Extrait, Perfume Oils, Body Care, Diffusers, and Candles.</p>
         </div>
-        <Button variant="luxury" size="sm" className="gap-1.5" onClick={openCreateForm}>
+        <Button size="sm" className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs" onClick={openCreateForm}>
           <Plus className="h-3.5 w-3.5" />
-          <span>New Category</span>
+          <span>Add Category</span>
         </Button>
       </div>
 
-      <div className="bg-luxury-card border border-luxury-border p-4 flex flex-col sm:flex-row gap-4">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 shadow-2xs">
         <Input
           placeholder="Search categories by name or slug..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-md bg-luxury-charcoal"
+          className="max-w-md bg-white border-slate-200 text-xs"
         />
       </div>
 
       {filteredCategories.length === 0 ? (
         <EmptyState
           icon={<Tags className="h-5 w-5" />}
-          title={categories.length === 0 ? 'No Categories Configured' : 'No Matching Categories'}
+          title={categories.length === 0 ? 'No Categories Staged' : 'No Matching Categories'}
           description={
             categories.length === 0
               ? 'Categories such as Extrait de Parfum, Eau de Parfum, and Home Fragrance will appear here.'
@@ -195,66 +195,68 @@ export const AdminCategoriesPage: React.FC = () => {
           onAction={categories.length === 0 ? openCreateForm : undefined}
         />
       ) : (
-        <div className="bg-luxury-card border border-luxury-border overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-luxury-border text-left text-[10px] uppercase tracking-wider text-luxury-muted">
-                <th className="p-4 font-medium">
-                  <button type="button" onClick={() => toggleSort('name')} className="inline-flex items-center gap-1 cursor-pointer hover:text-white">
-                    <span>Category</span>
-                    <ArrowUpDown className="h-3 w-3" />
-                  </button>
-                </th>
-                <th className="p-4 font-medium">
-                  <button type="button" onClick={() => toggleSort('display_order')} className="inline-flex items-center gap-1 cursor-pointer hover:text-white">
-                    <span>Order</span>
-                    <ArrowUpDown className="h-3 w-3" />
-                  </button>
-                </th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCategories.map((category) => (
-                <tr key={category.id} className="border-b border-luxury-border/60 last:border-0 hover:bg-luxury-charcoal/40">
-                  <td className="p-4">
-                    <div className="flex items-center gap-3">
-                      {category.image_url && (
-                        <img src={category.image_url} alt={category.name} className="w-10 h-10 object-cover rounded bg-luxury-charcoal" />
-                      )}
-                      <div>
-                        <div className="text-white font-medium">{category.name}</div>
-                        <div className="text-[11px] text-luxury-muted font-mono">{category.slug}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="p-4 text-luxury-muted">{category.display_order}</td>
-                  <td className="p-4">
-                    <span
-                      className={`text-[9px] uppercase tracking-wider px-2 py-0.5 rounded font-medium border ${
-                        category.is_active
-                          ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                          : 'text-luxury-muted border-luxury-border bg-luxury-charcoal'
-                      }`}
-                    >
-                      {category.is_active ? 'active' : 'inactive'}
-                    </span>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <button type="button" onClick={() => openEditForm(category)} className="p-1.5 text-luxury-muted hover:text-luxury-gold transition-colors cursor-pointer" aria-label="Edit category">
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                      <button type="button" onClick={() => setDeleteTarget(category)} className="p-1.5 text-luxury-muted hover:text-red-400 transition-colors cursor-pointer" aria-label="Delete category">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </td>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs text-left">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold">
+                  <th className="p-3.5">
+                    <button type="button" onClick={() => toggleSort('name')} className="inline-flex items-center gap-1 cursor-pointer hover:text-slate-900">
+                      <span>Category</span>
+                      <ArrowUpDown className="h-3 w-3" />
+                    </button>
+                  </th>
+                  <th className="p-3.5">
+                    <button type="button" onClick={() => toggleSort('display_order')} className="inline-flex items-center gap-1 cursor-pointer hover:text-slate-900">
+                      <span>Order</span>
+                      <ArrowUpDown className="h-3 w-3" />
+                    </button>
+                  </th>
+                  <th className="p-3.5">Status</th>
+                  <th className="p-3.5 text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredCategories.map((category) => (
+                  <tr key={category.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="p-3.5">
+                      <div className="flex items-center gap-3">
+                        {category.image_url && (
+                          <img src={category.image_url} alt={category.name} className="w-9 h-9 object-cover rounded-lg bg-slate-100" />
+                        )}
+                        <div>
+                          <div className="text-slate-900 font-semibold">{category.name}</div>
+                          <div className="text-[11px] text-slate-500 font-mono">{category.slug}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-3.5 font-mono text-slate-600">{category.display_order}</td>
+                    <td className="p-3.5">
+                      <span
+                        className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded font-bold border ${
+                          category.is_active
+                            ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
+                            : 'text-slate-600 border-slate-200 bg-slate-100'
+                        }`}
+                      >
+                        {category.is_active ? 'active' : 'inactive'}
+                      </span>
+                    </td>
+                    <td className="p-3.5 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button type="button" onClick={() => openEditForm(category)} className="p-1.5 text-slate-500 hover:text-amber-800 transition-colors cursor-pointer rounded hover:bg-slate-100" aria-label="Edit category">
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button type="button" onClick={() => setDeleteTarget(category)} className="p-1.5 text-slate-500 hover:text-red-600 transition-colors cursor-pointer rounded hover:bg-red-50" aria-label="Delete category">
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
