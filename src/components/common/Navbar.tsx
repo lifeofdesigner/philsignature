@@ -36,7 +36,10 @@ export const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const isDarkChrome = theme !== 'light';
-  const logoUrl = (isDarkChrome ? appearance.logo_dark_url : appearance.logo_light_url) || appearance.logo_url;
+  const logoUrl =
+    (isDarkChrome ? appearance.logo_dark_url : appearance.logo_light_url) ||
+    appearance.logo_url ||
+    (isDarkChrome ? '/brand/philz-logo-dark.png' : '/brand/philz-logo-light.png');
   const [logoLoadError, setLogoLoadError] = useState(false);
 
   // Dynamic Scroll Detection
@@ -79,7 +82,7 @@ export const Navbar: React.FC = () => {
       toast.success('Signed out successfully.');
       navigate('/login');
     } catch {
-      toast.error('Failed to sign out.');
+      toast.error('Failed to sign out. Please try again.');
     }
   };
 
@@ -100,20 +103,23 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  const navLinks = dynamicNavItems.map((item) => ({
-    name: item.label,
-    href: item.url,
-    target: item.target || '_self',
-    badge: item.badge,
-  }));
+  const navLinks = dynamicNavItems.length > 0
+    ? dynamicNavItems.map((item) => ({ name: item.label, href: item.url }))
+    : [
+        { name: 'Collections', href: '/collections' },
+        { name: 'All Perfumes', href: '/shop' },
+        { name: 'Woody & Oud', href: '/shop?family=Woody' },
+        { name: 'Oriental & Amber', href: '/shop?family=Oriental' },
+        { name: 'About Us', href: '/about' },
+      ];
 
   return (
     <motion.header
       className={cn(
-        'fixed top-0 left-0 right-0 z-40 w-full transition-all duration-400',
+        'sticky top-0 z-40 w-full transition-all duration-400',
         isScrolled
-          ? 'bg-luxury-black/92 backdrop-blur-xl border-b border-luxury-gold/25 py-2.5 sm:py-3 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
-          : 'bg-gradient-to-b from-black/85 via-black/35 to-transparent backdrop-blur-[2px] border-b border-white/10 py-3 sm:py-5'
+          ? 'bg-luxury-black/95 backdrop-blur-xl border-b border-luxury-gold/25 py-2 sm:py-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+          : 'bg-black/90 backdrop-blur-md border-b border-white/10 py-2.5 sm:py-3.5'
       )}
     >
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between">
@@ -155,12 +161,12 @@ export const Navbar: React.FC = () => {
           {/* Luxury Logo & Typography */}
           <Link
             to="/"
-            className="flex items-center gap-2.5 group py-1 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold"
+            className="flex flex-row sm:flex-col items-start sm:items-center justify-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-1 gap-2.5 sm:gap-0.5 text-decoration-none"
           >
             {logoUrl && !logoLoadError ? (
               <motion.picture
                 className="flex items-center justify-center shrink-0"
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.04 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 22 }}
               >
                 {appearance.logo_mobile_url && (
@@ -174,22 +180,33 @@ export const Navbar: React.FC = () => {
                 )}
                 <img
                   src={logoUrl}
-                  alt="Philz Signature Logo"
+                  alt={settings.store_name || 'Philz Signature Logo'}
                   onError={() => setLogoLoadError(true)}
-                  style={{ height: `${isScrolled ? mobileLogoHeight : desktopLogoHeight}px` }}
-                  className="w-auto max-w-[140px] object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
                 />
+                <style>{`
+                  .brand-navbar-logo {
+                    height: ${mobileLogoHeight}px !important;
+                    max-height: 140px !important;
+                  }
+                  @media (min-width: 640px) {
+                    .brand-navbar-logo {
+                      height: ${desktopLogoHeight}px !important;
+                      max-height: 180px !important;
+                    }
+                  }
+                `}</style>
               </motion.picture>
             ) : null}
 
             {/* Brand Name Typography */}
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
-              <div className="flex flex-col select-none leading-none">
-                <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.2em] sm:tracking-[0.24em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-sm">
+              <div className="flex flex-col items-start sm:items-center select-none text-left sm:text-center leading-none">
+                <span className="font-serif text-xs sm:text-sm lg:text-base tracking-[0.16em] sm:tracking-[0.22em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-sm">
                   {settings.store_name || 'PHILZ SIGNATURE'}
                 </span>
-                <span className="text-[6.5px] sm:text-[7.5px] tracking-[0.28em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap opacity-90">
-                  {settings.store_slogan || 'HAUTE PARFUMERIE'}
+                <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.24em] sm:tracking-[0.3em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap opacity-90">
+                  {settings.store_slogan || 'DIFFUSER CANDLES | PERFUME OIL'}
                 </span>
               </div>
             )}

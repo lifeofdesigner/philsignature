@@ -291,25 +291,25 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         </AnimatePresence>
       </div>
 
-      {/* Subtle Slide Navigation Arrows */}
+      {/* Slide Navigation Arrows - Always Visible */}
       {slideCount > 1 && (
         <>
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous fragrance slide"
-            className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/40 border border-white/20 text-white hover:text-luxury-gold hover:border-luxury-gold/50 backdrop-blur-md transition-all cursor-pointer shadow-lg group"
+            className="absolute left-3 sm:left-6 lg:left-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 group"
           >
-            <ChevronLeft className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" />
+            <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:-translate-x-0.5" />
           </button>
 
           <button
             type="button"
             onClick={handleNext}
             aria-label="Next fragrance slide"
-            className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 h-10 w-10 flex items-center justify-center rounded-full bg-black/40 border border-white/20 text-white hover:text-luxury-gold hover:border-luxury-gold/50 backdrop-blur-md transition-all cursor-pointer shadow-lg group"
+            className="absolute right-3 sm:right-6 lg:right-10 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 flex items-center justify-center rounded-full bg-black/80 border border-luxury-gold/60 text-luxury-gold hover:text-white hover:border-luxury-gold hover:bg-black backdrop-blur-md transition-all duration-300 cursor-pointer shadow-[0_8px_25px_rgba(0,0,0,0.9)] active:scale-95 group"
           >
-            <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+            <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 transition-transform group-hover:translate-x-0.5" />
           </button>
         </>
       )}
