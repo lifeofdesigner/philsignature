@@ -113,23 +113,18 @@ export const Navbar: React.FC = () => {
         { name: 'About Us', href: '/about' },
       ];
 
-  // Split nav links into left and right for the signature 3-column centered logo layout
-  const halfLength = Math.ceil(navLinks.length / 2);
-  const leftNavLinks = navLinks.slice(0, halfLength);
-  const rightNavLinks = navLinks.slice(halfLength);
-
   return (
     <motion.header
       className={cn(
         'sticky top-0 z-40 w-full transition-all duration-400',
         isScrolled
-          ? 'bg-black/95 backdrop-blur-xl border-b border-luxury-gold/25 py-2 sm:py-2.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
-          : 'bg-transparent border-b border-transparent py-3 sm:py-5'
+          ? 'bg-black/95 backdrop-blur-xl border-b border-luxury-gold/25 py-2.5 sm:py-3 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+          : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
-      <div className="container mx-auto px-3 sm:px-6 lg:px-12 flex items-center justify-between gap-2">
-        {/* Left Column: Mobile Hamburger Button & Desktop Left Navigation in One Line */}
-        <div className="flex items-center justify-start flex-1 min-w-0">
+      <div className="container mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
+        {/* Left Side: Brand Crest & Wordmark */}
+        <div className="flex items-center gap-3 shrink-0">
           {/* Mobile Menu Toggle Button */}
           <motion.button
             type="button"
@@ -154,7 +149,7 @@ export const Navbar: React.FC = () => {
                   key="menu"
                   initial={{ rotate: 90, opacity: 0 }}
                   animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
+                  exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.15 }}
                 >
                   <Menu className="h-5 w-5" />
@@ -163,51 +158,10 @@ export const Navbar: React.FC = () => {
             </AnimatePresence>
           </motion.button>
 
-          {/* Desktop Left Navigation (Single Line) */}
-          <nav
-            className="hidden lg:flex items-center space-x-1 xl:space-x-2 flex-nowrap whitespace-nowrap"
-            onMouseLeave={() => setHoveredNav(null)}
-          >
-            {leftNavLinks.map((link) => {
-              const isActive = location.pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  onMouseEnter={() => setHoveredNav(link.name)}
-                  className={cn(
-                    'relative px-3 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1 shrink-0 whitespace-nowrap',
-                    isActive ? 'text-luxury-gold font-semibold' : 'text-white/85 hover:text-white'
-                  )}
-                >
-                  {/* Sliding Hover Capsule */}
-                  {hoveredNav === link.name && (
-                    <motion.span
-                      layoutId="navbar-hover-capsule"
-                      className="absolute inset-0 rounded-full bg-white/10 border border-white/20 backdrop-blur-xs -z-10 shadow-xs"
-                      transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-                    />
-                  )}
-                  {/* Active Route Dot */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="navbar-active-dot"
-                      className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
-                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    />
-                  )}
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* Center Column: Logo & Brand Name Centered */}
-        <div className="flex items-center justify-center shrink-0 px-2">
+          {/* Luxury Logo & Typography */}
           <Link
             to="/"
-            className="flex flex-row sm:flex-col items-center justify-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-1 gap-2 sm:gap-0.5 text-decoration-none"
+            className="flex items-center group py-0.5 select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-luxury-gold px-1 gap-2.5 sm:gap-3 text-decoration-none"
           >
             {logoUrl && !logoLoadError ? (
               <motion.picture
@@ -233,12 +187,12 @@ export const Navbar: React.FC = () => {
                 <style>{`
                   .brand-navbar-logo {
                     height: ${mobileLogoHeight}px !important;
-                    max-height: 140px !important;
+                    max-height: 120px !important;
                   }
                   @media (min-width: 640px) {
                     .brand-navbar-logo {
                       height: ${desktopLogoHeight}px !important;
-                      max-height: 180px !important;
+                      max-height: 150px !important;
                     }
                   }
                 `}</style>
@@ -247,59 +201,59 @@ export const Navbar: React.FC = () => {
 
             {/* Brand Name Typography */}
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
-              <div className="flex flex-col items-center select-none text-center leading-none">
-                <span className="font-serif text-xs sm:text-sm lg:text-base tracking-[0.18em] sm:tracking-[0.24em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-sm">
+              <div className="flex flex-col items-start select-none text-left leading-none">
+                <span className="font-serif text-sm sm:text-base lg:text-lg tracking-[0.2em] sm:tracking-[0.26em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-sm">
                   {settings.store_name || 'PHILZ SIGNATURE'}
                 </span>
-                <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.26em] sm:tracking-[0.32em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap opacity-90">
-                  {settings.store_slogan || 'DIFFUSER CANDLES | PERFUME OIL'}
+                <span className="text-[6.5px] sm:text-[7.5px] lg:text-[8px] tracking-[0.28em] sm:tracking-[0.34em] text-luxury-gold font-medium uppercase mt-0.5 sm:mt-1 whitespace-nowrap opacity-90">
+                  {settings.store_slogan || 'HAUTE PARFUMERIE'}
                 </span>
               </div>
             )}
           </Link>
         </div>
 
-        {/* Right Column: Desktop Right Navigation + Actions */}
-        <div className="flex items-center justify-end flex-1 min-w-0 space-x-1 sm:space-x-1.5 flex-nowrap shrink-0">
-          {/* Desktop Right Navigation (Single Line) */}
-          <nav
-            className="hidden lg:flex items-center space-x-1 xl:space-x-2 mr-1 flex-nowrap whitespace-nowrap"
-            onMouseLeave={() => setHoveredNav(null)}
-          >
-            {rightNavLinks.map((link) => {
-              const isActive = location.pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  onMouseEnter={() => setHoveredNav(link.name)}
-                  className={cn(
-                    'relative px-3 py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1 shrink-0 whitespace-nowrap',
-                    isActive ? 'text-luxury-gold font-semibold' : 'text-white/85 hover:text-white'
-                  )}
-                >
-                  {/* Sliding Hover Capsule */}
-                  {hoveredNav === link.name && (
-                    <motion.span
-                      layoutId="navbar-hover-capsule"
-                      className="absolute inset-0 rounded-full bg-white/10 border border-white/20 backdrop-blur-xs -z-10 shadow-xs"
-                      transition={{ type: 'spring', stiffness: 450, damping: 30 }}
-                    />
-                  )}
-                  {/* Active Route Dot */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="navbar-active-dot"
-                      className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
-                      transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                    />
-                  )}
-                  <span>{link.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
+        {/* Center: Desktop Navigation Links (Spacious, Uncrowded & Single Line) */}
+        <nav
+          className="hidden lg:flex items-center space-x-6 xl:space-x-8 flex-nowrap whitespace-nowrap"
+          onMouseLeave={() => setHoveredNav(null)}
+        >
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.href;
+            return (
+              <Link
+                key={link.name}
+                to={link.href}
+                onMouseEnter={() => setHoveredNav(link.name)}
+                className={cn(
+                  'relative py-1.5 text-xs uppercase tracking-luxury font-medium transition-colors duration-200 select-none flex items-center gap-1 shrink-0 whitespace-nowrap',
+                  isActive ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                )}
+              >
+                {/* Sliding Hover Capsule */}
+                {hoveredNav === link.name && (
+                  <motion.span
+                    layoutId="navbar-hover-capsule"
+                    className="absolute -inset-x-3 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-xs -z-10 shadow-xs"
+                    transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                  />
+                )}
+                {/* Active Route Dot */}
+                {isActive && (
+                  <motion.span
+                    layoutId="navbar-active-dot"
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.9)]"
+                    transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                  />
+                )}
+                <span>{link.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
 
+        {/* Right Side: Currency, Theme, Search, User & Cart */}
+        <div className="flex items-center space-x-2 sm:space-x-3 flex-nowrap shrink-0">
           {/* Currency Indicator (ÁRUM Framer Style) */}
           <div className="hidden xl:flex items-center text-xs font-mono text-white/70 tracking-wider pr-1 cursor-default select-none shrink-0">
             <span>NGN ₦</span>
@@ -314,7 +268,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="shrink-0">
             <Link
               to="/shop"
-              className="h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
               title="Search Perfumes"
               aria-label="Search perfumes"
             >
@@ -326,7 +280,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block shrink-0">
             <Link
               to="/wishlist"
-              className="h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative"
               title="Wishlist"
               aria-label="View saved perfumes"
             >
@@ -351,7 +305,7 @@ export const Navbar: React.FC = () => {
                   type="button"
                   whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.92 }}
-                  className="hidden sm:flex h-8 w-8 sm:h-9 sm:w-9 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative cursor-pointer shrink-0"
+                  className="hidden sm:flex h-9 w-9 rounded-full items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors relative cursor-pointer shrink-0"
                   title="My Account"
                   aria-label="Customer account portal"
                 >
@@ -406,7 +360,7 @@ export const Navbar: React.FC = () => {
             <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block shrink-0">
               <Link
                 to="/login"
-                className="h-8 w-8 sm:h-9 sm:w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
+                className="h-9 w-9 rounded-full flex items-center justify-center text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-colors"
                 title="Sign In"
                 aria-label="Sign in to your account"
               >
@@ -419,7 +373,7 @@ export const Navbar: React.FC = () => {
           <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="shrink-0">
             <Link
               to="/cart"
-              className="px-3 sm:px-3.5 py-1.5 rounded-full border border-white/30 hover:border-luxury-gold hover:bg-luxury-gold hover:text-black transition-all text-[11px] sm:text-xs font-medium text-white flex items-center gap-1 sm:gap-1.5 shadow-sm backdrop-blur-xs shrink-0"
+              className="px-3.5 py-1.5 rounded-full border border-white/30 hover:border-luxury-gold hover:bg-luxury-gold hover:text-black transition-all text-xs font-medium text-white flex items-center gap-1.5 shadow-sm backdrop-blur-xs shrink-0"
               title="Shopping Cart"
               aria-label="View shopping cart"
             >
