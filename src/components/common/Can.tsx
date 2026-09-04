@@ -32,3 +32,4 @@ export const Can: React.FC<CanProps> = ({ perform, role, children, fallback = nu
 };
 
 export default Can;
+
