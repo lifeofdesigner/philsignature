@@ -147,7 +147,7 @@ export const AdminOrdersPage: React.FC = () => {
         <button
           type="button"
           onClick={() => handleOpenInspect(o)}
-          className="font-bold text-slate-900 hover:text-amber-800 hover:underline cursor-pointer text-left"
+          className="font-bold text-slate-900 hover:text-slate-900 hover:underline cursor-pointer text-left"
         >
           #{o.order_number}
         </button>
@@ -201,7 +201,7 @@ export const AdminOrdersPage: React.FC = () => {
           value={o.fulfillment_status}
           disabled={updatingId === o.id}
           onChange={(e) => handleStatusChange(o, e.target.value as OrderFulfillmentStatus)}
-          className="text-xs bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-amber-600 capitalize cursor-pointer"
+          className="text-xs bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-slate-600 capitalize cursor-pointer"
         >
           {FULFILLMENT_STATUSES.map((st) => (
             <option key={st} value={st} className="capitalize">
@@ -292,7 +292,7 @@ export const AdminOrdersPage: React.FC = () => {
           <select
             value={fulfillmentFilter}
             onChange={(e) => setFulfillmentFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-amber-600 capitalize"
+            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-600 capitalize"
           >
             <option value="all">All Fulfillment Stages</option>
             {FULFILLMENT_STATUSES.map((st) => (
@@ -356,7 +356,7 @@ export const AdminOrdersPage: React.FC = () => {
                 value={selectedOrder.fulfillment_status}
                 disabled={updatingId === selectedOrder.id}
                 onChange={(e) => handleStatusChange(selectedOrder, e.target.value as OrderFulfillmentStatus)}
-                className="bg-white border border-slate-300 text-slate-900 font-semibold rounded-lg px-3 py-1.5 focus:ring-1 focus:ring-amber-600 capitalize cursor-pointer"
+                className="bg-white border border-slate-300 text-slate-900 font-semibold rounded-lg px-3 py-1.5 focus:ring-1 focus:ring-slate-600 capitalize cursor-pointer"
               >
                 {FULFILLMENT_STATUSES.map((st) => (
                   <option key={st} value={st} className="capitalize">
@@ -464,7 +464,7 @@ export const AdminOrdersPage: React.FC = () => {
                   placeholder="e.g. DHL-81928374"
                   className="bg-white border-slate-300 text-xs w-44 font-mono"
                 />
-                <Button size="sm" onClick={handleSaveTrackingNumber} className="bg-amber-700 hover:bg-amber-800 text-white text-xs h-9">
+                <Button size="sm" onClick={handleSaveTrackingNumber} className="bg-slate-900 hover:bg-slate-800 text-white text-xs h-9">
                   Save
                 </Button>
               </div>

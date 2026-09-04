@@ -121,7 +121,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-slate-200 rounded-xl p-6 shadow-2xs">
         <div>
           <div className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-amber-700" />
+            <FileText className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-bold text-slate-900">Policy Pages &amp; Client Information</h3>
           </div>
           <p className="text-xs text-slate-500 font-medium mt-1">
@@ -372,7 +372,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               <p className="text-xs text-slate-500 font-medium">Manage question &amp; answer accordions shown on the FAQ page.</p>
             </div>
             <Button variant="outline" size="sm" onClick={handleAddFaqItem} className="gap-1.5 text-xs border-slate-300">
-              <Plus className="h-3.5 w-3.5 text-amber-700" />
+              <Plus className="h-3.5 w-3.5 text-slate-700" />
               <span>Add Question</span>
             </Button>
           </div>

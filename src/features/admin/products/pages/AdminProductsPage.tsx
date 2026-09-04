@@ -429,7 +429,7 @@ export const AdminProductsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openEditForm(product)}
-              className="p-1.5 text-slate-600 hover:text-amber-800 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
               title="Edit Product"
               aria-label="Edit product"
             >
@@ -630,7 +630,7 @@ export const AdminProductsPage: React.FC = () => {
                   required
                   rows={3}
                   placeholder="Describe the olfactory composition and story..."
-                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600"
+                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                 />
               </div>
 
@@ -690,7 +690,7 @@ export const AdminProductsPage: React.FC = () => {
                   <select
                     value={form.fragrance_family}
                     onChange={(e) => setForm((p) => ({ ...p, fragrance_family: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="">— Select Family —</option>
                     {FRAGRANCE_FAMILIES.map((f) => (
@@ -706,7 +706,7 @@ export const AdminProductsPage: React.FC = () => {
                   <select
                     value={form.status}
                     onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as ProductStatus }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     {STATUSES.map((s) => (
                       <option key={s} value={s} className="capitalize">
@@ -723,7 +723,7 @@ export const AdminProductsPage: React.FC = () => {
                   <select
                     value={form.category_id}
                     onChange={(e) => setForm((p) => ({ ...p, category_id: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="">— None / General —</option>
                     {categories.map((c) => (
@@ -739,7 +739,7 @@ export const AdminProductsPage: React.FC = () => {
                   <select
                     value={form.collection_id}
                     onChange={(e) => setForm((p) => ({ ...p, collection_id: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="">— None / General —</option>
                     {collections.map((c) => (

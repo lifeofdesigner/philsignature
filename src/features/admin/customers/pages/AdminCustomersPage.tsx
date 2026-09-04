@@ -55,7 +55,7 @@ export const AdminCustomersPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelectedCustomer(c)}
-              className="font-bold text-slate-900 hover:text-amber-800 hover:underline text-left cursor-pointer truncate block"
+              className="font-bold text-slate-900 hover:text-slate-900 hover:underline text-left cursor-pointer truncate block"
             >
               {[c.first_name, c.last_name].filter(Boolean).join(' ') || 'Anonymous Patron'}
             </button>

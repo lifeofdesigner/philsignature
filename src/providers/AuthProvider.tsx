@@ -4,6 +4,8 @@ import type { Session, User } from '@supabase/supabase-js';
 import { authService } from '@/services/AuthService';
 import { authRepository, type SignInCredentials, type SignUpCredentials } from '@/repositories/AuthRepository';
 import { permissionEngine } from '@/lib/permissionEngine';
+import { setDynamicRolePermissions, type Permission } from '@/lib/permissions';
+import { settingsService } from '@/services/SettingsService';
 
 export interface AuthContextType {
   user: User | null;
@@ -45,6 +47,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const prof = await authRepository.getProfile(user.id);
     setProfile(prof);
   }, [user]);
+
+  // Sync the super admin's saved RBAC matrix from the DB into the in-memory
+  // permission engine on every app boot, so role changes apply to all staff
+  // sessions immediately instead of only the browser that saved them.
+  useEffect(() => {
+    let isMounted = true;
+    settingsService
+      .getSetting<Record<UserRole, Permission[]>>('role_permissions_matrix')
+      .then((stored) => {
+        if (isMounted && stored && typeof stored === 'object') {
+          setDynamicRolePermissions(stored);
+        }
+      })
+      .catch((err) => console.error('[AuthProvider] Failed to sync RBAC matrix:', err));
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;

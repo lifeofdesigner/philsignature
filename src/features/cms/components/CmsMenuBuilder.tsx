@@ -165,7 +165,7 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
                   onChange={(e) =>
                     handleUpdateItem(item.id, { target: e.target.value as '_self' | '_blank' })
                   }
-                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
                 >
                   <option value="_self">Current Tab (_self)</option>
                   <option value="_blank">New Tab (_blank)</option>
@@ -179,7 +179,7 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
                   type="checkbox"
                   checked={Boolean(item.is_mega)}
                   onChange={(e) => handleUpdateItem(item.id, { is_mega: e.target.checked })}
-                  className="rounded border-slate-300 text-amber-700 focus:ring-amber-700"
+                  className="rounded border-slate-300 text-slate-700 focus:ring-slate-600"
                 />
                 <span>Enable Mega Menu Dropdown Structure</span>
               </label>

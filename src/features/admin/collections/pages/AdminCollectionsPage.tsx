@@ -273,7 +273,7 @@ export const AdminCollectionsPage: React.FC = () => {
       accessor: (collection) => (
         collection.is_featured ? (
           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-900 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
-            <Star className="h-3 w-3 fill-amber-600 text-amber-700" />
+            <Star className="h-3 w-3 fill-amber-600 text-slate-700" />
             Featured
           </span>
         ) : (
@@ -311,7 +311,7 @@ export const AdminCollectionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openEditForm(collection)}
-              className="p-1.5 text-slate-600 hover:text-amber-800 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
               title="Edit Collection"
               aria-label="Edit collection"
             >
@@ -475,7 +475,7 @@ export const AdminCollectionsPage: React.FC = () => {
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   rows={3}
                   placeholder="Detailed background regarding this collection..."
-                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-amber-600/20 focus:border-amber-600"
+                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                 />
               </div>
 

@@ -83,7 +83,7 @@ export const FormBuilderManager: React.FC = () => {
     <Card>
       <CardHeader>
         <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
-          <FileInput className="h-4 w-4 text-amber-700" />
+          <FileInput className="h-4 w-4 text-slate-700" />
           <span>Visual Form Builder & Email Routing</span>
         </CardTitle>
         <CardDescription>Manage inquiry fields, validation rules, and notification emails for storefront forms</CardDescription>
@@ -168,7 +168,7 @@ export const FormBuilderManager: React.FC = () => {
                           const updated = selectedForm.fields.map((f) => (f.id === field.id ? { ...f, required: e.target.checked } : f));
                           handleUpdateForm({ fields: updated });
                         }}
-                        className="rounded border-slate-300 text-amber-700"
+                        className="rounded border-slate-300 text-slate-700"
                       />
                       <span>Required</span>
                     </label>
@@ -187,7 +187,7 @@ export const FormBuilderManager: React.FC = () => {
         </div>
 
         <div className="flex justify-end pt-2">
-          <Button size="sm" onClick={handleSave} className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5">
+          <Button size="sm" onClick={handleSave} className="bg-slate-900 hover:bg-slate-800 text-white font-medium gap-1.5">
             <Save className="h-3.5 w-3.5" /> Save Form Schema
           </Button>
         </div>

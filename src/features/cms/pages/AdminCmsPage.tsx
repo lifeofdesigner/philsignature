@@ -123,7 +123,7 @@ export const AdminCmsPage: React.FC = () => {
           <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-lg text-xs font-semibold text-slate-600 border border-slate-200">
             {isSaving ? (
               <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin text-amber-700" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-slate-700" />
                 <span>Saving to Supabase...</span>
               </>
             ) : (
@@ -237,7 +237,7 @@ export const AdminCmsPage: React.FC = () => {
           <CmsHeroManager
             hero={heroForm}
             onChange={(updated) => setHeroForm(updated)}
-            onSave={() => handleSave('hero_banner', 'hero', 'Hero Motion Banner', heroForm as unknown as Record<string, unknown>)}
+            onSave={() => handleSave('homepage_hero', 'hero', 'Hero Motion Banner', heroForm as unknown as Record<string, unknown>)}
             isSaving={isSaving}
           />
         </TabsContent>

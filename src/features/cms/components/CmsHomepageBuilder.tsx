@@ -75,7 +75,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-slate-200 rounded-xl p-6 shadow-2xs">
         <div>
           <div className="flex items-center gap-2">
-            <LayoutGrid className="h-5 w-5 text-amber-700" />
+            <LayoutGrid className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-semibold text-slate-900">Modular Homepage Layout Engine</h3>
           </div>
           <p className="text-xs text-slate-500 font-normal mt-1">
@@ -181,7 +181,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   onChange={(e) =>
                     handleUpdateSection(section.id, { type: e.target.value as CmsHomepageSectionType })
                   }
-                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
                 >
                   <option value="hero">Hero Billboard Slider</option>
                   <option value="collections">Collections Showcase</option>
@@ -200,7 +200,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   onChange={(e) =>
                     handleUpdateSection(section.id, { status: e.target.value as CmsPublishStatus })
                   }
-                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
                 >
                   <option value="published">Published (Live)</option>
                   <option value="draft">Draft (Hidden)</option>
@@ -217,7 +217,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   onChange={(e) =>
                     handleUpdateSection(section.id, { spacing: e.target.value as 'compact' | 'normal' | 'generous' })
                   }
-                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
                 >
                   <option value="compact">Compact (py-8)</option>
                   <option value="normal">Normal (py-14)</option>
@@ -232,7 +232,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   onChange={(e) =>
                     handleUpdateSection(section.id, { background: e.target.value as 'default' | 'black' | 'charcoal' | 'card' | 'radial_luxury' })
                   }
-                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
                 >
                   <option value="default">Default Page Background</option>
                   <option value="black">Deep Obsidian Black</option>
@@ -249,7 +249,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   onChange={(e) =>
                     handleUpdateSection(section.id, { animation: e.target.value as 'fade_in' | 'slide_up' | 'scale' | 'none' })
                   }
-                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+                  className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
                 >
                   <option value="fade_in">Smooth Fade In</option>
                   <option value="slide_up">Slide Up Entrance</option>
@@ -263,7 +263,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-xs font-medium text-slate-700">
-                  <Calendar className="h-3.5 w-3.5 text-amber-700" />
+                  <Calendar className="h-3.5 w-3.5 text-slate-700" />
                   <span>Scheduled Publish Date & Time (Optional)</span>
                 </div>
                 <Input
@@ -274,7 +274,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-xs font-medium text-slate-700">
-                  <Calendar className="h-3.5 w-3.5 text-amber-700" />
+                  <Calendar className="h-3.5 w-3.5 text-slate-700" />
                   <span>Scheduled Unpublish Date & Time (Optional)</span>
                 </div>
                 <Input

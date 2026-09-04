@@ -304,7 +304,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
                 return (
                   <div className="space-y-1.5" key={field}>
                     <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
-                      <ImageIcon className="h-3.5 w-3.5 text-amber-700" />
+                      <ImageIcon className="h-3.5 w-3.5 text-slate-700" />
                       <span>{field === 'desktop_image' ? 'Desktop Image' : 'Mobile Image'}</span>
                     </div>
                     <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 p-2 rounded-lg">
@@ -341,7 +341,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
 
             <div className="space-y-1.5">
               <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700">
-                <Video className="h-3.5 w-3.5 text-amber-700" />
+                <Video className="h-3.5 w-3.5 text-slate-700" />
                 <span>Background Video (Optional)</span>
               </div>
               <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 p-2 rounded-lg">

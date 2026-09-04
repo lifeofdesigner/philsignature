@@ -41,7 +41,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
     <div className="space-y-6">
       <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-2 shadow-2xs">
         <div className="flex items-center gap-2">
-          <Palette className="h-5 w-5 text-amber-700" />
+          <Palette className="h-5 w-5 text-slate-700" />
           <h3 className="text-base font-semibold text-slate-900">Store Appearance & Theme Settings</h3>
         </div>
         <p className="text-xs text-slate-500 font-normal">
@@ -61,7 +61,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
               onChange={(e) =>
                 onChange({ ...appearance, default_theme: e.target.value as 'system' | 'light' | 'dark' })
               }
-              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
             >
               <option value="system">Automatic System Preference (Light/Dark)</option>
               <option value="light">Fixed Light Theme</option>
@@ -76,7 +76,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
               onChange={(e) =>
                 onChange({ ...appearance, border_radius: e.target.value as 'none' | 'sm' | 'md' | 'full' })
               }
-              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
             >
               <option value="none">Sharp Architectural (0px)</option>
               <option value="sm">Subtle Luxury (2px - 4px)</option>
@@ -92,7 +92,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
               onChange={(e) =>
                 onChange({ ...appearance, button_style: e.target.value as 'luxury' | 'minimal' | 'bold' })
               }
-              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
+              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
             >
               <option value="luxury">Luxury Gold Gradient & Border</option>
               <option value="minimal">Minimalist Monochrome</option>
@@ -168,7 +168,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
                   />
                   <label
                     htmlFor={`cms-asset-${item.field}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-700 text-white hover:bg-amber-800 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition-colors cursor-pointer shadow-2xs"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-800 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition-colors cursor-pointer shadow-2xs"
                   >
                     {uploadingField === item.field ? (
                       <Loader2 className="h-3 w-3 animate-spin" />

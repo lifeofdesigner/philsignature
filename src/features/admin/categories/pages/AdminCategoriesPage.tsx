@@ -224,7 +224,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(category)}
-            className="p-1.5 text-slate-500 hover:text-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Category"
             aria-label="Edit category"
           >
@@ -344,7 +344,7 @@ export const AdminCategoriesPage: React.FC = () => {
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   rows={3}
                   placeholder="Detailed category notes and luxury formulation highlights..."
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-all"
+                  className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                 />
               </div>
 

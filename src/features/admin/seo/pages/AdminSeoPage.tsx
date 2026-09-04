@@ -39,7 +39,7 @@ export const AdminSeoPage: React.FC = () => {
         </div>
         <Button
           size="sm"
-          className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+          className="bg-slate-900 hover:bg-slate-800 text-white font-medium gap-1.5 shadow-2xs"
           disabled={isSaving}
           onClick={handleSave}
         >
@@ -95,7 +95,7 @@ export const AdminSeoPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7 bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
             <h3 className="text-base font-bold text-slate-900 border-b border-slate-200 pb-3 flex items-center gap-2">
-              <Globe className="w-4 h-4 text-amber-700" />
+              <Globe className="w-4 h-4 text-slate-700" />
               <span>Global Metadata Defaults</span>
             </h3>
 
@@ -181,7 +181,7 @@ export const AdminSeoPage: React.FC = () => {
 
               <div className="space-y-1 bg-slate-50 p-4 rounded-lg border border-slate-200">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-amber-800 flex items-center justify-center text-[9px] text-white font-bold">
+                  <div className="w-4 h-4 rounded-full bg-slate-800 flex items-center justify-center text-[9px] text-white font-bold">
                     P
                   </div>
                   <div className="text-[11px] text-slate-600 truncate font-mono">
@@ -242,7 +242,7 @@ export const AdminSeoPage: React.FC = () => {
       {activeTab === 'crawlers' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6 shadow-2xs">
           <h3 className="text-base font-bold text-slate-900 border-b border-slate-200 pb-3 flex items-center gap-2">
-            <Globe className="w-4 h-4 text-amber-700" />
+            <Globe className="w-4 h-4 text-slate-700" />
             <span>Search Engine Indexing &amp; Crawler Directives</span>
           </h3>
 
@@ -302,7 +302,7 @@ export const AdminSeoPage: React.FC = () => {
               href="/sitemap.xml"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-800 hover:text-amber-900 bg-white border border-slate-300 px-3 py-1.5 rounded-lg shadow-2xs"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-white border border-slate-300 px-3 py-1.5 rounded-lg shadow-2xs"
             >
               <span>View sitemap.xml</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -315,7 +315,7 @@ export const AdminSeoPage: React.FC = () => {
       {activeTab === 'schema' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6 shadow-2xs">
           <h3 className="text-base font-bold text-slate-900 border-b border-slate-200 pb-3 flex items-center gap-2">
-            <FileText className="w-4 h-4 text-amber-700" />
+            <FileText className="w-4 h-4 text-slate-700" />
             <span>Structured Data &amp; Schema.org Defaults</span>
           </h3>
 
@@ -327,7 +327,7 @@ export const AdminSeoPage: React.FC = () => {
               <select
                 value={form.structured_data_type || 'Organization'}
                 onChange={(e) => setForm((p) => (p ? { ...p, structured_data_type: e.target.value } : p))}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-600 font-medium"
+                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-600 font-medium"
               >
                 <option value="Organization">Organization (Brand / Headquarters)</option>
                 <option value="Store">Store / OnlineBusiness</option>
@@ -340,7 +340,7 @@ export const AdminSeoPage: React.FC = () => {
             <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
               Live Generated JSON-LD Preview
             </span>
-            <pre className="bg-slate-900 text-amber-300 p-4 rounded-xl text-xs font-mono overflow-x-auto border border-slate-800">
+            <pre className="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto border border-slate-800">
 {JSON.stringify(
   {
     '@context': 'https://schema.org',

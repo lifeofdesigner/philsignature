@@ -9,8 +9,8 @@ export interface CmsHeroSlide {
   badge: string;
   headline: string;
   subtitle: string;
-  primary_cta_text: string;
-  primary_cta_url: string;
+  primary_cta_text?: string;
+  primary_cta_url?: string;
   secondary_cta_text?: string;
   secondary_cta_url?: string;
   desktop_image: string;

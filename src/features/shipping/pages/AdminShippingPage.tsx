@@ -227,7 +227,7 @@ export const AdminShippingPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(method)}
-            className="p-1.5 text-slate-500 hover:text-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Method"
           >
             <Pencil className="h-4 w-4" />

@@ -261,7 +261,7 @@ export const AdminCouponsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(coupon)}
-            className="p-1.5 text-slate-500 hover:text-amber-800 hover:bg-amber-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Coupon"
             aria-label="Edit coupon"
           >
@@ -324,7 +324,7 @@ export const AdminCouponsPage: React.FC = () => {
           <select
             value={discountTypeFilter}
             onChange={(e) => setDiscountTypeFilter(e.target.value as 'all' | 'percentage' | 'fixed')}
-            className="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-600"
+            className="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-600"
           >
             <option value="all">All Discount Types</option>
             <option value="percentage">Percentage (%)</option>
@@ -390,7 +390,7 @@ export const AdminCouponsPage: React.FC = () => {
                     onChange={(e) =>
                       setForm((p) => ({ ...p, discount_type: e.target.value as 'percentage' | 'fixed' }))
                     }
-                    className="flex h-10 w-full rounded-lg bg-white border border-slate-300 px-3.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-600 font-medium"
+                    className="flex h-10 w-full rounded-lg bg-white border border-slate-300 px-3.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-600 font-medium"
                   >
                     <option value="percentage">Percentage Discount (%)</option>
                     <option value="fixed">Fixed Amount (₦)</option>
