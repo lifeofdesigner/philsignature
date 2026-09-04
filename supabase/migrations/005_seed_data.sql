@@ -254,12 +254,12 @@ ON CONFLICT (name) DO NOTHING;
 -- ------------------------------------------------------------------------------
 -- 6. CMS SECTIONS SEED
 -- ------------------------------------------------------------------------------
-INSERT INTO cms_sections (key, page, title, content, is_active)
+INSERT INTO cms_content (key, section, title, content, is_published)
 VALUES
 (
     'announcement_bar',
     'header',
-    'Storefront Top Banner',
+    'Announcement Bar',
     jsonb_build_object(
         'enabled', true,
         'text', 'PHILZ SIGNATURE — YOUR SCENT. YOUR SIGNATURE. • BASED IN LAGOS, NIGERIA',
@@ -280,7 +280,71 @@ VALUES
         'primary_cta_url', '/shop',
         'secondary_cta_text', 'Our Story',
         'secondary_cta_url', '/about',
-        'background_image', '/brand/hero-oud-luxury.jpg'
+        'background_image', '/brand/hero-oud-luxury.jpg',
+        'settings', jsonb_build_object(
+            'autoplay', true,
+            'autoplay_interval_ms', 6500,
+            'transition_duration_ms', 800
+        ),
+        'slides', jsonb_build_array(
+            jsonb_build_object(
+                'id', 'slide-1',
+                'badge', 'PHILZ SIGNATURE',
+                'headline', 'A Signature Is Something That Belongs To You',
+                'subtitle', 'Founded in 2018 in Lagos, Philz Signature crafts perfumes, perfume oils and home fragrances designed to leave a lasting impression — from Lagos to the world.',
+                'primary_cta_text', 'Explore Fragrances',
+                'primary_cta_url', '/shop',
+                'secondary_cta_text', 'Our Story',
+                'secondary_cta_url', '/about',
+                'desktop_image', '/brand/hero-oud-luxury.jpg',
+                'mobile_image', '/brand/hero-oud-luxury.jpg',
+                'featured_product_title', 'Perfume Body Oils',
+                'featured_product_subtitle', 'Masculine • Feminine • Unisex',
+                'featured_product_price', '₦45,000',
+                'featured_product_image', '/media/products/perfume-oils/perfume-oil-1.jpg',
+                'featured_product_url', '/shop?category=perfume-body-oils',
+                'is_active', true,
+                'order', 1
+            ),
+            jsonb_build_object(
+                'id', 'slide-2',
+                'badge', 'PRIVATE LABEL & GIFTING',
+                'headline', 'Customized Fragrance Solutions For Brands',
+                'subtitle', 'Ready to create your own fragrance collection or corporate gifts? We provide private-label perfumes, candles, diffusers, and luxury hampers for businesses.',
+                'primary_cta_text', 'Start A Project',
+                'primary_cta_url', '/contact',
+                'secondary_cta_text', 'Request A Quote',
+                'secondary_cta_url', '/contact',
+                'desktop_image', '/brand/hero-private-reserve.jpg',
+                'mobile_image', '/brand/hero-private-reserve.jpg',
+                'featured_product_title', 'Reed Diffuser & Scented Candle',
+                'featured_product_subtitle', 'Artisanal Home & Lifestyle',
+                'featured_product_price', '₦95,000',
+                'featured_product_image', '/media/products/diffuser-candles/diffuser-candle-1.jpg',
+                'featured_product_url', '/shop?category=home-fragrance',
+                'is_active', true,
+                'order', 2
+            ),
+            jsonb_build_object(
+                'id', 'slide-3',
+                'badge', 'MEET PHILZ THE PERFUMER',
+                'headline', 'Behind Every Signature Is A Story',
+                'subtitle', 'Everyone deserves to have a scent that feels like their own. Guided by curiosity, creativity, and a commitment to creating memorable scent experiences.',
+                'primary_cta_text', 'Read Our Story',
+                'primary_cta_url', '/about',
+                'secondary_cta_text', 'Shop Fragrances',
+                'secondary_cta_url', '/shop',
+                'desktop_image', '/brand/hero-extrait-collection.jpg',
+                'mobile_image', '/brand/hero-extrait-collection.jpg',
+                'featured_product_title', 'Philz Extrait de Parfum',
+                'featured_product_subtitle', 'Signature Collection • 100ml',
+                'featured_product_price', '₦185,000',
+                'featured_product_image', '/media/products/perfume-oils/perfume-oil-2.jpg',
+                'featured_product_url', '/shop',
+                'is_active', true,
+                'order', 3
+            )
+        )
     ),
     true
 ),
