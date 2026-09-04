@@ -9,6 +9,7 @@ export type Permission =
   | 'cms:menu'
   | 'cms:homepage'
   | 'cms:appearance'
+  | 'cms:instagram'
   // Catalog & Inventory
   | 'products:read'
   | 'products:write'
@@ -75,7 +76,7 @@ export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
 
 export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   super_admin: [
-    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:appearance',
+    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:appearance', 'cms:instagram',
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
     'orders:read', 'orders:write', 'orders:shipping', 'shipping:manage', 'payments:view', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
@@ -83,14 +84,14 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   ],
 
   admin: [
-    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage',
+    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:instagram',
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
     'orders:read', 'orders:write', 'orders:shipping', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
   ],
 
   administrator: [
-    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage',
+    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:instagram',
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
     'orders:read', 'orders:write', 'orders:shipping', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
@@ -109,17 +110,17 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   ],
 
   content_manager: [
-    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:appearance',
+    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:appearance', 'cms:instagram',
     'collections:manage', 'media:manage', 'products:read',
   ],
 
   content_editor: [
-    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:appearance',
+    'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:appearance', 'cms:instagram',
     'collections:manage', 'media:manage', 'products:read',
   ],
 
   marketing: [
-    'coupons:manage', 'analytics:view', 'cms:read', 'cms:hero', 'cms:homepage', 'media:manage', 'products:read',
+    'coupons:manage', 'analytics:view', 'cms:read', 'cms:hero', 'cms:homepage', 'cms:instagram', 'media:manage', 'products:read',
   ],
 
   customer_support: [

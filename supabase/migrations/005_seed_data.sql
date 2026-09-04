@@ -446,6 +446,30 @@ VALUES
     true
 ),
 (
+    'instagram_feed',
+    'marketing',
+    'Instagram Social Sanctuary',
+    jsonb_build_object(
+        'enabled', true,
+        'title', 'Follow Our Olfactory Journey',
+        'subtitle', 'Behind the atelier with Philz the Perfumer, bespoke formulation, and olfactory art.',
+        'handle', '@philztheperfumer',
+        'profile_url', 'https://instagram.com/philztheperfumer',
+        'layout', 'slider',
+        'post_count', 6,
+        'status', 'published',
+        'posts', jsonb_build_array(
+            jsonb_build_object('id', 'insta-1', 'image_url', '/media/products/perfume-oils/perfume-oil-1.jpg', 'caption', 'Pure botanical essence extracted in small batches. Our signature Perfume Body Oil on rough travertine. ✨ #PhilzSignature #PhilzThePerfumer', 'likes_count', 512, 'comments_count', 38, 'post_url', 'https://instagram.com/philztheperfumer'),
+            jsonb_build_object('id', 'insta-2', 'image_url', '/media/products/diffuser-candles/diffuser-candle-1.jpg', 'caption', 'Elevate your sanctuary with our slow-burning scented candles and natural rattan reed diffusers. 🕯️ #HomeFragrance #PhilzSignature', 'likes_count', 684, 'comments_count', 49, 'post_url', 'https://instagram.com/philztheperfumer'),
+            jsonb_build_object('id', 'insta-3', 'image_url', '/media/products/perfume-oils/perfume-oil-6.jpg', 'caption', 'Bespoke Private Label & Extrait formulations. Crafted to leave an indelible signature. 👑 #PhilzThePerfumer #LuxuryFragrance', 'likes_count', 920, 'comments_count', 73, 'post_url', 'https://instagram.com/philztheperfumer'),
+            jsonb_build_object('id', 'insta-4', 'image_url', '/media/lifestyle/lifestyle-1.jpg', 'caption', 'Evening rituals: Warm vanilla, smoked amber, and quiet reflection. 🌙 #YourScentYourSignature #ScentLifestyle', 'likes_count', 410, 'comments_count', 27, 'post_url', 'https://instagram.com/philztheperfumer'),
+            jsonb_build_object('id', 'insta-5', 'image_url', '/media/products/diffuser-candles/diffuser-candle-3.jpg', 'caption', 'Continuous diffusion of pure botanical oils. Effortless elegance for corporate & residential spaces. 🌿 #PhilzSignature', 'likes_count', 576, 'comments_count', 41, 'post_url', 'https://instagram.com/philztheperfumer'),
+            jsonb_build_object('id', 'insta-6', 'image_url', '/media/banners/banner-4.jpg', 'caption', 'The Complete Wardrobe: Perfumes, perfume oils, reed diffusers, and luxury gifting hampers. #PhilzSignature #PhilzThePerfumer', 'likes_count', 1042, 'comments_count', 95, 'post_url', 'https://instagram.com/philztheperfumer')
+        )
+    ),
+    true
+),
+(
     'footer_config',
     'footer',
     'Global Boutique Footer',

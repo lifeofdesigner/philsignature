@@ -15,6 +15,7 @@ export const useAdminCms = () => {
   const appearanceQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'appearance'], queryFn: () => cmsService.getAppearance() });
   const faqQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'faq'], queryFn: () => cmsService.getFaqContent() });
   const contactQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'contact'], queryFn: () => cmsService.getContactContent() });
+  const instagramQuery = useQuery({ queryKey: [...CMS_QUERY_KEY, 'instagram'], queryFn: () => cmsService.getInstagramSection() });
 
   const saveMutation = useMutation({
     mutationFn: ({ key, section, title, content }: { key: string; section: string; title: string; content: Record<string, unknown> }) =>
@@ -31,6 +32,7 @@ export const useAdminCms = () => {
       queryClient.invalidateQueries({ queryKey: ['contact-page-data'] });
       queryClient.invalidateQueries({ queryKey: ['faq-page-data'] });
       queryClient.invalidateQueries({ queryKey: ['cms-policy'] });
+      queryClient.invalidateQueries({ queryKey: ['cms-instagram-section'] });
       queryClient.invalidateQueries({ queryKey: [variables.key] });
     },
   });
@@ -45,6 +47,7 @@ export const useAdminCms = () => {
     appearance: appearanceQuery.data,
     faq: faqQuery.data,
     contact: contactQuery.data,
+    instagram: instagramQuery.data,
     isLoading:
       heroQuery.isLoading ||
       announcementQuery.isLoading ||

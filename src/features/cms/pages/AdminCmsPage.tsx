@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Save, Loader2, Sparkles, CheckCircle2, Layers, Eye, Megaphone, FileText, Menu as MenuIcon, Palette, Heart, LayoutGrid } from 'lucide-react';
+import { Save, Loader2, Sparkles, CheckCircle2, Layers, Eye, Megaphone, FileText, Menu as MenuIcon, Palette, Heart, LayoutGrid, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,7 @@ import { CmsHomepageBuilder } from '../components/CmsHomepageBuilder';
 import { CmsMenuBuilder } from '../components/CmsMenuBuilder';
 import { CmsAppearanceManager } from '../components/CmsAppearanceManager';
 import { CmsPoliciesManager } from '../components/CmsPoliciesManager';
+import { CmsInstagramManager } from '../components/CmsInstagramManager';
 import type {
   CmsHeroContent,
   CmsAnnouncementContent,
@@ -23,14 +24,16 @@ import type {
   CmsHomepageLayout,
   CmsNavigationMenu,
   CmsAppearanceConfig,
+  CmsInstagramSection,
 } from '@/services/CMSService';
 import { auditLogService } from '@/services/AuditLogService';
 import { useAuth } from '@/hooks/useAuth';
+import { hasPermission } from '@/lib/permissions';
 
 export const AdminCmsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'announcement';
-  const { user } = useAuth();
+  const { user, role } = useAuth();
 
   const {
     hero,
@@ -42,10 +45,12 @@ export const AdminCmsPage: React.FC = () => {
     appearance,
     faq,
     contact,
+    instagram,
     isLoading,
     save,
     isSaving,
   } = useAdminCms();
+  const canManageInstagram = hasPermission(role, 'cms:instagram');
 
   const [heroForm, setHeroForm] = useState<CmsHeroContent | null>(null);
   const [announcementForm, setAnnouncementForm] = useState<CmsAnnouncementContent | null>(null);
@@ -54,6 +59,7 @@ export const AdminCmsPage: React.FC = () => {
   const [layoutForm, setLayoutForm] = useState<CmsHomepageLayout | null>(null);
   const [menuForm, setMenuForm] = useState<CmsNavigationMenu | null>(null);
   const [appearanceForm, setAppearanceForm] = useState<CmsAppearanceConfig | null>(null);
+  const [instagramForm, setInstagramForm] = useState<CmsInstagramSection | null>(null);
   const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
   const [aiPrompt, setAiPrompt] = useState('');
   const [aiOutput, setAiOutput] = useState('');
@@ -66,6 +72,7 @@ export const AdminCmsPage: React.FC = () => {
   useEffect(() => { if (layout) setLayoutForm(layout); }, [layout]);
   useEffect(() => { if (menu) setMenuForm(menu); }, [menu]);
   useEffect(() => { if (appearance) setAppearanceForm(appearance); }, [appearance]);
+  useEffect(() => { if (instagram) setInstagramForm(instagram); }, [instagram]);
 
   const handleSave = async (key: string, section: string, title: string, content: Record<string, unknown>) => {
     try {
@@ -174,6 +181,11 @@ export const AdminCmsPage: React.FC = () => {
           <TabsTrigger value="story" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <Heart className="h-3.5 w-3.5" /> Brand Story
           </TabsTrigger>
+          {canManageInstagram && (
+            <TabsTrigger value="instagram" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
+              <Instagram className="h-3.5 w-3.5" /> Instagram Feed
+            </TabsTrigger>
+          )}
           <TabsTrigger value="ai" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <Sparkles className="h-3.5 w-3.5" /> AI Assistant
           </TabsTrigger>
@@ -322,7 +334,19 @@ export const AdminCmsPage: React.FC = () => {
           </Card>
         </TabsContent>
 
-        {/* Tab 8: AI Assistant */}
+        {/* Tab 8: Instagram Feed */}
+        {canManageInstagram && instagramForm && (
+          <TabsContent value="instagram" className="pt-4">
+            <CmsInstagramManager
+              instagram={instagramForm}
+              onChange={(updated) => setInstagramForm(updated)}
+              onSave={() => handleSave('instagram_feed', 'marketing', 'Instagram Social Sanctuary', instagramForm as unknown as Record<string, unknown>)}
+              isSaving={isSaving}
+            />
+          </TabsContent>
+        )}
+
+        {/* Tab 9: AI Assistant */}
         <TabsContent value="ai" className="pt-4">
           <Card>
             <CardHeader>
