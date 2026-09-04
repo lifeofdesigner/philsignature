@@ -21,6 +21,10 @@ export class ProductService {
     return this.repo.findAll(filter);
   }
 
+  async getAllProductsAdmin(): Promise<Product[]> {
+    return this.repo.findAll();
+  }
+
   async getFeaturedProducts(limit = 4): Promise<Product[]> {
     return this.repo.findFeatured(limit);
   }

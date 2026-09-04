@@ -39,29 +39,29 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
   };
   return (
     <div className="space-y-6">
-      <div className="bg-luxury-card border border-luxury-border rounded-sm p-6 space-y-2">
+      <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-2 shadow-2xs">
         <div className="flex items-center gap-2">
-          <Palette className="h-5 w-5 text-luxury-gold" />
-          <h3 className="font-serif text-lg text-luxury-cream font-normal">Store Appearance & Theme Settings</h3>
+          <Palette className="h-5 w-5 text-amber-700" />
+          <h3 className="text-base font-semibold text-slate-900">Store Appearance & Theme Settings</h3>
         </div>
-        <p className="text-xs text-luxury-muted font-light">
+        <p className="text-xs text-slate-500 font-normal">
           Configure default storefront theme mode, brand accent palette, border radiuses, and brand logos without code modifications.
         </p>
       </div>
 
-      <div className="bg-luxury-card border border-luxury-border rounded-sm p-6 space-y-6">
-        <h4 className="font-serif text-sm text-luxury-cream font-medium border-b border-luxury-border/60 pb-2">
+      <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-6 shadow-2xs">
+        <h4 className="text-sm font-semibold text-slate-900 border-b border-slate-100 pb-2">
           Default Theme Preference
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="space-y-1">
-            <label className="text-xs text-luxury-sand font-medium">Default Store Theme Mode</label>
+            <label className="text-xs font-medium text-slate-700">Default Store Theme Mode</label>
             <select
               value={appearance.default_theme}
               onChange={(e) =>
                 onChange({ ...appearance, default_theme: e.target.value as 'system' | 'light' | 'dark' })
               }
-              className="w-full h-9 bg-luxury-card border border-luxury-border text-xs text-luxury-cream px-3 py-1 rounded-sm focus:outline-none focus:ring-1 focus:ring-luxury-gold"
+              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
             >
               <option value="system">Automatic System Preference (Light/Dark)</option>
               <option value="light">Fixed Light Theme</option>
@@ -70,13 +70,13 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs text-luxury-sand font-medium">Border Radius Preset</label>
+            <label className="text-xs font-medium text-slate-700">Border Radius Preset</label>
             <select
               value={appearance.border_radius}
               onChange={(e) =>
                 onChange({ ...appearance, border_radius: e.target.value as 'none' | 'sm' | 'md' | 'full' })
               }
-              className="w-full h-9 bg-luxury-card border border-luxury-border text-xs text-luxury-cream px-3 py-1 rounded-sm focus:outline-none focus:ring-1 focus:ring-luxury-gold"
+              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
             >
               <option value="none">Sharp Architectural (0px)</option>
               <option value="sm">Subtle Luxury (2px - 4px)</option>
@@ -86,13 +86,13 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs text-luxury-sand font-medium">Button Typography & Style</label>
+            <label className="text-xs font-medium text-slate-700">Button Typography & Style</label>
             <select
               value={appearance.button_style}
               onChange={(e) =>
                 onChange({ ...appearance, button_style: e.target.value as 'luxury' | 'minimal' | 'bold' })
               }
-              className="w-full h-9 bg-luxury-card border border-luxury-border text-xs text-luxury-cream px-3 py-1 rounded-sm focus:outline-none focus:ring-1 focus:ring-luxury-gold"
+              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700/20 focus:border-amber-700 shadow-2xs"
             >
               <option value="luxury">Luxury Gold Gradient & Border</option>
               <option value="minimal">Minimalist Monochrome</option>
@@ -101,7 +101,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           </div>
         </div>
 
-        <h4 className="font-serif text-sm text-luxury-cream font-medium border-b border-luxury-border/60 pb-2 pt-2">
+        <h4 className="text-sm font-semibold text-slate-900 border-b border-slate-100 pb-2 pt-2">
           Brand Colors & Accents
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -125,7 +125,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           />
         </div>
 
-        <h4 className="font-serif text-sm text-luxury-cream font-medium border-b border-luxury-border/60 pb-2 pt-2">
+        <h4 className="text-sm font-semibold text-slate-900 border-b border-slate-100 pb-2 pt-2">
           Brand Assets & Icons
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -137,21 +137,21 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
             { field: 'favicon_url' as const, label: 'Browser Icon (Favicon)', current: appearance.favicon_url, help: 'Icon displayed in browser tabs' },
             { field: 'apple_touch_icon_url' as const, label: 'Apple Touch Icon', current: appearance.apple_touch_icon_url, help: 'Saved shortcut icon on mobile devices' },
           ].map((item) => (
-            <div key={item.field} className="p-3 bg-luxury-charcoal/40 border border-luxury-border rounded-sm space-y-2">
+            <div key={item.field} className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-luxury-cream">{item.label}</span>
+                <span className="text-xs font-semibold text-slate-900">{item.label}</span>
                 {item.current && (
-                  <span className="text-[10px] text-green-400 font-mono">Active</span>
+                  <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono font-medium">Active</span>
                 )}
               </div>
-              <p className="text-[10px] text-luxury-muted leading-tight">{item.help}</p>
+              <p className="text-[11px] text-slate-500 leading-tight">{item.help}</p>
               
               <div className="flex items-center gap-3 pt-1">
-                <div className="h-12 w-12 bg-luxury-black border border-luxury-border rounded-sm flex items-center justify-center overflow-hidden shrink-0">
+                <div className="h-12 w-12 bg-white border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden shrink-0 shadow-2xs">
                   {item.current ? (
                     <img src={item.current} alt={item.label} className="h-full w-full object-contain p-1" />
                   ) : (
-                    <ImageOff className="h-4 w-4 text-luxury-muted" />
+                    <ImageOff className="h-4 w-4 text-slate-400" />
                   )}
                 </div>
 
@@ -168,7 +168,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
                   />
                   <label
                     htmlFor={`cms-asset-${item.field}`}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-luxury-gold text-luxury-black hover:bg-luxury-gold-light text-[10px] uppercase tracking-luxury font-medium rounded-sm transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-700 text-white hover:bg-amber-800 text-[10px] uppercase tracking-wider font-semibold rounded-lg transition-colors cursor-pointer shadow-2xs"
                   >
                     {uploadingField === item.field ? (
                       <Loader2 className="h-3 w-3 animate-spin" />
@@ -195,7 +195,12 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
       />
 
       <div className="flex justify-end pt-4">
-        <Button variant="luxury" size="default" onClick={onSave} disabled={isSaving} className="gap-2">
+        <Button
+          size="default"
+          onClick={onSave}
+          disabled={isSaving}
+          className="gap-2 bg-amber-700 hover:bg-amber-800 text-white font-medium shadow-2xs"
+        >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Appearance Settings</span>
         </Button>
