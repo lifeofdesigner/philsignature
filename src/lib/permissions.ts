@@ -149,12 +149,96 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   customer: [],
 };
 
+// In-memory active matrix initialized from localStorage (if exists) or fallback default
+const RBAC_STORAGE_KEY = 'philz_rbac_permissions';
+
+function getStoredPermissions(): Record<UserRole, Permission[]> {
+  try {
+    const raw = typeof window !== 'undefined' ? localStorage.getItem(RBAC_STORAGE_KEY) : null;
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      // Ensure super_admin retains all permissions
+      return {
+        ...ROLE_PERMISSIONS,
+        ...parsed,
+        super_admin: ROLE_PERMISSIONS.super_admin,
+      };
+    }
+  } catch {
+    // fallback
+  }
+  return { ...ROLE_PERMISSIONS };
+}
+
+let activeRolePermissions: Record<UserRole, Permission[]> = getStoredPermissions();
+
+/**
+ * Returns active permissions for a specific role.
+ */
+export function getRolePermissions(role: UserRole): Permission[] {
+  if (role === 'super_admin') return ROLE_PERMISSIONS.super_admin;
+  return activeRolePermissions[role] || ROLE_PERMISSIONS[role] || [];
+}
+
+/**
+ * Returns the entire active role-permissions matrix.
+ */
+export function getAllRolePermissions(): Record<UserRole, Permission[]> {
+  return {
+    ...activeRolePermissions,
+    super_admin: ROLE_PERMISSIONS.super_admin,
+  };
+}
+
+/**
+ * Updates the active dynamic permissions matrix across the application.
+ */
+export function setDynamicRolePermissions(matrix: Record<UserRole, Permission[]>): void {
+  activeRolePermissions = {
+    ...ROLE_PERMISSIONS,
+    ...matrix,
+    super_admin: ROLE_PERMISSIONS.super_admin,
+  };
+  try {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(RBAC_STORAGE_KEY, JSON.stringify(activeRolePermissions));
+      window.dispatchEvent(new CustomEvent('philz_rbac_updated', { detail: activeRolePermissions }));
+    }
+  } catch (e) {
+    console.debug('Failed to write RBAC permissions to localStorage:', e);
+  }
+}
+
+/**
+ * Resets dynamic permissions back to system defaults.
+ */
+export function resetRolePermissionsToDefault(): Record<UserRole, Permission[]> {
+  activeRolePermissions = { ...ROLE_PERMISSIONS };
+  try {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(RBAC_STORAGE_KEY);
+      window.dispatchEvent(new CustomEvent('philz_rbac_updated', { detail: activeRolePermissions }));
+    }
+  } catch (e) {
+    console.debug('Failed to clear RBAC permissions from localStorage:', e);
+  }
+  return activeRolePermissions;
+}
+
+/**
+ * Checks whether a user role is a super admin.
+ */
+export function isSuperAdmin(role: UserRole | undefined | null): boolean {
+  return role === 'super_admin';
+}
+
 /**
  * Checks whether a user role possesses a specific permission.
  */
 export function hasPermission(role: UserRole | undefined | null, permission: Permission): boolean {
   if (!role) return false;
-  const permissions = ROLE_PERMISSIONS[role] || [];
+  if (role === 'super_admin') return true;
+  const permissions = getRolePermissions(role);
   return permissions.includes(permission);
 }
 

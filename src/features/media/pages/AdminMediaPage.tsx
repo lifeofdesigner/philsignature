@@ -101,7 +101,7 @@ export const AdminMediaPage: React.FC = () => {
           <input ref={fileInputRef} type="file" accept="image/*,.pdf,.svg" onChange={handleFileSelect} className="hidden" id="media-upload-input" />
           <Button
             size="sm"
-            className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+            className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
             disabled={isUploading}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -124,10 +124,10 @@ export const AdminMediaPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setSelectedBucket('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               selectedBucket === 'all'
-                ? 'bg-amber-50 text-amber-950 border border-amber-300'
-                : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                ? 'bg-slate-900 text-white shadow-xs'
+                : 'bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200 border border-slate-200'
             }`}
           >
             All Buckets ({media.length})
@@ -137,10 +137,10 @@ export const AdminMediaPage: React.FC = () => {
               key={b}
               type="button"
               onClick={() => setSelectedBucket(b)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer ${
                 selectedBucket === b
-                  ? 'bg-amber-50 text-amber-950 border border-amber-300'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-700 hover:text-slate-900 hover:bg-slate-200 border border-slate-200'
               }`}
             >
               {b} ({media.filter((m) => m.bucket === b).length})

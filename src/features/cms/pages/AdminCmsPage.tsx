@@ -138,9 +138,9 @@ export const AdminCmsPage: React.FC = () => {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-amber-800 bg-amber-50 hover:bg-amber-100 rounded-lg border border-amber-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 transition-colors"
           >
-            <Eye className="h-3.5 w-3.5" />
+            <Eye className="h-3.5 w-3.5 text-slate-500" />
             <span>Preview Live Store</span>
           </a>
         </div>
@@ -153,29 +153,29 @@ export const AdminCmsPage: React.FC = () => {
         className="w-full"
       >
         <TabsList className="bg-white border border-slate-200 p-1.5 rounded-xl flex flex-wrap gap-1 h-auto shadow-2xs">
-          <TabsTrigger value="announcement" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="announcement" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <Megaphone className="h-3.5 w-3.5" /> Announcement
           </TabsTrigger>
-          <TabsTrigger value="hero" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="hero" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <Layers className="h-3.5 w-3.5" /> Hero Slider
           </TabsTrigger>
-          <TabsTrigger value="homepage" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="homepage" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <LayoutGrid className="h-3.5 w-3.5" /> Homepage Layout
           </TabsTrigger>
-          <TabsTrigger value="menu" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="menu" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <MenuIcon className="h-3.5 w-3.5" /> Menu Builder 2.0
           </TabsTrigger>
-          <TabsTrigger value="policies" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="policies" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <FileText className="h-3.5 w-3.5" /> Policies & FAQs
           </TabsTrigger>
-          <TabsTrigger value="appearance" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="appearance" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <Palette className="h-3.5 w-3.5" /> Appearance & Theme
           </TabsTrigger>
-          <TabsTrigger value="story" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
+          <TabsTrigger value="story" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
             <Heart className="h-3.5 w-3.5" /> Brand Story
           </TabsTrigger>
-          <TabsTrigger value="ai" className="text-xs data-[state=active]:bg-amber-50 data-[state=active]:text-amber-950 font-semibold gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-amber-700" /> AI Assistant
+          <TabsTrigger value="ai" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
+            <Sparkles className="h-3.5 w-3.5" /> AI Assistant
           </TabsTrigger>
         </TabsList>
 
@@ -220,7 +220,7 @@ export const AdminCmsPage: React.FC = () => {
               <div className="flex justify-end pt-2">
                 <Button
                   size="sm"
-                  className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
                   disabled={isSaving}
                   onClick={() => handleSave('announcement_bar', 'header', 'Announcement Bar', announcementForm as unknown as Record<string, unknown>)}
                 >
@@ -310,7 +310,7 @@ export const AdminCmsPage: React.FC = () => {
               <div className="flex justify-end pt-2">
                 <Button
                   size="sm"
-                  className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
                   disabled={isSaving}
                   onClick={() => handleSave('brand_story', 'about', 'Brand Story', storyForm as unknown as Record<string, unknown>)}
                 >
@@ -326,11 +326,11 @@ export const AdminCmsPage: React.FC = () => {
         <TabsContent value="ai" className="pt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-amber-700" />
+              <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-slate-700" />
                 <span>Generative AI Content Assistant</span>
               </CardTitle>
-              <CardDescription>Draft perfume descriptions, FAQs, SEO metadata, or landing page copy</CardDescription>
+              <CardDescription className="text-slate-600 font-medium">Draft perfume descriptions, FAQs, SEO metadata, or landing page copy</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea
@@ -345,7 +345,7 @@ export const AdminCmsPage: React.FC = () => {
                 size="sm"
                 onClick={handleGenerateAi}
                 disabled={isGeneratingAi}
-                className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
               >
                 {isGeneratingAi ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
                 <span>Generate Marketing Copy</span>

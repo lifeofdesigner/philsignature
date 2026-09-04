@@ -171,7 +171,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
           <h3 className="text-lg font-bold text-slate-900">Active Slide Sequences</h3>
           <p className="text-xs text-slate-500 font-medium">Add, order, and customize billboard slides with imagery or background video.</p>
         </div>
-        <Button size="sm" onClick={handleAddSlide} className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs">
+        <Button size="sm" onClick={handleAddSlide} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
           <Plus className="h-3.5 w-3.5" />
           <span>Add New Slide</span>
         </Button>
@@ -404,7 +404,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button size="default" onClick={onSave} disabled={isSaving} className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-2 shadow-2xs">
+        <Button size="default" onClick={onSave} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-2 shadow-xs cursor-pointer">
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Hero Configuration</span>
         </Button>

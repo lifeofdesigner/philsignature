@@ -59,7 +59,7 @@ export const AdminAnalyticsPage: React.FC = () => {
             <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Gross Sales</span>
-                <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center">
                   <DollarSign className="h-4 w-4" />
                 </div>
               </div>
@@ -117,7 +117,7 @@ export const AdminAnalyticsPage: React.FC = () => {
                   <div key={d.date} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
                     <div className="w-full flex items-end h-36">
                       <div
-                        className="w-full bg-amber-600 hover:bg-amber-700 transition-all rounded-t-md cursor-pointer relative group"
+                        className="w-full bg-slate-900 hover:bg-slate-800 transition-all rounded-t-md cursor-pointer relative group"
                         style={{ height: `${heightPct}%` }}
                       >
                         <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-mono py-1 px-2 rounded pointer-events-none whitespace-nowrap transition-opacity z-10 shadow-md">
@@ -145,11 +145,11 @@ export const AdminAnalyticsPage: React.FC = () => {
                     <div key={p.productName} className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-semibold text-slate-900">{p.productName}</span>
-                        <span className="font-bold text-amber-900 font-mono">{formatShortCurrency(p.revenue)}</span>
+                        <span className="font-bold text-slate-900 font-mono">{formatShortCurrency(p.revenue)}</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-amber-700 rounded-full transition-all duration-500"
+                          className="h-full bg-slate-900 rounded-full transition-all duration-500"
                           style={{ width: `${(p.revenue / maxTopProductRevenue) * 100}%` }}
                         />
                       </div>

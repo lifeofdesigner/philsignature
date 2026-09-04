@@ -70,9 +70,9 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({ isOpen
             autoFocus
           />
           {isSearching ? (
-            <Loader2 className="h-4 w-4 text-amber-600 animate-spin shrink-0" />
+            <Loader2 className="h-4 w-4 text-slate-900 animate-spin shrink-0" />
           ) : (
-            <kbd className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded border border-slate-200">
+            <kbd className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded border border-slate-300 font-semibold">
               <Command className="h-2.5 w-2.5" /> K
             </kbd>
           )}
@@ -81,14 +81,14 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({ isOpen
         {/* Results Stream */}
         <div className="max-h-96 overflow-y-auto p-2">
           {query.trim() && !isSearching && results.length === 0 && (
-            <div className="py-8 text-center text-xs text-slate-500">
+            <div className="py-8 text-center text-xs text-slate-500 font-medium">
               No matching products, orders, pages, or commands found.
             </div>
           )}
 
           {!query.trim() && (
             <div className="p-4 space-y-2">
-              <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                 Quick Commands
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
@@ -103,10 +103,10 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({ isOpen
                   <button
                     key={item.href}
                     onClick={() => handleSelect(item.href)}
-                    className="flex items-center justify-between p-2 text-xs text-slate-700 hover:bg-slate-50 rounded-lg text-left transition-colors group"
+                    className="flex items-center justify-between p-2 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg text-left transition-colors group cursor-pointer"
                   >
                     <span>{item.label}</span>
-                    <ArrowRight className="h-3.5 w-3.5 text-slate-300 group-hover:text-amber-600 transition-colors" />
+                    <ArrowRight className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-900 transition-colors" />
                   </button>
                 ))}
               </div>
@@ -119,20 +119,20 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({ isOpen
                 <button
                   key={res.id}
                   onClick={() => handleSelect(res.href)}
-                  className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-amber-50/60 text-left transition-all group"
+                  className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-slate-100 text-left transition-all group cursor-pointer"
                 >
                   <div className="min-w-0 pr-3">
-                    <div className="text-xs font-semibold text-slate-900 group-hover:text-amber-900 truncate">
+                    <div className="text-xs font-bold text-slate-900 group-hover:text-slate-900 truncate">
                       {res.title}
                     </div>
                     {res.subtitle && (
-                      <div className="text-[11px] text-slate-500 truncate">
+                      <div className="text-[11px] text-slate-600 font-medium truncate">
                         {res.subtitle}
                       </div>
                     )}
                   </div>
                   {res.badge && (
-                    <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 group-hover:bg-amber-100 text-slate-600 group-hover:text-amber-800 shrink-0">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-slate-200 text-slate-800 border border-slate-200 shrink-0 uppercase tracking-wider">
                       {res.badge}
                     </span>
                   )}

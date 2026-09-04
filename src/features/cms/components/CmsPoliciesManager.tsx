@@ -222,7 +222,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('privacy_policy', privacyPolicy)}
-              className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Privacy Policy</span>
@@ -266,7 +266,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('terms', termsPolicy)}
-              className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Terms of Service</span>
@@ -310,7 +310,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('shipping_policy', shippingPolicy)}
-              className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Shipping Policy</span>
@@ -354,7 +354,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('returns_policy', returnsPolicy)}
-              className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Returns Policy</span>
@@ -432,7 +432,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
           </div>
 
           <div className="flex justify-end pt-2">
-            <Button size="sm" onClick={handleSaveFaq} disabled={isSaving} className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs">
+            <Button size="sm" onClick={handleSaveFaq} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save FAQ Database</span>
             </Button>
@@ -492,7 +492,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             className="bg-white border-slate-300 text-slate-900"
           />
           <div className="flex justify-end pt-2">
-            <Button size="sm" onClick={handleSaveContact} disabled={isSaving} className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs">
+            <Button size="sm" onClick={handleSaveContact} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Contact Info</span>
             </Button>

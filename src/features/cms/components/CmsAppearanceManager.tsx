@@ -199,7 +199,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           size="default"
           onClick={onSave}
           disabled={isSaving}
-          className="gap-2 bg-amber-700 hover:bg-amber-800 text-white font-medium shadow-2xs"
+          className="gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Appearance Settings</span>

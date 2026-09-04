@@ -267,7 +267,7 @@ export const AdminCategoriesPage: React.FC = () => {
         </div>
         <Button
           size="sm"
-          className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
@@ -387,25 +387,25 @@ export const AdminCategoriesPage: React.FC = () => {
               </div>
 
               <div className="pt-2">
-                <label className="flex items-center gap-2.5 text-sm text-slate-800 font-medium cursor-pointer select-none">
+                <label className="flex items-center gap-2.5 text-sm text-slate-900 font-semibold cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))}
-                    className="w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500 cursor-pointer"
+                    className="w-4 h-4 text-slate-900 rounded border-slate-400 focus:ring-slate-900 cursor-pointer"
                   />
                   <span>Active &amp; Visible in Storefront Navigation</span>
                 </label>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                <Button type="button" variant="outline" onClick={closeForm}>
+                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isCreating || isUpdating}
-                  className="bg-amber-700 hover:bg-amber-800 text-white gap-2 font-medium"
+                  className="bg-slate-900 hover:bg-slate-800 text-white gap-2 font-semibold shadow-xs cursor-pointer"
                 >
                   {(isCreating || isUpdating) && <Loader2 className="h-4 w-4 animate-spin" />}
                   <span>{editing ? 'Save Changes' : 'Create Category'}</span>

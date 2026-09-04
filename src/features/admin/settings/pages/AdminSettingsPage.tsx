@@ -99,10 +99,10 @@ export const AdminSettingsPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setSearchParams({ tab: tab.id })}
-              className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer whitespace-nowrap ${
+              className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer whitespace-nowrap font-semibold text-xs ${
                 isActive
-                  ? 'border-amber-700 text-amber-950 font-bold bg-amber-50/50'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300'
+                  ? 'border-slate-900 text-slate-900 bg-slate-100/70'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -116,8 +116,8 @@ export const AdminSettingsPage: React.FC = () => {
       {activeTab === 'general' && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base font-semibold text-slate-900">General Store Identity</CardTitle>
-            <CardDescription>Boutique title, contact emails, currency formatting, and physical location</CardDescription>
+            <CardTitle className="text-base font-bold text-slate-900">General Store Identity</CardTitle>
+            <CardDescription className="text-slate-600 font-medium">Boutique title, contact emails, currency formatting, and physical location</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -156,7 +156,7 @@ export const AdminSettingsPage: React.FC = () => {
             />
 
             <div className="flex justify-end pt-2">
-              <Button size="sm" onClick={handleSaveGeneral} disabled={isSaving} className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5">
+              <Button size="sm" onClick={handleSaveGeneral} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
                 {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                 <span>Save General Settings</span>
               </Button>

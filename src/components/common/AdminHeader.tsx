@@ -67,13 +67,13 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {/* Global Command Search Bar Trigger */}
         <button
           onClick={onOpenCommandPalette}
-          className="flex items-center gap-3 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 rounded-lg text-slate-500 text-xs transition-all w-48 sm:w-80 justify-between group"
+          className="flex items-center gap-3 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-300 rounded-lg text-slate-700 text-xs transition-all w-48 sm:w-80 justify-between group font-medium"
         >
           <div className="flex items-center gap-2 truncate">
-            <Search className="h-4 w-4 text-slate-400 group-hover:text-amber-700 transition-colors" />
-            <span className="truncate">Search products, orders, CMS...</span>
+            <Search className="h-4 w-4 text-slate-500 group-hover:text-slate-900 transition-colors" />
+            <span className="truncate text-slate-600 group-hover:text-slate-900">Search products, orders, CMS...</span>
           </div>
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-slate-500 rounded border border-slate-200">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-slate-600 rounded border border-slate-300 shadow-2xs font-semibold">
             <Command className="h-2.5 w-2.5" /> K
           </kbd>
         </button>
@@ -85,22 +85,22 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           href="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-700 hover:text-amber-800 bg-slate-100 hover:bg-amber-50 rounded-lg transition-colors border border-slate-200"
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-300"
         >
           <span>Live Store</span>
-          <ExternalLink className="h-3.5 w-3.5" />
+          <ExternalLink className="h-3.5 w-3.5 text-slate-500" />
         </a>
 
         {/* Notifications Bell Dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors relative"
+            className="p-2 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors relative"
             aria-label="Notifications"
           >
             <Bell className="h-4 w-4" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-amber-600 ring-2 ring-white" />
+              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-slate-900 ring-2 ring-white" />
             )}
           </button>
 
@@ -113,7 +113,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllRead}
-                    className="text-[11px] text-amber-700 hover:underline flex items-center gap-1"
+                    className="text-[11px] text-slate-700 hover:text-slate-900 hover:underline flex items-center gap-1 font-semibold"
                   >
                     <CheckCheck className="h-3 w-3" /> Mark all read
                   </button>
@@ -122,7 +122,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
               <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-slate-400">
+                  <div className="p-6 text-center text-xs text-slate-500 font-medium">
                     No recent notifications.
                   </div>
                 ) : (
@@ -130,16 +130,16 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     <div
                       key={n.id}
                       className={`p-3 text-xs transition-colors ${
-                        !n.is_read ? 'bg-amber-50/50 font-medium' : 'hover:bg-slate-50'
+                        !n.is_read ? 'bg-slate-100/90 font-medium' : 'hover:bg-slate-50'
                       }`}
                     >
-                      <div className="flex items-center justify-between font-semibold text-slate-900">
+                      <div className="flex items-center justify-between font-bold text-slate-900">
                         <span>{n.title}</span>
-                        <span className="text-[10px] text-slate-400 font-normal">
+                        <span className="text-[10px] text-slate-500 font-normal">
                           {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
-                      <p className="text-slate-600 mt-0.5 leading-tight">{n.message}</p>
+                      <p className="text-slate-700 mt-0.5 leading-tight font-normal">{n.message}</p>
                     </div>
                   ))
                 )}
@@ -150,14 +150,14 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
         {/* User Role Tag & Avatar */}
         <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-200">
-          <div className="h-8 w-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
+          <div className="h-8 w-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
             {(profile?.first_name?.[0] || 'A').toUpperCase()}
           </div>
           <div className="hidden md:flex flex-col text-left">
-            <span className="text-xs font-semibold text-slate-900 leading-tight">
+            <span className="text-xs font-bold text-slate-900 leading-tight">
               {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Staff Member'}
             </span>
-            <span className="text-[10px] text-amber-700 font-semibold uppercase tracking-wider">
+            <span className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">
               {roleLabel}
             </span>
           </div>

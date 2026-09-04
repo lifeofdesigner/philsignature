@@ -58,17 +58,17 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-slate-200 rounded-xl p-6 shadow-2xs">
         <div>
           <div className="flex items-center gap-2">
-            <Navigation className="h-5 w-5 text-amber-700" />
-            <h3 className="text-base font-semibold text-slate-900">Header & Navigation Menu Builder</h3>
+            <Navigation className="h-5 w-5 text-slate-700" />
+            <h3 className="text-base font-bold text-slate-900">Header & Navigation Menu Builder</h3>
           </div>
-          <p className="text-xs text-slate-500 font-normal mt-1">
+          <p className="text-xs text-slate-600 font-medium mt-1">
             Build and reorder top header navigation links, promotional badges, and mega-menu links.
           </p>
         </div>
         <Button
           size="sm"
           onClick={handleAddItem}
-          className="gap-1.5 text-xs bg-amber-700 hover:bg-amber-800 text-white font-medium shadow-2xs"
+          className="gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Menu Item</span>
@@ -193,7 +193,7 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
           size="default"
           onClick={onSave}
           disabled={isSaving}
-          className="gap-2 bg-amber-700 hover:bg-amber-800 text-white font-medium shadow-2xs"
+          className="gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Navigation Menu</span>

@@ -40,7 +40,7 @@ export const AdminPaymentsPage: React.FC = () => {
         </div>
         <Button
           size="sm"
-          className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs"
+          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
           disabled={isSaving}
           onClick={handleSave}
         >
@@ -64,13 +64,13 @@ export const AdminPaymentsPage: React.FC = () => {
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${
                       form.paystack_enabled
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                        : 'bg-slate-100 text-slate-500 border-slate-200'
+                        : 'bg-slate-100 text-slate-600 border border-slate-200'
                     }`}
                   >
                     {form.paystack_enabled ? 'Active' : 'Disabled'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-600 font-medium mt-0.5">
                   Accept Visa, Mastercard, Verve, Apple Pay, USSD, and Bank Transfer with instant automated verification.
                 </p>
               </div>
@@ -123,7 +123,7 @@ export const AdminPaymentsPage: React.FC = () => {
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
           <div className="flex items-center justify-between pb-4 border-b border-slate-200">
             <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
+              <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-800">
                 <Wallet className="w-5 h-5" />
               </div>
               <div>
@@ -133,13 +133,13 @@ export const AdminPaymentsPage: React.FC = () => {
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${
                       form.flutterwave_enabled
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                        : 'bg-slate-100 text-slate-500 border-slate-200'
+                        : 'bg-slate-100 text-slate-600 border border-slate-200'
                     }`}
                   >
                     {form.flutterwave_enabled ? 'Active' : 'Disabled'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-600 font-medium mt-0.5">
                   Pan-African &amp; global multi-currency payments with baraza checkout support.
                 </p>
               </div>

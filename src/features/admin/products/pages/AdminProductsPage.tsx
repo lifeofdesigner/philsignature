@@ -497,7 +497,7 @@ export const AdminProductsPage: React.FC = () => {
         </div>
         <Button
           size="sm"
-          className="bg-amber-700 hover:bg-amber-800 text-white font-medium gap-1.5 shadow-2xs cursor-pointer"
+          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
@@ -507,11 +507,11 @@ export const AdminProductsPage: React.FC = () => {
 
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center gap-3 shadow-2xs text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Status:</span>
+          <span className="font-bold text-slate-700">Status:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-amber-600"
+            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Statuses ({products.length})</option>
             <option value="published">Published</option>
@@ -521,11 +521,11 @@ export const AdminProductsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Family:</span>
+          <span className="font-bold text-slate-700">Family:</span>
           <select
             value={familyFilter}
             onChange={(e) => setFamilyFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-amber-600"
+            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Fragrance Families</option>
             {FRAGRANCE_FAMILIES.map((f) => (
@@ -537,11 +537,11 @@ export const AdminProductsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Stock:</span>
+          <span className="font-bold text-slate-700">Stock:</span>
           <select
             value={stockFilter}
             onChange={(e) => setStockFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-amber-600"
+            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Stock Levels</option>
             <option value="in_stock">In Stock (&gt; 0)</option>
@@ -760,18 +760,18 @@ export const AdminProductsPage: React.FC = () => {
                   type="checkbox"
                   checked={form.is_featured}
                   onChange={(e) => setForm((p) => ({ ...p, is_featured: e.target.checked }))}
-                  className="rounded border-slate-300 text-amber-700 focus:ring-amber-600 h-4 w-4 cursor-pointer"
+                  className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
                 />
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700">
+                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isCreating || isUpdating}
-                  className="bg-amber-700 hover:bg-amber-800 text-white font-semibold gap-1.5 shadow-2xs cursor-pointer"
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
                 >
                   {(isCreating || isUpdating) && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>{editingProduct ? 'Save Changes' : 'Create Formulation'}</span>

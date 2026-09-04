@@ -136,10 +136,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               />
             ) : null}
             <div className="flex flex-col min-w-0">
-              <span className="font-semibold text-xs tracking-wider text-slate-900 uppercase truncate">
+              <span className="font-bold text-xs tracking-wider text-slate-900 uppercase truncate">
                 PHILZ SIGNATURE
               </span>
-              <span className="text-[10px] text-amber-700 font-semibold tracking-wider uppercase truncate">
+              <span className="text-[10px] text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded font-bold tracking-wider uppercase truncate w-fit mt-0.5">
                 {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole] : 'ADMIN PORTAL'}
               </span>
             </div>
@@ -154,7 +154,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
             return (
               <div key={group.category} className="space-y-1">
-                <div className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                <div className="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                   {group.category}
                 </div>
                 <div className="space-y-0.5 mt-1">
@@ -168,15 +168,24 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                         onClick={onClose}
                         className={({ isActive }) =>
                           cn(
-                            'flex items-center gap-2.5 px-3 py-2 text-xs font-medium rounded-lg transition-all',
+                            'group flex items-center gap-2.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all',
                             isActive
-                              ? 'bg-amber-50 text-amber-950 font-semibold border-r-2 border-amber-600 shadow-2xs'
-                              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                              ? 'bg-slate-900 text-white shadow-xs'
+                              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
                           )
                         }
                       >
-                        <Icon className="h-4 w-4 shrink-0 text-slate-500" />
-                        <span>{item.title}</span>
+                        {({ isActive }) => (
+                          <>
+                            <Icon
+                              className={cn(
+                                'h-4 w-4 shrink-0 transition-colors',
+                                isActive ? 'text-white' : 'text-slate-500 group-hover:text-slate-800'
+                              )}
+                            />
+                            <span>{item.title}</span>
+                          </>
+                        )}
                       </NavLink>
                     );
                   })}
@@ -187,21 +196,21 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         </nav>
 
         {/* Footer Quick Actions */}
-        <div className="p-3 border-t border-slate-100 bg-slate-50/50 space-y-1">
+        <div className="p-3 border-t border-slate-200 bg-slate-50/80 space-y-1">
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-600 hover:text-amber-800 transition-colors rounded-lg hover:bg-white"
+            className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-700 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-200/60 font-semibold"
           >
-            <span className="font-medium">Live Storefront</span>
-            <ExternalLink className="h-3.5 w-3.5" />
+            <span>Live Storefront</span>
+            <ExternalLink className="h-3.5 w-3.5 text-slate-500" />
           </a>
 
           <button
             type="button"
             onClick={handleLogout}
-            className="w-full flex items-center justify-between px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer font-medium"
+            className="w-full flex items-center justify-between px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer font-semibold"
           >
             <span>Sign Out</span>
             <LogOut className="h-3.5 w-3.5" />

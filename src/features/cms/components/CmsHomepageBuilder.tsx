@@ -85,7 +85,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
         <Button
           size="sm"
           onClick={handleAddSection}
-          className="gap-1.5 text-xs bg-amber-700 hover:bg-amber-800 text-white font-medium shadow-2xs"
+          className="gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add New Section</span>
@@ -303,7 +303,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
           size="default"
           onClick={onSave}
           disabled={isSaving}
-          className="gap-2 bg-amber-700 hover:bg-amber-800 text-white font-medium shadow-2xs"
+          className="gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Homepage Layout</span>

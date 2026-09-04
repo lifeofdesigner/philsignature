@@ -91,8 +91,8 @@ export const AdminReviewsPage: React.FC = () => {
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
-          <div className="text-xs font-semibold text-amber-800 uppercase tracking-wider">Pending Moderation</div>
-          <div className="text-2xl font-bold text-amber-900 mt-1">{stats.pending}</div>
+          <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Pending Moderation</div>
+          <div className="text-2xl font-bold text-slate-900 mt-1">{stats.pending}</div>
           <div className="text-xs text-slate-500 mt-1">Awaiting verification</div>
         </div>
 
