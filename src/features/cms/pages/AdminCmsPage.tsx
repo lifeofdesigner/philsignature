@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Save, Loader2, Sparkles, CheckCircle2, Layers, Eye, Megaphone, FileText, Menu as MenuIcon, Palette, Heart, LayoutGrid, Instagram } from 'lucide-react';
+import { Save, Loader2, Sparkles, CheckCircle2, Layers, Eye, Megaphone, FileText, Menu as MenuIcon, Palette, Heart, LayoutGrid, Instagram, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -28,7 +28,7 @@ import type {
 } from '@/services/CMSService';
 import { auditLogService } from '@/services/AuditLogService';
 import { useAuth } from '@/hooks/useAuth';
-import { hasPermission } from '@/lib/permissions';
+import { hasPermission, isSuperAdmin } from '@/lib/permissions';
 
 export const AdminCmsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,6 +51,7 @@ export const AdminCmsPage: React.FC = () => {
     isSaving,
   } = useAdminCms();
   const canManageInstagram = hasPermission(role, 'cms:instagram');
+  const canEditSiteCredit = isSuperAdmin(role);
 
   const [heroForm, setHeroForm] = useState<CmsHeroContent | null>(null);
   const [announcementForm, setAnnouncementForm] = useState<CmsAnnouncementContent | null>(null);
@@ -184,6 +185,11 @@ export const AdminCmsPage: React.FC = () => {
           {canManageInstagram && (
             <TabsTrigger value="instagram" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
               <Instagram className="h-3.5 w-3.5" /> Instagram Feed
+            </TabsTrigger>
+          )}
+          {canEditSiteCredit && (
+            <TabsTrigger value="site-credit" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
+              <Code2 className="h-3.5 w-3.5" /> Site Credit
             </TabsTrigger>
           )}
           <TabsTrigger value="ai" className="text-xs data-[state=active]:bg-slate-900 data-[state=active]:text-white font-semibold gap-1.5">
@@ -346,7 +352,47 @@ export const AdminCmsPage: React.FC = () => {
           </TabsContent>
         )}
 
-        {/* Tab 9: AI Assistant */}
+        {/* Tab 9: Site Credit (super admin only) */}
+        {canEditSiteCredit && footerForm && (
+          <TabsContent value="site-credit" className="pt-4 space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base font-semibold text-slate-900">Site Credit</CardTitle>
+                <CardDescription>
+                  A small designer/developer credit line shown at the very bottom of the storefront footer. Visible
+                  and editable only to Super Administrators. Leave blank to hide it entirely.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Input
+                  label="Credit Text (emoji supported)"
+                  value={footerForm.credit_text || ''}
+                  onChange={(e) => setFooterForm((p) => (p ? { ...p, credit_text: e.target.value } : p))}
+                  placeholder="✨ Designed & Developed by Your Studio"
+                />
+                <Input
+                  label="Link URL (optional)"
+                  value={footerForm.credit_url || ''}
+                  onChange={(e) => setFooterForm((p) => (p ? { ...p, credit_url: e.target.value } : p))}
+                  placeholder="https://yourstudio.com"
+                />
+                <div className="flex justify-end pt-2">
+                  <Button
+                    size="sm"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                    disabled={isSaving}
+                    onClick={() => handleSave('footer_config', 'footer', 'Global Boutique Footer', footerForm as unknown as Record<string, unknown>)}
+                  >
+                    {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                    <span>Save Site Credit</span>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
+
+        {/* Tab 10: AI Assistant */}
         <TabsContent value="ai" className="pt-4">
           <Card>
             <CardHeader>

@@ -231,6 +231,26 @@ export const Footer: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Site Credit (super admin managed) */}
+      {footer.credit_text && (
+        <div className="border-t border-white/10 py-4 bg-black/80">
+          <div className="container mx-auto px-4 sm:px-8 text-center">
+            {footer.credit_url ? (
+              <a
+                href={footer.credit_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-white/40 hover:text-luxury-gold transition-colors font-light"
+              >
+                {footer.credit_text}
+              </a>
+            ) : (
+              <p className="text-[11px] text-white/40 font-light">{footer.credit_text}</p>
+            )}
+          </div>
+        </div>
+      )}
     </footer>
   );
 };

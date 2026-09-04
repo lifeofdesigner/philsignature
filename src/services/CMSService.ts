@@ -102,6 +102,8 @@ export interface CmsFooterContent {
   shop_links?: CmsFooterLink[];
   services_links?: CmsFooterLink[];
   company_links?: CmsFooterLink[];
+  credit_text?: string;
+  credit_url?: string;
 }
 
 // Menu Builder Models
