@@ -234,7 +234,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
       {/* =========================================================================
           2. MAIN EDITORIAL CONTENT & FLOATING PRODUCT SHOWCASE
          ========================================================================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex-1 flex flex-col md:flex-row items-start md:items-end justify-between gap-8 pb-20 sm:pb-24">
+      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex-1 flex flex-col md:flex-row items-start md:items-end justify-center md:justify-between gap-8 pb-20 sm:pb-24">
         
         {/* Left-Aligned Editorial Headline & Narrative */}
         <AnimatePresence mode="wait" initial={false}>
