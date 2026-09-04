@@ -288,16 +288,18 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               transition={{ duration: 0.7, delay: 0.45 }}
               className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3.5 sm:gap-5"
             >
-              <Link to={currentSlide.primary_cta_url || '/shop'}>
-                <motion.button
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="px-7 sm:px-8 py-3.5 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-[0.2em] hover:bg-luxury-gold hover:text-black transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.6)] cursor-pointer flex items-center gap-2 group"
-                >
-                  <span>{currentSlide.primary_cta_text || 'Shop Perfumes'}</span>
-                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-                </motion.button>
-              </Link>
+              {currentSlide.primary_cta_text && (
+                <Link to={currentSlide.primary_cta_url || '/shop'}>
+                  <motion.button
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="px-7 sm:px-8 py-3.5 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-[0.2em] hover:bg-luxury-gold hover:text-black transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.6)] cursor-pointer flex items-center gap-2 group"
+                  >
+                    <span>{currentSlide.primary_cta_text}</span>
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                  </motion.button>
+                </Link>
+              )}
 
               {currentSlide.secondary_cta_text && (
                 <Link to={currentSlide.secondary_cta_url || '/collections'}>
