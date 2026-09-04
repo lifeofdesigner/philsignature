@@ -5,6 +5,7 @@ import { Navbar } from '@/components/common/Navbar';
 import { Footer } from '@/components/common/Footer';
 import { CustomerSidebar } from '@/components/common/CustomerSidebar';
 import { MobileFooterNav } from '@/components/common/MobileFooterNav';
+import { ScrollToTopButton } from '@/components/common/ScrollToTopButton';
 
 export const CustomerShell: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ export const CustomerShell: React.FC = () => {
       </main>
       <Footer />
       <MobileFooterNav />
+      <ScrollToTopButton />
     </div>
   );
 };
