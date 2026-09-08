@@ -195,8 +195,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
               onChange={(e) => onInStockChange(e.target.checked)}
               className="accent-luxury-gold h-4 w-4 rounded-none"
             />
-            <span>Immediate Allocations Only (In-Stock)</span>
-            <span>In-Stock Only</span>
+            <span>In-Stock Allocations Only</span>
           </label>
         </div>
 
@@ -204,7 +203,6 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
         <div className="lg:hidden pt-4 border-t border-luxury-border">
           <Button variant="luxury" size="default" onClick={onClose} className="w-full text-xs">
             Show Filtered Creations
-            View Results
           </Button>
         </div>
       </aside>

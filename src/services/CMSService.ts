@@ -455,11 +455,8 @@ export class CMSService {
     { id: 'nav-1', label: 'Home', url: '/', is_active: true, order: 1, target: '_self' },
     { id: 'nav-2', label: 'Shop', url: '/shop', is_active: true, order: 2, target: '_self' },
     { id: 'nav-3', label: 'Collections', url: '/collections', is_active: true, order: 3, target: '_self' },
-    { id: 'nav-4', label: 'Unisex', url: '/shop?gender=unisex', is_active: true, order: 4, target: '_self' },
-    { id: 'nav-5', label: 'Men', url: '/shop?gender=men', is_active: true, order: 5, target: '_self' },
-    { id: 'nav-6', label: 'Women', url: '/shop?gender=women', is_active: true, order: 6, target: '_self' },
-    { id: 'nav-7', label: 'About', url: '/about', is_active: true, order: 7, target: '_self' },
-    { id: 'nav-8', label: 'Contact', url: '/contact', is_active: true, order: 8, target: '_self' },
+    { id: 'nav-4', label: 'About', url: '/about', is_active: true, order: 4, target: '_self' },
+    { id: 'nav-5', label: 'Contact', url: '/contact', is_active: true, order: 5, target: '_self' },
   ];
 
   public static DEFAULT_APPEARANCE: CmsAppearanceConfig = {

@@ -1,4 +1,4 @@
-import { useState, useMemo, useDeferredValue } from 'react';
+import { useState, useEffect, useMemo, useDeferredValue } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { productService, type CatalogFilterOptions } from '@/services/ProductService';
@@ -26,6 +26,18 @@ export const useShopCatalog = () => {
   const [sortBy, setSortBy] = useState<CatalogFilterOptions['sortBy']>(initialSort);
   const [page, setPage] = useState<number>(1);
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+
+  // Sync state when URL params change (e.g. from Mega Menu or direct links)
+  useEffect(() => {
+    const fam = (searchParams.get('family') as FragranceFamily) || 'all';
+    const col = searchParams.get('collection') || 'all';
+    const gen = searchParams.get('gender') || 'all';
+    const srt = (searchParams.get('sort') as CatalogFilterOptions['sortBy']) || 'featured';
+    setFamily(fam);
+    setCollectionId(col);
+    setGender(gen);
+    setSortBy(srt);
+  }, [searchParams]);
 
   const deferredSearch = useDeferredValue(searchQuery);
   const PAGE_SIZE = 12;

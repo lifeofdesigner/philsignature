@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
-import { useStoreMenu } from '@/features/cms/hooks/useStoreMenu';
 import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { useTheme } from '@/providers/ThemeProvider';
@@ -22,14 +21,14 @@ import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [shopMenuOpen, setShopMenuOpen] = useState(false);
+  const [mobileShopExpanded, setMobileShopExpanded] = useState(true);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
-  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
 
   const { count: wishlistCount } = useWishlist();
   const { totalCount: cartCount } = useCart();
-  const { items: dynamicNavItems } = useStoreMenu();
   const { user, profile, logout, canAccessAdmin } = useAuth();
   const { appearance } = useStoreAppearance();
   const { settings } = useStoreSettings();
@@ -88,8 +87,8 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     setMobileMenuOpen(false);
-    setMoreDropdownOpen(false);
-  }, [location.pathname]);
+    setShopMenuOpen(false);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -102,21 +101,14 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  const rawNavLinks = dynamicNavItems.length > 0
-    ? dynamicNavItems.map((item) => ({ name: item.label, href: item.url }))
-    : [
-        { name: 'Home', href: '/' },
-        { name: 'Shop', href: '/shop' },
-        { name: 'Collections', href: '/collections' },
-        { name: 'Unisex', href: '/shop?gender=unisex' },
-        { name: 'Men', href: '/shop?gender=men' },
-        { name: 'Women', href: '/shop?gender=women' },
-        { name: 'About', href: '/about' },
-        { name: 'Contact', href: '/contact' },
-      ];
-
-  const primaryNavLinks = rawNavLinks.length <= 8 ? rawNavLinks : rawNavLinks.slice(0, 6);
-  const secondaryNavLinks = rawNavLinks.length <= 8 ? [] : rawNavLinks.slice(6);
+  // Luxury 5-item primary navigation structure
+  const navLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'Shop', href: '/shop', hasMegaMenu: true },
+    { name: 'Collections', href: '/collections' },
+    { name: 'About', href: '/about' },
+    { name: 'Contact', href: '/contact' },
+  ];
 
   return (
     <motion.nav
@@ -130,7 +122,7 @@ export const Navbar: React.FC = () => {
           : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-5 lg:gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 sm:gap-6 lg:gap-8">
         
         {/* COLUMN 1 (LEFT): BRAND LOGO & ELEGANT WORDMARK */}
         <div className="flex items-center gap-3 shrink-0">
@@ -178,20 +170,182 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* COLUMN 2 (CENTER): PRIMARY NAVIGATION */}
+        {/* COLUMN 2 (CENTER): REFINED 5-ITEM DESKTOP NAVIGATION WITH SHOP MEGA MENU */}
         <nav
-          className="hidden lg:flex items-center justify-center gap-3.5 xl:gap-5 2xl:gap-7 min-w-0"
-          onMouseLeave={() => setHoveredNav(null)}
+          className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 2xl:gap-10 min-w-0"
+          onMouseLeave={() => {
+            setHoveredNav(null);
+            setShopMenuOpen(false);
+          }}
         >
-          {primaryNavLinks.map((link) => {
-            const isActive = location.pathname === link.href || (link.href !== '/' && location.pathname + location.search === link.href);
+          {navLinks.map((link) => {
+            const isActive = link.href === '/'
+              ? location.pathname === '/'
+              : location.pathname.startsWith(link.href);
+
+            if (link.hasMegaMenu) {
+              return (
+                <div
+                  key={link.name}
+                  className="relative"
+                  onMouseEnter={() => {
+                    setHoveredNav(link.name);
+                    setShopMenuOpen(true);
+                  }}
+                >
+                  <Link
+                    to={link.href}
+                    className={cn(
+                      'relative py-1 inline-flex items-center gap-1 text-[11.5px] xl:text-[12px] uppercase tracking-[0.22em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                      isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/80 hover:text-white'
+                    )}
+                  >
+                    {hoveredNav === link.name && (
+                      <motion.span
+                        layoutId="navbar-hover-capsule"
+                        className="absolute -inset-x-2.5 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-md -z-10"
+                        transition={{ type: 'spring', stiffness: 450, damping: 30 }}
+                      />
+                    )}
+                    {isActive && (
+                      <motion.span
+                        layoutId="navbar-active-dot"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 bg-luxury-gold rounded-full shadow-[0_0_8px_rgba(197,168,128,0.95)]"
+                        transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+                      />
+                    )}
+                    <span>{link.name}</span>
+                    <ChevronDown className={cn('h-3 w-3 transition-transform duration-200 opacity-70', shopMenuOpen && 'rotate-180 text-luxury-gold')} />
+                  </Link>
+
+                  {/* LUXURY SHOP MEGA MENU DROPDOWN */}
+                  <AnimatePresence>
+                    {shopMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[640px] bg-black/95 backdrop-blur-2xl border border-white/15 rounded-xl shadow-2xl p-6 z-50 pointer-events-auto"
+                      >
+                        <div className="grid grid-cols-3 gap-6 text-left">
+                          
+                          {/* COLUMN A: BY AUDIENCE & PROFILE */}
+                          <div className="space-y-3">
+                            <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block border-b border-white/10 pb-2">
+                              Explore By Profile
+                            </span>
+                            <div className="space-y-1.5">
+                              <Link
+                                to="/shop"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/90 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                All Fragrances
+                              </Link>
+                              <Link
+                                to="/shop?gender=unisex"
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                <span>Unisex Perfumes</span>
+                                <span className="text-[9px] uppercase tracking-wider text-luxury-gold/80 bg-luxury-gold/10 px-1.5 py-0.5 rounded-xs">Signature</span>
+                              </Link>
+                              <Link
+                                to="/shop?gender=men"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Men&apos;s Fragrances
+                              </Link>
+                              <Link
+                                to="/shop?gender=women"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Women&apos;s Fragrances
+                              </Link>
+                            </div>
+                          </div>
+
+                          {/* COLUMN B: BY OLFACTORY FAMILY */}
+                          <div className="space-y-3">
+                            <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block border-b border-white/10 pb-2">
+                              Scent Families
+                            </span>
+                            <div className="space-y-1.5">
+                              <Link
+                                to="/shop?family=Woody"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Woody & Oud
+                              </Link>
+                              <Link
+                                to="/shop?family=Floral"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Floral Collection
+                              </Link>
+                              <Link
+                                to="/shop?family=Vanilla"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Vanilla & Gourmand
+                              </Link>
+                              <Link
+                                to="/shop?family=Fresh"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Fresh & Citrus
+                              </Link>
+                              <Link
+                                to="/shop?family=Spicy"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Bold & Spicy
+                              </Link>
+                            </div>
+                          </div>
+
+                          {/* COLUMN C: FEATURED SPOTLIGHT */}
+                          <div className="space-y-3 bg-white/5 p-3.5 rounded-lg border border-white/10 flex flex-col justify-between">
+                            <div>
+                              <span className="text-[9px] uppercase tracking-luxury-wide text-luxury-gold font-medium block">
+                                ✦ Spotlight Creation
+                              </span>
+                              <h4 className="font-serif text-sm text-white font-medium mt-1">
+                                Oud Maracuja
+                              </h4>
+                              <p className="text-[11px] text-white/60 font-light mt-0.5 line-clamp-2">
+                                Exotic passionfruit infused with smoked agarwood.
+                              </p>
+                              <span className="text-xs text-luxury-gold font-mono block mt-2">
+                                From ₦15,000
+                              </span>
+                            </div>
+                            <Link
+                              to="/product/oud-maracuja"
+                              className="inline-flex items-center gap-1 text-[11px] uppercase tracking-wider text-white hover:text-luxury-gold font-medium pt-2 border-t border-white/10"
+                            >
+                              <span>Explore Scent</span>
+                              <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          </div>
+
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.name}
                 to={link.href}
-                onMouseEnter={() => setHoveredNav(link.name)}
+                onMouseEnter={() => {
+                  setHoveredNav(link.name);
+                  setShopMenuOpen(false);
+                }}
                 className={cn(
-                  'relative py-1 text-[11px] xl:text-[11.5px] 2xl:text-[12px] uppercase tracking-[0.18em] xl:tracking-[0.22em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                  'relative py-1 text-[11.5px] xl:text-[12px] uppercase tracking-[0.22em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
                   isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/80 hover:text-white'
                 )}
               >
@@ -213,54 +367,17 @@ export const Navbar: React.FC = () => {
               </Link>
             );
           })}
-
-          {secondaryNavLinks.length > 0 && (
-            <div
-              className="relative shrink-0"
-              onMouseEnter={() => setMoreDropdownOpen(true)}
-              onMouseLeave={() => setMoreDropdownOpen(false)}
-            >
-              <button
-                type="button"
-                onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-                className="inline-flex items-center gap-1 py-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.18em] font-medium text-white/80 hover:text-luxury-gold transition-colors cursor-pointer select-none drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
-              >
-                <span>More</span>
-                <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-300', moreDropdownOpen && 'rotate-180 text-luxury-gold')} />
-              </button>
-
-              <AnimatePresence>
-                {moreDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 6, scale: 0.96 }}
-                    transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-52 bg-black/95 backdrop-blur-2xl border border-white/15 rounded-xl shadow-2xl p-2 z-50 space-y-1"
-                  >
-                    {secondaryNavLinks.map((link) => (
-                      <Link
-                        key={link.name}
-                        to={link.href}
-                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs uppercase tracking-wider text-white/85 hover:text-luxury-gold hover:bg-white/10 transition-all font-light"
-                      >
-                        <span>{link.name}</span>
-                        <ArrowRight className="h-3 w-3 opacity-50" />
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
         </nav>
 
-        {/* COLUMN 3 (RIGHT): UTILITY ACTION CLUSTER */}
+        {/* COLUMN 3 (RIGHT): HEADER ACTIONS ORDER: Search -> Account -> Wishlist -> Cart */}
         <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-3.5 shrink-0">
+          
+          {/* Subtle Theme Toggle */}
           <div className="shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]">
             <ThemeToggle />
           </div>
 
+          {/* ACTION 1: SEARCH */}
           <Link
             to="/shop"
             className="h-8.5 w-8.5 rounded-full flex items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
@@ -270,20 +387,7 @@ export const Navbar: React.FC = () => {
             <Search className="h-4 w-4" />
           </Link>
 
-          <Link
-            to="/wishlist"
-            className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
-            title="My Wishlist"
-            aria-label="View saved perfumes"
-          >
-            <Heart className="h-4 w-4" />
-            {wishlistCount > 0 && (
-              <span className="absolute top-0.5 right-0.5 h-3.5 w-3.5 rounded-full bg-luxury-gold text-black text-[8px] font-bold flex items-center justify-center shadow-xs">
-                {wishlistCount}
-              </span>
-            )}
-          </Link>
-
+          {/* ACTION 2: ACCOUNT */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -344,13 +448,29 @@ export const Navbar: React.FC = () => {
             <Link
               to="/login"
               className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
-              title="Sign In"
+              title="Account / Sign In"
               aria-label="Sign in to your account"
             >
               <User className="h-4 w-4" />
             </Link>
           )}
 
+          {/* ACTION 3: WISHLIST */}
+          <Link
+            to="/wishlist"
+            className="hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
+            title="My Wishlist"
+            aria-label="View saved perfumes"
+          >
+            <Heart className="h-4 w-4" />
+            {wishlistCount > 0 && (
+              <span className="absolute top-0.5 right-0.5 h-3.5 w-3.5 rounded-full bg-luxury-gold text-black text-[8px] font-bold flex items-center justify-center shadow-xs">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
+
+          {/* ACTION 4: CART */}
           <Link
             to="/cart"
             className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold transition-all text-xs font-medium text-white flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group"
@@ -362,6 +482,7 @@ export const Navbar: React.FC = () => {
             <span className="font-mono text-xs font-semibold">({cartCount})</span>
           </Link>
 
+          {/* Mobile Menu Trigger */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -384,26 +505,121 @@ export const Navbar: React.FC = () => {
             className="lg:hidden mt-2 mx-4 bg-black/98 backdrop-blur-2xl border border-luxury-gold/30 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto"
           >
             <div className="p-6 space-y-6">
+              
+              {/* Primary Nav Links */}
               <div className="space-y-3">
-                {rawNavLinks.map((link) => {
-                  const isActive = location.pathname === link.href;
-                  return (
+                <Link
+                  to="/"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname === '/' ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>Home</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                {/* Shop with quick sub-items */}
+                <div className="border-b border-white/10 pb-2">
+                  <div className="flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium text-white/80">
                     <Link
-                      key={link.name}
-                      to={link.href}
-                      className={cn(
-                        'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
-                        isActive ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
-                      )}
+                      to="/shop"
+                      className={location.pathname === '/shop' && !location.search ? 'text-luxury-gold font-semibold' : 'hover:text-white'}
                     >
-                      <span>{link.name}</span>
-                      <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                      Shop
                     </Link>
-                  );
-                })}
+                    <button
+                      type="button"
+                      onClick={() => setMobileShopExpanded(!mobileShopExpanded)}
+                      className="p-1 text-luxury-gold"
+                    >
+                      <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', mobileShopExpanded && 'rotate-180')} />
+                    </button>
+                  </div>
+                  
+                  {mobileShopExpanded && (
+                    <div className="pl-3 space-y-1.5 pt-1 pb-2">
+                      <Link
+                        to="/shop"
+                        className="block py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
+                      >
+                        All Fragrances
+                      </Link>
+                      <Link
+                        to="/shop?gender=unisex"
+                        className="flex items-center justify-between py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
+                      >
+                        <span>Unisex</span>
+                        <span className="text-[8px] uppercase tracking-wider text-luxury-gold font-mono">Curated</span>
+                      </Link>
+                      <Link
+                        to="/shop?gender=men"
+                        className="block py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
+                      >
+                        Men
+                      </Link>
+                      <Link
+                        to="/shop?gender=women"
+                        className="block py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
+                      >
+                        Women
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
+                <Link
+                  to="/collections"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname.startsWith('/collections') ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>Collections</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/about"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname === '/about' ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>About</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/contact"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname === '/contact' ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>Contact</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
               </div>
 
+              {/* Mobile Actions Grid */}
               <div className="pt-2 grid grid-cols-2 gap-3 text-xs">
+                <Link
+                  to="/shop"
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/5 border border-white/15 text-white hover:border-luxury-gold"
+                >
+                  <Search className="h-3.5 w-3.5 text-luxury-gold" />
+                  <span>Search</span>
+                </Link>
+
+                <Link
+                  to={user ? '/account' : '/login'}
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/5 border border-white/15 text-white hover:border-luxury-gold"
+                >
+                  <User className="h-3.5 w-3.5 text-luxury-gold" />
+                  <span>{user ? 'My Account' : 'Sign In'}</span>
+                </Link>
+
                 <Link
                   to="/wishlist"
                   className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/5 border border-white/15 text-white hover:border-luxury-gold"
@@ -413,11 +629,11 @@ export const Navbar: React.FC = () => {
                 </Link>
 
                 <Link
-                  to={user ? '/account' : '/login'}
-                  className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-white/5 border border-white/15 text-white hover:border-luxury-gold"
+                  to="/cart"
+                  className="flex items-center justify-center gap-2 py-2.5 rounded-full bg-luxury-gold text-black font-semibold shadow-md"
                 >
-                  <User className="h-3.5 w-3.5 text-luxury-gold" />
-                  <span>{user ? 'My Account' : 'Sign In'}</span>
+                  <ShoppingBag className="h-3.5 w-3.5" />
+                  <span>Cart ({cartCount})</span>
                 </Link>
               </div>
             </div>

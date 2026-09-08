@@ -65,8 +65,34 @@ export const ShopPage: React.FC = () => {
             Handcrafted with rare botanical extracts and high-concentration perfume oils for lasting elegance and distinctive sillage.
           </p>
 
+          {/* Quick Audience / Gender Selector */}
+          <div className="flex items-center justify-center gap-1.5 pt-1">
+            {[
+              { label: 'All Fragrances', value: 'all' },
+              { label: 'Unisex', value: 'unisex' },
+              { label: 'Men', value: 'men' },
+              { label: 'Women', value: 'women' },
+            ].map((g) => {
+              const isSelected = gender === g.value;
+              return (
+                <button
+                  key={g.label}
+                  type="button"
+                  onClick={() => setGender(g.value)}
+                  className={`px-3 py-1 rounded-xs text-[11px] uppercase tracking-luxury font-medium transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? 'bg-luxury-gold text-black font-semibold shadow-xs'
+                      : 'text-luxury-sand/80 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {g.label}
+                </button>
+              );
+            })}
+          </div>
+
           {/* Quick Fragrance Family Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
             {fragranceFamilies.map((f) => {
               const isSelected = family === f.value;
               return (
@@ -74,10 +100,10 @@ export const ShopPage: React.FC = () => {
                   key={f.label}
                   type="button"
                   onClick={() => setFamily(f.value as FragranceFamily)}
-                  className={`px-3.5 py-1.5 rounded-full text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer ${
+                  className={`px-3 py-1 rounded-full text-[11px] tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                     isSelected
-                      ? 'bg-luxury-gold text-black font-semibold shadow-md'
-                      : 'bg-white/5 border border-white/10 text-white/80 hover:text-white hover:border-luxury-gold/50'
+                      ? 'bg-white/20 text-white font-medium border border-luxury-gold shadow-xs'
+                      : 'bg-white/5 border border-white/10 text-white/70 hover:text-white hover:border-white/30'
                   }`}
                 >
                   {f.label}
