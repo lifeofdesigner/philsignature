@@ -22,7 +22,6 @@ import { ThemeToggle } from './ThemeToggle';
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopMenuOpen, setShopMenuOpen] = useState(false);
-  const [mobileShopExpanded, setMobileShopExpanded] = useState(true);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
@@ -519,54 +518,16 @@ export const Navbar: React.FC = () => {
                   <ArrowRight className="h-3.5 w-3.5 opacity-60" />
                 </Link>
 
-                {/* Shop with quick sub-items */}
-                <div className="border-b border-white/10 pb-2">
-                  <div className="flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium text-white/80">
-                    <Link
-                      to="/shop"
-                      className={location.pathname === '/shop' && !location.search ? 'text-luxury-gold font-semibold' : 'hover:text-white'}
-                    >
-                      Shop
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => setMobileShopExpanded(!mobileShopExpanded)}
-                      className="p-1 text-luxury-gold"
-                    >
-                      <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', mobileShopExpanded && 'rotate-180')} />
-                    </button>
-                  </div>
-                  
-                  {mobileShopExpanded && (
-                    <div className="pl-3 space-y-1.5 pt-1 pb-2">
-                      <Link
-                        to="/shop"
-                        className="block py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
-                      >
-                        All Fragrances
-                      </Link>
-                      <Link
-                        to="/shop?gender=unisex"
-                        className="flex items-center justify-between py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
-                      >
-                        <span>Unisex</span>
-                        <span className="text-[8px] uppercase tracking-wider text-luxury-gold font-mono">Curated</span>
-                      </Link>
-                      <Link
-                        to="/shop?gender=men"
-                        className="block py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
-                      >
-                        Men
-                      </Link>
-                      <Link
-                        to="/shop?gender=women"
-                        className="block py-1 text-xs text-white/70 hover:text-luxury-gold tracking-wider uppercase font-light"
-                      >
-                        Women
-                      </Link>
-                    </div>
+                <Link
+                  to="/shop"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname.startsWith('/shop') ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
                   )}
-                </div>
+                >
+                  <span>Shop</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
 
                 <Link
                   to="/collections"
