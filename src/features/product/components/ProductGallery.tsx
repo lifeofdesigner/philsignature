@@ -10,7 +10,7 @@ export interface ProductGalleryProps {
 
 export const ProductGallery: React.FC<ProductGalleryProps> = ({
   images = [],
-  fallbackUrl = 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=85',
+  fallbackUrl = '/products/philz-signature-perfume-body-oil.jpg',
   productName,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);

@@ -8,6 +8,7 @@ export interface HomeDataResult {
   hero: CmsHeroContent;
   collections: Collection[];
   featuredProducts: Product[];
+  allProducts: Product[];
   story: CmsStoryContent;
 }
 
@@ -15,10 +16,11 @@ export const useHomeData = () => {
   const query = useQuery<HomeDataResult>({
     queryKey: ['home-page-data'],
     queryFn: async () => {
-      const [hero, collections, featuredProducts, story] = await Promise.all([
+      const [hero, collections, featuredProducts, allProducts, story] = await Promise.all([
         cmsService.getHeroSection(),
         collectionService.getFeaturedCollections(),
-        productService.getFeaturedProducts(4),
+        productService.getFeaturedProducts(8),
+        productService.getCatalog(),
         cmsService.getStorySection(),
       ]);
 
@@ -26,6 +28,7 @@ export const useHomeData = () => {
         hero,
         collections,
         featuredProducts,
+        allProducts,
         story,
       };
     },

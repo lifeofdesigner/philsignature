@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
   const primaryImage =
     product.images?.find((img) => img.is_primary)?.image_url ||
     product.images?.[0]?.image_url ||
-    '/media/products/perfume-oils/perfume-oil-1.jpg';
+    '/products/philz-signature-perfume-body-oil.jpg';
 
   const formattedPrice = new Intl.NumberFormat('en-NG', {
     style: 'currency',

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, ArrowRight, LogOut, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -105,15 +105,18 @@ export const Navbar: React.FC = () => {
   const rawNavLinks = dynamicNavItems.length > 0
     ? dynamicNavItems.map((item) => ({ name: item.label, href: item.url }))
     : [
-        { name: 'Perfume Oils', href: '/shop?category=perfume-body-oils' },
-        { name: 'All Perfumes', href: '/shop' },
-        { name: 'Home Fragrance', href: '/shop?category=home-fragrance' },
-        { name: 'Our Story', href: '/about' },
-        { name: 'Private Label & Gifting', href: '/contact' },
+        { name: 'Home', href: '/' },
+        { name: 'Shop', href: '/shop' },
+        { name: 'Collections', href: '/collections' },
+        { name: 'Unisex', href: '/shop?gender=unisex' },
+        { name: 'Men', href: '/shop?gender=men' },
+        { name: 'Women', href: '/shop?gender=women' },
+        { name: 'About', href: '/about' },
+        { name: 'Contact', href: '/contact' },
       ];
 
-  const primaryNavLinks = rawNavLinks.slice(0, 4);
-  const secondaryNavLinks = rawNavLinks.slice(4);
+  const primaryNavLinks = rawNavLinks.length <= 8 ? rawNavLinks : rawNavLinks.slice(0, 6);
+  const secondaryNavLinks = rawNavLinks.length <= 8 ? [] : rawNavLinks.slice(6);
 
   return (
     <motion.nav
@@ -127,7 +130,7 @@ export const Navbar: React.FC = () => {
           : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 sm:gap-6 lg:gap-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-[auto_1fr_auto] items-center gap-3 sm:gap-5 lg:gap-6">
         
         {/* COLUMN 1 (LEFT): BRAND LOGO & ELEGANT WORDMARK */}
         <div className="flex items-center gap-3 shrink-0">
@@ -177,25 +180,25 @@ export const Navbar: React.FC = () => {
 
         {/* COLUMN 2 (CENTER): PRIMARY NAVIGATION */}
         <nav
-          className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 2xl:gap-10 min-w-0"
+          className="hidden lg:flex items-center justify-center gap-3.5 xl:gap-5 2xl:gap-7 min-w-0"
           onMouseLeave={() => setHoveredNav(null)}
         >
           {primaryNavLinks.map((link) => {
-            const isActive = location.pathname === link.href;
+            const isActive = location.pathname === link.href || (link.href !== '/' && location.pathname + location.search === link.href);
             return (
               <Link
                 key={link.name}
                 to={link.href}
                 onMouseEnter={() => setHoveredNav(link.name)}
                 className={cn(
-                  'relative py-1 text-[11px] xl:text-[12px] uppercase tracking-[0.2em] xl:tracking-[0.24em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                  'relative py-1 text-[11px] xl:text-[11.5px] 2xl:text-[12px] uppercase tracking-[0.18em] xl:tracking-[0.22em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
                   isActive ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]' : 'text-white/80 hover:text-white'
                 )}
               >
                 {hoveredNav === link.name && (
                   <motion.span
                     layoutId="navbar-hover-capsule"
-                    className="absolute -inset-x-3 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-md -z-10"
+                    className="absolute -inset-x-2.5 -inset-y-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-md -z-10"
                     transition={{ type: 'spring', stiffness: 450, damping: 30 }}
                   />
                 )}
@@ -220,7 +223,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-                className="inline-flex items-center gap-1.5 py-1 text-[11px] xl:text-[12px] uppercase tracking-[0.2em] xl:tracking-[0.24em] font-medium text-white/80 hover:text-luxury-gold transition-colors cursor-pointer select-none drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
+                className="inline-flex items-center gap-1 py-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.18em] font-medium text-white/80 hover:text-luxury-gold transition-colors cursor-pointer select-none drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
               >
                 <span>More</span>
                 <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-300', moreDropdownOpen && 'rotate-180 text-luxury-gold')} />

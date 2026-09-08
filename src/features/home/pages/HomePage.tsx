@@ -68,7 +68,7 @@ export const HomePage: React.FC = () => {
         return (
           <React.Fragment key={section.id}>
             <div className={cn(spacingClasses, bgClasses)}>
-              <FeaturedProductsGrid products={data.featuredProducts} />
+              <FeaturedProductsGrid products={data.featuredProducts} allProducts={data.allProducts} />
             </div>
             <ScentsFormulaSection />
           </React.Fragment>

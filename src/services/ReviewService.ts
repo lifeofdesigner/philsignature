@@ -5,6 +5,10 @@ import type { Review } from '@/types/database';
 export class ReviewService {
   constructor(private repo: ReviewRepository = reviewRepository) {}
 
+  async getApprovedReviews(limit = 6): Promise<Review[]> {
+    return this.repo.findApproved(limit);
+  }
+
   async getAllReviewsAdmin(): Promise<Review[]> {
     return this.repo.findAllAdmin();
   }

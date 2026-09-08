@@ -2,6 +2,23 @@ import { BaseRepository } from './BaseRepository';
 import type { Review } from '@/types/database';
 
 export class ReviewRepository extends BaseRepository {
+  async findApproved(limit = 6): Promise<Review[]> {
+    try {
+      const { data, error } = await this.client
+        .from('reviews')
+        .select('*, customer:profiles(first_name, last_name), product:products(name, slug)')
+        .eq('status', 'approved')
+        .order('rating', { ascending: false })
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) this.handleError(error, 'Failed to fetch approved reviews');
+      return (data as Review[]) || [];
+    } catch (err) {
+      this.handleError(err, 'Error querying approved reviews');
+    }
+  }
+
   async findAllAdmin(): Promise<Review[]> {
     try {
       const { data, error } = await this.client

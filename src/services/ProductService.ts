@@ -4,9 +4,10 @@ import { ValidationError } from '@/errors/ValidationError';
 import type { Product, Review, FragranceFamily } from '@/types/database';
 
 export interface CatalogFilterOptions {
-  family?: FragranceFamily | 'all';
+  family?: FragranceFamily | string | 'all';
   categoryId?: string | 'all';
   collectionId?: string | 'all';
+  gender?: string | 'all';
   minPrice?: number;
   maxPrice?: number;
   inStockOnly?: boolean;
@@ -70,7 +71,16 @@ export class ProductService {
       result = result.filter((p) => p.collection_id === options.collectionId);
     }
 
-    // 4. Price Boundaries
+    // 4. Gender / Target Audience Filter
+    if (options.gender && options.gender !== 'all') {
+      const g = options.gender.toLowerCase().trim();
+      result = result.filter((p) => {
+        if (!p.best_for) return false;
+        return p.best_for.toLowerCase().includes(g);
+      });
+    }
+
+    // 5. Price Boundaries
     if (options.minPrice !== undefined && options.minPrice > 0) {
       result = result.filter((p) => {
         const effectivePrice = p.sale_price !== null && p.sale_price !== undefined ? p.sale_price : p.price;
@@ -84,12 +94,12 @@ export class ProductService {
       });
     }
 
-    // 5. In-Stock Only
+    // 6. In-Stock Only
     if (options.inStockOnly) {
       result = result.filter((p) => p.stock_quantity > 0);
     }
 
-    // 6. Search Query
+    // 7. Search Query (Name, Family, Notes, Profile, Target, Descriptions)
     if (options.searchQuery && options.searchQuery.trim() !== '') {
       const q = options.searchQuery.toLowerCase().trim();
       result = result.filter((p) => {
@@ -99,12 +109,14 @@ export class ProductService {
         const scentProfileMatch = p.scent_profile ? p.scent_profile.toLowerCase().includes(q) : false;
         const bestForMatch = p.best_for ? p.best_for.toLowerCase().includes(q) : false;
         const familyMatch = p.fragrance_family ? p.fragrance_family.toLowerCase().includes(q) : false;
+        const descMatch = p.description ? p.description.toLowerCase().includes(q) : false;
+        const shortDescMatch = p.short_description ? p.short_description.toLowerCase().includes(q) : false;
         const notesMatch = [
           ...(p.top_notes || []),
           ...(p.middle_notes || []),
           ...(p.base_notes || []),
         ].some((n) => n.toLowerCase().includes(q));
-        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || notesMatch;
+        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || descMatch || shortDescMatch || notesMatch;
       });
     }
 

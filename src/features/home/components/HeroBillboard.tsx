@@ -19,60 +19,98 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
     return [
       {
         id: 'fallback-1',
-        badge: hero.badge || 'Haute Parfumerie',
-        headline: hero.headline || 'Luxury Perfumes That Last',
-        subtitle: hero.subtitle || 'Handcrafted long-lasting perfumes made with the finest fragrance oils. Rich, elegant scents designed to make a statement.',
-        primary_cta_text: hero.primary_cta_text || 'Shop Perfumes',
-        primary_cta_url: hero.primary_cta_url || '/shop',
-        secondary_cta_text: hero.secondary_cta_text || 'View Collections',
-        secondary_cta_url: hero.secondary_cta_url || '/collections',
+        badge: 'HAUTE PARFUMERIE • EXTRAIT OIL',
+        headline: 'Your Scent. Your Signature.',
+        subtitle: 'Hand-blended, long-lasting luxury perfume body oils crafted with precious botanical essences and rare resins to make you unforgettable.',
+        primary_cta_text: 'Shop Oud Maracuja',
+        primary_cta_url: '/product/oud-maracuja',
+        secondary_cta_text: 'All Fragrances',
+        secondary_cta_url: '/shop',
         desktop_image: hero.background_image || '/brand/hero-oud-luxury.jpg',
         mobile_image: hero.background_image || '/brand/hero-oud-luxury.jpg',
-        featured_product_title: 'Perfume Body Oil',
-        featured_product_subtitle: 'Private Reserve • 30ml',
-        featured_product_price: '₦45,000',
-        featured_product_image: '/media/products/perfume-oils/perfume-oil-1.jpg',
-        featured_product_url: '/shop?category=perfume-body-oils',
+        featured_product_title: 'Oud Maracuja',
+        featured_product_subtitle: 'Fruity • Woody • Oud • 30ml',
+        featured_product_price: '₦30,000',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_url: '/product/oud-maracuja',
         is_active: true,
         order: 1,
       },
       {
         id: 'fallback-2',
-        badge: 'Private Reserve',
-        headline: 'Rare Cambodian Oud & Amber',
-        subtitle: 'Intense, smoky woods aged for decades and infused with royal Taif rose petals. An aura of pure prestige.',
-        primary_cta_text: 'Discover Oud Line',
-        primary_cta_url: '/shop',
-        secondary_cta_text: 'Our Story',
-        secondary_cta_url: '/about',
+        badge: 'SIGNATURE CITRUS & WOODS',
+        headline: 'Imagination & Pure Distinction',
+        subtitle: 'An invigorating harmony of vibrant citrus, aromatic botanicals, and warm amber woods. Clean, magnetic, and effortlessly sophisticated.',
+        primary_cta_text: 'Shop Imagination',
+        primary_cta_url: '/product/imagination',
+        secondary_cta_text: 'View Collections',
+        secondary_cta_url: '/collections',
         desktop_image: '/brand/hero-private-reserve.jpg',
         mobile_image: '/brand/hero-private-reserve.jpg',
-        featured_product_title: 'Oud Royal Extrait',
-        featured_product_subtitle: 'Haute Parfumerie • 100ml',
-        featured_product_price: '₦185,000',
-        featured_product_image: '/media/products/perfume-oils/perfume-oil-2.jpg',
-        featured_product_url: '/shop',
+        featured_product_title: 'Imagination',
+        featured_product_subtitle: 'Citrus • Aromatic • Woody • 30ml',
+        featured_product_price: '₦30,000',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_url: '/product/imagination',
         is_active: true,
         order: 2,
       },
       {
         id: 'fallback-3',
-        badge: 'The Extrait Collection',
-        headline: 'Pure Elegance in Every Flacon',
-        subtitle: 'Formulated at 35% extrait concentration. Exceptional sillage that lingers from morning to evening.',
-        primary_cta_text: 'Shop Extraits',
-        primary_cta_url: '/shop',
-        secondary_cta_text: 'Client Favorites',
-        secondary_cta_url: '/shop',
+        badge: 'FLORAL LEATHER MASTERPIECE',
+        headline: 'Hibiscus Mahajad',
+        subtitle: 'A rich interplay of luminous hibiscus blossoms, luscious berries, vanilla, and sumptuous leather notes with an indelible, all-day sillage.',
+        primary_cta_text: 'Shop Hibiscus Mahajad',
+        primary_cta_url: '/product/hibiscus-mahajad',
+        secondary_cta_text: 'Our Story',
+        secondary_cta_url: '/about',
         desktop_image: '/brand/hero-extrait-collection.jpg',
         mobile_image: '/brand/hero-extrait-collection.jpg',
-        featured_product_title: 'Scented Candle Duo',
-        featured_product_subtitle: 'Artisanal Home • 300g',
-        featured_product_price: '₦65,000',
-        featured_product_image: '/media/products/diffuser-candles/diffuser-candle-1.jpg',
-        featured_product_url: '/shop?category=scented-candles',
+        featured_product_title: 'Hibiscus Mahajad',
+        featured_product_subtitle: 'Floral • Fruity • Leather • 30ml',
+        featured_product_price: '₦30,000',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_url: '/product/hibiscus-mahajad',
         is_active: true,
         order: 3,
+      },
+      {
+        id: 'fallback-4',
+        badge: 'ORIENTAL & AMBER WARDROBE',
+        headline: 'Grand Soir & Golden Warmth',
+        subtitle: 'Radiant golden amber infused with benzoin, tonka bean, and bourbon vanilla. Pure evening sophistication.',
+        primary_cta_text: 'Shop Grand Soir',
+        primary_cta_url: '/product/grand-soir',
+        secondary_cta_text: 'Vanilla Collection',
+        secondary_cta_url: '/shop?collection=vanilla-collection',
+        desktop_image: '/brand/hero-oud-luxury.jpg',
+        mobile_image: '/brand/hero-oud-luxury.jpg',
+        featured_product_title: 'Grand Soir',
+        featured_product_subtitle: 'Amber • Oriental • Vanilla • 30ml',
+        featured_product_price: '₦30,000',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_url: '/product/grand-soir',
+        is_active: true,
+        order: 4,
+      },
+      {
+        id: 'fallback-5',
+        badge: 'PREMIUM EXTRACTED WOODS',
+        headline: 'Oud Satin Mood',
+        subtitle: 'Velvety Turkish rose draped in smoky dark Cambodian oud, violet petals, and creamy vanilla.',
+        primary_cta_text: 'Shop Oud Satin Mood',
+        primary_cta_url: '/product/oud-satin-mood',
+        secondary_cta_text: 'Woody & Oud',
+        secondary_cta_url: '/shop?collection=woody-and-oud',
+        desktop_image: '/brand/hero-private-reserve.jpg',
+        mobile_image: '/brand/hero-private-reserve.jpg',
+        featured_product_title: 'Oud Satin Mood',
+        featured_product_subtitle: 'Floral • Oud • Amber • 30ml',
+        featured_product_price: '₦30,000',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_url: '/product/oud-satin-mood',
+        is_active: true,
+        order: 5,
       },
     ];
   }, [rawSlides, hero]);
@@ -341,7 +379,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
                       <img
                         src={
                           currentSlide.featured_product_image ||
-                          '/media/products/perfume-oils/perfume-oil-1.jpg'
+                          'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg'
                         }
                         alt={currentSlide.featured_product_title || 'Featured Fragrance'}
                         className="w-full h-full object-cover rounded-sm group-hover:scale-110 transition-transform duration-500"
@@ -351,14 +389,14 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
                     {/* Product Details */}
                     <div className="flex-1 min-w-0">
                       <span className="text-[9px] text-luxury-gold font-mono uppercase tracking-widest block truncate font-medium">
-                        {currentSlide.featured_product_subtitle || 'Haute Parfumerie • 100ml'}
+                        {currentSlide.featured_product_subtitle || 'Perfume Body Oil • 30ml'}
                       </span>
                       <h4 className="font-serif text-sm sm:text-base font-normal text-white truncate group-hover:text-luxury-gold transition-colors mt-0.5">
                         {currentSlide.featured_product_title}
                       </h4>
                       <div className="flex items-center justify-between mt-2 pt-1 border-t border-white/10">
                         <span className="text-xs sm:text-sm font-medium text-white/90 font-mono">
-                          {currentSlide.featured_product_price || '₦45,000'}
+                          {currentSlide.featured_product_price || '₦30,000'}
                         </span>
                         <div className="h-7 w-7 rounded-full bg-white/10 group-hover:bg-luxury-gold group-hover:text-black flex items-center justify-center transition-all duration-300">
                           <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />

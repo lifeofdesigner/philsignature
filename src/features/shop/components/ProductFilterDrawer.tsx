@@ -16,10 +16,12 @@ const FRAGRANCE_FAMILIES: FragranceFamily[] = [
 export interface ProductFilterDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  family: FragranceFamily | 'all';
-  onFamilyChange: (fam: FragranceFamily | 'all') => void;
+  family: FragranceFamily | string | 'all';
+  onFamilyChange: (fam: FragranceFamily | string | 'all') => void;
   collectionId: string | 'all';
   onCollectionChange: (colId: string | 'all') => void;
+  gender?: string | 'all';
+  onGenderChange?: (gender: string | 'all') => void;
   collections: Collection[];
   inStockOnly: boolean;
   onInStockChange: (inStock: boolean) => void;
@@ -34,6 +36,8 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
   onFamilyChange,
   collectionId,
   onCollectionChange,
+  gender = 'all',
+  onGenderChange,
   collections,
   inStockOnly,
   onInStockChange,
@@ -82,8 +86,38 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
           )}
         </div>
 
-        {/* 1. Fragrance Family */}
-        <div className="space-y-3">
+        {/* 1. Target Audience / Gender */}
+        {onGenderChange && (
+          <div className="space-y-3">
+            <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium block">
+              Audience & Profile
+            </span>
+            <div className="grid grid-cols-2 gap-1.5">
+              {[
+                { label: 'All', value: 'all' },
+                { label: 'Unisex', value: 'unisex' },
+                { label: 'Men', value: 'men' },
+                { label: 'Women', value: 'women' },
+              ].map((g) => (
+                <button
+                  key={g.value}
+                  type="button"
+                  onClick={() => onGenderChange(g.value)}
+                  className={`text-xs py-2 px-3 rounded-xs transition-colors text-center ${
+                    gender === g.value
+                      ? 'bg-luxury-gold text-black font-semibold'
+                      : 'text-luxury-sand hover:text-white bg-white/5 border border-white/10 hover:border-luxury-gold/40'
+                  }`}
+                >
+                  <span>{g.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 2. Fragrance Family */}
+        <div className="space-y-3 pt-2">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium block">
             Fragrance Family
           </span>
@@ -91,7 +125,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
             <button
               type="button"
               onClick={() => onFamilyChange('all')}
-              className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between ${
+              className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between rounded-xs ${
                 family === 'all'
                   ? 'bg-luxury-gold text-black font-semibold'
                   : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
@@ -104,7 +138,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                 key={fam}
                 type="button"
                 onClick={() => onFamilyChange(fam)}
-                className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between ${
+                className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between rounded-xs ${
                   family === fam
                     ? 'bg-luxury-gold text-black font-semibold'
                     : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'

@@ -51,30 +51,58 @@ export class ProductRepository extends BaseRepository {
 
   async findRelated(fragranceFamily: string, excludeId: string, limit = 4): Promise<Product[]> {
     try {
-      const { data, error } = await this.client
-        .from('products')
-        .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
-        .eq('status', 'published')
-        .eq('fragrance_family', fragranceFamily)
-        .neq('id', excludeId)
-        .order('display_order', { ascending: true })
-        .limit(limit);
+      const tokens = (fragranceFamily || '')
+        .split(/[•,/\s]+/)
+        .map((k) => k.trim())
+        .filter((k) => k.length > 2);
 
-      if (error) this.handleError(error, `Failed to fetch related fragrances for family ${fragranceFamily}`);
-      return (data as Product[]) || [];
+      let related: Product[] = [];
+      if (tokens.length > 0) {
+        const orFilter = tokens.map((k) => `fragrance_family.ilike.%${k}%`).join(',');
+        const { data, error } = await this.client
+          .from('products')
+          .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
+          .eq('status', 'published')
+          .neq('id', excludeId)
+          .or(orFilter)
+          .order('display_order', { ascending: true })
+          .limit(limit);
+
+        if (!error && data) {
+          related = data as Product[];
+        }
+      }
+
+      if (related.length < limit) {
+        const existingIds = [excludeId, ...related.map((p) => p.id)];
+        const { data: fallback } = await this.client
+          .from('products')
+          .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
+          .eq('status', 'published')
+          .not('id', 'in', `(${existingIds.join(',')})`)
+          .order('is_featured', { ascending: false })
+          .order('display_order', { ascending: true })
+          .limit(limit - related.length);
+
+        if (fallback) {
+          related = [...related, ...(fallback as Product[])];
+        }
+      }
+
+      return related.slice(0, limit);
     } catch (err) {
       this.handleError(err, 'Error querying related products');
     }
   }
 
-  async search(queryText: string, limit = 20): Promise<Product[]> {
+  async search(queryText: string, limit = 30): Promise<Product[]> {
     try {
       const cleaned = queryText.trim();
       const { data, error } = await this.client
         .from('products')
         .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('status', 'published')
-        .or(`name.ilike.%${cleaned}%,sku.ilike.%${cleaned}%,tagline.ilike.%${cleaned}%,scent_profile.ilike.%${cleaned}%,fragrance_family.ilike.%${cleaned}%`)
+        .or(`name.ilike.%${cleaned}%,sku.ilike.%${cleaned}%,tagline.ilike.%${cleaned}%,scent_profile.ilike.%${cleaned}%,fragrance_family.ilike.%${cleaned}%,description.ilike.%${cleaned}%,best_for.ilike.%${cleaned}%`)
         .order('display_order', { ascending: true })
         .limit(limit);
 

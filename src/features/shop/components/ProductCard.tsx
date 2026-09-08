@@ -53,7 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-luxury-charcoal/50">
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <img
-            src={isHovered && hoverImage ? hoverImage : primaryImage || '/media/products/perfume-oils/perfume-oil-1.jpg'}
+            src={isHovered && hoverImage ? hoverImage : primaryImage || '/products/philz-signature-perfume-body-oil.jpg'}
             alt={product.name}
             className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
             loading={priority ? 'eager' : 'lazy'}

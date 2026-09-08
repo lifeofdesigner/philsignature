@@ -34,8 +34,8 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
           </div>
         </FadeIn>
 
-        <StaggerContainer staggerDelay={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {collections.slice(0, 3).map((col) => (
+        <StaggerContainer staggerDelay={0.1} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {collections.map((col) => (
             <StaggerItem key={col.id}>
               <Link
                 to={`/shop?collection=${col.id}`}
@@ -43,7 +43,7 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
               >
                 <div className="absolute inset-0 z-0 overflow-hidden">
                   <img
-                    src={col.image_url || col.banner_url || 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=800&q=80'}
+                    src={col.image_url || col.banner_url || '/products/philz-signature-perfume-body-oil.jpg'}
                     alt={col.name}
                     className="w-full h-full object-cover object-center opacity-50 group-hover:opacity-75 group-hover:scale-108 transition-all duration-700 ease-out"
                     loading="lazy"
@@ -53,7 +53,7 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
 
                 <div className="relative z-10 space-y-2.5">
                   <span className="text-[9px] uppercase tracking-luxury-wide text-luxury-gold block font-medium">
-                    {col.tagline || 'Private Reserve'}
+                    {col.tagline || 'Haute Parfumerie'}
                   </span>
                   <h3 className="font-serif text-2xl sm:text-3xl text-white font-normal group-hover:text-luxury-gold transition-colors">
                     {col.name}

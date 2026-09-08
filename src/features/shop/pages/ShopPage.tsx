@@ -23,6 +23,7 @@ export const ShopPage: React.FC = () => {
     error,
     family,
     collectionId,
+    gender,
     inStockOnly,
     searchQuery,
     sortBy,
@@ -30,6 +31,7 @@ export const ShopPage: React.FC = () => {
     hasActiveFilters,
     setFamily,
     setCollectionId,
+    setGender,
     setInStockOnly,
     setSearchQuery,
     setSortBy,
@@ -39,13 +41,13 @@ export const ShopPage: React.FC = () => {
     refetch,
   } = useShopCatalog();
 
-  const fragranceFamilies: { label: string; value: FragranceFamily | 'all' }[] = [
+  const fragranceFamilies: { label: string; value: FragranceFamily | string | 'all' }[] = [
     { label: 'All Fragrances', value: 'all' },
     { label: 'Woody & Oud', value: 'Woody' },
-    { label: 'Oriental & Amber', value: 'Oriental' },
+    { label: 'Floral Collection', value: 'Floral' },
+    { label: 'Vanilla & Gourmand', value: 'Vanilla' },
     { label: 'Fresh & Citrus', value: 'Fresh' },
-    { label: 'Floral & Rose', value: 'Floral' },
-    { label: 'Gourmand & Vanilla', value: 'Gourmand' },
+    { label: 'Bold & Spicy', value: 'Spicy' },
   ];
 
   return (
@@ -71,7 +73,7 @@ export const ShopPage: React.FC = () => {
                 <button
                   key={f.label}
                   type="button"
-                  onClick={() => setFamily(f.value)}
+                  onClick={() => setFamily(f.value as FragranceFamily)}
                   className={`px-3.5 py-1.5 rounded-full text-xs tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                     isSelected
                       ? 'bg-luxury-gold text-black font-semibold shadow-md'
@@ -100,7 +102,7 @@ export const ShopPage: React.FC = () => {
               className="lg:hidden min-h-[42px] flex items-center gap-2 text-xs py-2 px-4 border border-white/20 bg-white/5 text-white hover:text-luxury-gold rounded-xs cursor-pointer"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-luxury-gold" />
-              <span>Filters {hasActiveFilters && '•'}</span>
+              <span>Filters</span>
             </button>
 
             <ProductSortDropdown value={sortBy} onChange={setSortBy} />
@@ -117,6 +119,8 @@ export const ShopPage: React.FC = () => {
             onFamilyChange={setFamily}
             collectionId={collectionId}
             onCollectionChange={setCollectionId}
+            gender={gender}
+            onGenderChange={setGender}
             collections={collections}
             inStockOnly={inStockOnly}
             onInStockChange={setInStockOnly}

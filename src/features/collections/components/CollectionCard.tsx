@@ -18,7 +18,7 @@ export const CollectionCard: React.FC<CollectionCardProps> = ({ collection }) =>
           src={
             collection.banner_url ||
             collection.image_url ||
-            'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1200&q=85'
+            '/products/philz-signature-perfume-body-oil.jpg'
           }
           alt={collection.name}
           className="w-full h-full object-cover object-center opacity-40 group-hover:scale-105 transition-transform duration-700 ease-out"
