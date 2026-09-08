@@ -100,6 +100,11 @@ export const useShopCatalog = () => {
     setSearchParams(p);
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setPage(1);
+  };
+
   const resetFilters = () => {
     setFamily('all');
     setCollectionId('all');
@@ -148,7 +153,7 @@ export const useShopCatalog = () => {
     setMinPrice,
     setMaxPrice,
     setInStockOnly,
-    setSearchQuery,
+    setSearchQuery: handleSearchChange,
     setSortBy: handleSortChange,
     setPage,
     setIsFilterOpen,

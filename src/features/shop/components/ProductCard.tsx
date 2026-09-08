@@ -44,6 +44,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.6, ease: LUXURY_EASE }}
       whileHover={{ y: -4 }}
+      data-testid="product-card"
       className="group relative bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-all duration-400 flex flex-col justify-between shadow-lg rounded-xs overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

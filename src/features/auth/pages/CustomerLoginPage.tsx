@@ -91,7 +91,7 @@ export const CustomerLoginPage: React.FC = () => {
               Forgot password?
             </Link>
           </div>
-          <Button variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
+          <Button type="submit" variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
             <Lock className="h-3.5 w-3.5" />
             <span>{isSubmitting ? 'Signing in...' : 'Sign In'}</span>
           </Button>

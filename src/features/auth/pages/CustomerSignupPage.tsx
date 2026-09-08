@@ -129,7 +129,7 @@ export const CustomerSignupPage: React.FC = () => {
             </div>
           </div>
 
-          <Button variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
+          <Button type="submit" variant="luxury" size="lg" className="w-full gap-2" disabled={isSubmitting}>
             <ShieldCheck className="h-4 w-4" />
             <span>{isSubmitting ? 'Creating account...' : 'Create Account'}</span>
           </Button>

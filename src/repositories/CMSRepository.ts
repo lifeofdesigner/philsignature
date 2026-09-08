@@ -8,13 +8,12 @@ export class CMSRepository extends BaseRepository {
         .from('cms_content')
         .select('*')
         .eq('key', key)
-        .single();
+        .maybeSingle();
 
       if (error) {
-        if (error.code === 'PGRST116') return null;
         this.handleError(error, `Failed to load CMS section: ${key}`);
       }
-      return data as CmsContent;
+      return (data || null) as CmsContent | null;
     } catch (err) {
       this.handleError(err, `Error loading CMS section: ${key}`);
     }
