@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import type { Product } from '@/types/database';
 
 export interface CartItem {
-  id: string; // product_id
+  id: string; // unique identifier (e.g., product_id or product_id-size)
   product: Product;
   quantity: number;
   price: number;
+  size?: string;
+  variant_id?: string;
 }
 
 const CART_STORAGE_KEY = 'philz_shopping_bag';
@@ -44,14 +46,20 @@ export const useCart = () => {
     };
   }, []);
 
-  const addItem = useCallback((product: Product, quantity = 1) => {
+  const addItem = useCallback((
+    product: Product,
+    quantity = 1,
+    variant?: { id?: string; name: string; price: number }
+  ) => {
     const current = getStoredCart();
-    const effectivePrice =
-      product.sale_price !== null && product.sale_price !== undefined
-        ? product.sale_price
-        : product.price;
+    const effectivePrice = variant
+      ? variant.price
+      : product.sale_price !== null && product.sale_price !== undefined
+      ? product.sale_price
+      : product.price;
 
-    const existingIdx = current.findIndex((item) => item.id === product.id);
+    const cartItemId = variant ? `${product.id}-${variant.name}` : product.id;
+    const existingIdx = current.findIndex((item) => item.id === cartItemId);
     let next: CartItem[];
 
     if (existingIdx > -1) {
@@ -64,10 +72,12 @@ export const useCart = () => {
       next = [
         ...current,
         {
-          id: product.id,
+          id: cartItemId,
           product,
           quantity,
           price: effectivePrice,
+          size: variant?.name,
+          variant_id: variant?.id,
         },
       ];
     }

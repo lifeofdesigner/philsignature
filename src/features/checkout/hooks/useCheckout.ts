@@ -165,14 +165,16 @@ export function useCheckout() {
 
       // Prepare items for OrderService
       const orderItems = items.map((item) => ({
-        product_id: item.id,
-        product_name: item.product.name,
+        product_id: item.product.id,
+        product_name: item.size ? `${item.product.name} (${item.size})` : item.product.name,
         product_slug: item.product.slug,
         product_image_url:
           item.product.images?.find((img) => img.is_primary)?.image_url ||
           item.product.images?.[0]?.image_url ||
           '',
-        sku: item.product.sku || `PS-${item.product.slug.toUpperCase()}`,
+        sku: item.size
+          ? `${item.product.sku || `PS-${item.product.slug.toUpperCase()}`}-${item.size.toUpperCase()}`
+          : item.product.sku || `PS-${item.product.slug.toUpperCase()}`,
         price: item.price,
         quantity: item.quantity,
         subtotal: item.price * item.quantity,

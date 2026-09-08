@@ -57,7 +57,7 @@ export class ProductService {
 
     // 1. Fragrance Family Filter
     if (options.family && options.family !== 'all') {
-      result = result.filter((p) => p.fragrance_family === options.family);
+      result = result.filter((p) => p.fragrance_family && p.fragrance_family.toLowerCase().includes(options.family!.toLowerCase()));
     }
 
     // 2. Category Filter
@@ -96,12 +96,15 @@ export class ProductService {
         const nameMatch = p.name.toLowerCase().includes(q);
         const skuMatch = p.sku.toLowerCase().includes(q);
         const taglineMatch = p.tagline ? p.tagline.toLowerCase().includes(q) : false;
+        const scentProfileMatch = p.scent_profile ? p.scent_profile.toLowerCase().includes(q) : false;
+        const bestForMatch = p.best_for ? p.best_for.toLowerCase().includes(q) : false;
+        const familyMatch = p.fragrance_family ? p.fragrance_family.toLowerCase().includes(q) : false;
         const notesMatch = [
           ...(p.top_notes || []),
           ...(p.middle_notes || []),
           ...(p.base_notes || []),
         ].some((n) => n.toLowerCase().includes(q));
-        return nameMatch || skuMatch || taglineMatch || notesMatch;
+        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || notesMatch;
       });
     }
 
@@ -132,7 +135,12 @@ export class ProductService {
         break;
       case 'featured':
       default:
-        result.sort((a, b) => (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0));
+        result.sort((a, b) => {
+          if (a.is_featured !== b.is_featured) {
+            return (b.is_featured ? 1 : 0) - (a.is_featured ? 1 : 0);
+          }
+          return (a.display_order || 999) - (b.display_order || 999);
+        });
         break;
     }
 

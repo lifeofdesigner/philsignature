@@ -7,7 +7,8 @@ export class ProductRepository extends BaseRepository {
     try {
       let query = this.client
         .from('products')
-        .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
+        .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
+        .order('display_order', { ascending: true })
         .order('created_at', { ascending: false });
 
       if (filter?.status === 'all') {
@@ -34,9 +35,10 @@ export class ProductRepository extends BaseRepository {
     try {
       const { data, error } = await this.client
         .from('products')
-        .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
+        .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('status', 'published')
         .eq('is_featured', true)
+        .order('display_order', { ascending: true })
         .order('created_at', { ascending: false })
         .limit(limit);
 
@@ -51,10 +53,11 @@ export class ProductRepository extends BaseRepository {
     try {
       const { data, error } = await this.client
         .from('products')
-        .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
+        .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('status', 'published')
         .eq('fragrance_family', fragranceFamily)
         .neq('id', excludeId)
+        .order('display_order', { ascending: true })
         .limit(limit);
 
       if (error) this.handleError(error, `Failed to fetch related fragrances for family ${fragranceFamily}`);
@@ -69,9 +72,10 @@ export class ProductRepository extends BaseRepository {
       const cleaned = queryText.trim();
       const { data, error } = await this.client
         .from('products')
-        .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
+        .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('status', 'published')
-        .or(`name.ilike.%${cleaned}%,sku.ilike.%${cleaned}%,tagline.ilike.%${cleaned}%`)
+        .or(`name.ilike.%${cleaned}%,sku.ilike.%${cleaned}%,tagline.ilike.%${cleaned}%,scent_profile.ilike.%${cleaned}%,fragrance_family.ilike.%${cleaned}%`)
+        .order('display_order', { ascending: true })
         .limit(limit);
 
       if (error) this.handleError(error, `Search failed for: ${queryText}`);
@@ -85,7 +89,7 @@ export class ProductRepository extends BaseRepository {
     try {
       const { data, error } = await this.client
         .from('products')
-        .select('*, images:product_images(*), videos:product_videos(*), category:categories(*), collection:collections(*)')
+        .select('*, images:product_images(*), videos:product_videos(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('slug', slug)
         .single();
 
@@ -103,7 +107,7 @@ export class ProductRepository extends BaseRepository {
     try {
       const { data, error } = await this.client
         .from('products')
-        .select('*, images:product_images(*), category:categories(*), collection:collections(*)')
+        .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('id', id)
         .single();
 

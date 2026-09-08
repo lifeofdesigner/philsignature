@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
@@ -19,11 +19,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
   const primaryImage = product.images?.find((img) => img.is_primary)?.image_url || product.images?.[0]?.image_url;
   const hoverImage = product.images?.[1]?.image_url || primaryImage;
 
+  const minPrice = product.variants && product.variants.length > 0
+    ? Math.min(...product.variants.map((v) => v.price))
+    : (product.sale_price !== null && product.sale_price !== undefined ? product.sale_price : product.price);
+
   const formattedPrice = new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     maximumFractionDigits: 0,
-  }).format(product.sale_price !== null && product.sale_price !== undefined ? product.sale_price : product.price);
+  }).format(minPrice);
 
   const formattedOriginalPrice = product.sale_price
     ? new Intl.NumberFormat('en-NG', {
@@ -98,7 +102,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       <div className="p-3.5 sm:p-5 flex flex-col justify-between flex-grow space-y-2 sm:space-y-3">
         <div className="space-y-1">
           <span className="text-[8px] sm:text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
-            {product.concentration || 'Perfume'} • {product.volume_ml || 100}ml
+            {product.concentration || 'Perfume Body Oil'} • 4 Sizes (15ml - 100ml)
           </span>
           <h3 className="font-serif text-sm sm:text-base lg:text-lg text-white font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
             <Link to={`/product/${product.slug}`}>{product.name}</Link>
@@ -114,6 +118,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         <div className="pt-2 border-t border-luxury-border/50 flex items-center justify-between gap-1">
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
             <span className="font-serif text-sm sm:text-base text-luxury-gold font-normal">
+              <span className="text-[10px] text-luxury-muted font-sans uppercase mr-1">From</span>
               {formattedPrice}
             </span>
             {formattedOriginalPrice && (
@@ -126,7 +131,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
             to={`/product/${product.slug}`}
             className="text-[9px] sm:text-[10px] uppercase tracking-wider text-luxury-sand hover:text-luxury-gold transition-colors font-medium underline underline-offset-4 shrink-0"
           >
-            View
+            Discover
           </Link>
         </div>
       </div>

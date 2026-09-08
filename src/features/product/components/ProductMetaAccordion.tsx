@@ -37,7 +37,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
             />
           </button>
           {openSection === 'details' && (
-            <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed">
+            <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed whitespace-pre-line">
               {details}
             </div>
           )}
@@ -60,10 +60,10 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           />
         </button>
         {openSection === 'ritual' && (
-          <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed space-y-2">
+          <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed space-y-2 whitespace-pre-line">
             <p>
               {howToUse ||
-                'Spray on your pulse points — your wrists, neck, and behind your ears. A small amount goes a long way. This perfume is highly concentrated, so it will last all day on your skin.'}
+                'Apply directly onto pulse points (wrists, neck, inner elbows, collarbones). Gently dab without rubbing to preserve the delicate olfactory composition.'}
             </p>
           </div>
         )}

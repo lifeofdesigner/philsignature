@@ -31,6 +31,8 @@ interface ProductFormState {
   slug: string;
   tagline: string;
   description: string;
+  scent_profile: string;
+  best_for: string;
   sku: string;
   price: string;
   sale_price: string;
@@ -40,6 +42,9 @@ interface ProductFormState {
   fragrance_family: string;
   status: ProductStatus;
   is_featured: boolean;
+  meta_title: string;
+  meta_description: string;
+  meta_keywords: string;
   image_url?: string;
 }
 
@@ -48,15 +53,20 @@ const emptyForm: ProductFormState = {
   slug: '',
   tagline: '',
   description: '',
+  scent_profile: '',
+  best_for: 'Unisex',
   sku: '',
   price: '',
   sale_price: '',
-  stock_quantity: '0',
+  stock_quantity: '100',
   category_id: '',
   collection_id: '',
   fragrance_family: '',
-  status: 'draft',
+  status: 'published',
   is_featured: false,
+  meta_title: '',
+  meta_description: '',
+  meta_keywords: '',
   image_url: '',
 };
 
@@ -123,6 +133,8 @@ export const AdminProductsPage: React.FC = () => {
       slug: product.slug,
       tagline: product.tagline || '',
       description: product.description,
+      scent_profile: product.scent_profile || '',
+      best_for: product.best_for || 'Unisex',
       sku: product.sku,
       price: String(product.price),
       sale_price: product.sale_price ? String(product.sale_price) : '',
@@ -132,6 +144,9 @@ export const AdminProductsPage: React.FC = () => {
       fragrance_family: product.fragrance_family || '',
       status: product.status,
       is_featured: product.is_featured,
+      meta_title: product.meta_title || '',
+      meta_description: product.meta_description || '',
+      meta_keywords: product.meta_keywords || '',
       image_url: product.images?.[0]?.image_url || '',
     });
     setFormError(null);
@@ -167,6 +182,8 @@ export const AdminProductsPage: React.FC = () => {
       slug: form.slug.trim(),
       tagline: form.tagline.trim() || null,
       description: form.description.trim(),
+      scent_profile: form.scent_profile.trim() || null,
+      best_for: form.best_for.trim() || 'Unisex',
       sku: form.sku.trim(),
       price: priceNum,
       sale_price: form.sale_price ? Number(form.sale_price) : null,
@@ -176,10 +193,13 @@ export const AdminProductsPage: React.FC = () => {
       fragrance_family: form.fragrance_family || null,
       status: form.status,
       is_featured: form.is_featured,
+      meta_title: form.meta_title.trim() || null,
+      meta_description: form.meta_description.trim() || null,
+      meta_keywords: form.meta_keywords.trim() || null,
       top_notes: editingProduct?.top_notes ?? [],
       middle_notes: editingProduct?.middle_notes ?? [],
       base_notes: editingProduct?.base_notes ?? [],
-      brand: 'PHILZ SIGNATURE',
+      brand: 'Philz Signature',
     };
 
     try {
@@ -321,17 +341,24 @@ export const AdminProductsPage: React.FC = () => {
             <img
               src={product.images[0].image_url}
               alt={product.name}
-              className="h-9 w-9 rounded-md object-cover border border-slate-200 shrink-0"
+              className="h-10 w-10 rounded-md object-cover border border-slate-200 shrink-0"
             />
           ) : (
-            <div className="h-9 w-9 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+            <div className="h-10 w-10 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
               <Package className="h-4 w-4 text-slate-400" />
             </div>
           )}
-          <div className="min-w-0">
-            <div className="text-slate-900 font-bold truncate">{product.name}</div>
+          <div className="min-w-0 max-w-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-900 font-bold truncate">{product.name}</span>
+              {product.best_for && (
+                <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 border border-slate-300 text-slate-700">
+                  {product.best_for}
+                </span>
+              )}
+            </div>
             <div className="text-[11px] text-slate-600 font-medium truncate">
-              {product.fragrance_family || 'Standard formulation'}
+              {product.scent_profile || product.fragrance_family || 'Standard formulation'}
             </div>
           </div>
         </div>
@@ -346,13 +373,11 @@ export const AdminProductsPage: React.FC = () => {
     },
     {
       key: 'price',
-      header: 'Price',
+      header: 'Pricing & Variants',
       accessor: (product) => (
         <div>
           <div className="text-slate-900 font-bold">{formatCurrency(product.price)}</div>
-          {product.sale_price && (
-            <div className="text-[11px] text-emerald-800 font-semibold">Sale: {formatCurrency(product.sale_price)}</div>
-          )}
+          <div className="text-[10px] text-slate-500 font-medium">4 Sizes (₦15k - ₦75k)</div>
         </div>
       ),
       sortValue: (product) => product.price,
@@ -748,6 +773,68 @@ export const AdminProductsPage: React.FC = () => {
                       </option>
                     ))}
                   </select>
+                </div>
+              </div>
+
+              {/* Scent Profile & Audience */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="sm:col-span-2 space-y-1.5">
+                  <label className="block font-semibold text-slate-800">Scent Profile Notes</label>
+                  <Input
+                    value={form.scent_profile}
+                    onChange={(e) => setForm((p) => ({ ...p, scent_profile: e.target.value }))}
+                    placeholder="e.g. Exotic Fruits • Oud • Spices • Florals • Amber"
+                    className="bg-white border-slate-300 text-slate-900"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block font-semibold text-slate-800">Best For</label>
+                  <select
+                    value={form.best_for}
+                    onChange={(e) => setForm((p) => ({ ...p, best_for: e.target.value }))}
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  >
+                    <option value="Unisex">Unisex</option>
+                    <option value="Men">Men</option>
+                    <option value="Women">Women</option>
+                    <option value="Women • Unisex">Women • Unisex</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* SEO Engine & Search Metadata */}
+              <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="font-semibold text-slate-900 text-xs flex items-center justify-between">
+                  <span>SEO Engine & Search Metadata</span>
+                  <span className="text-[10px] text-slate-500 font-normal">Search engine indexing</span>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-slate-700 font-medium text-[11px]">Meta Title</label>
+                  <Input
+                    value={form.meta_title}
+                    onChange={(e) => setForm((p) => ({ ...p, meta_title: e.target.value }))}
+                    placeholder="e.g. Oud Maracuja | Philz Signature Luxury Perfume Oil"
+                    className="bg-white border-slate-300 text-slate-900 text-xs"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-slate-700 font-medium text-[11px]">Meta Description</label>
+                  <textarea
+                    value={form.meta_description}
+                    onChange={(e) => setForm((p) => ({ ...p, meta_description: e.target.value }))}
+                    rows={2}
+                    placeholder="Discover Oud Maracuja by Philz Signature..."
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-slate-700 font-medium text-[11px]">Search Keywords</label>
+                  <Input
+                    value={form.meta_keywords}
+                    onChange={(e) => setForm((p) => ({ ...p, meta_keywords: e.target.value }))}
+                    placeholder="Oud Maracuja, Fruity, Oud, Philz Signature, Luxury perfume"
+                    className="bg-white border-slate-300 text-slate-900 text-xs font-mono"
+                  />
                 </div>
               </div>
 

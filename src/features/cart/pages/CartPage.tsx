@@ -80,7 +80,7 @@ export const CartPage: React.FC = () => {
 
                     <div className="flex-1 min-w-0 space-y-1 text-left">
                       <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
-                        {item.product.concentration || 'Perfume'} • {item.product.volume_ml || 100}ml
+                        {item.product.concentration || 'Perfume Body Oil'} • {item.size || (item.product.volume_ml ? `${item.product.volume_ml}ml` : '30ml')}
                       </span>
                       <h3 className="font-serif text-base sm:text-lg text-luxury-cream font-normal hover:text-luxury-gold transition-colors truncate">
                         <Link to={`/product/${item.product.slug}`}>

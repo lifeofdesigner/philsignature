@@ -148,13 +148,32 @@ export interface ProductVideo {
   created_at: string;
 }
 
+export interface ProductVariant {
+  id: string;
+  product_id: string;
+  name: string;
+  size_ml: number;
+  price: number;
+  sale_price: number | null;
+  stock_quantity: number;
+  sku: string;
+  is_default: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Product {
   id: string;
   name: string;
   slug: string;
   tagline: string | null;
   description: string;
+  short_description?: string | null;
   details: string | null;
+  scent_profile?: string | null;
+  best_for?: string | null;
+  display_order?: number;
   sku: string;
   barcode: string | null;
   price: number;
@@ -166,7 +185,7 @@ export interface Product {
   brand: string;
   category_id: string | null;
   collection_id: string | null;
-  fragrance_family: FragranceFamily | null;
+  fragrance_family: FragranceFamily | string | null;
   top_notes: string[];
   middle_notes: string[];
   base_notes: string[];
@@ -187,6 +206,7 @@ export interface Product {
   // Joins
   images?: ProductImage[];
   videos?: ProductVideo[];
+  variants?: ProductVariant[];
   category?: Category;
   collection?: Collection;
 }
