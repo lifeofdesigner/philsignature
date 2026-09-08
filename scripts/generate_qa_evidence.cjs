@@ -111,22 +111,22 @@ async function captureEvidence() {
   // 3. ADMIN MODULES AUDIT & SCREENSHOTS
   // ==========================================
   const adminModules = [
-    { name: 'Admin Dashboard', url: '/admin', file: 'admin-dashboard.png', selector: 'h1' },
-    { name: 'Products Management', url: '/admin/products', file: 'admin-products.png', selector: 'h1' },
-    { name: 'Collections Management', url: '/admin/collections', file: 'admin-collections.png', selector: 'h1' },
-    { name: 'Categories Management', url: '/admin/categories', file: 'admin-categories.png', selector: 'h1' },
-    { name: 'Orders Management', url: '/admin/orders', file: 'admin-orders.png', selector: 'h1' },
-    { name: 'Customers Management', url: '/admin/customers', file: 'admin-customers.png', selector: 'h1' },
-    { name: 'CMS & Policy Management', url: '/admin/cms', file: 'admin-cms.png', selector: 'h1' },
-    { name: 'Media Library', url: '/admin/media', file: 'admin-media.png', selector: 'h1' },
-    { name: 'Coupons Management', url: '/admin/coupons', file: 'admin-coupons.png', selector: 'h1' },
-    { name: 'Reviews Moderation', url: '/admin/reviews', file: 'admin-reviews.png', selector: 'h1' },
-    { name: 'Payments & Gateways', url: '/admin/payments', file: 'admin-payments.png', selector: 'h1' },
-    { name: 'Shipping & Delivery', url: '/admin/shipping', file: 'admin-shipping.png', selector: 'h1' },
-    { name: 'Analytics & Reports', url: '/admin/analytics', file: 'admin-analytics.png', selector: 'h1' },
-    { name: 'User Management & RBAC', url: '/admin/users', file: 'admin-users.png', selector: 'h1' },
-    { name: 'Store Settings', url: '/admin/settings', file: 'admin-settings.png', selector: 'h1' },
-    { name: 'SEO & Meta Management', url: '/admin/seo', file: 'admin-seo.png', selector: 'h1' },
+    { name: 'Admin Dashboard', url: '/admin', file: 'admin-dashboard.png', selector: 'text=Dashboard' },
+    { name: 'Products Management', url: '/admin/products', file: 'admin-products.png', selector: 'table' },
+    { name: 'Collections Management', url: '/admin/collections', file: 'admin-collections.png', selector: 'table' },
+    { name: 'Categories Management', url: '/admin/categories', file: 'admin-categories.png', selector: 'table' },
+    { name: 'Orders Management', url: '/admin/orders', file: 'admin-orders.png', selector: 'table' },
+    { name: 'Customers Management', url: '/admin/customers', file: 'admin-customers.png', selector: 'table' },
+    { name: 'CMS & Policy Management', url: '/admin/cms', file: 'admin-cms.png', selector: 'text=CMS' },
+    { name: 'Media Library', url: '/admin/media', file: 'admin-media.png', selector: 'text=Media' },
+    { name: 'Coupons Management', url: '/admin/coupons', file: 'admin-coupons.png', selector: 'table' },
+    { name: 'Reviews Moderation', url: '/admin/reviews', file: 'admin-reviews.png', selector: 'table' },
+    { name: 'Payments & Gateways', url: '/admin/payments', file: 'admin-payments.png', selector: 'table' },
+    { name: 'Shipping & Delivery', url: '/admin/shipping', file: 'admin-shipping.png', selector: 'table' },
+    { name: 'Analytics & Reports', url: '/admin/analytics', file: 'admin-analytics.png', selector: 'text=Analytics' },
+    { name: 'User Management & RBAC', url: '/admin/users', file: 'admin-users.png', selector: 'table' },
+    { name: 'Store Settings', url: '/admin/settings', file: 'admin-settings.png', selector: 'text=Settings' },
+    { name: 'SEO & Meta Management', url: '/admin/seo', file: 'admin-seo.png', selector: 'text=SEO' },
   ];
 
   console.log('\n--- Capturing Admin Modules Evidence ---');
