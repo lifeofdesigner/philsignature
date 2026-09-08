@@ -10,7 +10,7 @@ export interface ProductGalleryProps {
 
 export const ProductGallery: React.FC<ProductGalleryProps> = ({
   images = [],
-  fallbackUrl = '/products/philz-signature-perfume-body-oil.jpg',
+  fallbackUrl = '/products/philz-signature-official-bottle.jpg',
   productName,
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);

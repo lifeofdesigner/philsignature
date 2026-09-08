@@ -56,7 +56,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           const imgUrl =
             item.product.images?.find((img) => img.is_primary)?.image_url ||
             item.product.images?.[0]?.image_url ||
-            '/products/philz-signature-perfume-body-oil.jpg';
+            '/products/philz-signature-official-bottle.jpg';
           const sizeLabel = (item as any).size || (item as any).variant?.size || '30ml';
 
           return (

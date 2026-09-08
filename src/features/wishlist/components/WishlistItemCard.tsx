@@ -18,7 +18,7 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
   const primaryImage =
     product.images?.find((img) => img.is_primary)?.image_url ||
     product.images?.[0]?.image_url ||
-    '/products/philz-signature-perfume-body-oil.jpg';
+    '/products/philz-signature-official-bottle.jpg';
 
   const formattedPrice = new Intl.NumberFormat('en-NG', {
     style: 'currency',

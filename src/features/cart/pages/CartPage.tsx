@@ -60,7 +60,7 @@ export const CartPage: React.FC = () => {
                 const primaryImage =
                   item.product.images?.find((img) => img.is_primary)?.image_url ||
                   item.product.images?.[0]?.image_url ||
-                  '/products/philz-signature-perfume-body-oil.jpg';
+                  '/products/philz-signature-official-bottle.jpg';
 
                 return (
                   <div

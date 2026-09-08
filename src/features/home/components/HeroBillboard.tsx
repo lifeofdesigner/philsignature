@@ -31,7 +31,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         featured_product_title: 'Oud Maracuja',
         featured_product_subtitle: 'Fruity • Woody • Oud • 30ml',
         featured_product_price: '₦30,000',
-        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         featured_product_url: '/product/oud-maracuja',
         is_active: true,
         order: 1,
@@ -50,7 +50,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         featured_product_title: 'Imagination',
         featured_product_subtitle: 'Citrus • Aromatic • Woody • 30ml',
         featured_product_price: '₦30,000',
-        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         featured_product_url: '/product/imagination',
         is_active: true,
         order: 2,
@@ -69,7 +69,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         featured_product_title: 'Hibiscus Mahajad',
         featured_product_subtitle: 'Floral • Fruity • Leather • 30ml',
         featured_product_price: '₦30,000',
-        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         featured_product_url: '/product/hibiscus-mahajad',
         is_active: true,
         order: 3,
@@ -88,7 +88,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         featured_product_title: 'Grand Soir',
         featured_product_subtitle: 'Amber • Oriental • Vanilla • 30ml',
         featured_product_price: '₦30,000',
-        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         featured_product_url: '/product/grand-soir',
         is_active: true,
         order: 4,
@@ -107,7 +107,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
         featured_product_title: 'Oud Satin Mood',
         featured_product_subtitle: 'Floral • Oud • Amber • 30ml',
         featured_product_price: '₦30,000',
-        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         featured_product_url: '/product/oud-satin-mood',
         is_active: true,
         order: 5,
@@ -379,7 +379,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
                       <img
                         src={
                           currentSlide.featured_product_image ||
-                          'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg'
+                          'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg'
                         }
                         alt={currentSlide.featured_product_title || 'Featured Fragrance'}
                         className="w-full h-full object-cover rounded-sm group-hover:scale-110 transition-transform duration-500"

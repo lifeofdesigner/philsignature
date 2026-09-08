@@ -43,7 +43,7 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
               >
                 <div className="absolute inset-0 z-0 overflow-hidden">
                   <img
-                    src={col.image_url || col.banner_url || '/products/philz-signature-perfume-body-oil.jpg'}
+                    src={col.image_url || col.banner_url || '/products/philz-signature-official-bottle.jpg'}
                     alt={col.name}
                     className="w-full h-full object-cover object-center opacity-50 group-hover:opacity-75 group-hover:scale-108 transition-all duration-700 ease-out"
                     loading="lazy"

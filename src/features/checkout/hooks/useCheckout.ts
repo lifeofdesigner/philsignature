@@ -171,7 +171,7 @@ export function useCheckout() {
         product_image_url:
           item.product.images?.find((img) => img.is_primary)?.image_url ||
           item.product.images?.[0]?.image_url ||
-          'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+          'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         sku: item.size
           ? `${item.product.sku || `PS-${item.product.slug.toUpperCase()}`}-${item.size.toUpperCase()}`
           : item.product.sku || `PS-${item.product.slug.toUpperCase()}`,

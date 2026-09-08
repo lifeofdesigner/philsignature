@@ -273,7 +273,7 @@ export class CMSService {
       featured_product_title: 'Oud Maracuja',
       featured_product_subtitle: 'Fruity • Woody • Oud • 30ml',
       featured_product_price: '₦30,000',
-      featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+      featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
       featured_product_url: '/product/oud-maracuja',
       is_active: true,
       order: 1,
@@ -292,7 +292,7 @@ export class CMSService {
       featured_product_title: 'Imagination',
       featured_product_subtitle: 'Citrus • Aromatic • Woody • 30ml',
       featured_product_price: '₦30,000',
-      featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+      featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
       featured_product_url: '/product/imagination',
       is_active: true,
       order: 2,
@@ -311,7 +311,7 @@ export class CMSService {
       featured_product_title: 'Hibiscus Mahajad',
       featured_product_subtitle: 'Floral • Fruity • Leather • 30ml',
       featured_product_price: '₦30,000',
-      featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+      featured_product_image: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
       featured_product_url: '/product/hibiscus-mahajad',
       is_active: true,
       order: 3,
@@ -391,7 +391,7 @@ export class CMSService {
     posts: [
       {
         id: 'insta-1',
-        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         caption: 'Pure botanical essence extracted in small batches. Our signature Perfume Body Oil. ✨ #PhilzSignature #PhilzThePerfumer',
         likes_count: 512,
         comments_count: 38,
@@ -399,7 +399,7 @@ export class CMSService {
       },
       {
         id: 'insta-2',
-        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         caption: 'Elevate your daily ritual with high-concentration luxury perfume body oils. 🕯️ #PhilzSignature',
         likes_count: 684,
         comments_count: 49,
@@ -407,7 +407,7 @@ export class CMSService {
       },
       {
         id: 'insta-3',
-        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         caption: 'Bespoke Private Label & Extrait formulations. Crafted to leave an indelible signature. 👑 #PhilzThePerfumer #LuxuryFragrance',
         likes_count: 920,
         comments_count: 73,
@@ -415,7 +415,7 @@ export class CMSService {
       },
       {
         id: 'insta-4',
-        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         caption: 'Evening rituals: Warm vanilla, smoked amber, and quiet reflection. 🌙 #YourScentYourSignature #ScentLifestyle',
         likes_count: 410,
         comments_count: 27,
@@ -423,7 +423,7 @@ export class CMSService {
       },
       {
         id: 'insta-5',
-        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         caption: 'Continuous diffusion of pure botanical oils. Effortless elegance. 🌿 #PhilzSignature',
         likes_count: 576,
         comments_count: 41,
@@ -431,7 +431,7 @@ export class CMSService {
       },
       {
         id: 'insta-6',
-        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-perfume-body-oil.jpg',
+        image_url: 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/philz-signature-official-bottle.jpg',
         caption: 'The Complete Wardrobe: 31 signature fragrances handcrafted for longevity and distinction. #PhilzSignature #PhilzThePerfumer',
         likes_count: 1042,
         comments_count: 95,
