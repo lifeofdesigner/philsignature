@@ -56,27 +56,24 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           const imgUrl =
             item.product.images?.find((img) => img.is_primary)?.image_url ||
             item.product.images?.[0]?.image_url ||
-            '';
+            '/products/philz-signature-perfume-body-oil.jpg';
+          const sizeLabel = (item as any).size || (item as any).variant?.size || '30ml';
 
           return (
             <div key={item.id} className="flex items-center gap-3 text-xs">
               <div className="relative w-12 h-14 bg-luxury-charcoal border border-luxury-border shrink-0 overflow-hidden rounded-sm">
-                {imgUrl ? (
-                  <img
-                    src={imgUrl}
-                    alt={item.product.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-luxury-charcoal" />
-                )}
+                <img
+                  src={imgUrl}
+                  alt={item.product.name}
+                  className="w-full h-full object-cover"
+                />
                 <span className="absolute -top-1 -right-1 bg-luxury-gold text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {item.quantity}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
                 <h4 className="font-serif text-luxury-cream truncate font-normal">{item.product.name}</h4>
-                <p className="text-[10px] text-luxury-muted">100ml • Qty {item.quantity}</p>
+                <p className="text-[10px] text-luxury-muted">{sizeLabel} • Qty {item.quantity}</p>
               </div>
               <div className="text-right">
                 <span className="text-luxury-cream font-medium">
