@@ -23,19 +23,30 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist, isToggling } = useWishlist();
 
+  const isCandle =
+    product.category?.slug === 'candles' ||
+    product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+    product.concentration?.toLowerCase().includes('candle') ||
+    Boolean(product.weight_grams);
+
   // Determine available variants
   const variants = useMemo(() => {
     if (product.variants && product.variants.length > 0) {
       return [...product.variants].sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
     }
+    if (isCandle) {
+      return [
+        { id: 'v300g', size_ml: 300, name: '300g Vessel', price: 40000, sale_price: null, is_default: true, stock_quantity: 100 }
+      ] as unknown as ProductVariant[];
+    }
     return DEFAULT_FALLBACK_VARIANTS as unknown as ProductVariant[];
-  }, [product.variants]);
+  }, [product.variants, isCandle]);
 
-  // Default to 30ml variant
+  // Default to primary variant
   const defaultVariant = useMemo(() => {
     return (
       variants.find((v) => v.is_default) ||
-      variants.find((v) => v.size_ml === 30 || v.name === '30ml') ||
+      variants.find((v) => v.size_ml === 30 || v.name === '30ml' || v.name === '300g Vessel') ||
       variants[0]
     );
   }, [variants]);
@@ -133,10 +144,10 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
       {/* Specifications & Badges */}
       <div className="flex flex-wrap items-center gap-2.5 text-xs">
         <span className="px-3 py-1 bg-luxury-card border border-luxury-border text-luxury-cream uppercase tracking-wider text-[10px] font-medium">
-          {product.concentration || 'Perfume Body Oil'}
+          {product.concentration || (isCandle ? 'Scented Candle' : 'Perfume Body Oil')}
         </span>
         <span className="px-3 py-1 bg-luxury-card border border-luxury-border text-luxury-sand text-[10px] font-mono">
-          {selectedVariant?.name || `${product.volume_ml || 30}ml`}
+          {selectedVariant?.name || (isCandle ? '300g Vessel' : `${product.volume_ml || 30}ml`)}
         </span>
         <span className="text-[10px] text-emerald-500 dark:text-emerald-400 flex items-center gap-1 font-mono">
           <ShieldCheck className="h-3 w-3" /> Handcrafted
@@ -167,13 +178,13 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
       <div className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
           <span className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">
-            Select Flacon Size
+            {isCandle ? 'Vessel Specification' : 'Select Flacon Size'}
           </span>
           <span className="text-xs font-mono text-luxury-gold">
-            {selectedVariant?.name || '30ml'}
+            {selectedVariant?.name || (isCandle ? '300g Vessel' : '30ml')}
           </span>
         </div>
-        <div className="grid grid-cols-4 gap-2 sm:gap-3">
+        <div className={variants.length === 1 ? 'grid grid-cols-1 sm:grid-cols-2 max-w-sm gap-2 sm:gap-3' : 'grid grid-cols-4 gap-2 sm:gap-3'}>
           {variants.map((v) => {
             const isSelected = selectedVariant?.id === v.id || selectedVariant?.name === v.name;
             const variantPrice = new Intl.NumberFormat('en-NG', {
@@ -187,7 +198,7 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
                 key={v.id || v.name}
                 type="button"
                 onClick={() => setSelectedVariant(v)}
-                className={`py-3 px-2 rounded-sm border text-center transition-all flex flex-col items-center justify-center gap-1 ${
+                className={`py-3 px-2 rounded-sm border text-center transition-all flex flex-col items-center justify-center gap-1 cursor-pointer ${
                   isSelected
                     ? 'border-luxury-gold bg-luxury-gold/15 text-luxury-gold shadow-sm ring-1 ring-luxury-gold'
                     : 'border-luxury-border bg-luxury-card text-luxury-sand hover:border-luxury-gold/50 hover:text-luxury-cream'
@@ -294,7 +305,7 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
         </div>
         <div className="flex items-center gap-2">
           <ShieldCheck className="h-3.5 w-3.5 text-luxury-gold shrink-0" />
-          <span>100% Authentic concentrated perfume oil with complimentary gift packaging.</span>
+          <span>{isCandle ? '100% Hand-poured luxury soy wax candle with complimentary gift packaging.' : '100% Authentic concentrated perfume oil with complimentary gift packaging.'}</span>
         </div>
       </div>
     </div>

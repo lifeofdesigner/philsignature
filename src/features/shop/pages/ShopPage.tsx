@@ -23,6 +23,7 @@ export const ShopPage: React.FC = () => {
     error,
     family,
     collectionId,
+    categoryId,
     gender,
     inStockOnly,
     searchQuery,
@@ -31,6 +32,7 @@ export const ShopPage: React.FC = () => {
     hasActiveFilters,
     setFamily,
     setCollectionId,
+    setCategoryId,
     setGender,
     setInStockOnly,
     setSearchQuery,
@@ -42,12 +44,12 @@ export const ShopPage: React.FC = () => {
   } = useShopCatalog();
 
   const fragranceFamilies: { label: string; value: FragranceFamily | string | 'all' }[] = [
-    { label: 'All Fragrances', value: 'all' },
-    { label: 'Woody & Oud', value: 'Woody' },
-    { label: 'Floral Collection', value: 'Floral' },
+    { label: 'All Scent Profiles', value: 'all' },
+    { label: 'Woody & Warm', value: 'Woody' },
+    { label: 'Floral & Rose', value: 'Floral' },
     { label: 'Vanilla & Gourmand', value: 'Vanilla' },
-    { label: 'Fresh & Citrus', value: 'Fresh' },
-    { label: 'Bold & Spicy', value: 'Spicy' },
+    { label: 'Fresh & Crisp', value: 'Fresh' },
+    { label: 'Citrus & Tropical', value: 'Citrus' },
   ];
 
   return (
@@ -56,36 +58,49 @@ export const ShopPage: React.FC = () => {
         {/* Header Title */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <span className="text-[10px] sm:text-xs uppercase tracking-luxury-wide text-luxury-gold font-medium block">
-            ✦ The Haute Parfumerie Collection
+            {categoryId === 'candles'
+              ? '✦ Official Scented Candle Collection'
+              : categoryId === 'perfumes'
+              ? '✦ The Haute Parfumerie Collection'
+              : '✦ The Philz Signature Boutique'}
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight">
-            All Perfumes & Extraits
+            {categoryId === 'candles'
+              ? 'Hand-Poured Scented Candles'
+              : categoryId === 'perfumes'
+              ? 'All Perfumes & Extraits'
+              : 'All Olfactory Creations'}
           </h1>
           <p className="text-xs sm:text-sm lg:text-base text-white/70 font-light leading-relaxed max-w-xl mx-auto">
-            Handcrafted with rare botanical extracts and high-concentration perfume oils for lasting elegance and distinctive sillage.
+            {categoryId === 'candles'
+              ? 'Handcrafted 300g luxury soy candles infused with bespoke aromatic essences. Designed to transform any living space into a sanctuary of warmth, serenity, and distinction.'
+              : categoryId === 'perfumes'
+              ? 'Handcrafted with rare botanical extracts and high-concentration perfume oils for lasting elegance and distinctive sillage.'
+              : 'Handcrafted with rare botanical extracts, concentrated perfume oils, and luxury hand-poured soy candles for enduring sillage and elevated living.'}
           </p>
 
-          {/* Quick Audience / Gender Selector */}
-          <div className="flex items-center justify-center gap-1.5 pt-1">
+          {/* Luxury Product Category Selector */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
             {[
-              { label: 'All Fragrances', value: 'all' },
-              { label: 'Unisex', value: 'unisex' },
-              { label: 'Men', value: 'men' },
-              { label: 'Women', value: 'women' },
-            ].map((g) => {
-              const isSelected = gender === g.value;
+              { label: 'All Creations', value: 'all' },
+              { label: 'Perfume Body Oils', value: 'perfumes' },
+              { label: 'Scented Candles', value: 'candles' },
+              { label: 'Reed Diffusers', value: 'reed-diffusers' },
+              { label: 'Room Sprays', value: 'room-spray' },
+            ].map((cat) => {
+              const isSelected = categoryId === cat.value;
               return (
                 <button
-                  key={g.label}
+                  key={cat.label}
                   type="button"
-                  onClick={() => setGender(g.value)}
-                  className={`px-3 py-1 rounded-xs text-[11px] uppercase tracking-luxury font-medium transition-all duration-200 cursor-pointer ${
+                  onClick={() => setCategoryId(cat.value)}
+                  className={`px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-luxury font-medium transition-all duration-200 cursor-pointer ${
                     isSelected
-                      ? 'bg-luxury-gold text-black font-semibold shadow-xs'
-                      : 'text-luxury-sand/80 hover:text-white hover:bg-white/5'
+                      ? 'bg-luxury-gold text-black font-semibold shadow-md'
+                      : 'text-luxury-sand/80 hover:text-white bg-white/5 border border-white/10 hover:border-luxury-gold/40'
                   }`}
                 >
-                  {g.label}
+                  {cat.label}
                 </button>
               );
             })}
@@ -118,7 +133,7 @@ export const ShopPage: React.FC = () => {
           <CatalogSearchBar
             value={searchQuery}
             onChange={setSearchQuery}
-            placeholder="Search by name, notes, or scent..."
+            placeholder={categoryId === 'candles' ? "Search scented candles by name or notes..." : "Search by name, notes, or scent..."}
           />
 
           <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
@@ -141,6 +156,8 @@ export const ShopPage: React.FC = () => {
           <ProductFilterDrawer
             isOpen={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
+            categoryId={categoryId}
+            onCategoryChange={setCategoryId}
             family={family}
             onFamilyChange={setFamily}
             collectionId={collectionId}

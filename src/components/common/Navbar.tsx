@@ -100,11 +100,12 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  // Luxury 5-item primary navigation structure
+  // Luxury 6-item primary navigation structure
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Shop', href: '/shop', hasMegaMenu: true },
     { name: 'Collections', href: '/collections' },
+    { name: 'Candles', href: '/shop?category=candles' },
     { name: 'About', href: '/about' },
     { name: 'Contact', href: '/contact' },
   ];
@@ -178,9 +179,14 @@ export const Navbar: React.FC = () => {
           }}
         >
           {navLinks.map((link) => {
+            const isCandlesLink = link.href.includes('category=candles');
             const isActive = link.href === '/'
               ? location.pathname === '/'
-              : location.pathname.startsWith(link.href);
+              : isCandlesLink
+                ? location.pathname === '/shop' && location.search.includes('category=candles')
+                : link.href === '/shop'
+                  ? location.pathname.startsWith('/shop') && !location.search.includes('category=candles')
+                  : location.pathname.startsWith(link.href);
 
             if (link.hasMegaMenu) {
               return (
@@ -229,36 +235,42 @@ export const Navbar: React.FC = () => {
                       >
                         <div className="grid grid-cols-3 gap-6 text-left">
                           
-                          {/* COLUMN A: BY AUDIENCE & PROFILE */}
+                          {/* COLUMN A: PRODUCT CATEGORIES */}
                           <div className="space-y-3">
                             <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold block border-b border-white/10 pb-2">
-                              Explore By Profile
+                              Product Categories
                             </span>
                             <div className="space-y-1.5">
                               <Link
                                 to="/shop"
                                 className="block px-2.5 py-1.5 rounded-sm text-xs text-white/90 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
                               >
-                                All Fragrances
+                                All Creations
                               </Link>
                               <Link
-                                to="/shop?gender=unisex"
-                                className="flex items-center justify-between px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
-                              >
-                                <span>Unisex Perfumes</span>
-                                <span className="text-[9px] uppercase tracking-wider text-luxury-gold/80 bg-luxury-gold/10 px-1.5 py-0.5 rounded-xs">Signature</span>
-                              </Link>
-                              <Link
-                                to="/shop?gender=men"
+                                to="/shop?category=perfume-body-oils"
                                 className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
                               >
-                                Men&apos;s Fragrances
+                                Perfume Body Oils
                               </Link>
                               <Link
-                                to="/shop?gender=women"
+                                to="/shop?category=candles"
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-sm text-xs text-white/90 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                <span>Scented Candles</span>
+                                <span className="text-[9px] uppercase tracking-wider text-black bg-luxury-gold font-semibold px-1.5 py-0.5 rounded-xs">Official</span>
+                              </Link>
+                              <Link
+                                to="/shop?category=reed-diffusers"
                                 className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
                               >
-                                Women&apos;s Fragrances
+                                Reed Diffusers
+                              </Link>
+                              <Link
+                                to="/shop?category=room-spray"
+                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                              >
+                                Room Sprays
                               </Link>
                             </div>
                           </div>
@@ -380,8 +392,8 @@ export const Navbar: React.FC = () => {
           <Link
             to="/shop"
             className="h-8.5 w-8.5 rounded-full flex items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
-            title="Search Fragrances"
-            aria-label="Search fragrances"
+            title="Search Collection"
+            aria-label="Search collection"
           >
             <Search className="h-4 w-4" />
           </Link>
@@ -522,7 +534,7 @@ export const Navbar: React.FC = () => {
                   to="/shop"
                   className={cn(
                     'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
-                    location.pathname.startsWith('/shop') ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                    location.pathname.startsWith('/shop') && !location.search.includes('category=candles') ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
                   )}
                 >
                   <span>Shop</span>
@@ -537,6 +549,17 @@ export const Navbar: React.FC = () => {
                   )}
                 >
                   <span>Collections</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/shop?category=candles"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname === '/shop' && location.search.includes('category=candles') ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>Candles</span>
                   <ArrowRight className="h-3.5 w-3.5 opacity-60" />
                 </Link>
 

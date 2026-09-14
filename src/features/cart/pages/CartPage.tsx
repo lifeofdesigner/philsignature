@@ -32,7 +32,7 @@ export const CartPage: React.FC = () => {
           <EmptyState
             icon={<ShoppingBag className="h-5 w-5" />}
             title="Your Cart is Empty"
-            description="You have not added any perfumes to your cart yet. Browse our shop to get started."
+            description="You have not added any fragrances or candles to your bag yet. Browse our boutique to get started."
             actionLabel="Shop Now"
             onAction={() => navigate(ROUTES.SHOP)}
           />
@@ -42,7 +42,7 @@ export const CartPage: React.FC = () => {
               <span>{items.length} {items.length === 1 ? 'Item' : 'Items'} in Cart</span>
               <button
                 onClick={clearCart}
-                className="text-luxury-muted hover:text-red-400 transition-colors"
+                className="text-luxury-muted hover:text-red-400 transition-colors cursor-pointer"
               >
                 Clear Entire Bag
               </button>
@@ -57,10 +57,16 @@ export const CartPage: React.FC = () => {
                   maximumFractionDigits: 0,
                 }).format(item.price * item.quantity);
 
+                const isCandle =
+                  item.product.category?.slug === 'candles' ||
+                  item.product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+                  item.product.concentration?.toLowerCase().includes('candle') ||
+                  Boolean(item.product.weight_grams);
+
                 const primaryImage =
                   item.product.images?.find((img) => img.is_primary)?.image_url ||
                   item.product.images?.[0]?.image_url ||
-                  '/products/philz-signature-official-bottle.jpg';
+                  (isCandle ? '/candles/vanilla-treat.jpg' : '/products/philz-signature-official-bottle.jpg');
 
                 return (
                   <div
@@ -80,7 +86,7 @@ export const CartPage: React.FC = () => {
 
                     <div className="flex-1 min-w-0 space-y-1 text-left">
                       <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
-                        {item.product.concentration || 'Perfume Body Oil'} • {item.size || (item.product.volume_ml ? `${item.product.volume_ml}ml` : '30ml')}
+                        {item.product.concentration || (isCandle ? 'Scented Candle' : 'Perfume Body Oil')} • {item.size || (isCandle ? '300g' : `${item.product.volume_ml || 30}ml`)}
                       </span>
                       <h3 className="font-serif text-base sm:text-lg text-luxury-cream font-normal hover:text-luxury-gold transition-colors truncate">
                         <Link to={`/product/${item.product.slug}`}>

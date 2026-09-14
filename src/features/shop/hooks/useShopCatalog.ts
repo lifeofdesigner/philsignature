@@ -12,12 +12,14 @@ export const useShopCatalog = () => {
   // URL State initialization
   const initialFamily = (searchParams.get('family') as FragranceFamily) || 'all';
   const initialCollection = searchParams.get('collection') || 'all';
+  const initialCategory = searchParams.get('category') || 'all';
   const initialGender = searchParams.get('gender') || 'all';
   const initialSort = (searchParams.get('sort') as CatalogFilterOptions['sortBy']) || 'featured';
 
   // Local Filter States
   const [family, setFamily] = useState<FragranceFamily | string | 'all'>(initialFamily);
   const [collectionId, setCollectionId] = useState<string | 'all'>(initialCollection);
+  const [categoryId, setCategoryId] = useState<string | 'all'>(initialCategory);
   const [gender, setGender] = useState<string | 'all'>(initialGender);
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
   const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
@@ -31,10 +33,12 @@ export const useShopCatalog = () => {
   useEffect(() => {
     const fam = (searchParams.get('family') as FragranceFamily) || 'all';
     const col = searchParams.get('collection') || 'all';
+    const cat = searchParams.get('category') || 'all';
     const gen = searchParams.get('gender') || 'all';
     const srt = (searchParams.get('sort') as CatalogFilterOptions['sortBy']) || 'featured';
     setFamily(fam);
     setCollectionId(col);
+    setCategoryId(cat);
     setGender(gen);
     setSortBy(srt);
   }, [searchParams]);
@@ -70,6 +74,7 @@ export const useShopCatalog = () => {
     return productService.filterAndSort(productsQuery.data, {
       family,
       collectionId,
+      categoryId,
       gender,
       minPrice,
       maxPrice,
@@ -77,7 +82,7 @@ export const useShopCatalog = () => {
       searchQuery: deferredSearch,
       sortBy,
     });
-  }, [productsQuery.data, family, collectionId, gender, minPrice, maxPrice, inStockOnly, deferredSearch, sortBy]);
+  }, [productsQuery.data, family, collectionId, categoryId, gender, minPrice, maxPrice, inStockOnly, deferredSearch, sortBy]);
 
   // Pagination calculations
   const totalCount = filteredProducts.length;
@@ -103,6 +108,15 @@ export const useShopCatalog = () => {
     const p = new URLSearchParams(searchParams);
     if (newCollection === 'all') p.delete('collection');
     else p.set('collection', newCollection);
+    setSearchParams(p);
+  };
+
+  const handleCategoryChange = (newCategory: string | 'all') => {
+    setCategoryId(newCategory);
+    setPage(1);
+    const p = new URLSearchParams(searchParams);
+    if (newCategory === 'all') p.delete('category');
+    else p.set('category', newCategory);
     setSearchParams(p);
   };
 
@@ -132,6 +146,7 @@ export const useShopCatalog = () => {
   const resetFilters = () => {
     setFamily('all');
     setCollectionId('all');
+    setCategoryId('all');
     setGender('all');
     setMinPrice(undefined);
     setMaxPrice(undefined);
@@ -145,6 +160,7 @@ export const useShopCatalog = () => {
   const hasActiveFilters =
     family !== 'all' ||
     collectionId !== 'all' ||
+    categoryId !== 'all' ||
     gender !== 'all' ||
     minPrice !== undefined ||
     maxPrice !== undefined ||
@@ -167,6 +183,7 @@ export const useShopCatalog = () => {
     // State
     family,
     collectionId,
+    categoryId,
     gender,
     minPrice,
     maxPrice,
@@ -178,6 +195,7 @@ export const useShopCatalog = () => {
     // Actions
     setFamily: handleFamilyChange,
     setCollectionId: handleCollectionChange,
+    setCategoryId: handleCategoryChange,
     setGender: handleGenderChange,
     setMinPrice,
     setMaxPrice,

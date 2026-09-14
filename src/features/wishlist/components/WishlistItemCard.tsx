@@ -15,16 +15,26 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
   onMoveToCart,
   onRemove,
 }) => {
+  const isCandle =
+    product.category?.slug === 'candles' ||
+    product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+    product.concentration?.toLowerCase().includes('candle') ||
+    Boolean(product.weight_grams);
+
   const primaryImage =
     product.images?.find((img) => img.is_primary)?.image_url ||
     product.images?.[0]?.image_url ||
-    '/products/philz-signature-official-bottle.jpg';
+    (isCandle ? '/candles/vanilla-treat.jpg' : '/products/philz-signature-official-bottle.jpg');
 
   const formattedPrice = new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
     maximumFractionDigits: 0,
   }).format(product.sale_price !== null && product.sale_price !== undefined ? product.sale_price : product.price);
+
+  const subtitle = isCandle
+    ? 'Natural Soy Candle • 300g'
+    : `${product.concentration || 'Perfume'} • ${product.volume_ml || 30}ml`;
 
   return (
     <div className="flex flex-row items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-colors rounded-sm">
@@ -40,7 +50,7 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
       {/* Details */}
       <div className="flex-1 min-w-0 space-y-1.5 text-left">
         <span className="text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
-          {product.concentration || 'Perfume'} • {product.volume_ml || 100}ml
+          {subtitle}
         </span>
         <h3 className="font-serif text-base sm:text-xl text-white font-normal hover:text-luxury-gold transition-colors truncate">
           <Link to={`/product/${product.slug}`}>{product.name}</Link>

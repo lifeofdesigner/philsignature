@@ -36,10 +36,10 @@ export const FeaturedProductsGrid: React.FC<FeaturedProductsGridProps> = ({ prod
             <div className="space-y-2">
               <span className="text-[10px] sm:text-xs uppercase tracking-luxury-wide text-luxury-gold font-medium flex items-center gap-1.5">
                 <Sparkles className="h-3 w-3" />
-                <span>HAUTE PARFUMERIE CATALOG</span>
+                <span>HAUTE PARFUMERIE & CANDLE CATALOG</span>
               </span>
               <h2 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
-                Signature Fragrances
+                Signature Creations
               </h2>
             </div>
 
@@ -80,7 +80,7 @@ export const FeaturedProductsGrid: React.FC<FeaturedProductsGridProps> = ({ prod
             to="/shop"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 hover:border-luxury-gold bg-white/5 hover:bg-luxury-gold hover:text-black text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-md group"
           >
-            <span>Explore All 31 Fragrances</span>
+            <span>Explore All {allProducts.length > 0 ? `${allProducts.length} Creations` : 'Creations'}</span>
             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

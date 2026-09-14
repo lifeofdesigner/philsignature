@@ -53,11 +53,17 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
       {/* Cart Items List */}
       <div className="space-y-3.5 max-h-72 overflow-y-auto pr-1">
         {items.map((item) => {
+          const isCandle =
+            item.product.category?.slug === 'candles' ||
+            item.product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+            item.product.concentration?.toLowerCase().includes('candle') ||
+            Boolean(item.product.weight_grams);
+
           const imgUrl =
             item.product.images?.find((img) => img.is_primary)?.image_url ||
             item.product.images?.[0]?.image_url ||
-            '/products/philz-signature-official-bottle.jpg';
-          const sizeLabel = (item as any).size || (item as any).variant?.size || '30ml';
+            (isCandle ? '/candles/vanilla-treat.jpg' : '/products/philz-signature-official-bottle.jpg');
+          const sizeLabel = (item as any).size || (item as any).variant?.size || (isCandle ? '300g Vessel' : '30ml');
 
           return (
             <div key={item.id} className="flex items-center gap-3 text-xs">

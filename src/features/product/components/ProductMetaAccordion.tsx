@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { ChevronDown, Droplets, Sparkles, RefreshCw } from 'lucide-react';
+import { ChevronDown, Droplets, Sparkles, RefreshCw, Flame } from 'lucide-react';
 
 export interface ProductMetaAccordionProps {
   details?: string | null;
   ingredients?: string | null;
   howToUse?: string | null;
+  isCandle?: boolean;
 }
 
 export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
   details,
   ingredients,
   howToUse,
+  isCandle = false,
 }) => {
   const [openSection, setOpenSection] = useState<string | null>('details');
 
@@ -44,7 +46,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         </div>
       )}
 
-      {/* 2. How to Use */}
+      {/* 2. How to Use / Candle Care */}
       <div>
         <button
           type="button"
@@ -52,8 +54,12 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           className="w-full py-4 flex items-center justify-between text-left text-xs uppercase tracking-luxury text-luxury-cream hover:text-luxury-gold transition-colors cursor-pointer"
         >
           <span className="flex items-center gap-2">
-            <Droplets className="h-3.5 w-3.5 text-luxury-gold" />
-            <span>How to Use</span>
+            {isCandle ? (
+              <Flame className="h-3.5 w-3.5 text-luxury-gold" />
+            ) : (
+              <Droplets className="h-3.5 w-3.5 text-luxury-gold" />
+            )}
+            <span>{isCandle ? 'Candle Care & Burn Ritual' : 'How to Use'}</span>
           </span>
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-200 ${openSection === 'ritual' ? 'rotate-180 text-luxury-gold' : 'text-luxury-muted'}`}
@@ -63,7 +69,9 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed space-y-2 whitespace-pre-line">
             <p>
               {howToUse ||
-                'Apply directly onto pulse points (wrists, neck, inner elbows, collarbones). Gently dab without rubbing to preserve the delicate olfactory composition.'}
+                (isCandle
+                  ? 'Trim wick to 1/4 inch before each lighting. Burn for 2-3 hours on first burn to create a full wax pool. Keep away from drafts, pets, and children.'
+                  : 'Apply directly onto pulse points (wrists, neck, inner elbows, collarbones). Gently dab without rubbing to preserve the delicate olfactory composition.')}
             </p>
           </div>
         )}
@@ -87,7 +95,9 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
         {openSection === 'ingredients' && (
           <div className="pb-4 text-xs text-luxury-sand font-light leading-relaxed font-mono">
             {ingredients ||
-              'Alcohol Denat., Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Citronellol, Geraniol, Eugenol, Farnesol, Benzyl Benzoate.'}
+              (isCandle
+                ? '100% Pure Natural Soy Wax, Lead-Free Cotton Wick, Essential Fragrance Oils, Phthalate-Free Aromatic Concentrates.'
+                : 'Alcohol Denat., Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Citronellol, Geraniol, Eugenol, Farnesol, Benzyl Benzoate.')}
           </div>
         )}
       </div>

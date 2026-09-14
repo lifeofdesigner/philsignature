@@ -16,6 +16,8 @@ const FRAGRANCE_FAMILIES: FragranceFamily[] = [
 export interface ProductFilterDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  categoryId?: string | 'all';
+  onCategoryChange?: (catId: string | 'all') => void;
   family: FragranceFamily | string | 'all';
   onFamilyChange: (fam: FragranceFamily | string | 'all') => void;
   collectionId: string | 'all';
@@ -32,6 +34,8 @@ export interface ProductFilterDrawerProps {
 export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
   isOpen,
   onClose,
+  categoryId = 'all',
+  onCategoryChange,
   family,
   onFamilyChange,
   collectionId,
@@ -73,18 +77,49 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
         {/* Header Reset */}
         <div className="hidden lg:flex items-center justify-between border-b border-luxury-border/60 pb-3">
           <span className="text-xs uppercase tracking-luxury text-luxury-sand font-medium">
-            Filter Perfumes
+            Filter Creations
           </span>
           {hasActiveFilters && (
             <button
               onClick={onReset}
-              className="text-[10px] text-luxury-gold hover:underline flex items-center gap-1"
+              className="text-[10px] text-luxury-gold hover:underline flex items-center gap-1 cursor-pointer"
             >
               <RotateCcw className="h-3 w-3" />
               <span>Reset</span>
             </button>
           )}
         </div>
+
+        {/* Product Category Filter */}
+        {onCategoryChange && (
+          <div className="space-y-3">
+            <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium block">
+              Product Category
+            </span>
+            <div className="space-y-1.5">
+              {[
+                { label: 'All Creations', value: 'all' },
+                { label: 'Perfume Body Oils', value: 'perfumes' },
+                { label: 'Scented Candles', value: 'candles' },
+                { label: 'Reed Diffusers', value: 'reed-diffusers' },
+                { label: 'Room Sprays', value: 'room-spray' },
+              ].map((cat) => (
+                <button
+                  key={cat.value}
+                  type="button"
+                  onClick={() => onCategoryChange(cat.value)}
+                  className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between rounded-xs cursor-pointer ${
+                    categoryId === cat.value
+                      ? 'bg-luxury-gold text-black font-semibold'
+                      : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
+                  }`}
+                >
+                  <span>{cat.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 1. Target Audience / Gender */}
         {onGenderChange && (

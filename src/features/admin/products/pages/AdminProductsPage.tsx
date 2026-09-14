@@ -96,6 +96,7 @@ export const AdminProductsPage: React.FC = () => {
   } = useAdminProducts();
 
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [familyFilter, setFamilyFilter] = useState<string>('all');
   const [stockFilter, setStockFilter] = useState<string>('all');
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -111,13 +112,14 @@ export const AdminProductsPage: React.FC = () => {
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
       if (statusFilter !== 'all' && p.status !== statusFilter) return false;
+      if (categoryFilter !== 'all' && p.category_id !== categoryFilter) return false;
       if (familyFilter !== 'all' && p.fragrance_family !== familyFilter) return false;
       if (stockFilter === 'in_stock' && p.stock_quantity <= 0) return false;
       if (stockFilter === 'low_stock' && (p.stock_quantity <= 0 || p.stock_quantity > 5)) return false;
       if (stockFilter === 'out_of_stock' && p.stock_quantity > 0) return false;
       return true;
     });
-  }, [products, statusFilter, familyFilter, stockFilter]);
+  }, [products, statusFilter, categoryFilter, familyFilter, stockFilter]);
 
   const openCreateForm = () => {
     setEditingProduct(null);
@@ -374,12 +376,23 @@ export const AdminProductsPage: React.FC = () => {
     {
       key: 'price',
       header: 'Pricing & Variants',
-      accessor: (product) => (
-        <div>
-          <div className="text-slate-900 font-bold">{formatCurrency(product.price)}</div>
-          <div className="text-[10px] text-slate-500 font-medium">4 Sizes (₦15k - ₦75k)</div>
-        </div>
-      ),
+      accessor: (product) => {
+        const isCandle =
+          product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+          product.concentration?.toLowerCase().includes('candle') ||
+          Boolean(product.weight_grams);
+        const variantText = isCandle
+          ? '300g Vessel'
+          : product.variants && product.variants.length > 0
+          ? `${product.variants.length} Sizes`
+          : '4 Sizes (15ml - 100ml)';
+        return (
+          <div>
+            <div className="text-slate-900 font-bold">{formatCurrency(product.price)}</div>
+            <div className="text-[10px] text-slate-500 font-medium">{variantText}</div>
+          </div>
+        );
+      },
       sortValue: (product) => product.price,
     },
     {
@@ -514,10 +527,10 @@ export const AdminProductsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-            Fragrance Products & Catalog
+            Products & Catalog
           </h1>
           <p className="text-xs text-slate-600 font-medium mt-1">
-            Manage formulations, SKU codes, pricing, batch stock levels, and publication status.
+            Manage perfumes, scented candles, pricing, batch stock levels, and publication status.
           </p>
         </div>
         <Button
@@ -526,7 +539,7 @@ export const AdminProductsPage: React.FC = () => {
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
-          <span>Add Formulation</span>
+          <span>Add Product</span>
         </Button>
       </div>
 
@@ -542,6 +555,22 @@ export const AdminProductsPage: React.FC = () => {
             <option value="published">Published</option>
             <option value="draft">Draft</option>
             <option value="archived">Archived</option>
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="font-bold text-slate-700">Category:</span>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
+          >
+            <option value="all">All Categories</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
         </div>
 

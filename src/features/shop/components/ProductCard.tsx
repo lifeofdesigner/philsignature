@@ -16,12 +16,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
   const { isInWishlist, toggleWishlist, isToggling } = useWishlist();
 
   const inWishlist = isInWishlist(product.id);
+  const isCandle =
+    product.category?.slug === 'candles' ||
+    product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+    product.concentration?.toLowerCase().includes('candle') ||
+    Boolean(product.weight_grams);
+
   const primaryImage = product.images?.find((img) => img.is_primary)?.image_url || product.images?.[0]?.image_url;
   const hoverImage = product.images?.[1]?.image_url || primaryImage;
 
   const minPrice = product.variants && product.variants.length > 0
     ? Math.min(...product.variants.map((v) => v.price))
     : (product.sale_price !== null && product.sale_price !== undefined ? product.sale_price : product.price);
+
+  const hasMultiplePrices = product.variants && product.variants.length > 1;
 
   const formattedPrice = new Intl.NumberFormat('en-NG', {
     style: 'currency',
@@ -36,6 +44,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         maximumFractionDigits: 0,
       }).format(product.price)
     : null;
+
+  const productSubtitle = isCandle
+    ? 'Natural Soy Candle • 300g (Up to 48h Burn Time)'
+    : `${product.concentration || 'Perfume Body Oil'} • 4 Sizes (15ml - 100ml)`;
 
   return (
     <motion.div
@@ -53,7 +65,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-luxury-charcoal/50">
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <img
-            src={isHovered && hoverImage ? hoverImage : primaryImage || '/products/philz-signature-official-bottle.jpg'}
+            src={isHovered && hoverImage ? hoverImage : primaryImage || (isCandle ? '/candles/vanilla-treat.jpg' : '/products/philz-signature-official-bottle.jpg')}
             alt={product.name}
             className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
             loading={priority ? 'eager' : 'lazy'}
@@ -103,7 +115,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       <div className="p-3.5 sm:p-5 flex flex-col justify-between flex-grow space-y-2 sm:space-y-3">
         <div className="space-y-1">
           <span className="text-[8px] sm:text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
-            {product.concentration || 'Perfume Body Oil'} • 4 Sizes (15ml - 100ml)
+            {productSubtitle}
           </span>
           <h3 className="font-serif text-sm sm:text-base lg:text-lg text-white font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
             <Link to={`/product/${product.slug}`}>{product.name}</Link>
@@ -119,7 +131,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         <div className="pt-2 border-t border-luxury-border/50 flex items-center justify-between gap-1">
           <div className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
             <span className="font-serif text-sm sm:text-base text-luxury-gold font-normal">
-              <span className="text-[10px] text-luxury-muted font-sans uppercase mr-1">From</span>
+              {hasMultiplePrices && (
+                <span className="text-[10px] text-luxury-muted font-sans uppercase mr-1">From</span>
+              )}
               {formattedPrice}
             </span>
             {formattedOriginalPrice && (

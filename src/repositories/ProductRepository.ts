@@ -102,7 +102,7 @@ export class ProductRepository extends BaseRepository {
         .from('products')
         .select('*, images:product_images(*), variants:product_variants(*), category:categories(*), collection:collections(*)')
         .eq('status', 'published')
-        .or(`name.ilike.%${cleaned}%,sku.ilike.%${cleaned}%,tagline.ilike.%${cleaned}%,scent_profile.ilike.%${cleaned}%,fragrance_family.ilike.%${cleaned}%,description.ilike.%${cleaned}%,best_for.ilike.%${cleaned}%`)
+        .or(`name.ilike.%${cleaned}%,sku.ilike.%${cleaned}%,tagline.ilike.%${cleaned}%,concentration.ilike.%${cleaned}%,scent_profile.ilike.%${cleaned}%,fragrance_family.ilike.%${cleaned}%,description.ilike.%${cleaned}%,best_for.ilike.%${cleaned}%`)
         .order('display_order', { ascending: true })
         .limit(limit);
 
