@@ -60,8 +60,7 @@ export const CartPage: React.FC = () => {
                 const isCandle =
                   item.product.category?.slug === 'candles' ||
                   item.product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
-                  item.product.concentration?.toLowerCase().includes('candle') ||
-                  Boolean(item.product.weight_grams);
+                  Boolean(item.product.concentration?.toLowerCase().includes('candle'));
 
                 const primaryImage =
                   item.product.images?.find((img) => img.is_primary)?.image_url ||

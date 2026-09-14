@@ -379,8 +379,7 @@ export const AdminProductsPage: React.FC = () => {
       accessor: (product) => {
         const isCandle =
           product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
-          product.concentration?.toLowerCase().includes('candle') ||
-          Boolean(product.weight_grams);
+          Boolean(product.concentration?.toLowerCase().includes('candle'));
         const variantText = isCandle
           ? '300g Vessel'
           : product.variants && product.variants.length > 0

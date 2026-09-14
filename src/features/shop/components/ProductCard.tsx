@@ -19,8 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
   const isCandle =
     product.category?.slug === 'candles' ||
     product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
-    product.concentration?.toLowerCase().includes('candle') ||
-    Boolean(product.weight_grams);
+    Boolean(product.concentration?.toLowerCase().includes('candle'));
 
   const primaryImage = product.images?.find((img) => img.is_primary)?.image_url || product.images?.[0]?.image_url;
   const hoverImage = product.images?.[1]?.image_url || primaryImage;

@@ -49,8 +49,7 @@ export const ProductDetailPage: React.FC = () => {
   const isCandle =
     product?.category?.slug === 'candles' ||
     product?.category_id === 'c3333333-3333-3333-3333-333333333333' ||
-    product?.concentration?.toLowerCase().includes('candle') ||
-    Boolean(product?.weight_grams);
+    Boolean(product?.concentration?.toLowerCase().includes('candle'));
 
   return (
     <div className="min-h-screen bg-luxury-black text-luxury-cream py-10 sm:py-16">

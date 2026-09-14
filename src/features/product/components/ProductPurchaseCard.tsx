@@ -26,8 +26,7 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
   const isCandle =
     product.category?.slug === 'candles' ||
     product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
-    product.concentration?.toLowerCase().includes('candle') ||
-    Boolean(product.weight_grams);
+    Boolean(product.concentration?.toLowerCase().includes('candle'));
 
   // Determine available variants
   const variants = useMemo(() => {

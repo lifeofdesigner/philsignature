@@ -67,9 +67,15 @@ export class ProductService {
       result = result.filter((p) => {
         if (p.category_id === options.categoryId) return true;
         if (p.category && (p.category.id === options.categoryId || p.category.slug?.toLowerCase() === c || p.category.name?.toLowerCase() === c)) return true;
-        if (c === 'candles' && (p.category_id === 'c3333333-3333-3333-3333-333333333333' || p.category?.slug === 'candles' || p.concentration?.toLowerCase().includes('candle') || Boolean(p.weight_grams))) return true;
+        if (c === 'candles') {
+          return p.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+                 p.category?.slug === 'candles' ||
+                 Boolean(p.concentration?.toLowerCase().includes('candle'));
+        }
         if (c === 'perfumes' || c === 'perfume-body-oils') {
-          return p.category?.slug === 'perfumes' || p.category_id === 'c1111111-1111-1111-1111-111111111111' || (!p.concentration?.toLowerCase().includes('candle') && !p.weight_grams);
+          return p.category?.slug === 'perfumes' ||
+                 p.category_id === 'c1111111-1111-1111-1111-111111111111' ||
+                 (!p.concentration?.toLowerCase().includes('candle') && p.category?.slug !== 'candles');
         }
         return false;
       });
