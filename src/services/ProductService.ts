@@ -70,12 +70,13 @@ export class ProductService {
         if (c === 'candles') {
           return p.category_id === 'c3333333-3333-3333-3333-333333333333' ||
                  p.category?.slug === 'candles' ||
+                 p.collection_id === '7e11d0a5-8374-4b5c-897b-4020c48e4d20' ||
                  Boolean(p.concentration?.toLowerCase().includes('candle'));
         }
         if (c === 'perfumes' || c === 'perfume-body-oils') {
           return p.category?.slug === 'perfumes' ||
                  p.category_id === 'c1111111-1111-1111-1111-111111111111' ||
-                 (!p.concentration?.toLowerCase().includes('candle') && p.category?.slug !== 'candles');
+                 (!p.concentration?.toLowerCase().includes('candle') && p.category?.slug !== 'candles' && p.collection_id !== '7e11d0a5-8374-4b5c-897b-4020c48e4d20');
         }
         return false;
       });
@@ -83,7 +84,17 @@ export class ProductService {
 
     // 3. Collection Filter
     if (options.collectionId && options.collectionId !== 'all') {
-      result = result.filter((p) => p.collection_id === options.collectionId);
+      const col = options.collectionId.toLowerCase().trim();
+      result = result.filter((p) => {
+        if (p.collection_id === options.collectionId) return true;
+        if (p.collection && (p.collection.id === options.collectionId || p.collection.slug?.toLowerCase() === col)) return true;
+        if (col === 'scented-candles' || col === 'candle-collection') {
+          return p.collection_id === '7e11d0a5-8374-4b5c-897b-4020c48e4d20' ||
+                 p.category_id === 'c3333333-3333-3333-3333-333333333333' ||
+                 Boolean(p.concentration?.toLowerCase().includes('candle'));
+        }
+        return false;
+      });
     }
 
     // 4. Gender / Target Audience Filter

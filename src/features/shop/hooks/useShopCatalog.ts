@@ -106,8 +106,14 @@ export const useShopCatalog = () => {
     setCollectionId(newCollection);
     setPage(1);
     const p = new URLSearchParams(searchParams);
-    if (newCollection === 'all') p.delete('collection');
-    else p.set('collection', newCollection);
+    if (newCollection === 'all') {
+      p.delete('collection');
+    } else {
+      p.set('collection', newCollection);
+      // Clear product category so all creations within the selected boutique collection show
+      p.delete('category');
+      setCategoryId('all');
+    }
     setSearchParams(p);
   };
 
@@ -115,8 +121,14 @@ export const useShopCatalog = () => {
     setCategoryId(newCategory);
     setPage(1);
     const p = new URLSearchParams(searchParams);
-    if (newCategory === 'all') p.delete('category');
-    else p.set('category', newCategory);
+    if (newCategory === 'all') {
+      p.delete('category');
+    } else {
+      p.set('category', newCategory);
+      // Clear boutique collection so all creations in the selected product category show
+      p.delete('collection');
+      setCollectionId('all');
+    }
     setSearchParams(p);
   };
 

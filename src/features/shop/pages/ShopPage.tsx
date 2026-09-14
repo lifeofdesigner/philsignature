@@ -52,27 +52,37 @@ export const ShopPage: React.FC = () => {
     { label: 'Citrus & Tropical', value: 'Citrus' },
   ];
 
+  const selectedCollection = collections.find(
+    (c) => c.id === collectionId || c.slug === collectionId
+  );
+
   return (
     <div className="min-h-screen bg-black text-luxury-cream py-12 sm:py-20">
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
         {/* Header Title */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <span className="text-[10px] sm:text-xs uppercase tracking-luxury-wide text-luxury-gold font-medium block">
-            {categoryId === 'candles'
+            {selectedCollection
+              ? `✦ ${selectedCollection.tagline || selectedCollection.name}`
+              : categoryId === 'candles'
               ? '✦ Official Scented Candle Collection'
               : categoryId === 'perfumes'
               ? '✦ The Haute Parfumerie Collection'
               : '✦ The Philz Signature Boutique'}
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight">
-            {categoryId === 'candles'
+            {selectedCollection
+              ? selectedCollection.name
+              : categoryId === 'candles'
               ? 'Hand-Poured Scented Candles'
               : categoryId === 'perfumes'
               ? 'All Perfumes & Extraits'
               : 'All Olfactory Creations'}
           </h1>
           <p className="text-xs sm:text-sm lg:text-base text-white/70 font-light leading-relaxed max-w-xl mx-auto">
-            {categoryId === 'candles'
+            {selectedCollection
+              ? selectedCollection.description
+              : categoryId === 'candles'
               ? 'Handcrafted 300g luxury soy candles infused with bespoke aromatic essences. Designed to transform any living space into a sanctuary of warmth, serenity, and distinction.'
               : categoryId === 'perfumes'
               ? 'Handcrafted with rare botanical extracts and high-concentration perfume oils for lasting elegance and distinctive sillage.'
@@ -88,7 +98,9 @@ export const ShopPage: React.FC = () => {
               { label: 'Reed Diffusers', value: 'reed-diffusers' },
               { label: 'Room Sprays', value: 'room-spray' },
             ].map((cat) => {
-              const isSelected = categoryId === cat.value;
+              const isSelected =
+                (cat.value === 'all' && categoryId === 'all' && collectionId === 'all') ||
+                (cat.value !== 'all' && categoryId === cat.value);
               return (
                 <button
                   key={cat.label}

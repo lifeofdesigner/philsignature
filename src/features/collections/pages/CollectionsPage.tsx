@@ -29,20 +29,20 @@ export const CollectionsPage: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium">
-            Perfume Collections
+            Philz Signature Collections
           </span>
           <h1 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
             Our Collections
           </h1>
           <p className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
-            Explore our curated perfume collections, grouped by scent character and mood.
+            Explore our curated haute parfumerie and artisanal scented candle collections.
           </p>
         </div>
 
         {collections.length === 0 ? (
           <EmptyState
             title="No Collections Found"
-            description="We are preparing new perfume collections. Please check back soon."
+            description="We are preparing new collections. Please check back soon."
           />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
