@@ -123,12 +123,12 @@ INSERT INTO public.products (
     'Discover Citrus: Hand-poured 150ml luxury room spray crafted in Lagos. Sparkling bergamot, golden mandarin, and bright botanical refreshment.',
     5, 0
 ),
--- 3. Fresh
+-- 3. Fruity
 (
     'e1000003-0003-4003-8003-000000000003',
-    'Fresh',
-    'fresh-room-spray',
-    'PS-SPR-FR03',
+    'Fruity',
+    'fruity-room-spray',
+    'PS-RS-FRUITY-150',
     35000.00,
     NULL,
     50,
@@ -138,20 +138,20 @@ INSERT INTO public.products (
     'PHILZ SIGNATURE',
     'c4444444-4444-4444-4444-444444444444',
     '8f22e0b6-9485-4c6d-988c-5031d59f5e31',
-    'Fresh • Aquatic • Fruity',
-    'Crisp Marine Air • Orchard Fruits • Morning Greenery',
-    'Bathrooms, Open Living Areas & Daylong Revitalization',
+    'Fruity • Sweet • Radiant',
+    'Sun-Ripened Berries • Crisp Orchard Apple • Sheer Peach • Radiant Musk',
+    'Living Rooms, Dining Suites, Kitchens & Vibrant Daytime Entertaining',
     'Fine Fragrance Room Mist • Hand Poured in Lagos',
-    'Hand-poured in Lagos. 150ml fine-mist trigger spray room mist blending crisp oceanic breezes with juicy orchard fruit accents.',
-    'Fine Fragrance Room Spray hand-poured in Lagos. Delivers a revitalizing burst of pure coastal freshness and delicate fruit undertones, transforming stuffy interiors into an airy sanctuary.',
+    'Hand-poured in Lagos. 150ml fine-mist trigger spray room mist blending sun-ripened orchard berries, crisp apple, and golden peach.',
+    'Fine Fragrance Room Spray hand-poured in Lagos. Philz Signature Fruity Room Spray (150ml) envelops living spaces in an intoxicating cascade of sun-ripened berries, crisp orchard fruits, and velvety summer peach. Poured in Lagos and fitted with a high-performance trigger atomizer, it delivers a fine, lingering mist that instantly refreshes ambient air and linens with refined sweetness.',
     E'Volume: 150ml\nAtomizer: Ergonomic Trigger Spray with Lock\nBase: Premium Fine Fragrance Mist\nOrigin: Hand Poured in Lagos, Nigeria',
     'Alcohol Denat., Water (Aqua), Fragrance (Parfum), Dipropylene Glycol.',
     'Turn the nozzle switch to ON. Spray 2 to 3 pumps into the center of the room. Switch nozzle to OFF when not in use.',
     'published',
     true, false, true, true,
     203,
-    'Fresh Fine Fragrance Room Spray (150ml) | PHILZ SIGNATURE',
-    'Discover Fresh: Hand-poured 150ml luxury room spray crafted in Lagos. Crisp marine notes, vibrant orchard fruit accents, and airy purity.',
+    'Fruity Fine Fragrance Room Spray (150ml) | PHILZ SIGNATURE',
+    'Discover Fruity: Hand-poured 150ml luxury room spray crafted in Lagos. Sun-ripened berries, crisp orchard apple, and sheer velvety peach.',
     5, 0
 ),
 -- 4. Floral
@@ -251,7 +251,7 @@ INSERT INTO public.product_images (product_id, image_url, alt_text, display_orde
 VALUES
 ('e1000001-0001-4001-8001-000000000001', 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/room-sprays/gourmand.jpg', 'Gourmand - Philz Signature Fine Fragrance Room Spray (150ml)', 0, true),
 ('e1000002-0002-4002-8002-000000000002', 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/room-sprays/citrus.jpg', 'Citrus - Philz Signature Fine Fragrance Room Spray (150ml)', 0, true),
-('e1000003-0003-4003-8003-000000000003', 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/room-sprays/fresh.jpg', 'Fresh - Philz Signature Fine Fragrance Room Spray (150ml)', 0, true),
+('e1000003-0003-4003-8003-000000000003', 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/room-sprays/fruity.jpg', 'Fruity - Philz Signature Fine Fragrance Room Spray (150ml)', 0, true),
 ('e1000004-0004-4004-8004-000000000004', 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/room-sprays/floral.jpg', 'Floral - Philz Signature Fine Fragrance Room Spray (150ml)', 0, true),
 ('e1000005-0005-4005-8005-000000000005', 'https://nntszytexvmolywvadyx.supabase.co/storage/v1/object/public/products/room-sprays/woody.jpg', 'Woody - Philz Signature Fine Fragrance Room Spray (150ml)', 0, true);
 
@@ -273,3 +273,4 @@ VALUES
 ('e1000005-0005-4005-8005-000000000005', '150ml Atomizer', 150, 35000.00, NULL, 50, 'PS-SPR-WD05-150ML', true, 0);
 
 NOTIFY pgrst, 'reload schema';
+

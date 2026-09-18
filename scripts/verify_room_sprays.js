@@ -46,7 +46,7 @@ async function runVerification() {
   const products = await prodRes.json();
   console.log(`\nFound ${products.length} room spray products in database:`);
   
-  const expectedNames = ['Gourmand', 'Citrus', 'Fresh', 'Floral', 'Woody'];
+  const expectedNames = ['Gourmand', 'Citrus', 'Fruity', 'Floral', 'Woody'];
   for (const name of expectedNames) {
     const p = products.find(prod => prod.name.toLowerCase() === name.toLowerCase());
     if (p) {
@@ -70,7 +70,7 @@ async function runVerification() {
 
   // 4. Verify Local Files
   console.log('\nVerifying local public image files:');
-  const slugs = ['gourmand', 'citrus', 'fresh', 'floral', 'woody'];
+  const slugs = ['gourmand', 'citrus', 'fruity', 'floral', 'woody'];
   for (const slug of slugs) {
     const localPath = path.resolve(__dirname, `../public/room-sprays/${slug}.jpg`);
     if (fs.existsSync(localPath)) {
@@ -128,3 +128,4 @@ runVerification().catch(err => {
   console.error('Fatal error during verification:', err);
   process.exit(1);
 });
+

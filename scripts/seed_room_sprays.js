@@ -40,9 +40,9 @@ const ROOM_SPRAY_IMAGES = [
     sourceFile: 'C:/Users/September Images/.gemini/antigravity/brain/f13bb896-0f6c-4062-8460-891717dbce8d/.user_uploaded/media_1789739338363.jpg',
   },
   {
-    slug: 'fresh',
-    name: 'Fresh',
-    sourceFile: 'C:/Users/September Images/.gemini/antigravity/brain/f13bb896-0f6c-4062-8460-891717dbce8d/.user_uploaded/media_1789739338365.jpg',
+    slug: 'fruity',
+    name: 'Fruity',
+    sourceFile: 'public/room-sprays/fruity.jpg',
   },
   {
     slug: 'floral',
@@ -103,25 +103,25 @@ const ROOM_SPRAY_PRODUCTS = [
   },
   {
     id: 'e1000003-0003-4003-8003-000000000003',
-    name: 'Fresh',
-    slug: 'fresh-room-spray',
-    sku: 'PS-SPR-FR03',
+    name: 'Fruity',
+    slug: 'fruity-room-spray',
+    sku: 'PS-RS-FRUITY-150',
     price: 35000,
     volume_ml: 150,
     weight_grams: 220,
     concentration: 'Room Spray',
-    fragrance_family: 'Fresh • Aquatic • Fruity',
-    scent_profile: 'Crisp Marine Air • Orchard Fruits • Morning Greenery',
-    best_for: 'Bathrooms, Open Living Areas & Daylong Revitalization',
+    fragrance_family: 'Fruity • Sweet • Radiant',
+    scent_profile: 'Sun-Ripened Berries • Crisp Orchard Apple • Sheer Peach • Radiant Musk',
+    best_for: 'Living Rooms, Dining Suites, Kitchens & Vibrant Daytime Entertaining',
     tagline: 'Fine Fragrance Room Mist • Hand Poured in Lagos',
-    short_description: 'Hand-poured in Lagos. 150ml fine-mist trigger spray room mist blending crisp oceanic breezes with juicy orchard fruit accents.',
-    description: 'Fine Fragrance Room Spray hand-poured in Lagos. Delivers a revitalizing burst of pure coastal freshness and delicate fruit undertones, transforming stuffy interiors into an airy sanctuary.',
+    short_description: 'Hand-poured in Lagos. 150ml fine-mist trigger spray room mist blending sun-ripened orchard berries, crisp apple, and golden peach.',
+    description: 'Fine Fragrance Room Spray hand-poured in Lagos. Philz Signature Fruity Room Spray (150ml) envelops living spaces in an intoxicating cascade of sun-ripened berries, crisp orchard fruits, and velvety summer peach. Poured in Lagos and fitted with a high-performance trigger atomizer, it delivers a fine, lingering mist that instantly refreshes ambient air and linens with refined sweetness.',
     details: 'Volume: 150ml\nAtomizer: Ergonomic Trigger Spray with Lock\nBase: Premium Fine Fragrance Mist\nOrigin: Hand Poured in Lagos, Nigeria',
     ingredients: 'Alcohol Denat., Water (Aqua), Fragrance (Parfum), Dipropylene Glycol.',
     how_to_use: 'Turn the nozzle switch to ON. Spray 2 to 3 pumps into the center of the room. Switch nozzle to OFF when not in use.',
-    meta_title: 'Fresh Fine Fragrance Room Spray (150ml) | PHILZ SIGNATURE',
-    meta_description: 'Discover Fresh: Hand-poured 150ml luxury room spray crafted in Lagos. Crisp marine notes, vibrant orchard fruit accents, and airy purity.',
-    image_file: 'fresh.jpg',
+    meta_title: 'Fruity Fine Fragrance Room Spray (150ml) | PHILZ SIGNATURE',
+    meta_description: 'Discover Fruity: Hand-poured 150ml luxury room spray crafted in Lagos. Sun-ripened berries, crisp orchard apple, and sheer velvety peach.',
+    image_file: 'fruity.jpg',
   },
   {
     id: 'e1000004-0004-4004-8004-000000000004',
@@ -359,3 +359,4 @@ run().catch((err) => {
   console.error('Seeding failed:', err);
   process.exit(1);
 });
+

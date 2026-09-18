@@ -156,13 +156,12 @@ export class ProductService {
         const descMatch = p.description ? p.description.toLowerCase().includes(q) : false;
         const shortDescMatch = p.short_description ? p.short_description.toLowerCase().includes(q) : false;
         const concMatch = p.concentration ? p.concentration.toLowerCase().includes(q) : false;
-        const fruityAliasMatch = (q === 'fruity' || q.includes('fruit')) && (p.slug === 'fresh-room-spray' || p.name.toLowerCase() === 'fresh');
         const notesMatch = [
           ...(p.top_notes || []),
           ...(p.middle_notes || []),
           ...(p.base_notes || []),
         ].some((n) => n.toLowerCase().includes(q));
-        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || descMatch || shortDescMatch || notesMatch || concMatch || fruityAliasMatch;
+        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || descMatch || shortDescMatch || notesMatch || concMatch;
       });
     }
 
