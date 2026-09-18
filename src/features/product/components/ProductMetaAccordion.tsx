@@ -6,6 +6,7 @@ export interface ProductMetaAccordionProps {
   ingredients?: string | null;
   howToUse?: string | null;
   isCandle?: boolean;
+  isRoomSpray?: boolean;
 }
 
 export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
@@ -13,6 +14,7 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
   ingredients,
   howToUse,
   isCandle = false,
+  isRoomSpray = false,
 }) => {
   const [openSection, setOpenSection] = useState<string | null>('details');
 
@@ -56,10 +58,12 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
           <span className="flex items-center gap-2">
             {isCandle ? (
               <Flame className="h-3.5 w-3.5 text-luxury-gold" />
+            ) : isRoomSpray ? (
+              <Sparkles className="h-3.5 w-3.5 text-luxury-gold" />
             ) : (
               <Droplets className="h-3.5 w-3.5 text-luxury-gold" />
             )}
-            <span>{isCandle ? 'Candle Care & Burn Ritual' : 'How to Use'}</span>
+            <span>{isCandle ? 'Candle Care & Burn Ritual' : isRoomSpray ? 'Directions & Misting Ritual' : 'How to Use'}</span>
           </span>
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-200 ${openSection === 'ritual' ? 'rotate-180 text-luxury-gold' : 'text-luxury-muted'}`}
@@ -71,6 +75,8 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
               {howToUse ||
                 (isCandle
                   ? 'Trim wick to 1/4 inch before each lighting. Burn for 2-3 hours on first burn to create a full wax pool. Keep away from drafts, pets, and children.'
+                  : isRoomSpray
+                  ? 'Hold upright and mist 2 to 3 pumps into the center of the room or toward linens and curtains from 30cm away. Allow the fine aromatic mist to disperse naturally.'
                   : 'Apply directly onto pulse points (wrists, neck, inner elbows, collarbones). Gently dab without rubbing to preserve the delicate olfactory composition.')}
             </p>
           </div>
@@ -97,6 +103,8 @@ export const ProductMetaAccordion: React.FC<ProductMetaAccordionProps> = ({
             {ingredients ||
               (isCandle
                 ? '100% Pure Natural Soy Wax, Lead-Free Cotton Wick, Essential Fragrance Oils, Phthalate-Free Aromatic Concentrates.'
+                : isRoomSpray
+                ? 'Aqua (Demineralized Water), Alcohol Denat., Parfum (Fine Fragrance Concentrates), PEG-40 Hydrogenated Castor Oil, Dipropylene Glycol.'
                 : 'Alcohol Denat., Parfum (Fragrance), Aqua (Water), Limonene, Linalool, Citronellol, Geraniol, Eugenol, Farnesol, Benzyl Benzoate.')}
           </div>
         )}

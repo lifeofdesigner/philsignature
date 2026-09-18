@@ -380,8 +380,13 @@ export const AdminProductsPage: React.FC = () => {
         const isCandle =
           product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
           Boolean(product.concentration?.toLowerCase().includes('candle'));
+        const isRoomSpray =
+          product.category_id === 'c4444444-4444-4444-4444-444444444444' ||
+          Boolean(product.concentration?.toLowerCase().includes('room spray'));
         const variantText = isCandle
           ? '300g Vessel'
+          : isRoomSpray
+          ? '150ml Atomizer'
           : product.variants && product.variants.length > 0
           ? `${product.variants.length} Sizes`
           : '4 Sizes (15ml - 100ml)';
@@ -529,7 +534,7 @@ export const AdminProductsPage: React.FC = () => {
             Products & Catalog
           </h1>
           <p className="text-xs text-slate-600 font-medium mt-1">
-            Manage perfumes, scented candles, pricing, batch stock levels, and publication status.
+            Manage perfumes, scented candles, luxury room sprays, pricing, batch stock levels, and publication status.
           </p>
         </div>
         <Button

@@ -35,7 +35,7 @@ export const CollectionsPage: React.FC = () => {
             Our Collections
           </h1>
           <p className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
-            Explore our curated haute parfumerie and artisanal scented candle collections.
+            Explore our curated haute parfumerie, artisanal scented candles, and luxury room spray collections.
           </p>
         </div>
 

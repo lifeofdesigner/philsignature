@@ -66,6 +66,8 @@ export const ShopPage: React.FC = () => {
               ? `✦ ${selectedCollection.tagline || selectedCollection.name}`
               : categoryId === 'candles'
               ? '✦ Official Scented Candle Collection'
+              : categoryId === 'room-spray' || categoryId === 'room-sprays'
+              ? '✦ Official Room Spray Collection'
               : categoryId === 'perfumes'
               ? '✦ The Haute Parfumerie Collection'
               : '✦ The Philz Signature Boutique'}
@@ -75,6 +77,8 @@ export const ShopPage: React.FC = () => {
               ? selectedCollection.name
               : categoryId === 'candles'
               ? 'Hand-Poured Scented Candles'
+              : categoryId === 'room-spray' || categoryId === 'room-sprays'
+              ? 'Fine Mist Room Sprays'
               : categoryId === 'perfumes'
               ? 'All Perfumes & Extraits'
               : 'All Olfactory Creations'}
@@ -84,9 +88,11 @@ export const ShopPage: React.FC = () => {
               ? selectedCollection.description
               : categoryId === 'candles'
               ? 'Handcrafted 300g luxury soy candles infused with bespoke aromatic essences. Designed to transform any living space into a sanctuary of warmth, serenity, and distinction.'
+              : categoryId === 'room-spray' || categoryId === 'room-sprays'
+              ? 'Handcrafted 150ml fine fragrance atmospheric mists poured in Lagos with ergonomic trigger atomizers. Instant atmosphere transformations for living areas, bedrooms, and fine fabrics.'
               : categoryId === 'perfumes'
               ? 'Handcrafted with rare botanical extracts and high-concentration perfume oils for lasting elegance and distinctive sillage.'
-              : 'Handcrafted with rare botanical extracts, concentrated perfume oils, and luxury hand-poured soy candles for enduring sillage and elevated living.'}
+              : 'Handcrafted with rare botanical extracts, concentrated perfume oils, luxury soy candles, and fine room mists for enduring sillage and elevated living.'}
           </p>
 
           {/* Luxury Product Category Selector */}
@@ -100,7 +106,10 @@ export const ShopPage: React.FC = () => {
             ].map((cat) => {
               const isSelected =
                 (cat.value === 'all' && categoryId === 'all' && collectionId === 'all') ||
-                (cat.value !== 'all' && categoryId === cat.value);
+                (cat.value !== 'all' &&
+                  (categoryId === cat.value ||
+                    (cat.value === 'room-spray' && categoryId === 'room-sprays') ||
+                    (cat.value === 'candles' && categoryId === 'candle')));
               return (
                 <button
                   key={cat.label}

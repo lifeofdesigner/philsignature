@@ -268,9 +268,10 @@ export const Navbar: React.FC = () => {
                               </Link>
                               <Link
                                 to="/shop?category=room-spray"
-                                className="block px-2.5 py-1.5 rounded-sm text-xs text-white/80 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-sm text-xs text-white/90 hover:text-luxury-gold hover:bg-white/5 transition-all font-light"
                               >
-                                Room Sprays
+                                <span>Room Sprays</span>
+                                <span className="text-[9px] uppercase tracking-wider text-black bg-luxury-gold font-semibold px-1.5 py-0.5 rounded-xs">Official</span>
                               </Link>
                             </div>
                           </div>
@@ -560,6 +561,17 @@ export const Navbar: React.FC = () => {
                   )}
                 >
                   <span>Candles</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/shop?category=room-spray"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname === '/shop' && (location.search.includes('category=room-spray') || location.search.includes('category=room-sprays')) ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>Room Sprays</span>
                   <ArrowRight className="h-3.5 w-3.5 opacity-60" />
                 </Link>
 

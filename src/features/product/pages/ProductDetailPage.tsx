@@ -51,17 +51,35 @@ export const ProductDetailPage: React.FC = () => {
     product?.category_id === 'c3333333-3333-3333-3333-333333333333' ||
     Boolean(product?.concentration?.toLowerCase().includes('candle'));
 
+  const isRoomSpray =
+    product?.category?.slug === 'room-sprays' ||
+    product?.category?.slug === 'room-spray' ||
+    product?.category_id === 'c4444444-4444-4444-4444-444444444444' ||
+    Boolean(product?.concentration?.toLowerCase().includes('room spray'));
+
+  const backLink = isCandle
+    ? "/shop?category=candles"
+    : isRoomSpray
+    ? "/shop?category=room-spray"
+    : "/shop";
+
+  const backLabel = isCandle
+    ? "Back to Candles"
+    : isRoomSpray
+    ? "Back to Room Sprays"
+    : "Back to Shop";
+
   return (
     <div className="min-h-screen bg-luxury-black text-luxury-cream py-10 sm:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-muted">
           <Link
-            to={isCandle ? "/shop?category=candles" : "/shop"}
+            to={backLink}
             className="inline-flex items-center gap-1.5 hover:text-luxury-gold transition-colors font-medium"
           >
             <ChevronLeft className="h-3.5 w-3.5" />
-            <span>{isCandle ? "Back to Candles" : "Back to Shop"}</span>
+            <span>{backLabel}</span>
           </Link>
           <span className="opacity-40">/</span>
           <span className="text-luxury-sand truncate max-w-xs">{product.name}</span>
@@ -104,6 +122,7 @@ export const ProductDetailPage: React.FC = () => {
               ingredients={product.ingredients}
               howToUse={product.how_to_use}
               isCandle={isCandle}
+              isRoomSpray={isRoomSpray}
             />
           </div>
         </div>

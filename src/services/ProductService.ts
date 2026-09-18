@@ -67,6 +67,13 @@ export class ProductService {
       result = result.filter((p) => {
         if (p.category_id === options.categoryId) return true;
         if (p.category && (p.category.id === options.categoryId || p.category.slug?.toLowerCase() === c || p.category.name?.toLowerCase() === c)) return true;
+        if (c === 'room-spray' || c === 'room-sprays') {
+          return p.category_id === 'c4444444-4444-4444-4444-444444444444' ||
+                 p.category?.slug === 'room-sprays' ||
+                 p.category?.slug === 'room-spray' ||
+                 p.collection_id === '8f22e0b6-9485-4c6d-988c-5031d59f5e31' ||
+                 Boolean(p.concentration?.toLowerCase().includes('room spray'));
+        }
         if (c === 'candles') {
           return p.category_id === 'c3333333-3333-3333-3333-333333333333' ||
                  p.category?.slug === 'candles' ||
@@ -76,7 +83,13 @@ export class ProductService {
         if (c === 'perfumes' || c === 'perfume-body-oils') {
           return p.category?.slug === 'perfumes' ||
                  p.category_id === 'c1111111-1111-1111-1111-111111111111' ||
-                 (!p.concentration?.toLowerCase().includes('candle') && p.category?.slug !== 'candles' && p.collection_id !== '7e11d0a5-8374-4b5c-897b-4020c48e4d20');
+                 (!p.concentration?.toLowerCase().includes('candle') &&
+                  !p.concentration?.toLowerCase().includes('room spray') &&
+                  p.category?.slug !== 'candles' &&
+                  p.category?.slug !== 'room-sprays' &&
+                  p.category?.slug !== 'room-spray' &&
+                  p.collection_id !== '7e11d0a5-8374-4b5c-897b-4020c48e4d20' &&
+                  p.collection_id !== '8f22e0b6-9485-4c6d-988c-5031d59f5e31');
         }
         return false;
       });
@@ -92,6 +105,11 @@ export class ProductService {
           return p.collection_id === '7e11d0a5-8374-4b5c-897b-4020c48e4d20' ||
                  p.category_id === 'c3333333-3333-3333-3333-333333333333' ||
                  Boolean(p.concentration?.toLowerCase().includes('candle'));
+        }
+        if (col === 'room-sprays' || col === 'room-spray') {
+          return p.collection_id === '8f22e0b6-9485-4c6d-988c-5031d59f5e31' ||
+                 p.category_id === 'c4444444-4444-4444-4444-444444444444' ||
+                 Boolean(p.concentration?.toLowerCase().includes('room spray'));
         }
         return false;
       });
@@ -125,7 +143,7 @@ export class ProductService {
       result = result.filter((p) => p.stock_quantity > 0);
     }
 
-    // 7. Search Query (Name, Family, Notes, Profile, Target, Descriptions)
+    // 7. Search Query (Name, Family, Notes, Profile, Target, Descriptions, Concentration)
     if (options.searchQuery && options.searchQuery.trim() !== '') {
       const q = options.searchQuery.toLowerCase().trim();
       result = result.filter((p) => {
@@ -137,12 +155,14 @@ export class ProductService {
         const familyMatch = p.fragrance_family ? p.fragrance_family.toLowerCase().includes(q) : false;
         const descMatch = p.description ? p.description.toLowerCase().includes(q) : false;
         const shortDescMatch = p.short_description ? p.short_description.toLowerCase().includes(q) : false;
+        const concMatch = p.concentration ? p.concentration.toLowerCase().includes(q) : false;
+        const fruityAliasMatch = (q === 'fruity' || q.includes('fruit')) && (p.slug === 'fresh-room-spray' || p.name.toLowerCase() === 'fresh');
         const notesMatch = [
           ...(p.top_notes || []),
           ...(p.middle_notes || []),
           ...(p.base_notes || []),
         ].some((n) => n.toLowerCase().includes(q));
-        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || descMatch || shortDescMatch || notesMatch;
+        return nameMatch || skuMatch || taglineMatch || scentProfileMatch || bestForMatch || familyMatch || descMatch || shortDescMatch || notesMatch || concMatch || fruityAliasMatch;
       });
     }
 

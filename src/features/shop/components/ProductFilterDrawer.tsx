@@ -109,7 +109,9 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                   type="button"
                   onClick={() => onCategoryChange(cat.value)}
                   className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between rounded-xs cursor-pointer ${
-                    categoryId === cat.value
+                    (categoryId === cat.value ||
+                      (cat.value === 'room-spray' && categoryId === 'room-sprays') ||
+                      (cat.value === 'candles' && categoryId === 'candle'))
                       ? 'bg-luxury-gold text-black font-semibold'
                       : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
                   }`}

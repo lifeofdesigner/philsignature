@@ -21,6 +21,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
     product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
     Boolean(product.concentration?.toLowerCase().includes('candle'));
 
+  const isRoomSpray =
+    product.category?.slug === 'room-sprays' ||
+    product.category?.slug === 'room-spray' ||
+    product.category_id === 'c4444444-4444-4444-4444-444444444444' ||
+    Boolean(product.concentration?.toLowerCase().includes('room spray'));
+
   const primaryImage = product.images?.find((img) => img.is_primary)?.image_url || product.images?.[0]?.image_url;
   const hoverImage = product.images?.[1]?.image_url || primaryImage;
 
@@ -46,6 +52,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
 
   const productSubtitle = isCandle
     ? 'Natural Soy Candle • 300g (Up to 48h Burn Time)'
+    : isRoomSpray
+    ? 'Fine Fragrance Room Mist • 150ml Atomizer'
     : `${product.concentration || 'Perfume Body Oil'} • 4 Sizes (15ml - 100ml)`;
 
   return (

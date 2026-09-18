@@ -262,7 +262,7 @@ export const AdminCategoriesPage: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Fragrance Categories</h1>
           <p className="text-xs text-slate-600 font-medium mt-1">
-            Organize catalog formulations into Extrait, Perfume Oils, Body Care, Diffusers, and Candles.
+            Organize catalog formulations into Extrait, Perfume Oils, Scented Candles, and Room Sprays.
           </p>
         </div>
         <Button

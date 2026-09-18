@@ -28,6 +28,12 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
     product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
     Boolean(product.concentration?.toLowerCase().includes('candle'));
 
+  const isRoomSpray =
+    product.category?.slug === 'room-sprays' ||
+    product.category?.slug === 'room-spray' ||
+    product.category_id === 'c4444444-4444-4444-4444-444444444444' ||
+    Boolean(product.concentration?.toLowerCase().includes('room spray'));
+
   // Determine available variants
   const variants = useMemo(() => {
     if (product.variants && product.variants.length > 0) {
@@ -38,14 +44,19 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
         { id: 'v300g', size_ml: 300, name: '300g Vessel', price: 40000, sale_price: null, is_default: true, stock_quantity: 100 }
       ] as unknown as ProductVariant[];
     }
+    if (isRoomSpray) {
+      return [
+        { id: 'v150ml', size_ml: 150, name: '150ml Atomizer', price: 35000, sale_price: null, is_default: true, stock_quantity: 100 }
+      ] as unknown as ProductVariant[];
+    }
     return DEFAULT_FALLBACK_VARIANTS as unknown as ProductVariant[];
-  }, [product.variants, isCandle]);
+  }, [product.variants, isCandle, isRoomSpray]);
 
   // Default to primary variant
   const defaultVariant = useMemo(() => {
     return (
       variants.find((v) => v.is_default) ||
-      variants.find((v) => v.size_ml === 30 || v.name === '30ml' || v.name === '300g Vessel') ||
+      variants.find((v) => v.size_ml === 30 || v.name === '30ml' || v.name === '300g Vessel' || v.name === '150ml Atomizer') ||
       variants[0]
     );
   }, [variants]);
@@ -143,10 +154,10 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
       {/* Specifications & Badges */}
       <div className="flex flex-wrap items-center gap-2.5 text-xs">
         <span className="px-3 py-1 bg-luxury-card border border-luxury-border text-luxury-cream uppercase tracking-wider text-[10px] font-medium">
-          {product.concentration || (isCandle ? 'Scented Candle' : 'Perfume Body Oil')}
+          {product.concentration || (isCandle ? 'Scented Candle' : isRoomSpray ? 'Room Spray' : 'Perfume Body Oil')}
         </span>
         <span className="px-3 py-1 bg-luxury-card border border-luxury-border text-luxury-sand text-[10px] font-mono">
-          {selectedVariant?.name || (isCandle ? '300g Vessel' : `${product.volume_ml || 30}ml`)}
+          {selectedVariant?.name || (isCandle ? '300g Vessel' : isRoomSpray ? '150ml Atomizer' : `${product.volume_ml || 30}ml`)}
         </span>
         <span className="text-[10px] text-emerald-500 dark:text-emerald-400 flex items-center gap-1 font-mono">
           <ShieldCheck className="h-3 w-3" /> Handcrafted
@@ -177,10 +188,10 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
       <div className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
           <span className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">
-            {isCandle ? 'Vessel Specification' : 'Select Flacon Size'}
+            {isCandle ? 'Vessel Specification' : isRoomSpray ? 'Bottle Specification' : 'Select Flacon Size'}
           </span>
           <span className="text-xs font-mono text-luxury-gold">
-            {selectedVariant?.name || (isCandle ? '300g Vessel' : '30ml')}
+            {selectedVariant?.name || (isCandle ? '300g Vessel' : isRoomSpray ? '150ml Atomizer' : '30ml')}
           </span>
         </div>
         <div className={variants.length === 1 ? 'grid grid-cols-1 sm:grid-cols-2 max-w-sm gap-2 sm:gap-3' : 'grid grid-cols-4 gap-2 sm:gap-3'}>
