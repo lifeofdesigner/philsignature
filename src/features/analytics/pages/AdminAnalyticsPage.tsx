@@ -23,7 +23,7 @@ export const AdminAnalyticsPage: React.FC = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sales Analytics &amp; Intelligence</h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">Live order metrics and fragrance sales revenue</p>
+          <p className="text-xs text-slate-700 font-semibold mt-1">Live order metrics and fragrance sales revenue</p>
         </div>
         <EmptyState
           icon={<BarChart3 className="h-5 w-5" />}
@@ -41,7 +41,7 @@ export const AdminAnalyticsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="pb-2 border-b border-slate-200">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sales Analytics &amp; Revenue Intelligence</h1>
-        <p className="text-xs text-slate-900 font-semibold mt-1">
+        <p className="text-xs text-slate-700 font-semibold mt-1">
           Real-time financial performance, 14-day sales trends, bestselling formulations, and fulfillment distribution.
         </p>
       </div>

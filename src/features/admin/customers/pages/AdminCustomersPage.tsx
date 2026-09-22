@@ -158,7 +158,7 @@ export const AdminCustomersPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Client & Customer Directory
           </h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Registered patrons, order history stats, lifetime acquisitions, and account standing.
           </p>
         </div>

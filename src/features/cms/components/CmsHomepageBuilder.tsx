@@ -78,7 +78,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
             <LayoutGrid className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-semibold text-slate-900">Modular Homepage Layout Engine</h3>
           </div>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Drag, reorder, configure backgrounds, spacing, and animations for each section on the storefront homepage.
           </p>
         </div>

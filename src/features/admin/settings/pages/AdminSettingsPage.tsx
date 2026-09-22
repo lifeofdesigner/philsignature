@@ -88,7 +88,7 @@ export const AdminSettingsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             System & Enterprise Settings Hub
           </h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Store identity, brand theme asset manager, feature flags engine, form builder, and API security keys.
           </p>
         </div>

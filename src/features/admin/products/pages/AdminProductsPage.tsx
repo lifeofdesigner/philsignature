@@ -533,7 +533,7 @@ export const AdminProductsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Products & Catalog
           </h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Manage perfumes, scented candles, luxury room sprays, pricing, batch stock levels, and publication status.
           </p>
         </div>

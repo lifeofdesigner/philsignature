@@ -33,7 +33,7 @@ export const AdminSeoPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">SEO &amp; Metadata Engine</h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Control search engine snippets, OpenGraph social sharing, canonical URLs, robots.txt, and structured data schemas.
           </p>
         </div>

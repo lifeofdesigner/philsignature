@@ -153,7 +153,7 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="text-2xl font-bold text-slate-900 tracking-tight">
               {snapshot?.totalOrders || 0}
             </div>
-            <div className="flex items-center text-xs text-slate-900 font-semibold mt-1">
+            <div className="flex items-center text-xs text-slate-700 font-semibold mt-1">
               <Clock className="h-3.5 w-3.5 mr-1 text-slate-700" />
               <span>{pendingFulfillmentCount + processingCount} awaiting dispatch</span>
             </div>

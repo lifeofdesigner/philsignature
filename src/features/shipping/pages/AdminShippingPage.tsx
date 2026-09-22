@@ -262,7 +262,7 @@ export const AdminShippingPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Shipping Zones & Rates</h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Configure delivery zones, nationwide flat rates, express couriers, and free shipping triggers.
           </p>
         </div>

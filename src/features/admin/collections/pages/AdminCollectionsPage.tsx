@@ -361,7 +361,7 @@ export const AdminCollectionsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Curated Collections Engine
           </h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Curate thematic product suites like Private Reserve, Oud Edition, and Atelier Exclusives.
           </p>
         </div>

@@ -124,7 +124,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             <FileText className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-bold text-slate-900">Policy Pages &amp; Client Information</h3>
           </div>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Manage terms of service, return protocols, delivery policies, FAQs, and contact details without code edits.
           </p>
         </div>

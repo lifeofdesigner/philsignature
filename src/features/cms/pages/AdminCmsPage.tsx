@@ -122,7 +122,7 @@ export const AdminCmsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Storefront CMS & Visual Builder
           </h1>
-          <p className="text-xs text-slate-900 font-semibold mt-1">
+          <p className="text-xs text-slate-700 font-semibold mt-1">
             Real-time visual editor for hero motion slider, modular homepage layout, menus, policies, and brand theme.
           </p>
         </div>
