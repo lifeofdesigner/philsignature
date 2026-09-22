@@ -93,7 +93,7 @@ export const AdminMediaPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Digital Asset Vault &amp; Media</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Manage high-resolution photography, hero banners, campaign graphics, and avatars in Supabase Storage.
           </p>
         </div>
@@ -194,7 +194,7 @@ export const AdminMediaPage: React.FC = () => {
                   <p className="text-xs font-semibold text-slate-900 truncate" title={item.file_name}>
                     {item.file_name}
                   </p>
-                  <p className="text-[10px] text-slate-500 font-mono">
+                  <p className="text-[10px] text-slate-700 font-mono">
                     {formatSize(item.size_bytes)}
                   </p>
 
@@ -202,7 +202,7 @@ export const AdminMediaPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => copyUrl(item)}
-                      className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors cursor-pointer"
+                      className="p-1 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors cursor-pointer"
                       title="Copy Public URL"
                     >
                       {copiedId === item.id ? (
@@ -215,7 +215,7 @@ export const AdminMediaPage: React.FC = () => {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
+                      className="p-1 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
                       title="Open full resolution in new tab"
                     >
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -223,7 +223,7 @@ export const AdminMediaPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setDeleteTarget(item)}
-                      className="p-1 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
+                      className="p-1 text-slate-700 hover:text-red-600 hover:bg-red-50 rounded transition-colors cursor-pointer"
                       title="Delete Asset"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -245,7 +245,7 @@ export const AdminMediaPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPreviewTarget(null)}
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-md"
+                className="text-slate-700 hover:text-slate-700 p-1 rounded-md"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -259,7 +259,7 @@ export const AdminMediaPage: React.FC = () => {
               />
             </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-between text-xs text-slate-700 pt-2 border-t border-slate-100">
               <span>Bucket: <strong className="text-slate-800 uppercase">{previewTarget.bucket}</strong> • Size: {formatSize(previewTarget.size_bytes)}</span>
               <Button
                 size="sm"
@@ -280,7 +280,7 @@ export const AdminMediaPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900">Remove Media Asset?</h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-800">
               This will permanently delete file <span className="font-semibold text-slate-900">"{deleteTarget.file_name}"</span> from the <span className="uppercase font-mono font-bold">{deleteTarget.bucket}</span> storage bucket.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">

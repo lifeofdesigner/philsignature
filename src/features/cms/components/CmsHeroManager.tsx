@@ -108,7 +108,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-3">
           <div>
             <h3 className="text-base font-bold text-slate-900">Hero Slider Configuration</h3>
-            <p className="text-xs text-slate-500 font-medium">Control motion, autoplay timing, and transitions for the storefront hero billboard.</p>
+            <p className="text-xs text-slate-700 font-medium">Control motion, autoplay timing, and transitions for the storefront hero billboard.</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs font-semibold text-slate-700">Autoplay Enabled</span>
@@ -169,7 +169,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-bold text-slate-900">Active Slide Sequences</h3>
-          <p className="text-xs text-slate-500 font-medium">Add, order, and customize billboard slides with imagery or background video.</p>
+          <p className="text-xs text-slate-700 font-medium">Add, order, and customize billboard slides with imagery or background video.</p>
         </div>
         <Button size="sm" onClick={handleAddSlide} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
           <Plus className="h-3.5 w-3.5" />
@@ -192,7 +192,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
 
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 mr-2">
-                  <span className="text-xs font-semibold text-slate-600">Active</span>
+                  <span className="text-xs font-semibold text-slate-800">Active</span>
                   <Switch
                     checked={slide.is_active}
                     onCheckedChange={(checked) => handleUpdateSlide(slide.id, { is_active: checked })}
@@ -232,7 +232,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
                   size="sm"
                   disabled={slides.length <= 1}
                   onClick={() => handleDeleteSlide(index)}
-                  className="h-7 w-7 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 border-slate-200"
+                  className="h-7 w-7 p-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200"
                   title="Delete Slide"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -345,7 +345,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
                 <span>Background Video (Optional)</span>
               </div>
               <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 p-2 rounded-lg">
-                <span className="text-xs font-mono text-slate-600 truncate flex-1">
+                <span className="text-xs font-mono text-slate-800 truncate flex-1">
                   {slide.video_url || 'No video uploaded'}
                 </span>
                 <input
@@ -370,7 +370,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-7 w-7 p-0 shrink-0 text-slate-400 hover:text-red-600 hover:bg-red-50 border-slate-200"
+                    className="h-7 w-7 p-0 shrink-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200"
                     onClick={() => handleUpdateSlide(slide.id, { video_url: undefined })}
                     title="Remove Video"
                   >

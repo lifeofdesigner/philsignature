@@ -122,13 +122,13 @@ export const AdminCmsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Storefront CMS & Visual Builder
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Real-time visual editor for hero motion slider, modular homepage layout, menus, policies, and brand theme.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-lg text-xs font-semibold text-slate-600 border border-slate-200">
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 rounded-lg text-xs font-semibold text-slate-800 border border-slate-200">
             {isSaving ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin text-slate-700" />
@@ -148,7 +148,7 @@ export const AdminCmsPage: React.FC = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300 transition-colors"
           >
-            <Eye className="h-3.5 w-3.5 text-slate-500" />
+            <Eye className="h-3.5 w-3.5 text-slate-700" />
             <span>Preview Live Store</span>
           </a>
         </div>
@@ -206,7 +206,7 @@ export const AdminCmsPage: React.FC = () => {
                 <CardDescription>High-priority alert banner fixed above storefront header</CardDescription>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-medium text-slate-600">Enabled:</span>
+                <span className="text-xs font-medium text-slate-800">Enabled:</span>
                 <Switch
                   checked={announcementForm.enabled}
                   onCheckedChange={(checked) => setAnnouncementForm((p) => (p ? { ...p, enabled: checked } : p))}
@@ -400,7 +400,7 @@ export const AdminCmsPage: React.FC = () => {
                 <Sparkles className="h-4 w-4 text-slate-700" />
                 <span>Generative AI Content Assistant</span>
               </CardTitle>
-              <CardDescription className="text-slate-600 font-medium">Draft perfume descriptions, FAQs, SEO metadata, or landing page copy</CardDescription>
+              <CardDescription className="text-slate-800 font-medium">Draft perfume descriptions, FAQs, SEO metadata, or landing page copy</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Textarea

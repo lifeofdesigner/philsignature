@@ -124,7 +124,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             <FileText className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-bold text-slate-900">Policy Pages &amp; Client Information</h3>
           </div>
-          <p className="text-xs text-slate-500 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Manage terms of service, return protocols, delivery policies, FAQs, and contact details without code edits.
           </p>
         </div>
@@ -134,7 +134,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             type="button"
             onClick={() => setActiveTab('privacy')}
             className={`px-3 py-1.5 text-xs rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'privacy' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              activeTab === 'privacy' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-800 hover:text-slate-900'
             }`}
           >
             Privacy
@@ -143,7 +143,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             type="button"
             onClick={() => setActiveTab('terms')}
             className={`px-3 py-1.5 text-xs rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'terms' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              activeTab === 'terms' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-800 hover:text-slate-900'
             }`}
           >
             Terms
@@ -152,7 +152,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             type="button"
             onClick={() => setActiveTab('shipping')}
             className={`px-3 py-1.5 text-xs rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'shipping' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              activeTab === 'shipping' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-800 hover:text-slate-900'
             }`}
           >
             Shipping
@@ -161,7 +161,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             type="button"
             onClick={() => setActiveTab('returns')}
             className={`px-3 py-1.5 text-xs rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'returns' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              activeTab === 'returns' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-800 hover:text-slate-900'
             }`}
           >
             Returns
@@ -170,7 +170,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             type="button"
             onClick={() => setActiveTab('faq')}
             className={`px-3 py-1.5 text-xs rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'faq' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              activeTab === 'faq' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-800 hover:text-slate-900'
             }`}
           >
             FAQs
@@ -179,7 +179,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             type="button"
             onClick={() => setActiveTab('contact')}
             className={`px-3 py-1.5 text-xs rounded-md font-semibold transition-colors cursor-pointer ${
-              activeTab === 'contact' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              activeTab === 'contact' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-800 hover:text-slate-900'
             }`}
           >
             Contact
@@ -369,7 +369,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
           <div className="flex items-center justify-between border-b border-slate-200 pb-3">
             <div>
               <h4 className="text-base font-bold text-slate-900">Storefront FAQ Entries</h4>
-              <p className="text-xs text-slate-500 font-medium">Manage question &amp; answer accordions shown on the FAQ page.</p>
+              <p className="text-xs text-slate-700 font-medium">Manage question &amp; answer accordions shown on the FAQ page.</p>
             </div>
             <Button variant="outline" size="sm" onClick={handleAddFaqItem} className="gap-1.5 text-xs border-slate-300">
               <Plus className="h-3.5 w-3.5 text-slate-700" />
@@ -401,7 +401,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={() => handleDeleteFaqItem(idx)}
-                    className="h-6 w-6 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 border-slate-200"
+                    className="h-6 w-6 p-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200"
                   >
                     <Trash2 className="h-3 w-3" />
                   </Button>

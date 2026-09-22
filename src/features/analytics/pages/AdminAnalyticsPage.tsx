@@ -23,7 +23,7 @@ export const AdminAnalyticsPage: React.FC = () => {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sales Analytics &amp; Intelligence</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">Live order metrics and fragrance sales revenue</p>
+          <p className="text-xs text-slate-900 font-semibold mt-1">Live order metrics and fragrance sales revenue</p>
         </div>
         <EmptyState
           icon={<BarChart3 className="h-5 w-5" />}
@@ -41,7 +41,7 @@ export const AdminAnalyticsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="pb-2 border-b border-slate-200">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sales Analytics &amp; Revenue Intelligence</h1>
-        <p className="text-xs text-slate-600 font-medium mt-1">
+        <p className="text-xs text-slate-900 font-semibold mt-1">
           Real-time financial performance, 14-day sales trends, bestselling formulations, and fulfillment distribution.
         </p>
       </div>
@@ -58,7 +58,7 @@ export const AdminAnalyticsPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Gross Sales</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Gross Sales</span>
                 <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center">
                   <DollarSign className="h-4 w-4" />
                 </div>
@@ -69,18 +69,18 @@ export const AdminAnalyticsPage: React.FC = () => {
 
             <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Orders</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Total Orders</span>
                 <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-800 flex items-center justify-center">
                   <ShoppingBag className="h-4 w-4" />
                 </div>
               </div>
               <div className="text-2xl font-bold text-slate-900">{snapshot.totalOrders}</div>
-              <p className="text-[11px] text-slate-600">{snapshot.paidOrders} paid orders fulfilled</p>
+              <p className="text-[11px] text-slate-800">{snapshot.paidOrders} paid orders fulfilled</p>
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Average Order Value</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Average Order Value</span>
                 <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-800 flex items-center justify-center">
                   <TrendingUp className="h-4 w-4" />
                 </div>
@@ -88,18 +88,18 @@ export const AdminAnalyticsPage: React.FC = () => {
               <div className="text-2xl font-bold text-slate-900">
                 {formatCurrency(Math.round(snapshot.averageOrderValue))}
               </div>
-              <p className="text-[11px] text-slate-600">Per paying client</p>
+              <p className="text-[11px] text-slate-800">Per paying client</p>
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-2 shadow-2xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Unique Clients</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Unique Clients</span>
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center">
                   <Users className="h-4 w-4" />
                 </div>
               </div>
               <div className="text-2xl font-bold text-slate-900">{snapshot.totalCustomers}</div>
-              <p className="text-[11px] text-slate-600">Registered profiles</p>
+              <p className="text-[11px] text-slate-800">Registered profiles</p>
             </div>
           </div>
 
@@ -107,7 +107,7 @@ export const AdminAnalyticsPage: React.FC = () => {
           <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-bold text-slate-900">Revenue Trend — Past 14 Days</h3>
-              <span className="text-xs font-medium text-slate-500 font-mono">Daily volume (₦)</span>
+              <span className="text-xs font-medium text-slate-700 font-mono">Daily volume (₦)</span>
             </div>
 
             <div className="flex items-end gap-2 h-44 pt-4 border-b border-slate-100">
@@ -125,7 +125,7 @@ export const AdminAnalyticsPage: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    <span className="text-[10px] text-slate-500 font-mono font-medium">{d.date.slice(8, 10)}</span>
+                    <span className="text-[10px] text-slate-700 font-mono font-medium">{d.date.slice(8, 10)}</span>
                   </div>
                 );
               })}
@@ -138,7 +138,7 @@ export const AdminAnalyticsPage: React.FC = () => {
             <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
               <h3 className="text-base font-bold text-slate-900">Bestselling Formulations</h3>
               {snapshot.topProducts.length === 0 ? (
-                <p className="text-xs text-slate-500">No product sales recorded yet.</p>
+                <p className="text-xs text-slate-700">No product sales recorded yet.</p>
               ) : (
                 <div className="space-y-4">
                   {snapshot.topProducts.map((p) => (
@@ -153,7 +153,7 @@ export const AdminAnalyticsPage: React.FC = () => {
                           style={{ width: `${(p.revenue / maxTopProductRevenue) * 100}%` }}
                         />
                       </div>
-                      <div className="flex justify-between text-[11px] text-slate-500">
+                      <div className="flex justify-between text-[11px] text-slate-700">
                         <span>{p.unitsSold} units dispatched</span>
                         <span>{Math.round((p.revenue / (snapshot.totalRevenue || 1)) * 100)}% of total</span>
                       </div>

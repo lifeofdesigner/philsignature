@@ -30,12 +30,12 @@ export const AdminShell: React.FC = () => {
         />
 
         {/* SaaS Breadcrumb Navigation Bar */}
-        <div className="bg-white border-b border-slate-200 px-6 py-2.5 flex items-center gap-2 text-xs text-slate-600 font-medium">
+        <div className="bg-white border-b border-slate-200 px-6 py-2.5 flex items-center gap-2 text-xs text-slate-800 font-medium">
           <Link
             to="/admin"
             className="flex items-center gap-1 hover:text-slate-900 transition-colors"
           >
-            <Home className="h-3.5 w-3.5 text-slate-500" />
+            <Home className="h-3.5 w-3.5 text-slate-700" />
             <span>Dashboard</span>
           </Link>
           {pathSegments.map((segment, index) => {
@@ -45,7 +45,7 @@ export const AdminShell: React.FC = () => {
 
             return (
               <React.Fragment key={path}>
-                <ChevronRight className="h-3 w-3 text-slate-400 shrink-0" />
+                <ChevronRight className="h-3 w-3 text-slate-700 shrink-0" />
                 {isLast ? (
                   <span className="font-bold text-slate-900 tracking-wide">
                     {label}
@@ -53,7 +53,7 @@ export const AdminShell: React.FC = () => {
                 ) : (
                   <Link
                     to={path}
-                    className="hover:text-slate-900 transition-colors tracking-wide text-slate-600 font-medium"
+                    className="hover:text-slate-900 transition-colors tracking-wide text-slate-800 font-medium"
                   >
                     {label}
                   </Link>

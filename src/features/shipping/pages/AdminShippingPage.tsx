@@ -157,7 +157,7 @@ export const AdminShippingPage: React.FC = () => {
           <div>
             <div className="text-sm font-bold text-slate-900">{method.name}</div>
             {method.description && (
-              <p className="text-xs text-slate-600 line-clamp-1 max-w-sm">{method.description}</p>
+              <p className="text-xs text-slate-800 line-clamp-1 max-w-sm">{method.description}</p>
             )}
           </div>
         </div>
@@ -189,7 +189,7 @@ export const AdminShippingPage: React.FC = () => {
       header: 'Estimated Transit',
       accessor: (method: ShippingMethod) => (
         <div className="flex items-center gap-1.5 text-xs text-slate-700 font-medium">
-          <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <Clock className="w-3.5 h-3.5 text-slate-700" />
           <span>{method.estimated_days || '1-3 Business Days'}</span>
         </div>
       ),
@@ -203,7 +203,7 @@ export const AdminShippingPage: React.FC = () => {
           className={`inline-flex items-center text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-full font-bold border ${
             method.is_active
               ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
-              : 'text-slate-600 border-slate-200 bg-slate-100'
+              : 'text-slate-800 border-slate-200 bg-slate-100'
           }`}
         >
           {method.is_active ? 'Active' : 'Disabled'}
@@ -219,7 +219,7 @@ export const AdminShippingPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleDuplicate(method)}
-            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Duplicate Method"
           >
             <Copy className="h-4 w-4" />
@@ -227,7 +227,7 @@ export const AdminShippingPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(method)}
-            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Method"
           >
             <Pencil className="h-4 w-4" />
@@ -235,7 +235,7 @@ export const AdminShippingPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setDeleteTarget(method)}
-            className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
             title="Delete Method"
           >
             <Trash2 className="h-4 w-4" />
@@ -262,7 +262,7 @@ export const AdminShippingPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Shipping Zones & Rates</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Configure delivery zones, nationwide flat rates, express couriers, and free shipping triggers.
           </p>
         </div>
@@ -295,7 +295,7 @@ export const AdminShippingPage: React.FC = () => {
               <button
                 type="button"
                 onClick={closeForm}
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                className="text-slate-700 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -413,7 +413,7 @@ export const AdminShippingPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900">Remove Shipping Method?</h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-800">
               This will permanently delete shipping method <span className="font-semibold text-slate-900">"{deleteTarget.name}"</span>. Customers in this zone will no longer see this option.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">

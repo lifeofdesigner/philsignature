@@ -78,7 +78,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
             <LayoutGrid className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-semibold text-slate-900">Modular Homepage Layout Engine</h3>
           </div>
-          <p className="text-xs text-slate-500 font-normal mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Drag, reorder, configure backgrounds, spacing, and animations for each section on the storefront homepage.
           </p>
         </div>
@@ -111,7 +111,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   <span className="text-sm font-semibold text-slate-900 block">
                     {section.title}
                   </span>
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-500">
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-slate-700">
                     Type: {section.type} • Status: {section.status}
                   </span>
                 </div>
@@ -119,7 +119,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
 
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 mr-2">
-                  <span className="text-xs font-medium text-slate-600">Active</span>
+                  <span className="text-xs font-medium text-slate-800">Active</span>
                   <Switch
                     checked={section.is_enabled}
                     onCheckedChange={(checked) => handleUpdateSection(section.id, { is_enabled: checked })}

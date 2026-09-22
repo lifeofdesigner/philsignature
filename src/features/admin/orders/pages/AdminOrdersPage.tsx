@@ -259,7 +259,7 @@ export const AdminOrdersPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Orders & Consignments Fulfillment
           </h1>
-          <p className="text-xs text-slate-800 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Track customer checkouts, update parcel dispatch status, and inspect transaction manifests.
           </p>
         </div>

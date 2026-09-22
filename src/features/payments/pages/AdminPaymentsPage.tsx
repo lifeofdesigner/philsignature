@@ -34,7 +34,7 @@ export const AdminPaymentsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Payment Gateways &amp; Settlement</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Configure automated card processing (Paystack, Flutterwave) and offline settlement (Direct Bank Wire, Cash on Delivery).
           </p>
         </div>
@@ -64,13 +64,13 @@ export const AdminPaymentsPage: React.FC = () => {
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${
                       form.paystack_enabled
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                        : 'bg-slate-100 text-slate-600 border border-slate-200'
+                        : 'bg-slate-100 text-slate-800 border border-slate-200'
                     }`}
                   >
                     {form.paystack_enabled ? 'Active' : 'Disabled'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 font-medium mt-0.5">
+                <p className="text-xs text-slate-800 font-medium mt-0.5">
                   Accept Visa, Mastercard, Verve, Apple Pay, USSD, and Bank Transfer with instant automated verification.
                 </p>
               </div>
@@ -102,7 +102,7 @@ export const AdminPaymentsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPaystackSecret(!showPaystackSecret)}
-                  className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-slate-700 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
                 >
                   {showPaystackSecret ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   <span>{showPaystackSecret ? 'Hide' : 'Reveal'}</span>
@@ -133,13 +133,13 @@ export const AdminPaymentsPage: React.FC = () => {
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${
                       form.flutterwave_enabled
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                        : 'bg-slate-100 text-slate-600 border border-slate-200'
+                        : 'bg-slate-100 text-slate-800 border border-slate-200'
                     }`}
                   >
                     {form.flutterwave_enabled ? 'Active' : 'Disabled'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 font-medium mt-0.5">
+                <p className="text-xs text-slate-800 font-medium mt-0.5">
                   Pan-African &amp; global multi-currency payments with baraza checkout support.
                 </p>
               </div>
@@ -171,7 +171,7 @@ export const AdminPaymentsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowFlutterwaveSecret(!showFlutterwaveSecret)}
-                  className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-slate-700 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
                 >
                   {showFlutterwaveSecret ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   <span>{showFlutterwaveSecret ? 'Hide' : 'Reveal'}</span>
@@ -202,13 +202,13 @@ export const AdminPaymentsPage: React.FC = () => {
                     className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${
                       form.bank_transfer_enabled
                         ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                        : 'bg-slate-100 text-slate-500 border-slate-200'
+                        : 'bg-slate-100 text-slate-700 border-slate-200'
                     }`}
                   >
                     {form.bank_transfer_enabled ? 'Active' : 'Disabled'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-slate-700 mt-0.5">
                   Display official boutique corporate bank account details during checkout. Orders remain Pending until payment receipt verification.
                 </p>
               </div>

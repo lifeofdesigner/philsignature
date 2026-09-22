@@ -80,7 +80,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-3">
           <div>
             <h3 className="text-base font-bold text-slate-900">Instagram Feed Configuration</h3>
-            <p className="text-xs text-slate-500 font-medium">
+            <p className="text-xs text-slate-700 font-medium">
               Instagram no longer allows pulling a live feed from a public handle automatically — add each post below
               and it will display on the homepage exactly as arranged here.
             </p>
@@ -144,7 +144,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-lg font-bold text-slate-900">Feed Posts</h3>
-          <p className="text-xs text-slate-500 font-medium">Add the posts you want to showcase — image, caption, and engagement counts.</p>
+          <p className="text-xs text-slate-700 font-medium">Add the posts you want to showcase — image, caption, and engagement counts.</p>
         </div>
         <Button size="sm" onClick={handleAddPost} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
           <Plus className="h-3.5 w-3.5" />
@@ -154,7 +154,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
 
       <div className="space-y-5">
         {posts.length === 0 && (
-          <div className="bg-white border border-dashed border-slate-300 rounded-xl p-8 text-center text-xs text-slate-500 font-medium">
+          <div className="bg-white border border-dashed border-slate-300 rounded-xl p-8 text-center text-xs text-slate-700 font-medium">
             No posts yet. Click "Add Post" to feature your first Instagram image.
           </div>
         )}
@@ -179,7 +179,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
                   <Button variant="outline" size="sm" className="h-7 w-7 p-0 border-slate-200" onClick={() => handleMovePost(index, 1)} disabled={index === posts.length - 1} title="Move Down">
                     <ArrowDown className="h-3.5 w-3.5" />
                   </Button>
-                  <Button variant="outline" size="sm" className="h-7 w-7 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 border-slate-200" onClick={() => handleDeletePost(post.id)} title="Delete Post">
+                  <Button variant="outline" size="sm" className="h-7 w-7 p-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200" onClick={() => handleDeletePost(post.id)} title="Delete Post">
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 </div>

@@ -61,7 +61,7 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
             <Navigation className="h-5 w-5 text-slate-700" />
             <h3 className="text-base font-bold text-slate-900">Header & Navigation Menu Builder</h3>
           </div>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Build and reorder top header navigation links, promotional badges, and mega-menu links.
           </p>
         </div>
@@ -100,7 +100,7 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
 
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 mr-2">
-                  <span className="text-xs font-medium text-slate-600">Visible</span>
+                  <span className="text-xs font-medium text-slate-800">Visible</span>
                   <Switch
                     checked={item.is_active}
                     onCheckedChange={(checked) => handleUpdateItem(item.id, { is_active: checked })}

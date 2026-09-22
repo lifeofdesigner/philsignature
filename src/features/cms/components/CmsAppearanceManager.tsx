@@ -44,7 +44,7 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           <Palette className="h-5 w-5 text-slate-700" />
           <h3 className="text-base font-semibold text-slate-900">Store Appearance & Theme Settings</h3>
         </div>
-        <p className="text-xs text-slate-500 font-normal">
+        <p className="text-xs text-slate-700 font-normal">
           Configure default storefront theme mode, brand accent palette, border radiuses, and brand logos without code modifications.
         </p>
       </div>
@@ -144,14 +144,14 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
                   <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono font-medium">Active</span>
                 )}
               </div>
-              <p className="text-[11px] text-slate-500 leading-tight">{item.help}</p>
+              <p className="text-[11px] text-slate-700 leading-tight">{item.help}</p>
               
               <div className="flex items-center gap-3 pt-1">
                 <div className="h-12 w-12 bg-white border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden shrink-0 shadow-2xs">
                   {item.current ? (
                     <img src={item.current} alt={item.label} className="h-full w-full object-contain p-1" />
                   ) : (
-                    <ImageOff className="h-4 w-4 text-slate-400" />
+                    <ImageOff className="h-4 w-4 text-slate-700" />
                   )}
                 </div>
 

@@ -261,7 +261,7 @@ export const AdminCategoriesPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Fragrance Categories</h1>
-          <p className="text-xs text-slate-800 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Organize catalog formulations into Extrait, Perfume Oils, Scented Candles, and Room Sprays.
           </p>
         </div>

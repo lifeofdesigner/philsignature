@@ -309,7 +309,7 @@ export const AdminUsersPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Users, Roles &amp; Access Control (RBAC)
           </h1>
-          <p className="text-xs text-slate-800 font-medium mt-1">
+          <p className="text-xs text-slate-900 font-semibold mt-1">
             Configure dynamic role permissions, assign staff roles, and monitor system audit activity.
           </p>
         </div>

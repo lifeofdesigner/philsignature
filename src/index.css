@@ -238,7 +238,7 @@
   /* Complete Text Color System Guarantees in Light Theme */
   html.light p,
   html:not(.dark) p {
-    color: #374151;
+    color: #1F2937;
   }
 
   html.light .text-luxury-cream,
