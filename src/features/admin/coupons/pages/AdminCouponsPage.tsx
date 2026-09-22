@@ -171,7 +171,7 @@ export const AdminCouponsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => copyToClipboard(coupon.code)}
-            className="p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
+            className="p-1 text-slate-700 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
             title="Copy Code"
           >
             {copiedCode === coupon.code ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
@@ -189,7 +189,7 @@ export const AdminCouponsPage: React.FC = () => {
             {coupon.discount_type === 'percentage' ? `${coupon.value}% OFF` : `${formatCurrency(coupon.value)} OFF`}
           </span>
           {coupon.max_discount && (
-            <p className="text-[11px] text-slate-500">Max cap: {formatCurrency(coupon.max_discount)}</p>
+            <p className="text-[11px] text-slate-700">Max cap: {formatCurrency(coupon.max_discount)}</p>
           )}
         </div>
       ),
@@ -211,7 +211,7 @@ export const AdminCouponsPage: React.FC = () => {
       accessor: (coupon: Coupon) => (
         <div className="text-xs">
           <span className="font-semibold text-slate-900">{coupon.used_count || 0}</span>
-          <span className="text-slate-500"> {coupon.usage_limit ? `/ ${coupon.usage_limit} redeemed` : 'redeemed (unlimited)'}</span>
+          <span className="text-slate-700"> {coupon.usage_limit ? `/ ${coupon.usage_limit} redeemed` : 'redeemed (unlimited)'}</span>
         </div>
       ),
       sortValue: (c: Coupon) => c.used_count ?? 0,
@@ -221,7 +221,7 @@ export const AdminCouponsPage: React.FC = () => {
       header: 'Expiration',
       accessor: (coupon: Coupon) => {
         if (!coupon.expires_at) {
-          return <span className="text-xs text-slate-500 font-medium">Never expires</span>;
+          return <span className="text-xs text-slate-700 font-medium">Never expires</span>;
         }
         const isExpired = new Date(coupon.expires_at).getTime() < Date.now();
         return (
@@ -245,7 +245,7 @@ export const AdminCouponsPage: React.FC = () => {
           className={`inline-flex items-center text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-full font-bold border ${
             coupon.is_active
               ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
-              : 'text-slate-600 border-slate-200 bg-slate-100'
+              : 'text-slate-800 border-slate-200 bg-slate-100'
           }`}
         >
           {coupon.is_active ? 'Active' : 'Disabled'}
@@ -261,7 +261,7 @@ export const AdminCouponsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(coupon)}
-            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Coupon"
             aria-label="Edit coupon"
           >
@@ -270,7 +270,7 @@ export const AdminCouponsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setDeleteTarget(coupon)}
-            className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
             title="Delete Coupon"
             aria-label="Delete coupon"
           >
@@ -298,7 +298,7 @@ export const AdminCouponsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Privilege Coupons &amp; Discounts</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Configure promotional percentage discounts, fixed reductions, minimum order thresholds, and expiry limits.
           </p>
         </div>
@@ -320,7 +320,7 @@ export const AdminCouponsPage: React.FC = () => {
           className="max-w-md bg-white border-slate-300 text-slate-900 text-xs"
         />
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-500 font-medium">Type:</span>
+          <span className="text-xs text-slate-700 font-medium">Type:</span>
           <select
             value={discountTypeFilter}
             onChange={(e) => setDiscountTypeFilter(e.target.value as 'all' | 'percentage' | 'fixed')}
@@ -353,7 +353,7 @@ export const AdminCouponsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={closeForm}
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                className="text-slate-700 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -507,7 +507,7 @@ export const AdminCouponsPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900">Remove Privilege Coupon?</h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-800">
               This will permanently delete coupon code <span className="font-semibold text-slate-900 font-mono">"{deleteTarget.code}"</span>. Customers will no longer be able to claim this discount.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">

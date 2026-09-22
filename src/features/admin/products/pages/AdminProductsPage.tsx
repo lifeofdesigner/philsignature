@@ -347,7 +347,7 @@ export const AdminProductsPage: React.FC = () => {
             />
           ) : (
             <div className="h-10 w-10 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
-              <Package className="h-4 w-4 text-slate-400" />
+              <Package className="h-4 w-4 text-slate-700" />
             </div>
           )}
           <div className="min-w-0 max-w-xs">
@@ -359,7 +359,7 @@ export const AdminProductsPage: React.FC = () => {
                 </span>
               )}
             </div>
-            <div className="text-[11px] text-slate-600 font-medium truncate">
+            <div className="text-[11px] text-slate-800 font-medium truncate">
               {product.scent_profile || product.fragrance_family || 'Standard formulation'}
             </div>
           </div>
@@ -393,7 +393,7 @@ export const AdminProductsPage: React.FC = () => {
         return (
           <div>
             <div className="text-slate-900 font-bold">{formatCurrency(product.price)}</div>
-            <div className="text-[10px] text-slate-500 font-medium">{variantText}</div>
+            <div className="text-[10px] text-slate-700 font-medium">{variantText}</div>
           </div>
         );
       },
@@ -471,7 +471,7 @@ export const AdminProductsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openEditForm(product)}
-              className="p-1.5 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-slate-800 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
               title="Edit Product"
               aria-label="Edit product"
             >
@@ -481,7 +481,7 @@ export const AdminProductsPage: React.FC = () => {
               type="button"
               disabled={isBusy}
               onClick={() => handleDuplicate(product)}
-              className="p-1.5 text-slate-600 hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
+              className="p-1.5 text-slate-800 hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
               title="Duplicate Formulation"
               aria-label="Duplicate product"
             >
@@ -491,7 +491,7 @@ export const AdminProductsPage: React.FC = () => {
               type="button"
               disabled={isBusy}
               onClick={() => handleToggleArchive(product)}
-              className="p-1.5 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-slate-800 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
               title={product.status === 'archived' ? 'Restore Product' : 'Archive Product'}
               aria-label="Archive toggle"
             >
@@ -500,7 +500,7 @@ export const AdminProductsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setDeleteTarget(product)}
-              className="p-1.5 text-slate-600 hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
+              className="p-1.5 text-slate-800 hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
               title="Delete Product"
               aria-label="Delete product"
             >
@@ -533,7 +533,7 @@ export const AdminProductsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Products & Catalog
           </h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Manage perfumes, scented candles, luxury room sprays, pricing, batch stock levels, and publication status.
           </p>
         </div>
@@ -628,12 +628,12 @@ export const AdminProductsPage: React.FC = () => {
                 <h2 className="text-lg font-bold text-slate-900">
                   {editingProduct ? 'Edit Fragrance Formulation' : 'Create New Formulation'}
                 </h2>
-                <p className="text-xs text-slate-500">Configure fragrance notes, inventory, and pricing.</p>
+                <p className="text-xs text-slate-700">Configure fragrance notes, inventory, and pricing.</p>
               </div>
               <button
                 type="button"
                 onClick={closeForm}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -688,7 +688,7 @@ export const AdminProductsPage: React.FC = () => {
                   required
                   rows={3}
                   placeholder="Describe the olfactory composition and story..."
-                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                 />
               </div>
 
@@ -839,7 +839,7 @@ export const AdminProductsPage: React.FC = () => {
               <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
                 <div className="font-semibold text-slate-900 text-xs flex items-center justify-between">
                   <span>SEO Engine & Search Metadata</span>
-                  <span className="text-[10px] text-slate-500 font-normal">Search engine indexing</span>
+                  <span className="text-[10px] text-slate-700 font-normal">Search engine indexing</span>
                 </div>
                 <div className="space-y-1.5">
                   <label className="block text-slate-700 font-medium text-[11px]">Meta Title</label>
@@ -857,7 +857,7 @@ export const AdminProductsPage: React.FC = () => {
                     onChange={(e) => setForm((p) => ({ ...p, meta_description: e.target.value }))}
                     rows={2}
                     placeholder="Discover Oud Maracuja by Philz Signature..."
-                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -874,7 +874,7 @@ export const AdminProductsPage: React.FC = () => {
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
                 <div>
                   <div className="font-semibold text-slate-900">Feature on Storefront Homepage</div>
-                  <div className="text-slate-500 text-[11px]">Pin this fragrance to the featured highlights section</div>
+                  <div className="text-slate-700 text-[11px]">Pin this fragrance to the featured highlights section</div>
                 </div>
                 <input
                   type="checkbox"
@@ -906,7 +906,7 @@ export const AdminProductsPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-2xl shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900">Remove Formulation?</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-800 leading-relaxed">
               This will permanently delete <span className="font-bold text-slate-900">"{deleteTarget.name}"</span> from the database. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">

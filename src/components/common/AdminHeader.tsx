@@ -58,7 +58,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 lg:hidden"
+          className="p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 lg:hidden"
           aria-label="Toggle Sidebar"
         >
           <Menu className="h-5 w-5" />
@@ -70,10 +70,10 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           className="flex items-center gap-3 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-300 rounded-lg text-slate-700 text-xs transition-all w-48 sm:w-80 justify-between group font-medium"
         >
           <div className="flex items-center gap-2 truncate">
-            <Search className="h-4 w-4 text-slate-500 group-hover:text-slate-900 transition-colors" />
-            <span className="truncate text-slate-600 group-hover:text-slate-900">Search products, orders, CMS...</span>
+            <Search className="h-4 w-4 text-slate-700 group-hover:text-slate-900 transition-colors" />
+            <span className="truncate text-slate-800 group-hover:text-slate-900">Search products, orders, CMS...</span>
           </div>
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-slate-600 rounded border border-slate-300 shadow-2xs font-semibold">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-slate-800 rounded border border-slate-300 shadow-2xs font-semibold">
             <Command className="h-2.5 w-2.5" /> K
           </kbd>
         </button>
@@ -88,7 +88,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-300"
         >
           <span>Live Store</span>
-          <ExternalLink className="h-3.5 w-3.5 text-slate-500" />
+          <ExternalLink className="h-3.5 w-3.5 text-slate-700" />
         </a>
 
         {/* Notifications Bell Dropdown */}
@@ -122,7 +122,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
               <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-slate-500 font-medium">
+                  <div className="p-6 text-center text-xs text-slate-700 font-medium">
                     No recent notifications.
                   </div>
                 ) : (
@@ -135,7 +135,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     >
                       <div className="flex items-center justify-between font-bold text-slate-900">
                         <span>{n.title}</span>
-                        <span className="text-[10px] text-slate-500 font-normal">
+                        <span className="text-[10px] text-slate-700 font-normal">
                           {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
@@ -157,7 +157,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
             <span className="text-xs font-bold text-slate-900 leading-tight">
               {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Staff Member'}
             </span>
-            <span className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">
+            <span className="text-[10px] text-slate-800 font-bold uppercase tracking-wider">
               {roleLabel}
             </span>
           </div>
@@ -166,7 +166,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {/* Sign Out Button */}
         <button
           onClick={handleLogout}
-          className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+          className="p-2 text-slate-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
           title="Sign Out"
           aria-label="Sign Out"
         >

@@ -309,7 +309,7 @@ export const AdminUsersPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Users, Roles &amp; Access Control (RBAC)
           </h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Configure dynamic role permissions, assign staff roles, and monitor system audit activity.
           </p>
         </div>
@@ -341,7 +341,7 @@ export const AdminUsersPage: React.FC = () => {
               className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer ${
                 isActive
                   ? 'border-slate-900 text-slate-900 font-bold bg-slate-100/80'
-                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+                  : 'border-transparent text-slate-800 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -356,7 +356,7 @@ export const AdminUsersPage: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-4">
             <div className="relative max-w-md w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-700" />
               <Input
                 placeholder="Search staff by name or email..."
                 value={search}
@@ -365,7 +365,7 @@ export const AdminUsersPage: React.FC = () => {
               />
             </div>
             <div className="flex items-center gap-4">
-              <div className="text-xs text-slate-600 font-medium">
+              <div className="text-xs text-slate-800 font-medium">
                 Total Accounts: <span className="font-bold text-slate-900">{filteredUsers.length}</span>
               </div>
               {canManageRoles && canCreateUsers && (
@@ -406,7 +406,7 @@ export const AdminUsersPage: React.FC = () => {
                         <tr key={u.id} className="hover:bg-slate-50 transition-colors">
                           <td className="py-3.5 px-4">
                             <div className="font-bold text-slate-900 text-sm">{name}</div>
-                            <div className="text-xs text-slate-500 font-mono mt-0.5">{u.email}</div>
+                            <div className="text-xs text-slate-700 font-mono mt-0.5">{u.email}</div>
                           </td>
                           <td className="py-3.5 px-4">
                             {canEditThisRole ? (
@@ -455,7 +455,7 @@ export const AdminUsersPage: React.FC = () => {
                                 {isUpdatingActive ? <Loader2 className="h-3 w-3 animate-spin" /> : u.is_active ? 'Suspend Account' : 'Reactivate'}
                               </Button>
                             ) : (
-                              <span className="text-xs text-slate-400 font-medium">—</span>
+                              <span className="text-xs text-slate-700 font-medium">—</span>
                             )}
                           </td>
                         </tr>
@@ -479,7 +479,7 @@ export const AdminUsersPage: React.FC = () => {
                 <Lock className="h-5 w-5 text-slate-900" />
                 <h3 className="text-base font-bold text-slate-900">Custom Role-Based Access Control</h3>
               </div>
-              <p className="text-xs text-slate-600 font-normal mt-1">
+              <p className="text-xs text-slate-800 font-normal mt-1">
                 {userIsSuperAdmin
                   ? 'Check or uncheck permissions for any role. Click "Save Permissions" to persist changes to database.'
                   : 'View permissions assigned to each system role. Contact Super Administrator to request permission changes.'}
@@ -495,7 +495,7 @@ export const AdminUsersPage: React.FC = () => {
                   disabled={isResettingRbac || isSavingRbac}
                   className="gap-1.5 text-xs text-slate-700 border-slate-300 hover:bg-slate-100 font-medium"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 text-slate-500" />
+                  <RotateCcw className="h-3.5 w-3.5 text-slate-700" />
                   <span>Reset to Defaults</span>
                 </Button>
 
@@ -529,8 +529,8 @@ export const AdminUsersPage: React.FC = () => {
               </select>
             </div>
 
-            <div className="text-xs text-slate-600 font-medium flex items-center gap-1.5">
-              <Info className="h-4 w-4 text-slate-500" />
+            <div className="text-xs text-slate-800 font-medium flex items-center gap-1.5">
+              <Info className="h-4 w-4 text-slate-700" />
               <span>{ROLE_DESCRIPTIONS[selectedMatrixRole]}</span>
             </div>
           </div>
@@ -572,7 +572,7 @@ export const AdminUsersPage: React.FC = () => {
                           <td colSpan={9} className="py-2.5 px-4 border-y border-slate-300">
                             <div className="flex items-center justify-between">
                               <span className="font-bold text-slate-900">{group.label}</span>
-                              <span className="text-[10px] font-normal text-slate-600 normal-case">
+                              <span className="text-[10px] font-normal text-slate-800 normal-case">
                                 {group.description}
                               </span>
                             </div>
@@ -582,7 +582,7 @@ export const AdminUsersPage: React.FC = () => {
                           <tr key={perm.key} className="hover:bg-slate-50 transition-colors">
                             <td className="py-3 px-4 font-semibold text-slate-900 border-r border-slate-200">
                               <div className="text-slate-900 font-medium">{perm.label}</div>
-                              <div className="text-[10px] text-slate-500 font-mono mt-0.5">{perm.key}</div>
+                              <div className="text-[10px] text-slate-700 font-mono mt-0.5">{perm.key}</div>
                             </td>
                             {ROLE_ORDER.slice(0, 8).map((r) => {
                               const isSuper = r === 'super_admin';
@@ -619,7 +619,7 @@ export const AdminUsersPage: React.FC = () => {
                                       className={`inline-flex p-1 rounded ${
                                         has
                                           ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                          : 'text-slate-400'
+                                          : 'text-slate-700'
                                       }`}
                                     >
                                       {has ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5" />}
@@ -648,7 +648,7 @@ export const AdminUsersPage: React.FC = () => {
               <History className="h-4 w-4 text-slate-900" />
               <span>Audit Trail Activity Logs</span>
             </CardTitle>
-            <CardDescription className="text-slate-600">
+            <CardDescription className="text-slate-800">
               Immutable chronological record of administrative actions, permission edits, and database updates
             </CardDescription>
           </CardHeader>
@@ -658,7 +658,7 @@ export const AdminUsersPage: React.FC = () => {
                 <Loader2 className="h-5 w-5 animate-spin mx-auto text-slate-700" />
               </div>
             ) : auditLogs.length === 0 ? (
-              <div className="p-8 text-center text-xs text-slate-500">No activity logs recorded yet.</div>
+              <div className="p-8 text-center text-xs text-slate-700">No activity logs recorded yet.</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
@@ -674,7 +674,7 @@ export const AdminUsersPage: React.FC = () => {
                   <tbody className="divide-y divide-slate-100">
                     {auditLogs.map((log) => (
                       <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="py-3 px-4 font-mono text-slate-600 text-xs">
+                        <td className="py-3 px-4 font-mono text-slate-800 text-xs">
                           {new Date(log.created_at).toLocaleString()}
                         </td>
                         <td className="py-3 px-4 font-bold text-slate-900">{log.user_email}</td>
@@ -684,7 +684,7 @@ export const AdminUsersPage: React.FC = () => {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-slate-700 font-mono text-xs">{log.entity_type}</td>
-                        <td className="py-3 px-4 text-slate-600 font-mono text-[11px] max-w-md truncate">
+                        <td className="py-3 px-4 text-slate-800 font-mono text-[11px] max-w-md truncate">
                           {JSON.stringify(log.details)}
                         </td>
                       </tr>
@@ -705,7 +705,7 @@ export const AdminUsersPage: React.FC = () => {
               <Trash2 className="h-4 w-4 text-slate-900" />
               <span>Soft Delete Recycle Bin</span>
             </CardTitle>
-            <CardDescription className="text-slate-600">
+            <CardDescription className="text-slate-800">
               Recover accidentally deleted products, collections, categories, or media items
             </CardDescription>
           </CardHeader>
@@ -715,7 +715,7 @@ export const AdminUsersPage: React.FC = () => {
                 <Loader2 className="h-5 w-5 animate-spin mx-auto text-slate-700" />
               </div>
             ) : trashItems.length === 0 ? (
-              <div className="p-8 text-center text-xs text-slate-500">Recycle Bin is currently empty.</div>
+              <div className="p-8 text-center text-xs text-slate-700">Recycle Bin is currently empty.</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
@@ -731,8 +731,8 @@ export const AdminUsersPage: React.FC = () => {
                     {trashItems.map((item) => (
                       <tr key={item.id} className="hover:bg-slate-50 transition-colors">
                         <td className="py-3 px-4 font-bold text-slate-900">{item.entity_name}</td>
-                        <td className="py-3 px-4 font-mono text-slate-600 text-xs">{item.entity_type}</td>
-                        <td className="py-3 px-4 text-slate-600 text-xs">{new Date(item.created_at).toLocaleString()}</td>
+                        <td className="py-3 px-4 font-mono text-slate-800 text-xs">{item.entity_type}</td>
+                        <td className="py-3 px-4 text-slate-800 text-xs">{new Date(item.created_at).toLocaleString()}</td>
                         <td className="py-3 px-4 text-right">
                           <Button
                             size="sm"
@@ -764,7 +764,7 @@ export const AdminUsersPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowCreateUser(false)}
-                className="text-slate-500 hover:text-slate-900"
+                className="text-slate-700 hover:text-slate-900"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -776,14 +776,14 @@ export const AdminUsersPage: React.FC = () => {
                   value={newUser.firstName}
                   onChange={(e) => setNewUser((p) => ({ ...p, firstName: e.target.value }))}
                   required
-                  className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
+                  className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
                 />
                 <Input
                   placeholder="Last name"
                   value={newUser.lastName}
                   onChange={(e) => setNewUser((p) => ({ ...p, lastName: e.target.value }))}
                   required
-                  className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
+                  className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
                 />
               </div>
               <Input
@@ -792,7 +792,7 @@ export const AdminUsersPage: React.FC = () => {
                 value={newUser.email}
                 onChange={(e) => setNewUser((p) => ({ ...p, email: e.target.value }))}
                 required
-                className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
+                className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
               />
               <Input
                 type="password"
@@ -800,7 +800,7 @@ export const AdminUsersPage: React.FC = () => {
                 value={newUser.password}
                 onChange={(e) => setNewUser((p) => ({ ...p, password: e.target.value }))}
                 required
-                className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
+                className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
               />
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-slate-900">Role</label>

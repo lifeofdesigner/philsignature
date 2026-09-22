@@ -88,7 +88,7 @@ export const AdminSettingsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             System & Enterprise Settings Hub
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">
+          <p className="text-xs text-slate-700 font-medium mt-1">
             Store identity, brand theme asset manager, feature flags engine, form builder, and API security keys.
           </p>
         </div>
@@ -113,7 +113,7 @@ export const AdminSettingsPage: React.FC = () => {
               className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer whitespace-nowrap font-semibold text-xs ${
                 isActive
                   ? 'border-slate-900 text-slate-900 bg-slate-100/70'
-                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+                  : 'border-transparent text-slate-800 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -128,7 +128,7 @@ export const AdminSettingsPage: React.FC = () => {
         <Card>
           <CardHeader>
             <CardTitle className="text-base font-bold text-slate-900">General Store Identity</CardTitle>
-            <CardDescription className="text-slate-600 font-medium">Boutique title, contact emails, currency formatting, and physical location</CardDescription>
+            <CardDescription className="text-slate-800 font-medium">Boutique title, contact emails, currency formatting, and physical location</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -212,7 +212,7 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* Tab 3: Feature Flags (Super Admin) */}
       {activeTab === 'flags' && (
-        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-500">Super Admin permission required to manage Feature Flags.</div>}>
+        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-700">Super Admin permission required to manage Feature Flags.</div>}>
           <FeatureFlagManager />
         </Can>
       )}
@@ -222,7 +222,7 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* Tab 5: API & Integrations */}
       {activeTab === 'api' && (
-        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-500">Super Admin permission required to manage API keys.</div>}>
+        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-700">Super Admin permission required to manage API keys.</div>}>
           <Card>
             <CardHeader>
               <CardTitle className="text-base font-semibold text-slate-900">API Credentials & Payment Webhooks</CardTitle>
@@ -239,7 +239,7 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* Tab 6: Security & Maintenance */}
       {activeTab === 'security' && (
-        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-500">Super Admin permission required to view Security Settings.</div>}>
+        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-700">Super Admin permission required to view Security Settings.</div>}>
           <Card>
             <CardHeader>
               <CardTitle className="text-base font-semibold text-slate-900">Enterprise Security Protocols</CardTitle>
@@ -249,14 +249,14 @@ export const AdminSettingsPage: React.FC = () => {
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
                 <div>
                   <div className="font-semibold text-slate-900">Enforce Staff 2FA Authentication</div>
-                  <div className="text-slate-500 text-[11px]">Require staff roles to present OTP authenticator challenge on login</div>
+                  <div className="text-slate-700 text-[11px]">Require staff roles to present OTP authenticator challenge on login</div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs border-slate-200">Configured</Button>
               </div>
               <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
                 <div>
                   <div className="font-semibold text-slate-900">Admin Session Timeout</div>
-                  <div className="text-slate-500 text-[11px]">Automatically terminate idle admin sessions after 30 minutes</div>
+                  <div className="text-slate-700 text-[11px]">Automatically terminate idle admin sessions after 30 minutes</div>
                 </div>
                 <Button size="sm" variant="outline" className="text-xs border-slate-200">30 Min</Button>
               </div>

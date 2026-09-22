@@ -108,7 +108,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
             <Sliders className="h-4 w-4 text-slate-700" />
             <h3 className="text-base font-bold text-slate-900">Logo &amp; Header Branding Scale</h3>
           </div>
-          <p className="text-xs text-slate-600 mt-0.5 font-medium">
+          <p className="text-xs text-slate-800 mt-0.5 font-medium">
             Scale your brand logo and manage business name layout across desktop and mobile views.
           </p>
         </div>
@@ -131,7 +131,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
               </span>
             )}
           </label>
-          <p className="text-xs text-slate-600 font-medium">
+          <p className="text-xs text-slate-800 font-medium">
             Shows brand name beside logo on mobile and beneath emblem on desktop. Toggle off to display only the logo insignia.
           </p>
         </div>
@@ -165,7 +165,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
                   </span>
                   {isSelected && <Check className="h-3.5 w-3.5 text-white font-bold" />}
                 </div>
-                <span className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-slate-300' : 'text-slate-500'}`}>
+                <span className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-slate-300' : 'text-slate-700'}`}>
                   {preset.height}px
                 </span>
               </button>
@@ -185,7 +185,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-500 font-mono">40px</span>
+          <span className="text-xs text-slate-700 font-mono">40px</span>
           <input
             type="range"
             min={40}
@@ -197,7 +197,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
             onTouchEnd={(e) => handleSliderCommit(Number((e.target as HTMLInputElement).value))}
             className="flex-1 accent-amber-700 h-2 bg-slate-200 rounded-lg cursor-pointer"
           />
-          <span className="text-xs text-slate-500 font-mono">160px</span>
+          <span className="text-xs text-slate-700 font-mono">160px</span>
         </div>
       </div>
 
@@ -205,7 +205,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
       <div className="space-y-2 pt-2 border-t border-slate-200">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Live Header Preview</span>
-          <span className="text-xs text-slate-500 font-medium">
+          <span className="text-xs text-slate-700 font-medium">
             Height: {currentHeight}px (Desktop) • {currentMobileHeight}px (Mobile)
           </span>
         </div>

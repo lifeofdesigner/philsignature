@@ -47,11 +47,11 @@ export const FeatureFlagManager: React.FC = () => {
             <Flag className="h-4 w-4 text-slate-700" />
             <span>Feature Flags Control Engine</span>
           </CardTitle>
-          <CardDescription className="text-slate-600 font-medium">Instantly toggle storefront features live without code deployment</CardDescription>
+          <CardDescription className="text-slate-800 font-medium">Instantly toggle storefront features live without code deployment</CardDescription>
         </div>
         <button
           onClick={loadFlags}
-          className="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+          className="p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
           title="Refresh Flags"
         >
           <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -61,7 +61,7 @@ export const FeatureFlagManager: React.FC = () => {
         {isLoading ? (
           <div className="p-8 text-center"><Loader2 className="h-5 w-5 animate-spin mx-auto text-slate-900" /></div>
         ) : flags.length === 0 ? (
-          <div className="p-6 text-center text-xs text-slate-500 font-medium">No feature flags registered.</div>
+          <div className="p-6 text-center text-xs text-slate-700 font-medium">No feature flags registered.</div>
         ) : (
           flags.map((flag) => (
             <div key={flag.key} className="p-4 flex items-center justify-between hover:bg-slate-50/60 transition-colors">
@@ -72,7 +72,7 @@ export const FeatureFlagManager: React.FC = () => {
                     {flag.key}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 font-medium">{flag.description}</p>
+                <p className="text-xs text-slate-800 font-medium">{flag.description}</p>
               </div>
 
               <div className="flex items-center gap-3 shrink-0">
@@ -80,7 +80,7 @@ export const FeatureFlagManager: React.FC = () => {
                   className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
                     flag.is_enabled
                       ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                      : 'bg-slate-100 text-slate-600 border border-slate-200'
+                      : 'bg-slate-100 text-slate-800 border border-slate-200'
                   }`}
                 >
                   {flag.is_enabled ? 'Active' : 'Disabled'}

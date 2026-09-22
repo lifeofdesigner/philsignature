@@ -33,7 +33,7 @@ export const AdminSeoPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">SEO &amp; Metadata Engine</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Control search engine snippets, OpenGraph social sharing, canonical URLs, robots.txt, and structured data schemas.
           </p>
         </div>
@@ -56,7 +56,7 @@ export const AdminSeoPage: React.FC = () => {
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
             activeTab === 'meta'
               ? 'bg-white text-slate-900 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              : 'text-slate-800 hover:text-slate-900 hover:bg-slate-200/60'
           }`}
         >
           <Search className="w-3.5 h-3.5" />
@@ -69,7 +69,7 @@ export const AdminSeoPage: React.FC = () => {
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
             activeTab === 'crawlers'
               ? 'bg-white text-slate-900 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              : 'text-slate-800 hover:text-slate-900 hover:bg-slate-200/60'
           }`}
         >
           <Globe className="w-3.5 h-3.5" />
@@ -82,7 +82,7 @@ export const AdminSeoPage: React.FC = () => {
           className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
             activeTab === 'schema'
               ? 'bg-white text-slate-900 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              : 'text-slate-800 hover:text-slate-900 hover:bg-slate-200/60'
           }`}
         >
           <FileText className="w-3.5 h-3.5" />
@@ -104,7 +104,7 @@ export const AdminSeoPage: React.FC = () => {
                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Default Meta Title
                 </label>
-                <span className="text-[11px] text-slate-500 font-mono">{form.meta_title?.length || 0} / 60 chars</span>
+                <span className="text-[11px] text-slate-700 font-mono">{form.meta_title?.length || 0} / 60 chars</span>
               </div>
               <Input
                 value={form.meta_title}
@@ -119,7 +119,7 @@ export const AdminSeoPage: React.FC = () => {
                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Default Meta Description
                 </label>
-                <span className="text-[11px] text-slate-500 font-mono">{form.meta_description?.length || 0} / 160 chars</span>
+                <span className="text-[11px] text-slate-700 font-mono">{form.meta_description?.length || 0} / 160 chars</span>
               </div>
               <Textarea
                 rows={3}
@@ -176,7 +176,7 @@ export const AdminSeoPage: React.FC = () => {
                   <Search className="w-3.5 h-3.5 text-blue-600" />
                   Google Search Snippet Preview
                 </span>
-                <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-mono">Desktop & Mobile</span>
+                <span className="text-[10px] bg-slate-100 text-slate-800 px-2 py-0.5 rounded font-mono">Desktop & Mobile</span>
               </div>
 
               <div className="space-y-1 bg-slate-50 p-4 rounded-lg border border-slate-200">
@@ -184,14 +184,14 @@ export const AdminSeoPage: React.FC = () => {
                   <div className="w-4 h-4 rounded-full bg-slate-800 flex items-center justify-center text-[9px] text-white font-bold">
                     P
                   </div>
-                  <div className="text-[11px] text-slate-600 truncate font-mono">
+                  <div className="text-[11px] text-slate-800 truncate font-mono">
                     {form.canonical_url || 'https://philzsignature.com'}
                   </div>
                 </div>
                 <div className="text-base text-blue-800 font-medium hover:underline cursor-pointer truncate">
                   {form.meta_title || 'PHILZ SIGNATURE | Haute Parfumerie & Luxury Fragrances'}
                 </div>
-                <div className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                <div className="text-xs text-slate-800 line-clamp-2 leading-relaxed">
                   {form.meta_description || 'Discover handcrafted artisanal perfumes, pure extrait de parfum, and bespoke olfactory creations.'}
                 </div>
               </div>
@@ -217,18 +217,18 @@ export const AdminSeoPage: React.FC = () => {
                     }}
                   />
                 ) : (
-                  <div className="w-full h-28 bg-slate-100 border-b border-slate-200 flex items-center justify-center text-slate-500 text-xs font-medium">
+                  <div className="w-full h-28 bg-slate-100 border-b border-slate-200 flex items-center justify-center text-slate-700 text-xs font-medium">
                     No OG Image URL Provided (1200 x 630)
                   </div>
                 )}
                 <div className="p-3.5 space-y-1 bg-white">
-                  <div className="text-[10px] uppercase font-mono text-slate-500 truncate">
+                  <div className="text-[10px] uppercase font-mono text-slate-700 truncate">
                     {form.canonical_url?.replace(/^https?:\/\//, '') || 'philzsignature.com'}
                   </div>
                   <div className="text-xs font-bold text-slate-900 truncate">
                     {form.meta_title || 'PHILZ SIGNATURE'}
                   </div>
-                  <div className="text-[11px] text-slate-500 line-clamp-2">
+                  <div className="text-[11px] text-slate-700 line-clamp-2">
                     {form.meta_description}
                   </div>
                 </div>
@@ -257,7 +257,7 @@ export const AdminSeoPage: React.FC = () => {
                 placeholder="https://philzsignature.com"
                 className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
               />
-              <p className="text-[11px] text-slate-500">Self-referencing canonical tag prevents duplicate content penalties.</p>
+              <p className="text-[11px] text-slate-700">Self-referencing canonical tag prevents duplicate content penalties.</p>
             </div>
 
             <div className="space-y-1.5">
@@ -270,7 +270,7 @@ export const AdminSeoPage: React.FC = () => {
                 placeholder="google-site-verification=xxxx..."
                 className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
               />
-              <p className="text-[11px] text-slate-500">Injects &lt;meta name="google-site-verification"&gt; tag on homepage.</p>
+              <p className="text-[11px] text-slate-700">Injects &lt;meta name="google-site-verification"&gt; tag on homepage.</p>
             </div>
           </div>
 
@@ -285,7 +285,7 @@ export const AdminSeoPage: React.FC = () => {
               placeholder="User-agent: *\nDisallow: /admin/"
               className="w-full bg-slate-900 text-emerald-400 font-mono text-xs rounded-lg p-3 border border-slate-800"
             />
-            <p className="text-[11px] text-slate-500">Controls which paths Googlebot and web crawlers are permitted to index.</p>
+            <p className="text-[11px] text-slate-700">Controls which paths Googlebot and web crawlers are permitted to index.</p>
           </div>
 
           <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
@@ -294,7 +294,7 @@ export const AdminSeoPage: React.FC = () => {
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span>Automated XML Sitemap</span>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-700">
                 Dynamic XML sitemap indexing all active perfumes, formulations, and collection landing pages.
               </p>
             </div>

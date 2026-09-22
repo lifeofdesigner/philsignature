@@ -240,12 +240,12 @@ export const AdminCollectionsPage: React.FC = () => {
             />
           ) : (
             <div className="w-10 h-10 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
-              <Layers className="h-4 w-4 text-slate-400" />
+              <Layers className="h-4 w-4 text-slate-700" />
             </div>
           )}
           <div className="min-w-0">
             <div className="text-slate-900 font-bold truncate">{collection.name}</div>
-            <div className="text-[11px] text-slate-500 font-mono truncate">{collection.slug}</div>
+            <div className="text-[11px] text-slate-700 font-mono truncate">{collection.slug}</div>
           </div>
         </div>
       ),
@@ -277,7 +277,7 @@ export const AdminCollectionsPage: React.FC = () => {
             Featured
           </span>
         ) : (
-          <span className="text-slate-400 text-xs">—</span>
+          <span className="text-slate-700 text-xs">—</span>
         )
       ),
       sortValue: (collection) => (collection.is_featured ? 1 : 0),
@@ -311,7 +311,7 @@ export const AdminCollectionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openEditForm(collection)}
-              className="p-1.5 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-slate-800 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
               title="Edit Collection"
               aria-label="Edit collection"
             >
@@ -321,7 +321,7 @@ export const AdminCollectionsPage: React.FC = () => {
               type="button"
               disabled={isBusy}
               onClick={() => handleDuplicate(collection)}
-              className="p-1.5 text-slate-600 hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
+              className="p-1.5 text-slate-800 hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
               title="Duplicate Collection"
               aria-label="Duplicate collection"
             >
@@ -330,7 +330,7 @@ export const AdminCollectionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setDeleteTarget(collection)}
-              className="p-1.5 text-slate-600 hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
+              className="p-1.5 text-slate-800 hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
               title="Delete Collection"
               aria-label="Delete collection"
             >
@@ -361,7 +361,7 @@ export const AdminCollectionsPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Curated Collections Engine
           </h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Curate thematic product suites like Private Reserve, Oud Edition, and Atelier Exclusives.
           </p>
         </div>
@@ -387,7 +387,7 @@ export const AdminCollectionsPage: React.FC = () => {
                 className={`px-3 py-1 rounded-md font-semibold transition-colors cursor-pointer capitalize ${
                   statusFilter === st
                     ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-800 hover:text-slate-900'
                 }`}
               >
                 {st === 'all' ? `All (${collections.length})` : st}
@@ -416,12 +416,12 @@ export const AdminCollectionsPage: React.FC = () => {
                 <h2 className="text-lg font-bold text-slate-900">
                   {editing ? 'Edit Collection' : 'Create Curated Collection'}
                 </h2>
-                <p className="text-xs text-slate-500">Curate product themes and showcase banners.</p>
+                <p className="text-xs text-slate-700">Curate product themes and showcase banners.</p>
               </div>
               <button
                 type="button"
                 onClick={closeForm}
-                className="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -475,7 +475,7 @@ export const AdminCollectionsPage: React.FC = () => {
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   rows={3}
                   placeholder="Detailed background regarding this collection..."
-                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                 />
               </div>
 
@@ -515,7 +515,7 @@ export const AdminCollectionsPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-semibold text-slate-900">Featured Collection</div>
-                    <div className="text-slate-500 text-[11px]">Pin to storefront hero & homepage collections showcase</div>
+                    <div className="text-slate-700 text-[11px]">Pin to storefront hero & homepage collections showcase</div>
                   </div>
                   <input
                     type="checkbox"
@@ -527,7 +527,7 @@ export const AdminCollectionsPage: React.FC = () => {
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                   <div>
                     <div className="font-semibold text-slate-900">Active Status</div>
-                    <div className="text-slate-500 text-[11px]">Make this collection visible across storefront navigation</div>
+                    <div className="text-slate-700 text-[11px]">Make this collection visible across storefront navigation</div>
                   </div>
                   <input
                     type="checkbox"
@@ -560,7 +560,7 @@ export const AdminCollectionsPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-2xl shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900">Remove Collection?</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <p className="text-xs text-slate-800 leading-relaxed">
               This will permanently delete <span className="font-bold text-slate-900">"{deleteTarget.name}"</span>. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">

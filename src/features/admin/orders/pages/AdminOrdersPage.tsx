@@ -160,7 +160,7 @@ export const AdminOrdersPage: React.FC = () => {
       accessor: (o) => (
         <div>
           <div className="font-mono text-slate-800 font-medium">{o.email}</div>
-          {o.phone && <div className="text-[11px] text-slate-500">{o.phone}</div>}
+          {o.phone && <div className="text-[11px] text-slate-700">{o.phone}</div>}
         </div>
       ),
       sortValue: (o) => o.email,
@@ -168,7 +168,7 @@ export const AdminOrdersPage: React.FC = () => {
     {
       key: 'created_at',
       header: 'Date Placed',
-      accessor: (o) => <span className="text-slate-600">{formatDate(o.created_at)}</span>,
+      accessor: (o) => <span className="text-slate-800">{formatDate(o.created_at)}</span>,
       sortValue: (o) => o.created_at,
     },
     {
@@ -222,7 +222,7 @@ export const AdminOrdersPage: React.FC = () => {
           onClick={() => handleOpenInspect(o)}
           className="text-xs h-7 px-2.5 border-slate-300 text-slate-700 hover:bg-slate-50 gap-1 cursor-pointer"
         >
-          <Eye className="h-3 w-3 text-slate-600" />
+          <Eye className="h-3 w-3 text-slate-800" />
           <span>Inspect</span>
         </Button>
       ),
@@ -259,7 +259,7 @@ export const AdminOrdersPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Orders & Consignments Fulfillment
           </h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Track customer checkouts, update parcel dispatch status, and inspect transaction manifests.
           </p>
         </div>
@@ -278,7 +278,7 @@ export const AdminOrdersPage: React.FC = () => {
                 className={`px-3 py-1 rounded-md font-semibold transition-colors cursor-pointer capitalize ${
                   financialFilter === st
                     ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    : 'text-slate-800 hover:text-slate-900'
                 }`}
               >
                 {st === 'all' ? `All (${orders.length})` : st}
@@ -334,11 +334,11 @@ export const AdminOrdersPage: React.FC = () => {
                     {selectedOrder.financial_status}
                   </span>
                 </div>
-                <span className="text-[11px] text-slate-500 font-medium">Placed on {formatDate(selectedOrder.created_at)}</span>
+                <span className="text-[11px] text-slate-700 font-medium">Placed on {formatDate(selectedOrder.created_at)}</span>
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1.5 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -347,7 +347,7 @@ export const AdminOrdersPage: React.FC = () => {
             {/* Quick Status Bar */}
             <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
               <div>
-                <span className="text-slate-600 font-medium">Current Fulfillment Status:</span>
+                <span className="text-slate-800 font-medium">Current Fulfillment Status:</span>
                 <div className="font-bold text-slate-900 uppercase text-xs mt-0.5">
                   {selectedOrder.fulfillment_status}
                 </div>
@@ -370,13 +370,13 @@ export const AdminOrdersPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
                 <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 text-slate-500" />
+                  <Mail className="h-3.5 w-3.5 text-slate-700" />
                   <span>Customer Contact</span>
                 </div>
                 <div className="text-slate-800 font-medium">{selectedOrder.email}</div>
                 {selectedOrder.phone && (
-                  <div className="text-slate-600 flex items-center gap-1">
-                    <Phone className="h-3 w-3 text-slate-400" />
+                  <div className="text-slate-800 flex items-center gap-1">
+                    <Phone className="h-3 w-3 text-slate-700" />
                     <span>{selectedOrder.phone}</span>
                   </div>
                 )}
@@ -384,7 +384,7 @@ export const AdminOrdersPage: React.FC = () => {
 
               <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
                 <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                  <DollarSign className="h-3.5 w-3.5 text-slate-500" />
+                  <DollarSign className="h-3.5 w-3.5 text-slate-700" />
                   <span>Payment Settlement</span>
                 </div>
                 <div className="text-slate-700 capitalize font-medium">Gateway: {selectedOrder.payment_method || 'Online Card'}</div>
@@ -395,7 +395,7 @@ export const AdminOrdersPage: React.FC = () => {
             {/* Shipping Address */}
             <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
               <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-slate-500" />
+                <MapPin className="h-3.5 w-3.5 text-slate-700" />
                 <span>Shipping Destination</span>
               </div>
               {shippingAddr && typeof shippingAddr === 'object' ? (
@@ -406,17 +406,17 @@ export const AdminOrdersPage: React.FC = () => {
                     {[shippingAddr.city, shippingAddr.state, shippingAddr.postal_code].filter(Boolean).join(', ')}
                   </div>
                   <div>{shippingAddr.country || 'Nigeria'}</div>
-                  {shippingAddr.phone && <div className="text-slate-500">Phone: {shippingAddr.phone}</div>}
+                  {shippingAddr.phone && <div className="text-slate-700">Phone: {shippingAddr.phone}</div>}
                 </div>
               ) : (
-                <div className="text-slate-600 italic">No formal address payload provided.</div>
+                <div className="text-slate-800 italic">No formal address payload provided.</div>
               )}
             </div>
 
             {/* Order Items List */}
             <div className="space-y-2">
               <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                <Package className="h-3.5 w-3.5 text-slate-500" />
+                <Package className="h-3.5 w-3.5 text-slate-700" />
                 <span>Line Items ({selectedOrder.items?.length || 0})</span>
               </div>
               <div className="border border-slate-200 rounded-xl overflow-hidden">
@@ -441,7 +441,7 @@ export const AdminOrdersPage: React.FC = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={4} className="py-4 text-center text-slate-500">
+                        <td colSpan={4} className="py-4 text-center text-slate-700">
                           Single consignment purchase ({formatCurrency(selectedOrder.total_amount)})
                         </td>
                       </tr>
@@ -455,7 +455,7 @@ export const AdminOrdersPage: React.FC = () => {
             <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
                 <div className="font-semibold text-slate-900">Courier Tracking Code</div>
-                <div className="text-slate-500 text-[11px]">Attach tracking number for customer order lookup</div>
+                <div className="text-slate-700 text-[11px]">Attach tracking number for customer order lookup</div>
               </div>
               <div className="flex items-center gap-2">
                 <Input

@@ -43,7 +43,7 @@ export const BrandImageUploadField: React.FC<BrandImageUploadFieldProps> = ({
     <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-2xs">
       <div>
         <p className="text-xs font-bold text-slate-900 uppercase tracking-wider">{label}</p>
-        {helpText && <p className="text-[11px] text-slate-500 mt-0.5 font-medium">{helpText}</p>}
+        {helpText && <p className="text-[11px] text-slate-700 mt-0.5 font-medium">{helpText}</p>}
       </div>
 
       <div className="flex items-center gap-4">

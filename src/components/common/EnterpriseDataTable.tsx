@@ -150,7 +150,7 @@ export function EnterpriseDataTable<T>({
       {/* Control Bar */}
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
         <div className="relative max-w-sm w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-700" />
           <Input
             placeholder={searchPlaceholder}
             value={search}
@@ -158,7 +158,7 @@ export function EnterpriseDataTable<T>({
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
-            className="pl-9 text-xs border-slate-300 focus:border-slate-900 focus:ring-slate-900 bg-white font-medium text-slate-900 placeholder:text-slate-400"
+            className="pl-9 text-xs border-slate-300 focus:border-slate-900 focus:ring-slate-900 bg-white font-medium text-slate-900 placeholder:text-slate-700"
           />
         </div>
 
@@ -171,13 +171,13 @@ export function EnterpriseDataTable<T>({
               onClick={() => setShowColPicker(!showColPicker)}
               className="text-xs border-slate-300 text-slate-700 hover:bg-slate-50 gap-1.5 font-medium"
             >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-slate-600" />
+              <SlidersHorizontal className="h-3.5 w-3.5 text-slate-800" />
               <span>Columns</span>
             </Button>
 
             {showColPicker && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-30 p-2 space-y-1 animate-fade-in">
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-2 py-1">
+                <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider px-2 py-1">
                   Toggle Columns
                 </div>
                 {columns.map((col) => {
@@ -209,7 +209,7 @@ export function EnterpriseDataTable<T>({
             onClick={handleExportCSV}
             className="text-xs border-slate-300 text-slate-700 hover:bg-slate-50 gap-1.5 font-medium"
           >
-            <Download className="h-3.5 w-3.5 text-slate-600" />
+            <Download className="h-3.5 w-3.5 text-slate-800" />
             <span>Export CSV</span>
           </Button>
         </div>
@@ -284,7 +284,7 @@ export function EnterpriseDataTable<T>({
                                 <ChevronDown className="h-3.5 w-3.5 text-slate-900 font-bold" />
                               )
                             ) : (
-                              <ChevronsUpDown className="h-3.5 w-3.5 text-slate-400 opacity-0 group-hover:opacity-100" />
+                              <ChevronsUpDown className="h-3.5 w-3.5 text-slate-700 opacity-0 group-hover:opacity-100" />
                             ))}
                         </div>
                       </th>
@@ -295,7 +295,7 @@ export function EnterpriseDataTable<T>({
             <tbody className="divide-y divide-slate-100">
               {paginatedData.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length + 1} className="py-12 text-center text-slate-500 font-medium">
+                  <td colSpan={columns.length + 1} className="py-12 text-center text-slate-700 font-medium">
                     {emptyMessage}
                   </td>
                 </tr>
@@ -334,7 +334,7 @@ export function EnterpriseDataTable<T>({
         </div>
 
         {/* Pagination Footer */}
-        <div className="px-4 py-3 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600 font-medium">
+        <div className="px-4 py-3 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-800 font-medium">
           <div>
             Showing <span className="font-bold text-slate-900">{paginatedData.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}</span> to{' '}
             <span className="font-bold text-slate-900">{Math.min(currentPage * pageSize, sortedData.length)}</span> of{' '}
@@ -343,7 +343,7 @@ export function EnterpriseDataTable<T>({
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
-              <span className="text-slate-600">Rows per page:</span>
+              <span className="text-slate-800">Rows per page:</span>
               <select
                 value={pageSize}
                 onChange={(e) => {

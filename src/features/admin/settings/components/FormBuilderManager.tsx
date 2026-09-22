@@ -98,7 +98,7 @@ export const FormBuilderManager: React.FC = () => {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 selectedFormId === f.id
                   ? 'bg-amber-50 text-amber-950 border border-amber-200'
-                  : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                  : 'bg-slate-50 text-slate-800 hover:bg-slate-100'
               }`}
             >
               {f.title}
@@ -160,7 +160,7 @@ export const FormBuilderManager: React.FC = () => {
                     <option value="phone">Phone Input</option>
                   </select>
                   <div className="flex items-center gap-2">
-                    <label className="text-xs text-slate-600 flex items-center gap-1.5 cursor-pointer">
+                    <label className="text-xs text-slate-800 flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={field.required}
@@ -177,7 +177,7 @@ export const FormBuilderManager: React.FC = () => {
 
                 <button
                   onClick={() => handleRemoveField(field.id)}
-                  className="p-1.5 text-slate-400 hover:text-red-600 rounded transition-colors"
+                  className="p-1.5 text-slate-700 hover:text-red-600 rounded transition-colors"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>

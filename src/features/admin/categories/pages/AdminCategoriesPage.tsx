@@ -166,15 +166,15 @@ export const AdminCategoriesPage: React.FC = () => {
               }}
             />
           ) : (
-            <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0 text-slate-400">
+            <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0 text-slate-700">
               <Tags className="w-5 h-5" />
             </div>
           )}
           <div>
             <div className="text-sm font-semibold text-slate-900">{category.name}</div>
-            <div className="text-xs font-mono text-slate-500">/{category.slug}</div>
+            <div className="text-xs font-mono text-slate-700">/{category.slug}</div>
             {category.description && (
-              <p className="text-xs text-slate-600 line-clamp-1 mt-0.5 max-w-sm">{category.description}</p>
+              <p className="text-xs text-slate-800 line-clamp-1 mt-0.5 max-w-sm">{category.description}</p>
             )}
           </div>
         </div>
@@ -199,7 +199,7 @@ export const AdminCategoriesPage: React.FC = () => {
           className={`inline-flex items-center text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-full font-bold border ${
             category.is_active
               ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
-              : 'text-slate-600 border-slate-200 bg-slate-100'
+              : 'text-slate-800 border-slate-200 bg-slate-100'
           }`}
         >
           {category.is_active ? 'Active' : 'Inactive'}
@@ -215,7 +215,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleDuplicate(category)}
-            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Duplicate Category"
             aria-label="Duplicate category"
           >
@@ -224,7 +224,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(category)}
-            className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Category"
             aria-label="Edit category"
           >
@@ -233,7 +233,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setDeleteTarget(category)}
-            className="p-1.5 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
             title="Delete Category"
             aria-label="Delete category"
           >
@@ -261,7 +261,7 @@ export const AdminCategoriesPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Fragrance Categories</h1>
-          <p className="text-xs text-slate-600 font-medium mt-1">
+          <p className="text-xs text-slate-800 font-medium mt-1">
             Organize catalog formulations into Extrait, Perfume Oils, Scented Candles, and Room Sprays.
           </p>
         </div>
@@ -295,7 +295,7 @@ export const AdminCategoriesPage: React.FC = () => {
               <button
                 type="button"
                 onClick={closeForm}
-                className="text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                className="text-slate-700 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -344,7 +344,7 @@ export const AdminCategoriesPage: React.FC = () => {
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   rows={3}
                   placeholder="Detailed category notes and luxury formulation highlights..."
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
+                  className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                 />
               </div>
 
@@ -368,7 +368,7 @@ export const AdminCategoriesPage: React.FC = () => {
                         (e.target as HTMLElement).style.display = 'none';
                       }}
                     />
-                    <span className="text-xs text-slate-500">Image Preview</span>
+                    <span className="text-xs text-slate-700">Image Preview</span>
                   </div>
                 )}
               </div>
@@ -421,7 +421,7 @@ export const AdminCategoriesPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
             <h3 className="text-lg font-bold text-slate-900">Delete Category?</h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-800">
               This will permanently delete <span className="font-semibold text-slate-900">"{deleteTarget.name}"</span> from the database. Any products assigned to this category may lose their categorization.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">

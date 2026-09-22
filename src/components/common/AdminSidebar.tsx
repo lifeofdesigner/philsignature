@@ -154,7 +154,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
             return (
               <div key={group.category} className="space-y-1">
-                <div className="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                <div className="px-3 text-[10px] font-bold text-slate-700 uppercase tracking-widest">
                   {group.category}
                 </div>
                 <div className="space-y-0.5 mt-1">
@@ -180,7 +180,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                             <Icon
                               className={cn(
                                 'h-4 w-4 shrink-0 transition-colors',
-                                isActive ? 'text-white' : 'text-slate-500 group-hover:text-slate-800'
+                                isActive ? 'text-white' : 'text-slate-700 group-hover:text-slate-800'
                               )}
                             />
                             <span>{item.title}</span>
@@ -204,7 +204,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-700 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-200/60 font-semibold"
           >
             <span>Live Storefront</span>
-            <ExternalLink className="h-3.5 w-3.5 text-slate-500" />
+            <ExternalLink className="h-3.5 w-3.5 text-slate-700" />
           </a>
 
           <button
