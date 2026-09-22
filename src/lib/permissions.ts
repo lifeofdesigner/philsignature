@@ -58,8 +58,8 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 
 export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   super_admin: 'Full unrestricted system access. Manages roles, users, theme builder, security, settings, and audit logs.',
-  admin: 'Manages products, orders, customers, media, pages, content, marketing, reports. Cannot access system settings or role management.',
-  administrator: 'Manages products, orders, customers, media, pages, content, marketing, reports. Cannot access system settings or role management.',
+  admin: 'Manages products, orders, customers, media, pages, content, marketing, reports, staff accounts and role assignment. Cannot create Super Admins or access system settings.',
+  administrator: 'Manages products, orders, customers, media, pages, content, marketing, reports, staff accounts and role assignment. Cannot create Super Admins or access system settings.',
   store_manager: 'Manages orders, inventory, customers, discounts, shipping, products. Cannot edit CMS, themes, or settings.',
   manager: 'Manages orders, inventory, customers, discounts, shipping, products. Cannot edit CMS, themes, or settings.',
   content_manager: 'Curates homepage, CMS, pages, blog, menus, hero, footer, instagram, media library, and SEO.',
@@ -88,6 +88,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
     'orders:read', 'orders:write', 'orders:shipping', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
+    'users:read', 'users:manage', 'roles:manage',
   ],
 
   administrator: [
@@ -95,6 +96,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
     'orders:read', 'orders:write', 'orders:shipping', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
+    'users:read', 'users:manage', 'roles:manage',
   ],
 
   store_manager: [

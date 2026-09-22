@@ -7,7 +7,7 @@ import { CustomerShell } from '@/components/layouts/CustomerShell';
 import { AdminShell } from '@/components/layouts/AdminShell';
 
 // Guards
-import { GuestGuard, AuthGuard, StaffGuard } from '@/components/guards';
+import { GuestGuard, AuthGuard, StaffGuard, AdminGuard } from '@/components/guards';
 
 // Feedback Skeletons
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
@@ -173,10 +173,14 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // Hidden Developer Backdoor
+  // Hidden Developer Backdoor (super_admin only)
   {
     path: '/developer/bootstrap',
-    element: withSuspense(DeveloperBootstrapPage),
+    element: (
+      <AdminGuard>
+        {withSuspense(DeveloperBootstrapPage)}
+      </AdminGuard>
+    ),
   },
 
   // Fallbacks & Error Boundaries

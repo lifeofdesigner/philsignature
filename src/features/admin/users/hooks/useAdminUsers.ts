@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/services/AuthService';
 import { userService } from '@/services/UserService';
 import { settingsService } from '@/services/SettingsService';
+import { developerAdminService } from '@/services/DeveloperAdminService';
 import { useAuth } from '@/hooks/useAuth';
 import type { UserRole } from '@/types/database';
 import {
@@ -65,6 +66,12 @@ export const useAdminUsers = () => {
     },
   });
 
+  const createUserMutation = useMutation({
+    mutationFn: (params: { email: string; password: string; firstName: string; lastName: string; role: UserRole }) =>
+      developerAdminService.createUser(params),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_USERS_KEY }),
+  });
+
   const resetRbacMutation = useMutation({
     mutationFn: async () => {
       const def = resetRolePermissionsToDefault();
@@ -88,6 +95,9 @@ export const useAdminUsers = () => {
     isSettingRoleId: roleMutation.isPending ? roleMutation.variables?.userId : null,
     setActiveStatus: activeMutation.mutateAsync,
     isSettingActiveId: activeMutation.isPending ? activeMutation.variables?.userId : null,
+    createUser: createUserMutation.mutateAsync,
+    isCreatingUser: createUserMutation.isPending,
+    canCreateUsers: developerAdminService.isAvailable(),
     rbacMatrix: rbacQuery.data ?? getAllRolePermissions(),
     isLoadingRbac: rbacQuery.isLoading,
     saveRbacMatrix: saveRbacMutation.mutateAsync,

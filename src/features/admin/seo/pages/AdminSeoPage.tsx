@@ -104,7 +104,7 @@ export const AdminSeoPage: React.FC = () => {
                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Default Meta Title
                 </label>
-                <span className="text-[11px] text-slate-400 font-mono">{form.meta_title?.length || 0} / 60 chars</span>
+                <span className="text-[11px] text-slate-500 font-mono">{form.meta_title?.length || 0} / 60 chars</span>
               </div>
               <Input
                 value={form.meta_title}
@@ -119,7 +119,7 @@ export const AdminSeoPage: React.FC = () => {
                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Default Meta Description
                 </label>
-                <span className="text-[11px] text-slate-400 font-mono">{form.meta_description?.length || 0} / 160 chars</span>
+                <span className="text-[11px] text-slate-500 font-mono">{form.meta_description?.length || 0} / 160 chars</span>
               </div>
               <Textarea
                 rows={3}
@@ -217,12 +217,12 @@ export const AdminSeoPage: React.FC = () => {
                     }}
                   />
                 ) : (
-                  <div className="w-full h-28 bg-slate-100 border-b border-slate-200 flex items-center justify-center text-slate-400 text-xs font-medium">
+                  <div className="w-full h-28 bg-slate-100 border-b border-slate-200 flex items-center justify-center text-slate-500 text-xs font-medium">
                     No OG Image URL Provided (1200 x 630)
                   </div>
                 )}
                 <div className="p-3.5 space-y-1 bg-white">
-                  <div className="text-[10px] uppercase font-mono text-slate-400 truncate">
+                  <div className="text-[10px] uppercase font-mono text-slate-500 truncate">
                     {form.canonical_url?.replace(/^https?:\/\//, '') || 'philzsignature.com'}
                   </div>
                   <div className="text-xs font-bold text-slate-900 truncate">

@@ -27,3 +27,21 @@ The admin panel is purpose-built for luxury brand managers and store operators.
 15. **Settings**: Store profile, WhatsApp concierge, currency, tax rates, timezone.
 16. **SEO**: Page-by-page meta titles, descriptions, social share cards.
 
+## Creating Admins & Users
+
+Accounts are managed in Supabase Auth + a `profiles` table (`role`: `super_admin`, `staff`, or `customer`). There is no CLI seeder — provisioning is done through the app.
+
+### Create the first / a new admin (super_admin or staff)
+1. Ensure `.env` has `VITE_SUPABASE_SERVICE_ROLE_KEY` and `VITE_DEV_BOOTSTRAP_SECRET` set.
+2. Run the dev server (`npm run dev`) and visit `/developer/bootstrap`.
+3. Enter the passphrase (value of `VITE_DEV_BOOTSTRAP_SECRET`) to unlock the console.
+4. Fill in the "Super Admin provisioning" form (email, password, first/last name, role) and submit.
+   - This calls `DeveloperAdminRepository.createUser()` (`src/repositories/DeveloperAdminRepository.ts`), which uses the Supabase service-role client to create the auth user, waits for the `handle_new_user` trigger to create the matching `profiles` row, then sets `profiles.role`.
+
+### Change an existing user's role
+- From `/developer/bootstrap` (service-role console), or
+- From `/admin/users` (`src/features/admin/users/pages/AdminUsersPage.tsx`) once logged in as an admin.
+
+### Create a regular (customer) user
+- Self-service signup at the storefront's signup page — creates the auth user and a `profiles` row defaulted to `role = customer`. No admin action needed.
+

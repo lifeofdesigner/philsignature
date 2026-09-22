@@ -237,11 +237,11 @@ export const AdminCustomersPage: React.FC = () => {
               <div className="font-semibold text-slate-900">Patron Information</div>
               <div className="grid grid-cols-2 gap-2 text-slate-700">
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase">Registered:</span>
+                  <span className="text-slate-500 block text-[10px] uppercase">Registered:</span>
                   <span className="font-medium">{formatDate(selectedCustomer.created_at)}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase">Standing:</span>
+                  <span className="text-slate-500 block text-[10px] uppercase">Standing:</span>
                   <span className={`font-bold ${selectedCustomer.is_active ? 'text-emerald-800' : 'text-red-700'}`}>
                     {selectedCustomer.is_active ? 'Active Customer' : 'Suspended'}
                   </span>

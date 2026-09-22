@@ -16,6 +16,8 @@ import { Can } from '@/components/common/Can';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 import { auditLogService } from '@/services/AuditLogService';
 import { useAuth } from '@/hooks/useAuth';
+import { isSuperAdmin } from '@/lib/permissions';
+import type { UserRole } from '@/types/database';
 
 const IMAGE_FIELDS: { field: BrandImageField; label: string; helpText: string }[] = [
   { field: 'logo_url', label: 'Main Logo', helpText: 'Shown at the top of storefront pages.' },
@@ -28,7 +30,9 @@ const IMAGE_FIELDS: { field: BrandImageField; label: string; helpText: string }[
 export const AdminSettingsPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'general';
-  const { user } = useAuth();
+  const { user, profile, role } = useAuth();
+  const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
+  const userIsSuperAdmin = isSuperAdmin(currentRole);
 
   const { values, isLoading, save, isSaving } = useAdminSettings();
   const [form, setForm] = useState<GeneralSettingsForm | null>(null);
@@ -44,6 +48,13 @@ export const AdminSettingsPage: React.FC = () => {
 
   useEffect(() => { setForm(values); }, [values]);
   useEffect(() => { if (appearance) setThemeForm(appearance); }, [appearance]);
+
+  const SUPER_ADMIN_ONLY_TABS = ['flags', 'api', 'security'];
+  useEffect(() => {
+    if (SUPER_ADMIN_ONLY_TABS.includes(activeTab) && !userIsSuperAdmin) {
+      setSearchParams({ tab: 'general' });
+    }
+  }, [activeTab, userIsSuperAdmin, setSearchParams]);
 
   const handleSaveGeneral = async () => {
     if (!form) return;
@@ -92,7 +103,7 @@ export const AdminSettingsPage: React.FC = () => {
           { id: 'forms', label: 'Forms Builder', icon: FileInput },
           { id: 'api', label: 'API Keys & Integrations', icon: Key, superAdminOnly: true },
           { id: 'security', label: 'Security & Maintenance', icon: ShieldCheck, superAdminOnly: true },
-        ].map((tab) => {
+        ].filter((tab) => !tab.superAdminOnly || userIsSuperAdmin).map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
