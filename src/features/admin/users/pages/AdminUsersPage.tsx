@@ -776,14 +776,14 @@ export const AdminUsersPage: React.FC = () => {
                   value={newUser.firstName}
                   onChange={(e) => setNewUser((p) => ({ ...p, firstName: e.target.value }))}
                   required
-                  className="text-xs bg-white border-slate-300 text-slate-900"
+                  className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
                 />
                 <Input
                   placeholder="Last name"
                   value={newUser.lastName}
                   onChange={(e) => setNewUser((p) => ({ ...p, lastName: e.target.value }))}
                   required
-                  className="text-xs bg-white border-slate-300 text-slate-900"
+                  className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
                 />
               </div>
               <Input
@@ -792,7 +792,7 @@ export const AdminUsersPage: React.FC = () => {
                 value={newUser.email}
                 onChange={(e) => setNewUser((p) => ({ ...p, email: e.target.value }))}
                 required
-                className="text-xs bg-white border-slate-300 text-slate-900"
+                className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
               />
               <Input
                 type="password"
@@ -800,10 +800,10 @@ export const AdminUsersPage: React.FC = () => {
                 value={newUser.password}
                 onChange={(e) => setNewUser((p) => ({ ...p, password: e.target.value }))}
                 required
-                className="text-xs bg-white border-slate-300 text-slate-900"
+                className="!bg-white !text-slate-900 placeholder:!text-slate-400 !border-slate-300 text-xs"
               />
               <div className="space-y-1.5">
-                <label className="block text-xs font-semibold text-slate-700">Role</label>
+                <label className="block text-xs font-bold text-slate-900">Role</label>
                 <select
                   value={newUser.role}
                   onChange={(e) => setNewUser((p) => ({ ...p, role: e.target.value as UserRole }))}
@@ -816,7 +816,7 @@ export const AdminUsersPage: React.FC = () => {
                   ))}
                 </select>
                 {!userIsSuperAdmin && (
-                  <p className="text-[11px] text-slate-500">
+                  <p className="text-[11px] text-slate-700 font-medium">
                     Only a Super Administrator can create another Super Admin account.
                   </p>
                 )}
