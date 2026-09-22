@@ -12,6 +12,7 @@ import {
   RotateCcw,
   CheckCircle,
   AlertTriangle,
+  Wand2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -76,6 +77,21 @@ const slugify = (value: string) =>
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+
+const nextSkuSequence = (existingSkus: string[]) => {
+  const max = existingSkus.reduce((highest, sku) => {
+    const match = sku.match(/^PS-(\d+)-/);
+    if (!match) return highest;
+    return Math.max(highest, Number(match[1]));
+  }, 0);
+  return String(max + 1).padStart(2, '0');
+};
+
+const generateSku = (name: string, existingSkus: string[]) => {
+  const namePart = slugify(name).toUpperCase();
+  if (!namePart) return '';
+  return `PS-${nextSkuSequence(existingSkus)}-${namePart}`;
+};
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(amount);
@@ -166,7 +182,16 @@ export const AdminProductsPage: React.FC = () => {
       ...prev,
       name: value,
       slug: editingProduct ? prev.slug : slugify(value),
+      sku: editingProduct ? prev.sku : generateSku(value, products.map((p) => p.sku)),
     }));
+  };
+
+  const handleGenerateSku = () => {
+    if (!form.name.trim()) {
+      toast.error('Enter a fragrance name first.');
+      return;
+    }
+    setForm((prev) => ({ ...prev, sku: generateSku(prev.name, products.map((p) => p.sku)) }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -695,13 +720,25 @@ export const AdminProductsPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-slate-800">SKU Code *</label>
-                  <Input
-                    value={form.sku}
-                    onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))}
-                    placeholder="PS-OUD-01"
-                    required
-                    className="bg-white border-slate-300 text-slate-900 font-mono"
-                  />
+                  <div className="flex items-center gap-1.5">
+                    <Input
+                      value={form.sku}
+                      onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))}
+                      placeholder="PS-OUD-01"
+                      required
+                      className="bg-white border-slate-300 text-slate-900 font-mono"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleGenerateSku}
+                      title="Auto-generate SKU from fragrance name"
+                      className="h-9 px-2.5 shrink-0 border-slate-300 text-slate-700 hover:bg-slate-50"
+                    >
+                      <Wand2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-slate-800">Price (₦) *</label>
