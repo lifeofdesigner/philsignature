@@ -14,17 +14,26 @@ export const useAdminCategories = () => {
 
   const createMutation = useMutation({
     mutationFn: (input: unknown) => categoryService.createCategory(input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_CATEGORIES_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_CATEGORIES_KEY });
+      queryClient.invalidateQueries({ queryKey: ['admin-categories-lookup'] });
+    },
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, input }: { id: string; input: unknown }) => categoryService.updateCategory(id, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_CATEGORIES_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_CATEGORIES_KEY });
+      queryClient.invalidateQueries({ queryKey: ['admin-categories-lookup'] });
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => categoryService.deleteCategory(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_CATEGORIES_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_CATEGORIES_KEY });
+      queryClient.invalidateQueries({ queryKey: ['admin-categories-lookup'] });
+    },
   });
 
   return {

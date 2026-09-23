@@ -14,17 +14,26 @@ export const useAdminCollections = () => {
 
   const createMutation = useMutation({
     mutationFn: (input: unknown) => collectionService.createCollection(input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_COLLECTIONS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_COLLECTIONS_KEY });
+      queryClient.invalidateQueries({ queryKey: ['admin-collections-lookup'] });
+    },
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, input }: { id: string; input: unknown }) => collectionService.updateCollection(id, input),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_COLLECTIONS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_COLLECTIONS_KEY });
+      queryClient.invalidateQueries({ queryKey: ['admin-collections-lookup'] });
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) => collectionService.deleteCollection(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_COLLECTIONS_KEY }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_COLLECTIONS_KEY });
+      queryClient.invalidateQueries({ queryKey: ['admin-collections-lookup'] });
+    },
   });
 
   return {
