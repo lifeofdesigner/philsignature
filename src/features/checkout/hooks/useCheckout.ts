@@ -48,8 +48,16 @@ export function useCheckout() {
 
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'flutterwave' | 'bank_transfer'>('paystack');
+  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer'>(
+    'paystack'
+  );
   const [orderNotes, setOrderNotes] = useState<string>('');
+
+  const { data: bankDetails } = useQuery({
+    queryKey: ['payment-bank-transfer-config'],
+    queryFn: () => paymentService.getBankTransferConfig(),
+    staleTime: 1000 * 60 * 10,
+  });
 
   // Coupon State
   const [couponCode, setCouponCode] = useState<string>('');
@@ -226,66 +234,49 @@ export function useCheckout() {
 
       const order = await placeOrderMutation.mutateAsync();
 
-      // Gateway Execution
-      if (paymentMethod === 'paystack') {
-        await paymentService.initializePaystack({
-          email: addressForm.email,
-          amount: totalAmount,
-          reference: order.order_number,
-          metadata: {
-            order_id: order.id,
-            customer_name: `${addressForm.firstName} ${addressForm.lastName}`,
-          },
-          onSuccess: async (ref) => {
-            try {
-              await orderService.confirmPayment(order.id, ref, 'paystack');
-              clearCart();
-              queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
-              navigate(`/checkout/confirmation/${order.order_number}`);
-            } catch (confirmErr: unknown) {
-              const msg = confirmErr instanceof Error ? confirmErr.message : 'Error confirming payment';
-              setCheckoutError(msg);
-            } finally {
-              setIsProcessingPayment(false);
-            }
-          },
-          onCancel: () => {
-            setIsProcessingPayment(false);
-            navigate(`/checkout/confirmation/${order.order_number}?status=pending`);
-          },
-        });
-      } else if (paymentMethod === 'flutterwave') {
-        await paymentService.initializeFlutterwave({
-          email: addressForm.email,
-          phone: addressForm.phone,
-          name: `${addressForm.firstName} ${addressForm.lastName}`,
-          amount: totalAmount,
-          txRef: order.order_number,
-          onSuccess: async (txId, ref) => {
-            try {
-              await orderService.confirmPayment(order.id, ref || txId, 'flutterwave');
-              clearCart();
-              queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
-              navigate(`/checkout/confirmation/${order.order_number}`);
-            } catch (confirmErr: unknown) {
-              const msg = confirmErr instanceof Error ? confirmErr.message : 'Error confirming payment';
-              setCheckoutError(msg);
-            } finally {
-              setIsProcessingPayment(false);
-            }
-          },
-          onCancel: () => {
-            setIsProcessingPayment(false);
-            navigate(`/checkout/confirmation/${order.order_number}?status=pending`);
-          },
-        });
-      } else if (paymentMethod === 'bank_transfer') {
-        // Direct bank transfer confirmation
+      if (paymentMethod === 'bank_transfer') {
         clearCart();
         queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
         setIsProcessingPayment(false);
         navigate(`/checkout/confirmation/${order.order_number}?method=bank_transfer`);
+        return;
       }
+
+      // Card/gateway payment: charge client-side with the public key, then
+      // verify server-side (using the secret key) before ever marking the
+      // order paid. The client can never confirm its own payment.
+      await paymentService.initializeCheckout(paymentMethod, {
+        email: addressForm.email,
+        phone: addressForm.phone,
+        name: `${addressForm.firstName} ${addressForm.lastName}`,
+        amount: totalAmount,
+        reference: order.order_number,
+        metadata: { order_id: order.id },
+        onSuccess: async (reference) => {
+          try {
+            const result = await paymentService.verifyPayment(paymentMethod, reference, order.id);
+            if (!result.success) {
+              setCheckoutError(
+                result.reason || 'We could not verify your payment. Please contact support with your order number.'
+              );
+              navigate(`/checkout/confirmation/${order.order_number}?status=pending`);
+              return;
+            }
+            clearCart();
+            queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
+            navigate(`/checkout/confirmation/${order.order_number}`);
+          } catch (confirmErr: unknown) {
+            const msg = confirmErr instanceof Error ? confirmErr.message : 'Error verifying payment';
+            setCheckoutError(msg);
+          } finally {
+            setIsProcessingPayment(false);
+          }
+        },
+        onCancel: () => {
+          setIsProcessingPayment(false);
+          navigate(`/checkout/confirmation/${order.order_number}?status=pending`);
+        },
+      });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Could not place your order. Please try again.';
       setCheckoutError(msg);
@@ -326,6 +317,13 @@ export function useCheckout() {
     checkoutError,
     isSubmitting: placeOrderMutation.isPending || isProcessingPayment,
     handleProceedToPayment,
-    bankDetails: paymentService.bankTransferConfig,
+    bankDetails:
+      bankDetails || {
+        bankName: '',
+        accountName: '',
+        accountNumber: '',
+        currency: 'NGN',
+        instructions: '',
+      },
   };
 }

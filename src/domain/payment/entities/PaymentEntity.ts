@@ -2,7 +2,7 @@ import { Money } from '../../product/valueObjects/Money';
 import { TransactionRef } from '../valueObjects/TransactionRef';
 import type { PaymentStatus } from '@/types/database';
 
-export type PaymentGatewayType = 'paystack' | 'flutterwave' | 'bank_transfer' | 'cash_on_delivery';
+export type PaymentGatewayType = 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer' | 'cash_on_delivery';
 
 export interface PaymentProps {
   id: string;

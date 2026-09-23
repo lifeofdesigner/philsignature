@@ -1,21 +1,17 @@
-import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import { callAdminApi } from '@/lib/adminApiClient';
 import { SupabaseError } from '@/errors/SupabaseError';
 import type { Profile, UserRole } from '@/types/database';
 
 /**
- * Wraps Supabase Admin API calls (auth.admin.*) for the local-only
- * Developer Bootstrap console. Requires VITE_SUPABASE_SERVICE_ROLE_KEY.
- * Do not import this repository outside src/features/developer/bootstrap.
+ * Client for the privileged user-management actions used by the Developer
+ * Bootstrap console and the admin "New Staff / Admin Account" flow.
+ * These all call server-side /api/admin/users/* endpoints, which validate
+ * the caller's session and role, then use the service-role key internally
+ * (server-only). No privileged key ever reaches the browser.
  */
 export class DeveloperAdminRepository {
-  private requireAdminClient() {
-    const client = getSupabaseAdmin();
-    if (!client) {
-      throw new SupabaseError(
-        'Service role key not configured. Set VITE_SUPABASE_SERVICE_ROLE_KEY to use this feature.'
-      );
-    }
-    return client;
+  isAvailable(): boolean {
+    return true;
   }
 
   async createUser(params: {
@@ -25,68 +21,44 @@ export class DeveloperAdminRepository {
     lastName: string;
     role: UserRole;
   }): Promise<void> {
-    const admin = this.requireAdminClient();
-
-    const { data, error } = await admin.auth.admin.createUser({
-      email: params.email.trim().toLowerCase(),
-      password: params.password,
-      email_confirm: true,
-      user_metadata: { first_name: params.firstName, last_name: params.lastName },
-    });
-
-    if (error) throw new SupabaseError(error.message, error);
-    if (!data.user) throw new SupabaseError('User creation returned no user record');
-
-    // The handle_new_user trigger creates the profile row; wait briefly then set the role.
-    // Uses the admin (service-role) client since this console has no authenticated
-    // Supabase session of its own -- the passphrase gate is local-only and does not
-    // sign in via supabase.auth, so the anon client would have no RLS-granted access.
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const { error: profileError } = await admin
-      .from('profiles')
-      .update({ first_name: params.firstName, last_name: params.lastName, role: params.role })
-      .eq('id', data.user.id);
-
-    if (profileError) throw new SupabaseError(profileError.message, profileError);
+    try {
+      await callAdminApi('/api/admin/users/create', { body: params });
+    } catch (err) {
+      throw new SupabaseError(err instanceof Error ? err.message : 'User creation failed');
+    }
   }
 
   async deleteUser(userId: string): Promise<void> {
-    const admin = this.requireAdminClient();
-    const { error } = await admin.auth.admin.deleteUser(userId);
-    if (error) throw new SupabaseError(error.message, error);
+    try {
+      await callAdminApi('/api/admin/users/delete', { body: { userId } });
+    } catch (err) {
+      throw new SupabaseError(err instanceof Error ? err.message : 'Delete user failed');
+    }
   }
 
   async setUserPassword(userId: string, newPassword: string): Promise<void> {
-    const admin = this.requireAdminClient();
-    const { error } = await admin.auth.admin.updateUserById(userId, { password: newPassword });
-    if (error) throw new SupabaseError(error.message, error);
+    try {
+      await callAdminApi('/api/admin/users/set-password', { body: { userId, password: newPassword } });
+    } catch (err) {
+      throw new SupabaseError(err instanceof Error ? err.message : 'Password reset failed');
+    }
   }
 
-  isAvailable(): boolean {
-    return getSupabaseAdmin() !== null;
-  }
-
-  /**
-   * Lists profiles via the admin client. Needed because this console has no
-   * authenticated Supabase session -- the anon client can only see the caller's
-   * own profile row under RLS, so authService.listUsers() (anon client) returns
-   * nothing here even though it works correctly from an authenticated admin session.
-   */
   async listUsers(): Promise<Profile[]> {
-    const admin = this.requireAdminClient();
-    const { data, error } = await admin.from('profiles').select('*').order('created_at', { ascending: false });
-    if (error) throw new SupabaseError(error.message, error);
-    return (data as Profile[]) || [];
+    try {
+      const result = await callAdminApi<{ users: Profile[] }>('/api/admin/users/list', { method: 'GET' });
+      return result.users || [];
+    } catch (err) {
+      throw new SupabaseError(err instanceof Error ? err.message : 'Failed to list users');
+    }
   }
 
   async setRole(userId: string, newRole: UserRole): Promise<void> {
-    const admin = this.requireAdminClient();
-    const { error } = await admin
-      .from('profiles')
-      .update({ role: newRole, updated_at: new Date().toISOString() })
-      .eq('id', userId);
-    if (error) throw new SupabaseError(error.message, error);
+    try {
+      await callAdminApi('/api/admin/users/set-role', { body: { userId, role: newRole } });
+    } catch (err) {
+      throw new SupabaseError(err instanceof Error ? err.message : 'Role change failed');
+    }
   }
 }
 

@@ -213,7 +213,7 @@ export interface Product {
 
 export type OrderFinancialStatus = 'pending' | 'paid' | 'refunded' | 'failed';
 export type OrderFulfillmentStatus = 'pending' | 'processing' | 'packed' | 'shipped' | 'delivered' | 'cancelled';
-export type PaymentGateway = 'paystack' | 'flutterwave' | 'bank_transfer' | 'cod';
+export type PaymentGateway = 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer' | 'cod';
 
 export type OrderStatus = OrderFulfillmentStatus;
 export type PaymentStatus = OrderFinancialStatus;

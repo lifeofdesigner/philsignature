@@ -19,11 +19,19 @@ export const useAdminOrders = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_ORDERS_KEY }),
   });
 
+  const confirmPaymentMutation = useMutation({
+    mutationFn: ({ orderId, reference, paymentMethod }: { orderId: string; reference: string; paymentMethod: string }) =>
+      orderService.confirmPayment(orderId, reference, paymentMethod),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_ORDERS_KEY }),
+  });
+
   return {
     orders: ordersQuery.data ?? [],
     isLoading: ordersQuery.isLoading,
     isError: ordersQuery.isError,
     updateFulfillmentStatus: updateStatusMutation.mutateAsync,
     isUpdatingStatus: updateStatusMutation.isPending,
+    confirmPayment: confirmPaymentMutation.mutateAsync,
+    isConfirmingPayment: confirmPaymentMutation.isPending,
   };
 };

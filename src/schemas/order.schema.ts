@@ -28,7 +28,7 @@ export const createOrderSchema = z.object({
   email: z.string().email(),
   phone: z.string().min(7),
   customer_id: z.string().uuid().nullable().optional(),
-  payment_method: z.enum(['paystack', 'flutterwave', 'bank_transfer', 'cod']),
+  payment_method: z.enum(['paystack', 'flutterwave', 'korapay', 'bank_transfer', 'cod']),
   shipping_address: orderAddressSchema,
   billing_address: orderAddressSchema.optional(),
   notes: z.string().optional(),

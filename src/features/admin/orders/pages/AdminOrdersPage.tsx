@@ -12,6 +12,7 @@ import {
   Mail,
   Phone,
   Package,
+  Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,7 +41,8 @@ const formatDate = (isoString: string) =>
 
 export const AdminOrdersPage: React.FC = () => {
   const { user } = useAuth();
-  const { orders, isLoading, isError, updateFulfillmentStatus } = useAdminOrders();
+  const { orders, isLoading, isError, updateFulfillmentStatus, confirmPayment, isConfirmingPayment } =
+    useAdminOrders();
   const [financialFilter, setFinancialFilter] = useState<'all' | 'paid' | 'pending'>('all');
   const [fulfillmentFilter, setFulfillmentFilter] = useState<string>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -69,6 +71,21 @@ export const AdminOrdersPage: React.FC = () => {
       toast.error(err instanceof Error ? err.message : 'Failed to update order status.');
     } finally {
       setUpdatingId(null);
+    }
+  };
+
+  const handleConfirmBankTransfer = async (order: Order) => {
+    if (!confirm(`Confirm that a bank transfer payment of ${formatCurrency(order.total_amount)} was received for Order #${order.order_number}?`)) {
+      return;
+    }
+    try {
+      const reference = `MANUAL-${user?.email || 'admin'}-${Date.now()}`;
+      await confirmPayment({ orderId: order.id, reference, paymentMethod: 'bank_transfer' });
+      await auditLogService.recordAction('CONFIRM_BANK_TRANSFER', 'order', order.id, { reference }, user?.id);
+      setSelectedOrder((prev) => (prev && prev.id === order.id ? { ...prev, financial_status: 'paid' } : prev));
+      toast.success(`Order #${order.order_number} marked as paid.`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to confirm payment.');
     }
   };
 
@@ -389,6 +406,21 @@ export const AdminOrdersPage: React.FC = () => {
                 </div>
                 <div className="text-slate-700 capitalize font-medium">Gateway: {selectedOrder.payment_method || 'Online Card'}</div>
                 <div className="font-bold text-slate-900 text-sm">{formatCurrency(selectedOrder.total_amount)}</div>
+                {selectedOrder.payment_method === 'bank_transfer' && selectedOrder.financial_status === 'pending' && (
+                  <Button
+                    size="sm"
+                    disabled={isConfirmingPayment}
+                    onClick={() => handleConfirmBankTransfer(selectedOrder)}
+                    className="w-full mt-1.5 gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
+                  >
+                    {isConfirmingPayment ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                    )}
+                    <span>Mark Payment Received</span>
+                  </Button>
+                )}
               </div>
             </div>
 

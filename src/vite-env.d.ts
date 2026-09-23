@@ -6,7 +6,6 @@ interface ImportMetaEnv {
   readonly VITE_APP_NAME: string;
   readonly VITE_APP_TAGLINE: string;
   readonly VITE_APP_URL: string;
-  readonly VITE_DEV_BOOTSTRAP_SECRET: string;
   readonly VITE_ENABLE_DEV_BOOTSTRAP: string;
 }
 

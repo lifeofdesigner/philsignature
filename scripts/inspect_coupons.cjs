@@ -11,7 +11,7 @@ envContent.split('\n').forEach(line => {
   if (key && val) env[key] = val;
 });
 
-const supabase = createClient(env.VITE_SUPABASE_URL, env.VITE_SUPABASE_SERVICE_ROLE_KEY, {
+const supabase = createClient(env.VITE_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, {
   realtime: { transport: ws },
   auth: { persistSession: false, autoRefreshToken: false }
 });

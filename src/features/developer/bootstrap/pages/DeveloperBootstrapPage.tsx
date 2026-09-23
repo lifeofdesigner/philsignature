@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Terminal,
   Shield,
   Key,
   CheckCircle,
@@ -9,7 +8,6 @@ import {
   HardDrive,
   Users,
   RefreshCw,
-  Lock,
   Layers,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,9 +20,11 @@ import type { Profile, UserRole } from '@/types/database';
 import type { DatabaseHealthSummary } from '@/repositories/AuthRepository';
 
 export const DeveloperBootstrapPage: React.FC = () => {
-  const [passphrase, setPassphrase] = useState('');
-  const [isUnlocked, setIsUnlocked] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // This route is already gated by <AdminGuard> (requires an authenticated
+  // Super Admin session) - there is no separate client-side passphrase check
+  // anymore, since any such check would need a secret baked into the public
+  // bundle to compare against, which is not a real security boundary.
+  const isUnlocked = true;
 
   // Diagnostic state
   const [diagnostics, setDiagnostics] = useState<DatabaseHealthSummary | null>(null);
@@ -42,16 +42,6 @@ export const DeveloperBootstrapPage: React.FC = () => {
   const [adminLastName, setAdminLastName] = useState('Founder');
   const [provisionMessage, setProvisionMessage] = useState<string | null>(null);
   const [isProvisioning, setIsProvisioning] = useState(false);
-
-  const handleUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (passphrase === env.VITE_DEV_BOOTSTRAP_SECRET) {
-      setIsUnlocked(true);
-      setError(null);
-    } else {
-      setError('Invalid security key sequence.');
-    }
-  };
 
   const loadDiagnostics = useCallback(async () => {
     setIsLoadingDiagnostics(true);
@@ -129,41 +119,6 @@ export const DeveloperBootstrapPage: React.FC = () => {
     }
   };
 
-  if (!isUnlocked) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-4 font-mono">
-        <div className="w-full max-w-md bg-luxury-charcoal border border-luxury-gold/40 p-8 space-y-6">
-          <div className="flex items-center gap-3 border-b border-luxury-border pb-4">
-            <Terminal className="h-5 w-5 text-luxury-gold" />
-            <span className="text-xs uppercase tracking-widest text-luxury-gold">
-              Security Gate: Bootstrap Console
-            </span>
-          </div>
-
-          <p className="text-xs text-luxury-sand leading-relaxed">
-            Restricted developer backdoor. Enter passphrase to access system diagnostics, Super Admin provisioning, and role administration.
-          </p>
-
-          <form onSubmit={handleUnlock} className="space-y-4">
-            <Input
-              type="password"
-              placeholder="Developer Passphrase..."
-              value={passphrase}
-              onChange={(e) => setPassphrase(e.target.value)}
-              className="font-mono text-xs bg-black border-luxury-border"
-              error={error || undefined}
-              autoFocus
-            />
-            <Button variant="luxury" size="default" className="w-full gap-2">
-              <Lock className="h-3.5 w-3.5" />
-              <span>Authenticate Terminal</span>
-            </Button>
-          </form>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-black text-luxury-cream p-6 sm:p-12 font-mono space-y-10">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -195,13 +150,6 @@ export const DeveloperBootstrapPage: React.FC = () => {
             >
               <RefreshCw className={`h-3.5 w-3.5 ${isLoadingDiagnostics ? 'animate-spin' : ''}`} />
               <span>Refresh State</span>
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsUnlocked(false)}
-            >
-              Lock Terminal
             </Button>
           </div>
         </div>

@@ -13,7 +13,7 @@ envContent.split('\n').forEach(line => {
 });
 
 const url = env.VITE_SUPABASE_URL;
-const key = env.VITE_SUPABASE_SERVICE_ROLE_KEY || env.VITE_SUPABASE_ANON_KEY;
+const key = env.SUPABASE_SERVICE_ROLE_KEY || env.VITE_SUPABASE_ANON_KEY;
 
 const supabase = createClient(url, key, {
   realtime: { transport: ws },

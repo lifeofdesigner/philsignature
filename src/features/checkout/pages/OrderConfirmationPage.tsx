@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { CheckCircle2, Clock, PackageCheck, Truck, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useOrderDetail } from '../hooks/useOrders';
 import { BankTransferDetails } from '../components/BankTransferDetails';
@@ -14,6 +15,11 @@ export const OrderConfirmationPage: React.FC = () => {
   const methodParam = searchParams.get('method');
 
   const { data: order, isLoading, error, refetch } = useOrderDetail(orderNumber);
+  const { data: bankConfig } = useQuery({
+    queryKey: ['payment-bank-transfer-config'],
+    queryFn: () => paymentService.getBankTransferConfig(),
+    staleTime: 1000 * 60 * 10,
+  });
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-NG', {
@@ -75,12 +81,9 @@ export const OrderConfirmationPage: React.FC = () => {
         </div>
 
         {/* Bank Transfer Instructions (if applicable) */}
-        {isBankTransfer && !isPaid && (
+        {isBankTransfer && !isPaid && bankConfig && (
           <div className="mb-8">
-            <BankTransferDetails
-              config={paymentService.bankTransferConfig}
-              orderNumber={order.order_number}
-            />
+            <BankTransferDetails config={bankConfig} orderNumber={order.order_number} />
           </div>
         )}
 

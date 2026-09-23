@@ -9,7 +9,7 @@ export interface PlaceOrderParams {
   customer_id?: string | null;
   email: string;
   phone: string;
-  payment_method: 'paystack' | 'flutterwave' | 'bank_transfer' | 'cod';
+  payment_method: 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer' | 'cod';
   shipping_method_id?: string;
   shipping_address: {
     first_name: string;

@@ -16,8 +16,6 @@ export interface DeveloperUserAdminPanelProps {
  * can be maintained independently of DeveloperBootstrapPage.tsx.
  */
 export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = ({ users, onUsersChanged }) => {
-  const adminApiAvailable = developerAdminService.isAvailable();
-
   // Create user
   const [newUserFirstName, setNewUserFirstName] = useState('');
   const [newUserLastName, setNewUserLastName] = useState('');
@@ -96,16 +94,6 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
 
   return (
     <>
-      {!adminApiAvailable && (
-        <div className="flex items-start gap-2.5 p-3.5 bg-amber-950/40 border border-amber-800/60 text-amber-200 text-xs">
-          <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
-          <span>
-            VITE_SUPABASE_SERVICE_ROLE_KEY is not set. Create User, Delete User, and Reset Password are disabled
-            until it is configured. Never deploy this page with that key set on a public host.
-          </span>
-        </div>
-      )}
-
       {/* Create User (Any Role) */}
       <div className="bg-luxury-card border border-luxury-border p-6 space-y-6">
         <div className="flex items-center justify-between border-b border-luxury-border pb-3">
@@ -124,8 +112,8 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
 
         <form onSubmit={handleCreateUser} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input label="First Name" value={newUserFirstName} onChange={(e) => setNewUserFirstName(e.target.value)} required disabled={!adminApiAvailable} />
-            <Input label="Last Name" value={newUserLastName} onChange={(e) => setNewUserLastName(e.target.value)} required disabled={!adminApiAvailable} />
+            <Input label="First Name" value={newUserFirstName} onChange={(e) => setNewUserFirstName(e.target.value)} required />
+            <Input label="Last Name" value={newUserLastName} onChange={(e) => setNewUserLastName(e.target.value)} required />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
@@ -135,8 +123,7 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
               value={newUserEmail}
               onChange={(e) => setNewUserEmail(e.target.value)}
               required
-              disabled={!adminApiAvailable}
-            />
+             />
             <Input
               label="Password (Min 8 chars, mixed case, symbols)"
               type="password"
@@ -144,15 +131,14 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
               value={newUserPassword}
               onChange={(e) => setNewUserPassword(e.target.value)}
               required
-              disabled={!adminApiAvailable}
-            />
+             />
           </div>
           <div className="space-y-1.5">
             <label className="block text-[10px] uppercase tracking-wider text-luxury-muted">Role</label>
             <select
               value={newUserRole}
               onChange={(e) => setNewUserRole(e.target.value as UserRole)}
-              disabled={!adminApiAvailable}
+             
               className="w-full bg-black border border-luxury-border p-2.5 text-xs text-white disabled:opacity-50"
             >
               <option value="customer">Customer</option>
@@ -160,7 +146,7 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
               <option value="super_admin">Super Admin</option>
             </select>
           </div>
-          <Button variant="luxury" size="default" className="gap-2" disabled={isCreatingUser || !adminApiAvailable}>
+          <Button variant="luxury" size="default" className="gap-2" disabled={isCreatingUser}>
             <UserPlus className="h-4 w-4" />
             <span>{isCreatingUser ? 'Creating...' : 'Create User in Supabase'}</span>
           </Button>
@@ -203,7 +189,7 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
                       <Button
                         variant="outline"
                         size="sm"
-                        disabled={!adminApiAvailable}
+                       
                         onClick={() => {
                           setResetPasswordTarget(u);
                           setResetPasswordValue('');
@@ -216,7 +202,7 @@ export const DeveloperUserAdminPanel: React.FC<DeveloperUserAdminPanelProps> = (
                       <Button
                         variant="destructive"
                         size="sm"
-                        disabled={!adminApiAvailable}
+                       
                         onClick={() => setDeleteTarget(u)}
                         className="text-[10px] h-7 px-2 gap-1"
                       >

@@ -4,8 +4,8 @@ import { BankTransferDetails } from './BankTransferDetails';
 import type { BankTransferConfig } from '@/services/PaymentService';
 
 interface PaymentStepProps {
-  paymentMethod: 'paystack' | 'flutterwave' | 'bank_transfer';
-  setPaymentMethod: (method: 'paystack' | 'flutterwave' | 'bank_transfer') => void;
+  paymentMethod: 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer';
+  setPaymentMethod: (method: 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer') => void;
   orderNotes: string;
   setOrderNotes: (notes: string) => void;
   bankDetails: BankTransferConfig;
@@ -35,7 +35,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   };
 
   const paymentOptions: {
-    id: 'paystack' | 'flutterwave' | 'bank_transfer';
+    id: 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer';
     title: string;
     description: string;
     badge?: string;
@@ -53,6 +53,12 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
       title: 'Flutterwave',
       description: 'Pay with International Cards, Mobile Money, or Bank Transfer.',
       icon: <Sparkles className="h-5 w-5 text-luxury-gold" />,
+    },
+    {
+      id: 'korapay',
+      title: 'Korapay',
+      description: 'Pay with Cards, Bank Transfer, or Mobile Money.',
+      icon: <CreditCard className="h-5 w-5 text-luxury-gold" />,
     },
     {
       id: 'bank_transfer',
