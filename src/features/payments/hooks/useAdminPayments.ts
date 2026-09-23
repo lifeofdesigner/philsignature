@@ -9,26 +9,48 @@ export interface PaymentGatewaysConfig {
   paystack_enabled: boolean;
   paystack_public_key: string;
   paystack_secret_key: string;
+  paystack_callback_url: string;
+  paystack_webhook_url: string;
   flutterwave_enabled: boolean;
   flutterwave_public_key: string;
   flutterwave_secret_key: string;
+  flutterwave_encryption_key: string;
+  flutterwave_callback_url: string;
+  flutterwave_webhook_url: string;
+  korapay_enabled: boolean;
+  korapay_public_key: string;
+  korapay_secret_key: string;
+  korapay_webhook_url: string;
   bank_transfer_enabled: boolean;
   bank_name: string;
   account_number: string;
   account_name: string;
+  bank_swift_code: string;
+  bank_transfer_instructions: string;
 }
 
 export const DEFAULT_PAYMENT_CONFIG: PaymentGatewaysConfig = {
   paystack_enabled: true,
   paystack_public_key: '',
   paystack_secret_key: '',
+  paystack_callback_url: '',
+  paystack_webhook_url: '',
   flutterwave_enabled: false,
   flutterwave_public_key: '',
   flutterwave_secret_key: '',
+  flutterwave_encryption_key: '',
+  flutterwave_callback_url: '',
+  flutterwave_webhook_url: '',
+  korapay_enabled: false,
+  korapay_public_key: '',
+  korapay_secret_key: '',
+  korapay_webhook_url: '',
   bank_transfer_enabled: true,
   bank_name: '',
   account_number: '',
   account_name: '',
+  bank_swift_code: '',
+  bank_transfer_instructions: '',
 };
 
 export const useAdminPayments = () => {

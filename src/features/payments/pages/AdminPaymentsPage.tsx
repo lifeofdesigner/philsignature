@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { CreditCard, Save, Loader2, Landmark, Wallet, Eye, EyeOff } from 'lucide-react';
+import { CreditCard, Save, Loader2, Landmark, Wallet, Eye, EyeOff, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
@@ -12,6 +12,8 @@ export const AdminPaymentsPage: React.FC = () => {
   const [form, setForm] = useState<PaymentGatewaysConfig | null>(null);
   const [showPaystackSecret, setShowPaystackSecret] = useState(false);
   const [showFlutterwaveSecret, setShowFlutterwaveSecret] = useState(false);
+  const [showFlutterwaveEncryption, setShowFlutterwaveEncryption] = useState(false);
+  const [showKorapaySecret, setShowKorapaySecret] = useState(false);
 
   useEffect(() => {
     setForm(config);
@@ -116,6 +118,30 @@ export const AdminPaymentsPage: React.FC = () => {
                 className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
               />
             </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Callback URL
+              </label>
+              <Input
+                placeholder="https://philzsignature.com/checkout/verify"
+                value={form.paystack_callback_url}
+                onChange={(e) => setForm((p) => (p ? { ...p, paystack_callback_url: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Webhook URL
+              </label>
+              <Input
+                placeholder="https://philzsignature.com/api/webhooks/paystack"
+                value={form.paystack_webhook_url}
+                onChange={(e) => setForm((p) => (p ? { ...p, paystack_webhook_url: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
           </div>
         </div>
 
@@ -182,6 +208,134 @@ export const AdminPaymentsPage: React.FC = () => {
                 placeholder="FLWSECK_TEST-... or FLWSECK-..."
                 value={form.flutterwave_secret_key}
                 onChange={(e) => setForm((p) => (p ? { ...p, flutterwave_secret_key: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  Encryption Key
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowFlutterwaveEncryption(!showFlutterwaveEncryption)}
+                  className="text-xs text-slate-700 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
+                >
+                  {showFlutterwaveEncryption ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  <span>{showFlutterwaveEncryption ? 'Hide' : 'Reveal'}</span>
+                </button>
+              </div>
+              <Input
+                type={showFlutterwaveEncryption ? 'text' : 'password'}
+                placeholder="Flutterwave Encryption Key"
+                value={form.flutterwave_encryption_key}
+                onChange={(e) => setForm((p) => (p ? { ...p, flutterwave_encryption_key: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Callback / Redirect URL
+              </label>
+              <Input
+                placeholder="https://philzsignature.com/checkout/verify"
+                value={form.flutterwave_callback_url}
+                onChange={(e) => setForm((p) => (p ? { ...p, flutterwave_callback_url: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Webhook URL
+              </label>
+              <Input
+                placeholder="https://philzsignature.com/api/webhooks/flutterwave"
+                value={form.flutterwave_webhook_url}
+                onChange={(e) => setForm((p) => (p ? { ...p, flutterwave_webhook_url: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Korapay Gateway Card */}
+        <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-700">
+                <Zap className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-bold text-slate-900">Korapay Gateway</h3>
+                  <span
+                    className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border ${
+                      form.korapay_enabled
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                        : 'bg-slate-100 text-slate-800 border border-slate-200'
+                    }`}
+                  >
+                    {form.korapay_enabled ? 'Active' : 'Disabled'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-800 font-medium mt-0.5">
+                  Cards, bank transfer, and mobile money with instant automated verification.
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={form.korapay_enabled}
+              onCheckedChange={(checked) => setForm((p) => (p ? { ...p, korapay_enabled: checked } : p))}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Korapay Public Key
+              </label>
+              <Input
+                placeholder="pk_live_... or pk_test_..."
+                value={form.korapay_public_key}
+                onChange={(e) => setForm((p) => (p ? { ...p, korapay_public_key: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  Korapay Secret Key
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowKorapaySecret(!showKorapaySecret)}
+                  className="text-xs text-slate-700 hover:text-slate-800 flex items-center gap-1 cursor-pointer"
+                >
+                  {showKorapaySecret ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  <span>{showKorapaySecret ? 'Hide' : 'Reveal'}</span>
+                </button>
+              </div>
+              <Input
+                type={showKorapaySecret ? 'text' : 'password'}
+                placeholder="sk_live_... or sk_test_..."
+                value={form.korapay_secret_key}
+                onChange={(e) => setForm((p) => (p ? { ...p, korapay_secret_key: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+              />
+            </div>
+
+            <div className="space-y-1.5 sm:col-span-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Webhook URL
+              </label>
+              <Input
+                placeholder="https://philzsignature.com/api/webhooks/korapay"
+                value={form.korapay_webhook_url}
+                onChange={(e) => setForm((p) => (p ? { ...p, korapay_webhook_url: e.target.value } : p))}
                 className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
               />
             </div>
@@ -253,6 +407,30 @@ export const AdminPaymentsPage: React.FC = () => {
                 value={form.account_name}
                 onChange={(e) => setForm((p) => (p ? { ...p, account_name: e.target.value } : p))}
                 className="bg-white border-slate-300 text-slate-900 uppercase"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                SWIFT / Sort Code (optional)
+              </label>
+              <Input
+                placeholder="e.g. ZEIBNGLA"
+                value={form.bank_swift_code}
+                onChange={(e) => setForm((p) => (p ? { ...p, bank_swift_code: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900 font-mono"
+              />
+            </div>
+
+            <div className="space-y-1.5 sm:col-span-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                Additional Instructions (optional)
+              </label>
+              <Input
+                placeholder="e.g. Send payment receipt to orders@philzsignature.com to confirm"
+                value={form.bank_transfer_instructions}
+                onChange={(e) => setForm((p) => (p ? { ...p, bank_transfer_instructions: e.target.value } : p))}
+                className="bg-white border-slate-300 text-slate-900"
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -225,13 +225,16 @@ export const AdminSettingsPage: React.FC = () => {
         <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-slate-700">Super Admin permission required to manage API keys.</div>}>
           <Card>
             <CardHeader>
-              <CardTitle className="text-base font-semibold text-slate-900">API Credentials & Payment Webhooks</CardTitle>
-              <CardDescription>Payment gateway public keys, Google Analytics ID, and webhook secrets</CardDescription>
+              <CardTitle className="text-base font-semibold text-slate-900">Payment Gateway API Keys & Webhooks</CardTitle>
+              <CardDescription>Paystack, Flutterwave, and Korapay credentials, webhook URLs, and manual bank transfer details are managed on the dedicated Payments page.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Input label="Paystack Public Key" value="pk_live_********************" readOnly className="text-xs font-mono bg-slate-50" />
-              <Input label="Flutterwave Encryption Key" value="FLWSECK_LIVE_********************" readOnly className="text-xs font-mono bg-slate-50" />
-              <Input label="Google Analytics Tracking ID (GA4)" value="G-PH71829302" readOnly className="text-xs font-mono bg-slate-50" />
+              <Link to="/admin/payments">
+                <Button size="sm" className="gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold">
+                  <Key className="h-3.5 w-3.5" />
+                  <span>Open Payment Gateways & Settlement</span>
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </Can>
