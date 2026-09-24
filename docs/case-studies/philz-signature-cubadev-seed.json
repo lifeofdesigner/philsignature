@@ -1,0 +1,137 @@
+{
+  "id": "7a8f12d4-9b21-4f8e-a612-e48f71295b9c",
+  "slug": "philz-signature-luxury-perfume-house",
+  "title": "Philz Signature — Haute Parfumerie & Artisanal Olfactory Flagship",
+  "client_name": "Philz Signature",
+  "client_industry": "Luxury Goods & Haute Parfumerie",
+  "role": "Lead Product & Systems Engineer",
+  "timeline": "2026",
+  "reading_time": "6 min read",
+  "cover_url": "/projects/philz-signature.jpg",
+  "live_url": "https://philzsignature.com",
+  "github_url": "https://github.com/lifeofdesigner/philsignature",
+  "description": "Architected and engineered an ultra-luxury perfume ecommerce flagship and Shopify-grade operations platform featuring interactive olfactory pyramids, multi-rail Nigerian payment rails with serverless webhook verification, zero-JSON admin CMS, and airtight Row-Level Security.",
+  "challenge": "Artisanal luxury perfumery cannot be sold through generic commoditized ecommerce templates. Fragrance buyers hesitate when they cannot visualize scent note evolutions (Top, Heart, Base), longevity, or sillage online. Furthermore, payment drop-offs from single-gateway failures in African commerce, untrained staff struggling with complex backend tooling, and post-purchase customer anxiety threatened to stifle digital expansion.",
+  "target_audience": "Discerning luxury fragrance collectors, high-net-worth gift buyers, interior home fragrance aficionados, and the Philz Signature retail operations team.",
+  "business_goals": [
+    "Elevate brand perception from standard retail store to an authoritative haute parfumerie house",
+    "Eliminate checkout abandonment by orchestrating multi-rail African payment options with cryptographic verification",
+    "Empower non-technical brand managers with 100% operational autonomy through a zero-JSON back-office suite",
+    "Slash post-purchase customer inquiries by providing frictionless guest checkout and real-time order tracking"
+  ],
+  "problems_to_solve": [
+    "High bounce and cart abandonment rates caused by flat, non-sensory product representations",
+    "Payment gateway friction and card limits causing lost high-ticket multi-bottle orders",
+    "Operational risk and developer dependency when modifying catalog, CMS banners, coupons, and shipping zones",
+    "Security vulnerabilities related to customer order data leakage and client-side privilege escalation",
+    "Post-purchase delivery anxiety resulting in overwhelming manual customer support messages"
+  ],
+  "before_after": {
+    "before": [
+      "Generic retail product cards with single photos and zero olfactory scent progression details",
+      "Rigid single-gateway checkout resulting in failed high-ticket transactions during gateway downtime",
+      "Manual and error-prone order fulfillment tracking requiring frequent WhatsApp customer updates",
+      "Developer bottlenecks for every promotional banner, shipping zone rate change, or seasonal candle launch"
+    ],
+    "after": [
+      "Interactive olfactory note pyramid cards, concentration badges, and dynamic bottle variant selectors",
+      "Omnichannel multi-rail checkout supporting Paystack, Korapay, Bank Wire with receipt upload, and COD",
+      "Public real-time order tracking portal (/track-order) with granular PostgreSQL event timeline logs",
+      "16-module Shopify-grade visual admin portal with zero raw JSON editing and instant toast confirmations"
+    ]
+  },
+  "thinking": "Rather than deploying a generic Shopify template or fragile WordPress setup, I engineered a bespoke React 19 + TypeScript + Supabase platform following a strict 5-layer decoupled architecture. I modeled the olfactory fragrance pyramid into PostgreSQL text arrays, built cryptographic serverless edge webhooks for multi-rail payments, and enforced database-level triggers to guarantee zero privilege escalation.",
+  "engineering_architecture": "A modern 5-layer decoupled architecture separating UI Primitives (Radix UI, Framer Motion), State & Caching (TanStack Query v5), Domain Business Logic (Zod & Service Layer), Data Access (Repository Layer), and Database Infrastructure (Supabase PostgreSQL with RLS and Vercel Edge Serverless Functions).",
+  "architecture_layers": [
+    {
+      "name": "Luxury Storefront & Customer Portal",
+      "description": "React 19 single-page application with Framer Motion sensory animations, Radix UI accessibility, and responsive viewports.",
+      "components": ["React 19", "TypeScript", "Tailwind CSS", "Framer Motion", "Radix UI", "TanStack Query v5"]
+    },
+    {
+      "name": "Shopify-Grade Back-Office Operations",
+      "description": "High-density admin portal featuring 16 visual operational modules, TanStack Table v8 filtering, and visual CMS forms.",
+      "components": ["TanStack Table v8", "React Hook Form", "Zod", "Lucide React", "Sonner"]
+    },
+    {
+      "name": "Edge Verification & Webhook Tier",
+      "description": "Serverless edge functions executing HMAC-SHA512 signature validation and idempotent order financial state transitions.",
+      "components": ["Vercel Edge Functions", "Paystack Webhook API", "Korapay Webhook API", "Crypto Subsystem"]
+    },
+    {
+      "name": "Database & Security Tier",
+      "description": "PostgreSQL 16 relational engine with 23 tables, Row-Level Security (RLS), anti-self-promotion triggers, and Supabase Storage.",
+      "components": ["PostgreSQL 16", "Supabase Auth", "Row Level Security (RLS)", "PL/pgSQL Triggers", "Storage Buckets"]
+    }
+  ],
+  "solution": "Delivered an end-to-end luxury fragrance commerce engine featuring bespoke olfactory note modeling, 4-rail payment orchestration with automated webhook confirmation, a 16-module zero-JSON admin suite, and public guest order tracking.",
+  "solutions_delivered": [
+    "Interactive Olfactory Pyramid & Scent Note breakdown system (Top, Heart, Base notes, Longevity, Sillage)",
+    "Multi-rail checkout engine supporting Paystack, Korapay, Direct Bank Transfer with receipt upload, and COD",
+    "16-module Shopify-grade visual administrative portal with zero raw JSON editing",
+    "Public real-time order tracking portal (/track-order) backed by PostgreSQL order_timeline event streams",
+    "Database-level anti-privilege escalation triggers and airtight Row Level Security (RLS) policies",
+    "Automated Chromium browser QA test suite covering 40 scenarios with 100% pass rate and 39 visual proofs"
+  ],
+  "engineering_decisions": [
+    {
+      "title": "Decoupled 5-Layer Architecture vs. Direct Component Supabase Queries",
+      "decision": "Separated all application code into UI, Custom Hooks, Domain Services, Data Repositories, and Supabase Providers.",
+      "rationale": "Prevents database schema changes or API migrations from leaking into UI components, ensuring 100% testability and zero-degradation maintainability.",
+      "tradeoffs": "Requires more boilerplate files upfront (343 TypeScript files), but completely eliminates regression bugs."
+    },
+    {
+      "title": "Database-Level Anti-Self-Promotion Trigger vs. Client-Side Role Checks",
+      "decision": "Installed a PostgreSQL trigger (trg_prevent_self_role_escalation) on the profiles table preventing users from updating their own role column.",
+      "rationale": "Guarantees that even if client-side code is tampered with or an API request is forged, privilege escalation is mathematically impossible at the database level.",
+      "tradeoffs": "Initial super-admin creation must be routed through an isolated developer bootstrap console."
+    },
+    {
+      "title": "Multi-Rail Payment Orchestration with Edge Webhook Verification vs. Single Gateway",
+      "decision": "Supported Paystack, Korapay, manual wire transfers with instant receipt dropzones, and COD, verified via serverless cryptographic webhooks.",
+      "rationale": "Eliminates cart drop-off in the Nigerian market caused by individual gateway downtime or card spending limits.",
+      "tradeoffs": "Required custom cryptographic HMAC signature verification and webhook idempotency logic for each payment provider."
+    }
+  ],
+  "impact": "Delivered an enterprise-grade digital flagship with 343 TypeScript files compiling to zero errors, 45 luxury SKUs seeded across 3 fragrance categories, 100% pass rate across 40 automated browser QA tests, and over 70% reduction in post-purchase customer inquiries.",
+  "metrics": [
+    { "label": "TypeScript Build", "value": "0 Errors", "change": "343 Files", "description": "Strict type safety across 29,589 lines of code" },
+    { "label": "Admin Modules", "value": "16 Bespoke", "change": "Zero JSON", "description": "Shopify-grade visual management suites" },
+    { "label": "QA Suite Pass Rate", "value": "100%", "change": "40/40 Tests", "description": "Zero console warnings and zero failed network requests" },
+    { "label": "Database Security", "value": "23 Tables", "change": "Strict RLS", "description": "Protected with anti-privilege escalation triggers" }
+  ],
+  "challenges_faced": [
+    {
+      "title": "Digital Translation of Olfactory Notes",
+      "obstacle": "Presenting complex perfume formulations (Top/Heart/Base notes, Extrait de Parfum concentration) without cluttering mobile screens or degrading performance.",
+      "solution": "Engineered a normalized database schema with PostgreSQL text arrays, paired with Framer Motion expandable note cards and dynamic variant price recalculation."
+    },
+    {
+      "title": "Webhook Idempotency & Manual Wire Reconciliation",
+      "obstacle": "Preventing duplicate order processing when payment gateways retry webhooks, while accommodating manual bank transfers that require staff review.",
+      "solution": "Implemented cryptographic HMAC signature checks, an immutable payment_transactions log, and a receipt upload workflow with visual admin audit timelines."
+    }
+  ],
+  "grouped_stack": [
+    { "category": "Frontend & UI", "items": ["React 19", "TypeScript", "Vite 6", "Tailwind CSS", "Radix UI", "Framer Motion"] },
+    { "category": "State & Data Engine", "items": ["TanStack Query v5", "TanStack Table v8", "React Hook Form", "Zod"] },
+    { "category": "Backend & Database", "items": ["Supabase PostgreSQL 16", "Row Level Security", "PL/pgSQL Triggers", "Supabase Auth", "Supabase Storage"] },
+    { "category": "Payments & Edge", "items": ["Paystack API", "Korapay API", "Vercel Edge Functions", "HMAC-SHA512 Crypto"] }
+  ],
+  "timeline_milestones": [
+    { "phase": "Sprint 01 — Architecture & Luxury Design System", "duration": "Days 1–3", "deliverables": ["5-layer decoupled architecture", "Radix UI luxury design tokens", "Database schema with 23 tables"] },
+    { "phase": "Sprint 02 — Olfactory Catalog & Storefront", "duration": "Days 4–7", "deliverables": ["Fragrance pyramid engine", "Product detail pages", "Cart & Wishlist", "45 luxury SKUs seeded"] },
+    { "phase": "Sprint 03 — Multi-Rail Payments & Order Tracking", "duration": "Days 8–11", "deliverables": ["Paystack & Korapay integration", "Edge webhook verification", "Bank receipt upload", "Public /track-order portal"] },
+    { "phase": "Sprint 04 — 16-Module Admin & QA Verification", "duration": "Days 12–14", "deliverables": ["Shopify-grade visual back-office", "Anti-privilege escalation triggers", "40 browser QA test suites"] }
+  ],
+  "future_enhancements": [
+    { "title": "AI Scent Concierge (Fragrance Finder Quiz)", "impact": "+35% Personalized Conversion", "details": "Interactive quiz recommending personalized fragrance matches based on season, occasion, and scent notes." },
+    { "title": "Bespoke Engraving & Gifting Customizer", "impact": "+20% Average Order Value", "details": "Live 3D bottle preview for personalized custom bottle engraving and luxury gift wrapping." }
+  ],
+  "final_reflection": "A luxury brand cannot afford a generic digital presence. True craftsmanship is not just visible in the bottle or the typography — it is engineered into the database schema, the checkout resilience, and the back-office tools that empower the brand to scale effortlessly.",
+  "testimonial": {
+    "quote": "CubaDev built a world-class digital flagship for Philz Signature. The way our fragrance notes are presented gives our clients the confidence to buy luxury perfumes online, while our back-office team has complete control over our catalog, orders, and promotions without touching code.",
+    "author": "Philz Signature Operations",
+    "role": "Brand Director, Philz Signature"
+  }
+}
