@@ -39,7 +39,11 @@ export const useAdminBrandTheme = () => {
     mutationFn: async ({ field, file }: { field: BrandImageField; file: File }) => {
       const uploaded = await mediaService.uploadFile('cms', file, user?.id);
       const publicUrl = mediaService.getPublicUrl(uploaded.bucket, uploaded.path);
-      const current = appearanceQuery.data ?? (await cmsService.getAppearance());
+      // Always read the live row immediately before merging - never trust the
+      // cached query data here, since a second upload fired before the first
+      // one's cache invalidation completes would otherwise overwrite it with
+      // a stale snapshot that doesn't include the first upload's field.
+      const current = await cmsService.getAppearance();
       const updated: CmsAppearanceConfig = { ...current, [field]: publicUrl };
       await cmsService.updateSectionContent(APPEARANCE_KEY, 'appearance', 'Brand & Theme', updated as unknown as Record<string, unknown>);
       return updated;

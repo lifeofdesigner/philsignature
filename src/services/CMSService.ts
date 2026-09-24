@@ -578,7 +578,8 @@ export class CMSService {
           ...(content.settings || {}),
         },
       };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return CMSService.DEFAULT_HERO;
     }
   }
@@ -595,7 +596,8 @@ export class CMSService {
           ? data.sections
           : CMSService.DEFAULT_HOMEPAGE_SECTIONS,
       };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return { sections: CMSService.DEFAULT_HOMEPAGE_SECTIONS };
     }
   }
@@ -612,7 +614,8 @@ export class CMSService {
           ? data.items
           : CMSService.DEFAULT_NAVIGATION_MENU,
       };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return { items: CMSService.DEFAULT_NAVIGATION_MENU };
     }
   }
@@ -622,7 +625,8 @@ export class CMSService {
       const row = await this.repo.getSection('store_appearance');
       if (!row || !row.content) return CMSService.DEFAULT_APPEARANCE;
       return { ...CMSService.DEFAULT_APPEARANCE, ...(row.content as Partial<CmsAppearanceConfig>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return CMSService.DEFAULT_APPEARANCE;
     }
   }
@@ -632,7 +636,8 @@ export class CMSService {
       const row = await this.repo.getSection('announcement_bar');
       if (!row || !row.content) return CMSService.DEFAULT_ANNOUNCEMENT;
       return { ...CMSService.DEFAULT_ANNOUNCEMENT, ...(row.content as Partial<CmsAnnouncementContent>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return CMSService.DEFAULT_ANNOUNCEMENT;
     }
   }
@@ -642,7 +647,8 @@ export class CMSService {
       const row = await this.repo.getSection('brand_story');
       if (!row || !row.content) return CMSService.DEFAULT_STORY;
       return { ...CMSService.DEFAULT_STORY, ...(row.content as Partial<CmsStoryContent>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return CMSService.DEFAULT_STORY;
     }
   }
@@ -652,7 +658,8 @@ export class CMSService {
       const row = await this.repo.getSection('instagram_feed');
       if (!row || !row.content) return CMSService.DEFAULT_INSTAGRAM;
       return { ...CMSService.DEFAULT_INSTAGRAM, ...(row.content as Partial<CmsInstagramSection>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return CMSService.DEFAULT_INSTAGRAM;
     }
   }
@@ -669,7 +676,8 @@ export class CMSService {
       const row = await this.repo.getSection('footer_config');
       if (!row || !row.content) return CMSService.DEFAULT_FOOTER;
       return { ...CMSService.DEFAULT_FOOTER, ...(row.content as Partial<CmsFooterContent>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       return CMSService.DEFAULT_FOOTER;
     }
   }
@@ -688,7 +696,8 @@ export class CMSService {
       if (row && row.content) {
         return row.content as unknown as CmsPolicyPageContent;
       }
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       // Fallback below
     }
 
@@ -786,7 +795,8 @@ export class CMSService {
     try {
       const row = await this.repo.getSection('faq_data');
       if (row && row.content) return { ...CMSService.DEFAULT_FAQ, ...(row.content as Partial<CmsFaqContent>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       // Fallback
     }
     return CMSService.DEFAULT_FAQ;
@@ -796,7 +806,8 @@ export class CMSService {
     try {
       const row = await this.repo.getSection('contact_data');
       if (row && row.content) return { ...CMSService.DEFAULT_CONTACT, ...(row.content as Partial<CmsContactContent>) };
-    } catch {
+    } catch (err) {
+      console.error('[CMSService] Read failed, returning defaults:', err);
       // Fallback
     }
     return CMSService.DEFAULT_CONTACT;

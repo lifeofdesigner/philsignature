@@ -45,7 +45,13 @@ export class MediaRepository extends BaseRepository {
         .select()
         .single();
 
-      if (error) this.handleError(error, 'Failed to record media asset');
+      if (error) {
+        // The file already landed in Storage; without this it would be
+        // orphaned (unreferenced, but still billed and undiscoverable)
+        // every time the media table insert fails after a successful upload.
+        await this.client.storage.from(bucket).remove([path]);
+        this.handleError(error, 'Failed to record media asset');
+      }
       return data as MediaItem;
     } catch (err) {
       this.handleError(err, 'Error uploading media asset');
