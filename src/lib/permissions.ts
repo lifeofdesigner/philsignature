@@ -156,15 +156,29 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
 // In-memory active matrix initialized from localStorage (if exists) or fallback default
 const RBAC_STORAGE_KEY = 'philz_rbac_permissions';
 
+// Maps old permission slugs (renamed or retired) to their current equivalent,
+// so permission matrices cached in localStorage before a rename still work.
+const PERMISSION_MIGRATIONS: Partial<Record<string, Permission>> = {
+  'payments:manage_paystack': 'payments:manage_gateways',
+};
+
+function migratePermissionList(permissions: string[]): Permission[] {
+  const migrated = permissions.map((p) => PERMISSION_MIGRATIONS[p] || (p as Permission));
+  return Array.from(new Set(migrated));
+}
+
 function getStoredPermissions(): Record<UserRole, Permission[]> {
   try {
     const raw = typeof window !== 'undefined' ? localStorage.getItem(RBAC_STORAGE_KEY) : null;
     if (raw) {
-      const parsed = JSON.parse(raw);
+      const parsed = JSON.parse(raw) as Record<string, string[]>;
+      const migrated = Object.fromEntries(
+        Object.entries(parsed).map(([role, perms]) => [role, migratePermissionList(perms)])
+      ) as Record<UserRole, Permission[]>;
       // Ensure super_admin retains all permissions
       return {
         ...ROLE_PERMISSIONS,
-        ...parsed,
+        ...migrated,
         super_admin: ROLE_PERMISSIONS.super_admin,
       };
     }
@@ -198,9 +212,12 @@ export function getAllRolePermissions(): Record<UserRole, Permission[]> {
  * Updates the active dynamic permissions matrix across the application.
  */
 export function setDynamicRolePermissions(matrix: Record<UserRole, Permission[]>): void {
+  const migrated = Object.fromEntries(
+    Object.entries(matrix).map(([role, perms]) => [role, migratePermissionList(perms)])
+  ) as Record<UserRole, Permission[]>;
   activeRolePermissions = {
     ...ROLE_PERMISSIONS,
-    ...matrix,
+    ...migrated,
     super_admin: ROLE_PERMISSIONS.super_admin,
   };
   try {
