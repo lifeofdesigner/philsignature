@@ -68,8 +68,16 @@ export class AuthRepository extends BaseRepository {
   async signOut(): Promise<void> {
     try {
       const { error } = await this.client.auth.signOut();
-      if (error) this.handleError(error, 'Sign out failed');
+      // The local session can already be stale/expired (token expired,
+      // storage cleared in another tab, a prior sign-out already fired).
+      // supabase-js surfaces that as AuthSessionMissingError, but there's
+      // nothing left to revoke -- the user is already signed out locally,
+      // so treat it as success instead of failing the sign-out action.
+      if (error && error.name !== 'AuthSessionMissingError') {
+        this.handleError(error, 'Sign out failed');
+      }
     } catch (err) {
+      if (err instanceof Error && err.name === 'AuthSessionMissingError') return;
       this.handleError(err, 'Error signing out of session');
     }
   }
