@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { settingsService } from '@/services/SettingsService';
-import { callAdminApi } from '@/lib/adminApiClient';
 
 const PUBLIC_SETTINGS_KEY = 'payment_gateways';
 const SECRET_SETTINGS_KEY = 'payment_gateway_secrets';
@@ -149,107 +148,6 @@ export const useAdminPayments = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
   });
 
-  // For admins who may manage Paystack, Flutterwave, and Korapay (but not raw
-  // DB access): the public flags/URLs still go through the regular
-  // (RLS-gated) settings write, but each gateway's secret keys are sent to
-  // its own server endpoint that only ever touches that gateway's fields in
-  // the shared secrets blob, so this can never clobber another gateway's keys.
-  const saveGatewaysOnlyMutation = useMutation({
-    mutationFn: async (config: PaymentGatewaysConfig) => {
-      const publicConfig: PaymentGatewaysPublicConfig = {
-        paystack_enabled: config.paystack_enabled,
-        paystack_mode: config.paystack_mode,
-        paystack_callback_url: config.paystack_callback_url,
-        paystack_webhook_url: config.paystack_webhook_url,
-        flutterwave_enabled: config.flutterwave_enabled,
-        flutterwave_mode: config.flutterwave_mode,
-        flutterwave_callback_url: config.flutterwave_callback_url,
-        flutterwave_webhook_url: config.flutterwave_webhook_url,
-        korapay_enabled: config.korapay_enabled,
-        korapay_mode: config.korapay_mode,
-        korapay_webhook_url: config.korapay_webhook_url,
-        bank_transfer_enabled: config.bank_transfer_enabled,
-        bank_name: config.bank_name,
-        account_number: config.account_number,
-        account_name: config.account_name,
-        bank_swift_code: config.bank_swift_code,
-        bank_transfer_instructions: config.bank_transfer_instructions,
-      };
-      // Always save public config
-      await settingsService.saveSetting(
-        PUBLIC_SETTINGS_KEY,
-        publicConfig,
-        'Payment gateway configuration (public)'
-      );
-
-      // Only call each serverless endpoint if at least one of its keys is populated
-      const paystackPayload: Record<string, string> = {};
-      if (config.paystack_test_public_key?.trim()) paystackPayload.paystack_test_public_key = config.paystack_test_public_key.trim();
-      if (config.paystack_test_secret_key?.trim()) paystackPayload.paystack_test_secret_key = config.paystack_test_secret_key.trim();
-      if (config.paystack_live_public_key?.trim()) paystackPayload.paystack_live_public_key = config.paystack_live_public_key.trim();
-      if (config.paystack_live_secret_key?.trim()) paystackPayload.paystack_live_secret_key = config.paystack_live_secret_key.trim();
-
-      const flutterwavePayload: Record<string, string> = {};
-      if (config.flutterwave_test_public_key?.trim()) flutterwavePayload.flutterwave_test_public_key = config.flutterwave_test_public_key.trim();
-      if (config.flutterwave_test_secret_key?.trim()) flutterwavePayload.flutterwave_test_secret_key = config.flutterwave_test_secret_key.trim();
-      if (config.flutterwave_test_webhook_secret_hash?.trim()) flutterwavePayload.flutterwave_test_webhook_secret_hash = config.flutterwave_test_webhook_secret_hash.trim();
-      if (config.flutterwave_live_public_key?.trim()) flutterwavePayload.flutterwave_live_public_key = config.flutterwave_live_public_key.trim();
-      if (config.flutterwave_live_secret_key?.trim()) flutterwavePayload.flutterwave_live_secret_key = config.flutterwave_live_secret_key.trim();
-      if (config.flutterwave_live_webhook_secret_hash?.trim()) flutterwavePayload.flutterwave_live_webhook_secret_hash = config.flutterwave_live_webhook_secret_hash.trim();
-
-      const korapayPayload: Record<string, string> = {};
-      if (config.korapay_test_public_key?.trim()) korapayPayload.korapay_test_public_key = config.korapay_test_public_key.trim();
-      if (config.korapay_test_secret_key?.trim()) korapayPayload.korapay_test_secret_key = config.korapay_test_secret_key.trim();
-      if (config.korapay_live_public_key?.trim()) korapayPayload.korapay_live_public_key = config.korapay_live_public_key.trim();
-      if (config.korapay_live_secret_key?.trim()) korapayPayload.korapay_live_secret_key = config.korapay_live_secret_key.trim();
-
-      await Promise.all([
-        Object.keys(paystackPayload).length > 0
-          ? callAdminApi('/api/admin/payment-gateway/paystack', { body: paystackPayload })
-          : Promise.resolve(),
-        Object.keys(flutterwavePayload).length > 0
-          ? callAdminApi('/api/admin/payment-gateway/flutterwave', { body: flutterwavePayload })
-          : Promise.resolve(),
-        Object.keys(korapayPayload).length > 0
-          ? callAdminApi('/api/admin/payment-gateway/korapay', { body: korapayPayload })
-          : Promise.resolve(),
-      ]);
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
-  });
-
-  // For non-super-admins who only manage public settings (Direct Bank Transfer, toggles, URLs):
-  // Directly writes to PUBLIC_SETTINGS_KEY via Supabase RLS without touching serverless endpoints.
-  const savePublicOnlyMutation = useMutation({
-    mutationFn: async (config: PaymentGatewaysConfig) => {
-      const publicConfig: PaymentGatewaysPublicConfig = {
-        paystack_enabled: config.paystack_enabled,
-        paystack_mode: config.paystack_mode,
-        paystack_callback_url: config.paystack_callback_url,
-        paystack_webhook_url: config.paystack_webhook_url,
-        flutterwave_enabled: config.flutterwave_enabled,
-        flutterwave_mode: config.flutterwave_mode,
-        flutterwave_callback_url: config.flutterwave_callback_url,
-        flutterwave_webhook_url: config.flutterwave_webhook_url,
-        korapay_enabled: config.korapay_enabled,
-        korapay_mode: config.korapay_mode,
-        korapay_webhook_url: config.korapay_webhook_url,
-        bank_transfer_enabled: config.bank_transfer_enabled,
-        bank_name: config.bank_name,
-        account_number: config.account_number,
-        account_name: config.account_name,
-        bank_swift_code: config.bank_swift_code,
-        bank_transfer_instructions: config.bank_transfer_instructions,
-      };
-      await settingsService.saveSetting(
-        PUBLIC_SETTINGS_KEY,
-        publicConfig,
-        'Payment gateway configuration (public)'
-      );
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
-  });
-
   const config = useMemo<PaymentGatewaysConfig>(
     () => ({
       ...DEFAULT_PAYMENT_CONFIG,
@@ -264,9 +162,5 @@ export const useAdminPayments = () => {
     isLoading: configQuery.isLoading,
     save: saveMutation.mutateAsync,
     isSaving: saveMutation.isPending,
-    saveGatewaysOnly: saveGatewaysOnlyMutation.mutateAsync,
-    isSavingGatewaysOnly: saveGatewaysOnlyMutation.isPending,
-    savePublicOnly: savePublicOnlyMutation.mutateAsync,
-    isSavingPublicOnly: savePublicOnlyMutation.isPending,
   };
 };
