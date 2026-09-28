@@ -101,6 +101,23 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
     }
   };
 
+  const handleUploadFeaturedProductImage = async (slideId: string, file: File) => {
+    const key = `${slideId}-featured_product_image`;
+    setUploadingKey(key);
+    try {
+      const uploaded = await mediaService.uploadFile('products', file, user?.id);
+      const publicUrl = mediaService.getPublicUrl(uploaded.bucket, uploaded.path);
+      handleUpdateSlide(slideId, { featured_product_image: publicUrl });
+      toast.success('Upload complete.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Upload failed.');
+    } finally {
+      setUploadingKey(null);
+      const input = fileInputRefs.current[key];
+      if (input) input.value = '';
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Slider Global Motion Settings */}
@@ -377,6 +394,87 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
                 )}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-2 border-t border-slate-200">
+              <div>
+                <h4 className="text-xs font-bold text-slate-900">Featured Product Spotlight</h4>
+                <p className="text-[11px] text-slate-700 font-medium">
+                  The floating product card overlaid on this slide (image, category label, name, price, and link).
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 p-2 rounded-lg">
+                <div className="h-12 w-16 shrink-0 bg-white border border-slate-200 rounded overflow-hidden flex items-center justify-center">
+                  {slide.featured_product_image ? (
+                    <img src={slide.featured_product_image} alt="Featured product" className="h-full w-full object-cover" />
+                  ) : (
+                    <ImageIcon className="h-4 w-4 text-slate-300" />
+                  )}
+                </div>
+                <input
+                  ref={(el) => { fileInputRefs.current[`${slide.id}-featured_product_image`] = el; }}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  id={`hero-upload-${slide.id}-featured_product_image`}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleUploadFeaturedProductImage(slide.id, file);
+                  }}
+                />
+                <label
+                  htmlFor={`hero-upload-${slide.id}-featured_product_image`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded border border-slate-300 cursor-pointer shadow-2xs"
+                >
+                  {uploadingKey === `${slide.id}-featured_product_image` ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Upload className="h-3 w-3" />
+                  )}
+                  <span>
+                    {uploadingKey === `${slide.id}-featured_product_image`
+                      ? 'Uploading...'
+                      : slide.featured_product_image
+                      ? 'Replace Image'
+                      : 'Upload Image'}
+                  </span>
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  label="Category Label"
+                  value={slide.featured_product_subtitle || ''}
+                  onChange={(e) => handleUpdateSlide(slide.id, { featured_product_subtitle: e.target.value })}
+                  placeholder="e.g. Masculine • Feminine • Unisex"
+                  className="bg-white border-slate-300 text-slate-900"
+                />
+                <Input
+                  label="Product Name"
+                  value={slide.featured_product_title || ''}
+                  onChange={(e) => handleUpdateSlide(slide.id, { featured_product_title: e.target.value })}
+                  placeholder="e.g. Perfume Body Oils"
+                  className="bg-white border-slate-300 text-slate-900"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  label="Price"
+                  value={slide.featured_product_price || ''}
+                  onChange={(e) => handleUpdateSlide(slide.id, { featured_product_price: e.target.value })}
+                  placeholder="e.g. ₦45,000"
+                  className="bg-white border-slate-300 text-slate-900"
+                />
+                <Input
+                  label="Link URL"
+                  value={slide.featured_product_url || ''}
+                  onChange={(e) => handleUpdateSlide(slide.id, { featured_product_url: e.target.value })}
+                  placeholder="/products/perfume-body-oils"
+                  className="bg-white border-slate-300 text-slate-900"
+                />
               </div>
             </div>
 
