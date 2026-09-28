@@ -13,3 +13,4 @@ CREATE POLICY "Admins manage site settings"
     ON site_settings FOR ALL
     USING (is_admin())
     WITH CHECK (is_admin());
+
