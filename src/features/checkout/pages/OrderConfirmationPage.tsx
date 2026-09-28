@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { CheckCircle2, Clock, PackageCheck, Truck, ArrowRight, ShieldCheck, XCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { CheckCircle2, Clock, Loader2, PackageCheck, Truck, ArrowRight, ShieldCheck, XCircle } from 'lucide-react';
 import { useOrderDetail } from '../hooks/useOrders';
 import { BankTransferDetails } from '../components/BankTransferDetails';
-import { paymentService } from '@/services/PaymentService';
+import { paymentService, type SupportedGateway } from '@/services/PaymentService';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
+
+const RETRYABLE_GATEWAYS: SupportedGateway[] = ['paystack', 'flutterwave', 'korapay'];
 
 export const OrderConfirmationPage: React.FC = () => {
   const { orderNumber } = useParams<{ orderNumber: string }>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const methodParam = searchParams.get('method');
+  const [isRetrying, setIsRetrying] = useState(false);
 
   const { data: order, isLoading, error, refetch } = useOrderDetail(orderNumber);
   const { data: bankConfig } = useQuery({
@@ -49,6 +53,50 @@ export const OrderConfirmationPage: React.FC = () => {
   const isBankTransfer = order.payment_method === 'bank_transfer' || methodParam === 'bank_transfer';
   const isFailedOrPending = !isPaid && !isBankTransfer;
   const shippingAddr = (order.shipping_address as Record<string, string>) || {};
+  const canRetryGateway = RETRYABLE_GATEWAYS.includes(order.payment_method as SupportedGateway);
+
+  const handleRetryPayment = async () => {
+    if (!canRetryGateway) {
+      navigate('/checkout');
+      return;
+    }
+    setIsRetrying(true);
+    try {
+      await paymentService.initializeCheckout(order.payment_method as SupportedGateway, {
+        email: order.email,
+        phone: order.phone,
+        name: `${shippingAddr.first_name || ''} ${shippingAddr.last_name || ''}`.trim() || order.email,
+        amount: order.total_amount,
+        reference: order.order_number,
+        metadata: { order_id: order.id },
+        onSuccess: async (reference) => {
+          try {
+            const result = await paymentService.verifyPayment(
+              order.payment_method as SupportedGateway,
+              reference,
+              order.id
+            );
+            if (!result.success) {
+              toast.error(result.reason || 'We could not verify your payment. Please try again or contact support.');
+              return;
+            }
+            toast.success('Payment confirmed!');
+            await refetch();
+          } catch (err) {
+            toast.error(err instanceof Error ? err.message : 'Error verifying payment');
+          } finally {
+            setIsRetrying(false);
+          }
+        },
+        onCancel: () => {
+          setIsRetrying(false);
+        },
+      });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not start payment. Please try again.');
+      setIsRetrying(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-luxury-black pb-24 pt-12">
@@ -88,11 +136,12 @@ export const OrderConfirmationPage: React.FC = () => {
             <div className="mt-6">
               <button
                 type="button"
-                onClick={() => navigate('/checkout')}
-                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
+                onClick={handleRetryPayment}
+                disabled={isRetrying}
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light disabled:opacity-60 rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
-                <span>Retry Payment</span>
-                <ArrowRight className="h-4 w-4" />
+                <span>{isRetrying ? 'Processing...' : 'Retry Payment'}</span>
+                {isRetrying ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
               </button>
             </div>
           )}
