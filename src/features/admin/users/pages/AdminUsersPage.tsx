@@ -185,15 +185,22 @@ export const AdminUsersPage: React.FC = () => {
     }
   }, [currentTab]);
 
+  // Non-super-admins must never learn who holds the Super Admin role, so
+  // those accounts are excluded from the staff directory entirely for them.
+  const visibleUsers = useMemo(
+    () => (userIsSuperAdmin ? users : users.filter((u) => u.role !== 'super_admin')),
+    [users, userIsSuperAdmin]
+  );
+
   const filteredUsers = useMemo(() => {
     const query = search.toLowerCase().trim();
-    if (!query) return users;
-    return users.filter(
+    if (!query) return visibleUsers;
+    return visibleUsers.filter(
       (u) =>
         u.email.toLowerCase().includes(query) ||
         `${u.first_name || ''} ${u.last_name || ''}`.toLowerCase().includes(query)
     );
-  }, [users, search]);
+  }, [visibleUsers, search]);
 
   const handleRoleChange = async (userId: string, name: string, newRole: UserRole) => {
     if (newRole === 'super_admin' && !userIsSuperAdmin) {

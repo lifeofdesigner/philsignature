@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column, type BulkAction } from '@/components/common/EnterpriseDataTable';
+import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { useAdminCollections } from '../hooks/useAdminCollections';
 import type { Collection } from '@/types/database';
 import { auditLogService } from '@/services/AuditLogService';
@@ -480,24 +481,20 @@ export const AdminCollectionsPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Thumbnail Image URL</label>
-                  <Input
-                    value={form.image_url}
-                    onChange={(e) => setForm((p) => ({ ...p, image_url: e.target.value }))}
-                    placeholder="https://..."
-                    className="bg-white border-slate-300 text-slate-900"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Header Banner URL</label>
-                  <Input
-                    value={form.banner_url}
-                    onChange={(e) => setForm((p) => ({ ...p, banner_url: e.target.value }))}
-                    placeholder="https://..."
-                    className="bg-white border-slate-300 text-slate-900"
-                  />
-                </div>
+                <ImageUploadField
+                  label="Thumbnail Image"
+                  bucket="products"
+                  currentUrl={form.image_url}
+                  onUploaded={(url) => setForm((p) => ({ ...p, image_url: url }))}
+                  onRemove={() => setForm((p) => ({ ...p, image_url: '' }))}
+                />
+                <ImageUploadField
+                  label="Header Banner"
+                  bucket="banners"
+                  currentUrl={form.banner_url}
+                  onUploaded={(url) => setForm((p) => ({ ...p, banner_url: url }))}
+                  onRemove={() => setForm((p) => ({ ...p, banner_url: '' }))}
+                />
               </div>
 
               <div className="space-y-1.5">

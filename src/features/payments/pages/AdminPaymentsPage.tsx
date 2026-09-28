@@ -11,7 +11,7 @@ import {
   type GatewayMode,
 } from '../hooks/useAdminPayments';
 import { useAuth } from '@/hooks/useAuth';
-import { isSuperAdmin } from '@/lib/permissions';
+import { isSuperAdmin, hasPermission } from '@/lib/permissions';
 import type { UserRole } from '@/types/database';
 
 type SecretFieldKey = keyof Pick<
@@ -30,7 +30,8 @@ export const AdminPaymentsPage: React.FC = () => {
   const { profile, role } = useAuth();
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const userIsSuperAdmin = isSuperAdmin(currentRole);
-  const { config, isLoading, save, isSaving } = useAdminPayments();
+  const canManagePaystack = userIsSuperAdmin || hasPermission(currentRole, 'payments:manage_paystack');
+  const { config, isLoading, save, isSaving, savePaystackOnly, isSavingPaystackOnly } = useAdminPayments();
   const [form, setForm] = useState<PaymentGatewaysConfig | null>(null);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
 
@@ -41,7 +42,11 @@ export const AdminPaymentsPage: React.FC = () => {
   const handleSave = async () => {
     if (!form) return;
     try {
-      await save(form);
+      if (userIsSuperAdmin) {
+        await save(form);
+      } else {
+        await savePaystackOnly(form);
+      }
       toast.success('Payment gateway configurations saved to database.');
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to save settings.');
@@ -112,10 +117,10 @@ export const AdminPaymentsPage: React.FC = () => {
         <Button
           size="sm"
           className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
-          disabled={isSaving}
+          disabled={isSaving || isSavingPaystackOnly}
           onClick={handleSave}
         >
-          {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          {isSaving || isSavingPaystackOnly ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Gateway Settings</span>
         </Button>
       </div>
@@ -123,12 +128,13 @@ export const AdminPaymentsPage: React.FC = () => {
       <div className="space-y-6">
         {!userIsSuperAdmin && (
           <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium">
-            Gateway API credentials (Paystack, Flutterwave, Korapay) are only visible to Super Administrators. You can
-            still view and update the Direct Bank Transfer details below.
+            {canManagePaystack
+              ? 'You can manage Paystack credentials below. Flutterwave and Korapay API credentials are only visible to Super Administrators.'
+              : 'Gateway API credentials (Paystack, Flutterwave, Korapay) are only visible to Super Administrators. You can still view and update the Direct Bank Transfer details below.'}
           </div>
         )}
 
-        {userIsSuperAdmin && (
+        {canManagePaystack && (
         <>
         {/* Paystack Gateway Card */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
@@ -218,6 +224,8 @@ export const AdminPaymentsPage: React.FC = () => {
           </div>
         </div>
 
+        {userIsSuperAdmin && (
+        <>
         {/* Flutterwave Gateway Card */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200">
@@ -400,6 +408,8 @@ export const AdminPaymentsPage: React.FC = () => {
             </div>
           </div>
         </div>
+        </>
+        )}
         </>
         )}
 

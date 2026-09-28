@@ -223,6 +223,10 @@ export class ProductService {
   async deleteProduct(id: string): Promise<void> {
     return this.repo.delete(id);
   }
+
+  async setProductImages(productId: string, imageUrls: string[]): Promise<void> {
+    return this.repo.syncImages(productId, imageUrls);
+  }
 }
 
 export const productService = new ProductService();

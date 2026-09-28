@@ -204,6 +204,32 @@ export class ProductRepository extends BaseRepository {
       this.handleError(err, `Error deleting product ${id}`);
     }
   }
+
+  /**
+   * Replaces a product's full image set with the given ordered URLs
+   * (first URL becomes the primary image). Used by the admin product form,
+   * which always submits the complete gallery rather than incremental diffs.
+   */
+  async syncImages(productId: string, imageUrls: string[]): Promise<void> {
+    try {
+      const { error: deleteError } = await this.client.from('product_images').delete().eq('product_id', productId);
+      if (deleteError) this.handleError(deleteError, `Failed to clear existing images for product ${productId}`);
+
+      if (imageUrls.length === 0) return;
+
+      const rows = imageUrls.map((image_url, index) => ({
+        product_id: productId,
+        image_url,
+        display_order: index,
+        is_primary: index === 0,
+      }));
+
+      const { error: insertError } = await this.client.from('product_images').insert(rows);
+      if (insertError) this.handleError(insertError, `Failed to save images for product ${productId}`);
+    } catch (err) {
+      this.handleError(err, `Error syncing images for product ${productId}`);
+    }
+  }
 }
 
 export const productRepository = new ProductRepository();

@@ -13,12 +13,14 @@ import {
   CheckCircle,
   AlertTriangle,
   Wand2,
+  ImageOff,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column, type BulkAction } from '@/components/common/EnterpriseDataTable';
+import { ImageUploadField } from '@/components/admin/ImageUploadField';
 import { useAdminProducts } from '../hooks/useAdminProducts';
 import type { Product, ProductStatus, FragranceFamily } from '@/types/database';
 import { auditLogService } from '@/services/AuditLogService';
@@ -46,7 +48,7 @@ interface ProductFormState {
   meta_title: string;
   meta_description: string;
   meta_keywords: string;
-  image_url?: string;
+  images: string[];
 }
 
 const emptyForm: ProductFormState = {
@@ -68,7 +70,7 @@ const emptyForm: ProductFormState = {
   meta_title: '',
   meta_description: '',
   meta_keywords: '',
-  image_url: '',
+  images: [],
 };
 
 const slugify = (value: string) =>
@@ -109,6 +111,7 @@ export const AdminProductsPage: React.FC = () => {
     updateProduct,
     isUpdating,
     deleteProduct,
+    setProductImages,
   } = useAdminProducts();
 
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -165,7 +168,10 @@ export const AdminProductsPage: React.FC = () => {
       meta_title: product.meta_title || '',
       meta_description: product.meta_description || '',
       meta_keywords: product.meta_keywords || '',
-      image_url: product.images?.[0]?.image_url || '',
+      images: (product.images || [])
+        .slice()
+        .sort((a, b) => a.display_order - b.display_order)
+        .map((img) => img.image_url),
     });
     setFormError(null);
     setIsFormOpen(true);
@@ -232,10 +238,14 @@ export const AdminProductsPage: React.FC = () => {
     try {
       if (editingProduct) {
         await updateProduct({ id: editingProduct.id, input: payload });
+        await setProductImages({ id: editingProduct.id, images: form.images });
         await auditLogService.recordAction('UPDATE_PRODUCT', 'product', editingProduct.id, payload, user?.id);
         toast.success(`"${payload.name}" updated successfully.`);
       } else {
-        await createProduct(payload);
+        const created = await createProduct(payload);
+        if (form.images.length > 0) {
+          await setProductImages({ id: created.id, images: form.images });
+        }
         await auditLogService.recordAction('CREATE_PRODUCT', 'product', payload.slug, payload, user?.id);
         toast.success(`"${payload.name}" added to catalog.`);
       }
@@ -702,6 +712,52 @@ export const AdminProductsPage: React.FC = () => {
                   onChange={(e) => setForm((p) => ({ ...p, tagline: e.target.value }))}
                   placeholder="e.g. Pure Artisanal Extrait de Parfum"
                   className="bg-white border-slate-300 text-slate-900"
+                />
+              </div>
+
+              <div className="space-y-2 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <label className="block font-semibold text-slate-800">Product Images</label>
+                <p className="text-[11px] text-slate-700 font-medium">
+                  The first image is used as the primary thumbnail across the storefront.
+                </p>
+                {form.images.length > 0 && (
+                  <div className="flex flex-wrap gap-3">
+                    {form.images.map((url, index) => (
+                      <div key={url + index} className="relative">
+                        <img
+                          src={url}
+                          alt={`Product image ${index + 1}`}
+                          className="h-16 w-16 object-cover rounded-lg border border-slate-300"
+                        />
+                        {index === 0 && (
+                          <span className="absolute -top-1.5 -left-1.5 text-[8px] font-bold uppercase bg-slate-900 text-white px-1.5 py-0.5 rounded-full">
+                            Primary
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setForm((p) => ({ ...p, images: p.images.filter((_, i) => i !== index) }))
+                          }
+                          className="absolute -top-1.5 -right-1.5 h-5 w-5 flex items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors cursor-pointer"
+                          aria-label={`Remove image ${index + 1}`}
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {form.images.length === 0 && (
+                  <div className="flex items-center gap-2 text-slate-700 text-[11px]">
+                    <ImageOff className="h-4 w-4" />
+                    <span>No images uploaded yet.</span>
+                  </div>
+                )}
+                <ImageUploadField
+                  label="Add Image"
+                  bucket="products"
+                  onUploaded={(url) => setForm((p) => ({ ...p, images: [...p.images, url] }))}
                 />
               </div>
 

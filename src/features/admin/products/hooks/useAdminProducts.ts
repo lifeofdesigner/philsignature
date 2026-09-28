@@ -41,6 +41,11 @@ export const useAdminProducts = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_PRODUCTS_KEY }),
   });
 
+  const setImagesMutation = useMutation({
+    mutationFn: ({ id, images }: { id: string; images: string[] }) => productService.setProductImages(id, images),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_PRODUCTS_KEY }),
+  });
+
   return {
     products: productsQuery.data ?? [],
     isLoading: productsQuery.isLoading,
@@ -54,5 +59,7 @@ export const useAdminProducts = () => {
     isUpdating: updateMutation.isPending,
     deleteProduct: deleteMutation.mutateAsync,
     isDeleting: deleteMutation.isPending,
+    setProductImages: setImagesMutation.mutateAsync,
+    isSavingImages: setImagesMutation.isPending,
   };
 };

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { settingsService } from '@/services/SettingsService';
+import { callAdminApi } from '@/lib/adminApiClient';
 
 const PUBLIC_SETTINGS_KEY = 'payment_gateways';
 const SECRET_SETTINGS_KEY = 'payment_gateway_secrets';
@@ -148,6 +149,46 @@ export const useAdminPayments = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
   });
 
+  // For admins who may only manage Paystack: the public flags/URLs still go
+  // through the regular (RLS-gated) settings write, but the secret keys are
+  // sent to a server endpoint that only ever touches paystack_* fields in
+  // the shared secrets blob, so this can never clobber other gateways' keys.
+  const savePaystackOnlyMutation = useMutation({
+    mutationFn: async (config: PaymentGatewaysConfig) => {
+      const publicConfig: PaymentGatewaysPublicConfig = {
+        paystack_enabled: config.paystack_enabled,
+        paystack_mode: config.paystack_mode,
+        paystack_callback_url: config.paystack_callback_url,
+        paystack_webhook_url: config.paystack_webhook_url,
+        flutterwave_enabled: config.flutterwave_enabled,
+        flutterwave_mode: config.flutterwave_mode,
+        flutterwave_callback_url: config.flutterwave_callback_url,
+        flutterwave_webhook_url: config.flutterwave_webhook_url,
+        korapay_enabled: config.korapay_enabled,
+        korapay_mode: config.korapay_mode,
+        korapay_webhook_url: config.korapay_webhook_url,
+        bank_transfer_enabled: config.bank_transfer_enabled,
+        bank_name: config.bank_name,
+        account_number: config.account_number,
+        account_name: config.account_name,
+        bank_swift_code: config.bank_swift_code,
+        bank_transfer_instructions: config.bank_transfer_instructions,
+      };
+      await Promise.all([
+        settingsService.saveSetting(PUBLIC_SETTINGS_KEY, publicConfig, 'Payment gateway configuration (public)'),
+        callAdminApi('/api/admin/payment-gateway/paystack', {
+          body: {
+            paystack_test_public_key: config.paystack_test_public_key,
+            paystack_test_secret_key: config.paystack_test_secret_key,
+            paystack_live_public_key: config.paystack_live_public_key,
+            paystack_live_secret_key: config.paystack_live_secret_key,
+          },
+        }),
+      ]);
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
+  });
+
   const config = useMemo<PaymentGatewaysConfig>(
     () => ({
       ...DEFAULT_PAYMENT_CONFIG,
@@ -162,5 +203,7 @@ export const useAdminPayments = () => {
     isLoading: configQuery.isLoading,
     save: saveMutation.mutateAsync,
     isSaving: saveMutation.isPending,
+    savePaystackOnly: savePaystackOnlyMutation.mutateAsync,
+    isSavingPaystackOnly: savePaystackOnlyMutation.isPending,
   };
 };
