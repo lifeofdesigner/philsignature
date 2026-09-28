@@ -12,6 +12,8 @@ export const productSchema = z.object({
   sale_price: z.number().positive().nullable().optional(),
   stock_quantity: z.number().int().nonnegative('Stock cannot be negative'),
   weight_grams: z.number().positive().nullable().optional(),
+  volume_ml: z.number().positive().nullable().optional(),
+  concentration: z.string().nullable().optional(),
   brand: z.string().default('PHILZ SIGNATURE'),
   category_id: z.string().uuid().nullable().optional(),
   collection_id: z.string().uuid().nullable().optional(),

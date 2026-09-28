@@ -2,6 +2,16 @@ import { BaseRepository } from './BaseRepository';
 import type { Product, Review } from '@/types/database';
 import type { ProductInput } from '@/schemas/product.schema';
 
+export interface VariantInput {
+  name: string;
+  size_ml: number;
+  price: number;
+  sale_price: number | null;
+  stock_quantity: number;
+  sku: string;
+  is_default: boolean;
+}
+
 export class ProductRepository extends BaseRepository {
   async findAll(filter?: { categoryId?: string; collectionId?: string; family?: string; status?: string }): Promise<Product[]> {
     try {
@@ -228,6 +238,36 @@ export class ProductRepository extends BaseRepository {
       if (insertError) this.handleError(insertError, `Failed to save images for product ${productId}`);
     } catch (err) {
       this.handleError(err, `Error syncing images for product ${productId}`);
+    }
+  }
+
+  /**
+   * Replaces a product's full size/variant set. Same full-replace strategy
+   * as syncImages — the admin form always submits the complete variant list.
+   */
+  async syncVariants(productId: string, variants: VariantInput[]): Promise<void> {
+    try {
+      const { error: deleteError } = await this.client.from('product_variants').delete().eq('product_id', productId);
+      if (deleteError) this.handleError(deleteError, `Failed to clear existing sizes for product ${productId}`);
+
+      if (variants.length === 0) return;
+
+      const rows = variants.map((variant, index) => ({
+        product_id: productId,
+        name: variant.name,
+        size_ml: variant.size_ml,
+        price: variant.price,
+        sale_price: variant.sale_price,
+        stock_quantity: variant.stock_quantity,
+        sku: variant.sku,
+        is_default: variant.is_default,
+        display_order: index,
+      }));
+
+      const { error: insertError } = await this.client.from('product_variants').insert(rows);
+      if (insertError) this.handleError(insertError, `Failed to save sizes for product ${productId}`);
+    } catch (err) {
+      this.handleError(err, `Error syncing sizes for product ${productId}`);
     }
   }
 }

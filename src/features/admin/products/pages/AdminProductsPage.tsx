@@ -29,10 +29,21 @@ import { useAuth } from '@/hooks/useAuth';
 const FRAGRANCE_FAMILIES: FragranceFamily[] = ['Woody', 'Oriental', 'Floral', 'Fresh', 'Gourmand', 'Chypre', 'Aromatic'];
 const STATUSES: ProductStatus[] = ['draft', 'published', 'archived'];
 
+interface VariantRow {
+  name: string;
+  size_ml: string;
+  price: string;
+  sale_price: string;
+  stock_quantity: string;
+  sku: string;
+  is_default: boolean;
+}
+
 interface ProductFormState {
   name: string;
   slug: string;
   tagline: string;
+  short_description: string;
   description: string;
   scent_profile: string;
   best_for: string;
@@ -45,16 +56,40 @@ interface ProductFormState {
   fragrance_family: string;
   status: ProductStatus;
   is_featured: boolean;
+  is_bestseller: boolean;
+  is_new_arrival: boolean;
+  is_trending: boolean;
+  top_notes: string;
+  middle_notes: string;
+  base_notes: string;
+  ingredients: string;
+  how_to_use: string;
+  barcode: string;
+  weight_grams: string;
+  volume_ml: string;
+  concentration: string;
   meta_title: string;
   meta_description: string;
   meta_keywords: string;
   images: string[];
+  variants: VariantRow[];
 }
+
+const emptyVariantRow = (): VariantRow => ({
+  name: '',
+  size_ml: '',
+  price: '',
+  sale_price: '',
+  stock_quantity: '0',
+  sku: '',
+  is_default: false,
+});
 
 const emptyForm: ProductFormState = {
   name: '',
   slug: '',
   tagline: '',
+  short_description: '',
   description: '',
   scent_profile: '',
   best_for: 'Unisex',
@@ -67,11 +102,31 @@ const emptyForm: ProductFormState = {
   fragrance_family: '',
   status: 'published',
   is_featured: false,
+  is_bestseller: false,
+  is_new_arrival: false,
+  is_trending: false,
+  top_notes: '',
+  middle_notes: '',
+  base_notes: '',
+  ingredients: '',
+  how_to_use: '',
+  barcode: '',
+  weight_grams: '',
+  volume_ml: '',
+  concentration: '',
   meta_title: '',
   meta_description: '',
   meta_keywords: '',
   images: [],
+  variants: [],
 };
+
+const joinNotes = (notes?: string[] | null) => (notes || []).join(', ');
+const splitNotes = (value: string) =>
+  value
+    .split(',')
+    .map((n) => n.trim())
+    .filter(Boolean);
 
 const slugify = (value: string) =>
   value
@@ -112,6 +167,7 @@ export const AdminProductsPage: React.FC = () => {
     isUpdating,
     deleteProduct,
     setProductImages,
+    setProductVariants,
   } = useAdminProducts();
 
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -153,6 +209,7 @@ export const AdminProductsPage: React.FC = () => {
       name: product.name,
       slug: product.slug,
       tagline: product.tagline || '',
+      short_description: product.short_description || '',
       description: product.description,
       scent_profile: product.scent_profile || '',
       best_for: product.best_for || 'Unisex',
@@ -165,6 +222,18 @@ export const AdminProductsPage: React.FC = () => {
       fragrance_family: product.fragrance_family || '',
       status: product.status,
       is_featured: product.is_featured,
+      is_bestseller: product.is_bestseller,
+      is_new_arrival: product.is_new_arrival,
+      is_trending: product.is_trending,
+      top_notes: joinNotes(product.top_notes),
+      middle_notes: joinNotes(product.middle_notes),
+      base_notes: joinNotes(product.base_notes),
+      ingredients: product.ingredients || '',
+      how_to_use: product.how_to_use || '',
+      barcode: product.barcode || '',
+      weight_grams: product.weight_grams ? String(product.weight_grams) : '',
+      volume_ml: product.volume_ml ? String(product.volume_ml) : '',
+      concentration: product.concentration || '',
       meta_title: product.meta_title || '',
       meta_description: product.meta_description || '',
       meta_keywords: product.meta_keywords || '',
@@ -172,6 +241,18 @@ export const AdminProductsPage: React.FC = () => {
         .slice()
         .sort((a, b) => a.display_order - b.display_order)
         .map((img) => img.image_url),
+      variants: (product.variants || [])
+        .slice()
+        .sort((a, b) => a.display_order - b.display_order)
+        .map((v) => ({
+          name: v.name,
+          size_ml: String(v.size_ml),
+          price: String(v.price),
+          sale_price: v.sale_price ? String(v.sale_price) : '',
+          stock_quantity: String(v.stock_quantity),
+          sku: v.sku,
+          is_default: v.is_default,
+        })),
     });
     setFormError(null);
     setIsFormOpen(true);
@@ -210,10 +291,22 @@ export const AdminProductsPage: React.FC = () => {
       return;
     }
 
+    const validVariants = form.variants.filter((v) => v.name.trim() && v.price.trim());
+    for (const v of validVariants) {
+      if (isNaN(Number(v.price)) || Number(v.price) <= 0) {
+        setFormError(`Size "${v.name}" needs a valid price greater than 0.`);
+        return;
+      }
+    }
+    if (validVariants.length > 0 && !validVariants.some((v) => v.is_default)) {
+      validVariants[0].is_default = true;
+    }
+
     const payload = {
       name: form.name.trim(),
       slug: form.slug.trim(),
       tagline: form.tagline.trim() || null,
+      short_description: form.short_description.trim() || null,
       description: form.description.trim(),
       scent_profile: form.scent_profile.trim() || null,
       best_for: form.best_for.trim() || 'Unisex',
@@ -226,25 +319,48 @@ export const AdminProductsPage: React.FC = () => {
       fragrance_family: form.fragrance_family || null,
       status: form.status,
       is_featured: form.is_featured,
+      is_bestseller: form.is_bestseller,
+      is_new_arrival: form.is_new_arrival,
+      is_trending: form.is_trending,
       meta_title: form.meta_title.trim() || null,
       meta_description: form.meta_description.trim() || null,
       meta_keywords: form.meta_keywords.trim() || null,
-      top_notes: editingProduct?.top_notes ?? [],
-      middle_notes: editingProduct?.middle_notes ?? [],
-      base_notes: editingProduct?.base_notes ?? [],
+      top_notes: splitNotes(form.top_notes),
+      middle_notes: splitNotes(form.middle_notes),
+      base_notes: splitNotes(form.base_notes),
+      ingredients: form.ingredients.trim() || null,
+      how_to_use: form.how_to_use.trim() || null,
+      barcode: form.barcode.trim() || null,
+      weight_grams: form.weight_grams ? Number(form.weight_grams) : null,
+      volume_ml: form.volume_ml ? Number(form.volume_ml) : null,
+      concentration: form.concentration.trim() || null,
       brand: 'Philz Signature',
     };
+
+    const variantPayload = validVariants.map((v) => ({
+      name: v.name.trim(),
+      size_ml: Number(v.size_ml) || 0,
+      price: Number(v.price),
+      sale_price: v.sale_price ? Number(v.sale_price) : null,
+      stock_quantity: Number(v.stock_quantity) || 0,
+      sku: v.sku.trim(),
+      is_default: v.is_default,
+    }));
 
     try {
       if (editingProduct) {
         await updateProduct({ id: editingProduct.id, input: payload });
         await setProductImages({ id: editingProduct.id, images: form.images });
+        await setProductVariants({ id: editingProduct.id, variants: variantPayload });
         await auditLogService.recordAction('UPDATE_PRODUCT', 'product', editingProduct.id, payload, user?.id);
         toast.success(`"${payload.name}" updated successfully.`);
       } else {
         const created = await createProduct(payload);
         if (form.images.length > 0) {
           await setProductImages({ id: created.id, images: form.images });
+        }
+        if (variantPayload.length > 0) {
+          await setProductVariants({ id: created.id, variants: variantPayload });
         }
         await auditLogService.recordAction('CREATE_PRODUCT', 'product', payload.slug, payload, user?.id);
         toast.success(`"${payload.name}" added to catalog.`);
@@ -253,6 +369,28 @@ export const AdminProductsPage: React.FC = () => {
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Failed to save product.');
     }
+  };
+
+  const handleVariantChange = (index: number, updates: Partial<VariantRow>) => {
+    setForm((p) => ({
+      ...p,
+      variants: p.variants.map((v, i) => (i === index ? { ...v, ...updates } : v)),
+    }));
+  };
+
+  const handleAddVariant = () => {
+    setForm((p) => ({ ...p, variants: [...p.variants, emptyVariantRow()] }));
+  };
+
+  const handleRemoveVariant = (index: number) => {
+    setForm((p) => ({ ...p, variants: p.variants.filter((_, i) => i !== index) }));
+  };
+
+  const handleSetDefaultVariant = (index: number) => {
+    setForm((p) => ({
+      ...p,
+      variants: p.variants.map((v, i) => ({ ...v, is_default: i === index })),
+    }));
   };
 
   const handleDuplicate = async (product: Product) => {
@@ -275,9 +413,35 @@ export const AdminProductsPage: React.FC = () => {
         top_notes: product.top_notes,
         middle_notes: product.middle_notes,
         base_notes: product.base_notes,
+        short_description: product.short_description,
+        ingredients: product.ingredients,
+        how_to_use: product.how_to_use,
+        barcode: null,
+        weight_grams: product.weight_grams,
+        volume_ml: product.volume_ml,
+        concentration: product.concentration,
+        is_bestseller: product.is_bestseller,
+        is_new_arrival: product.is_new_arrival,
+        is_trending: product.is_trending,
         brand: product.brand || 'PHILZ SIGNATURE',
       };
-      await createProduct(copyPayload);
+      const created = await createProduct(copyPayload);
+      const imageUrls = (product.images || []).map((img) => img.image_url);
+      if (imageUrls.length > 0) {
+        await setProductImages({ id: created.id, images: imageUrls });
+      }
+      const variants = (product.variants || []).map((v) => ({
+        name: v.name,
+        size_ml: v.size_ml,
+        price: v.price,
+        sale_price: v.sale_price,
+        stock_quantity: v.stock_quantity,
+        sku: `${v.sku}-CP`,
+        is_default: v.is_default,
+      }));
+      if (variants.length > 0) {
+        await setProductVariants({ id: created.id, variants });
+      }
       await auditLogService.recordAction('DUPLICATE_PRODUCT', 'product', product.id, copyPayload, user?.id);
       toast.success(`Duplicated "${product.name}" as draft.`);
     } catch (err) {
@@ -928,6 +1092,234 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Sizes & Pricing Variants */}
+              <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold text-slate-900">Sizes / Variants</div>
+                    <p className="text-[11px] text-slate-700 font-medium">
+                      Offer this fragrance in multiple sizes with independent pricing and stock. Leave empty to sell
+                      only at the base price/quantity above.
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAddVariant}
+                    className="gap-1.5 border-slate-300 text-slate-700 hover:bg-white shrink-0"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    <span>Add Size</span>
+                  </Button>
+                </div>
+
+                {form.variants.length === 0 ? (
+                  <div className="text-slate-700 text-[11px]">No size variants added yet.</div>
+                ) : (
+                  <div className="space-y-3">
+                    {form.variants.map((variant, index) => (
+                      <div key={index} className="bg-white border border-slate-200 rounded-lg p-3 space-y-2.5">
+                        <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5">
+                          <div className="space-y-1 sm:col-span-1">
+                            <label className="block text-[10px] font-semibold text-slate-700">Label *</label>
+                            <Input
+                              value={variant.name}
+                              onChange={(e) => handleVariantChange(index, { name: e.target.value })}
+                              placeholder="30ml"
+                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1 sm:col-span-1">
+                            <label className="block text-[10px] font-semibold text-slate-700">Size (ml)</label>
+                            <Input
+                              type="number"
+                              min="0"
+                              value={variant.size_ml}
+                              onChange={(e) => handleVariantChange(index, { size_ml: e.target.value })}
+                              placeholder="30"
+                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1 sm:col-span-1">
+                            <label className="block text-[10px] font-semibold text-slate-700">Price (₦) *</label>
+                            <Input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              value={variant.price}
+                              onChange={(e) => handleVariantChange(index, { price: e.target.value })}
+                              placeholder="45000"
+                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1 sm:col-span-1">
+                            <label className="block text-[10px] font-semibold text-slate-700">Sale Price (₦)</label>
+                            <Input
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              value={variant.sale_price}
+                              onChange={(e) => handleVariantChange(index, { sale_price: e.target.value })}
+                              placeholder="Optional"
+                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1 sm:col-span-1">
+                            <label className="block text-[10px] font-semibold text-slate-700">Stock</label>
+                            <Input
+                              type="number"
+                              min="0"
+                              value={variant.stock_quantity}
+                              onChange={(e) => handleVariantChange(index, { stock_quantity: e.target.value })}
+                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                            />
+                          </div>
+                          <div className="space-y-1 sm:col-span-1">
+                            <label className="block text-[10px] font-semibold text-slate-700">SKU</label>
+                            <Input
+                              value={variant.sku}
+                              onChange={(e) => handleVariantChange(index, { sku: e.target.value })}
+                              placeholder="PS-OUD-01-30ML"
+                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs font-mono"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between pt-1.5 border-t border-slate-100">
+                          <label className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-700 cursor-pointer">
+                            <input
+                              type="radio"
+                              name="default-variant"
+                              checked={variant.is_default}
+                              onChange={() => handleSetDefaultVariant(index)}
+                              className="h-3.5 w-3.5 cursor-pointer"
+                            />
+                            <span>Default size (pre-selected on storefront)</span>
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveVariant(index)}
+                            className="p-1 text-slate-700 hover:text-red-700 rounded hover:bg-red-50 transition-colors cursor-pointer"
+                            aria-label={`Remove size ${index + 1}`}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Fragrance Notes & Composition */}
+              <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="font-semibold text-slate-900 text-xs">Fragrance Notes & Composition</div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="block text-slate-700 font-medium text-[11px]">Top Notes</label>
+                    <Input
+                      value={form.top_notes}
+                      onChange={(e) => setForm((p) => ({ ...p, top_notes: e.target.value }))}
+                      placeholder="Bergamot, Pink Pepper"
+                      className="bg-white border-slate-300 text-slate-900 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="block text-slate-700 font-medium text-[11px]">Middle Notes</label>
+                    <Input
+                      value={form.middle_notes}
+                      onChange={(e) => setForm((p) => ({ ...p, middle_notes: e.target.value }))}
+                      placeholder="Jasmine, Rose"
+                      className="bg-white border-slate-300 text-slate-900 text-xs"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="block text-slate-700 font-medium text-[11px]">Base Notes</label>
+                    <Input
+                      value={form.base_notes}
+                      onChange={(e) => setForm((p) => ({ ...p, base_notes: e.target.value }))}
+                      placeholder="Oud, Amber, Musk"
+                      className="bg-white border-slate-300 text-slate-900 text-xs"
+                    />
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-700 font-normal">Separate multiple notes with commas.</p>
+
+                <div className="space-y-1.5">
+                  <label className="block text-slate-700 font-medium text-[11px]">Short Description</label>
+                  <Input
+                    value={form.short_description}
+                    onChange={(e) => setForm((p) => ({ ...p, short_description: e.target.value }))}
+                    placeholder="One-line summary shown in product listings"
+                    className="bg-white border-slate-300 text-slate-900 text-xs"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-slate-700 font-medium text-[11px]">Ingredients</label>
+                  <textarea
+                    value={form.ingredients}
+                    onChange={(e) => setForm((p) => ({ ...p, ingredients: e.target.value }))}
+                    rows={2}
+                    placeholder="Alcohol Denat., Parfum, Aqua..."
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-slate-700 font-medium text-[11px]">How to Use</label>
+                  <textarea
+                    value={form.how_to_use}
+                    onChange={(e) => setForm((p) => ({ ...p, how_to_use: e.target.value }))}
+                    rows={2}
+                    placeholder="Apply to pulse points after showering..."
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  />
+                </div>
+              </div>
+
+              {/* Additional Specifications */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+                <div className="space-y-1.5">
+                  <label className="block font-semibold text-slate-800">Concentration</label>
+                  <Input
+                    value={form.concentration}
+                    onChange={(e) => setForm((p) => ({ ...p, concentration: e.target.value }))}
+                    placeholder="Extrait de Parfum"
+                    className="bg-white border-slate-300 text-slate-900"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block font-semibold text-slate-800">Volume (ml)</label>
+                  <Input
+                    type="number"
+                    min="0"
+                    value={form.volume_ml}
+                    onChange={(e) => setForm((p) => ({ ...p, volume_ml: e.target.value }))}
+                    placeholder="30"
+                    className="bg-white border-slate-300 text-slate-900"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block font-semibold text-slate-800">Weight (g)</label>
+                  <Input
+                    type="number"
+                    min="0"
+                    value={form.weight_grams}
+                    onChange={(e) => setForm((p) => ({ ...p, weight_grams: e.target.value }))}
+                    placeholder="120"
+                    className="bg-white border-slate-300 text-slate-900"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block font-semibold text-slate-800">Barcode</label>
+                  <Input
+                    value={form.barcode}
+                    onChange={(e) => setForm((p) => ({ ...p, barcode: e.target.value }))}
+                    placeholder="EAN/UPC"
+                    className="bg-white border-slate-300 text-slate-900 font-mono"
+                  />
+                </div>
+              </div>
+
               {/* SEO Engine & Search Metadata */}
               <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
                 <div className="font-semibold text-slate-900 text-xs flex items-center justify-between">
@@ -964,17 +1356,55 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
-                <div>
-                  <div className="font-semibold text-slate-900">Feature on Storefront Homepage</div>
-                  <div className="text-slate-700 text-[11px]">Pin this fragrance to the featured highlights section</div>
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold text-slate-900">Feature on Storefront Homepage</div>
+                    <div className="text-slate-700 text-[11px]">Pin this fragrance to the featured highlights section</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={form.is_featured}
+                    onChange={(e) => setForm((p) => ({ ...p, is_featured: e.target.checked }))}
+                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                  />
                 </div>
-                <input
-                  type="checkbox"
-                  checked={form.is_featured}
-                  onChange={(e) => setForm((p) => ({ ...p, is_featured: e.target.checked }))}
-                  className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
-                />
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                  <div>
+                    <div className="font-semibold text-slate-900">Bestseller</div>
+                    <div className="text-slate-700 text-[11px]">Show a "Bestseller" badge on this fragrance</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={form.is_bestseller}
+                    onChange={(e) => setForm((p) => ({ ...p, is_bestseller: e.target.checked }))}
+                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                  />
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                  <div>
+                    <div className="font-semibold text-slate-900">New Arrival</div>
+                    <div className="text-slate-700 text-[11px]">Show a "New" badge on this fragrance</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={form.is_new_arrival}
+                    onChange={(e) => setForm((p) => ({ ...p, is_new_arrival: e.target.checked }))}
+                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                  />
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-slate-200">
+                  <div>
+                    <div className="font-semibold text-slate-900">Trending</div>
+                    <div className="text-slate-700 text-[11px]">Show a "Trending" badge on this fragrance</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={form.is_trending}
+                    onChange={(e) => setForm((p) => ({ ...p, is_trending: e.target.checked }))}
+                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                  />
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { productService } from '@/services/ProductService';
 import { categoryService } from '@/services/CategoryService';
 import { collectionService } from '@/services/CollectionService';
+import type { VariantInput } from '@/repositories/ProductRepository';
 
 const ADMIN_PRODUCTS_KEY = ['admin-products'];
 
@@ -46,6 +47,12 @@ export const useAdminProducts = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_PRODUCTS_KEY }),
   });
 
+  const setVariantsMutation = useMutation({
+    mutationFn: ({ id, variants }: { id: string; variants: VariantInput[] }) =>
+      productService.setProductVariants(id, variants),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ADMIN_PRODUCTS_KEY }),
+  });
+
   return {
     products: productsQuery.data ?? [],
     isLoading: productsQuery.isLoading,
@@ -61,5 +68,7 @@ export const useAdminProducts = () => {
     isDeleting: deleteMutation.isPending,
     setProductImages: setImagesMutation.mutateAsync,
     isSavingImages: setImagesMutation.isPending,
+    setProductVariants: setVariantsMutation.mutateAsync,
+    isSavingVariants: setVariantsMutation.isPending,
   };
 };

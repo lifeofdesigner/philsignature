@@ -241,12 +241,12 @@ export const AdminCollectionsPage: React.FC = () => {
             />
           ) : (
             <div className="w-10 h-10 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
-              <Layers className="h-4 w-4 text-slate-700" />
+              <Layers className="h-4 w-4 text-black" />
             </div>
           )}
           <div className="min-w-0">
-            <div className="text-slate-900 font-bold truncate">{collection.name}</div>
-            <div className="text-[11px] text-slate-700 font-mono truncate">{collection.slug}</div>
+            <div className="text-black font-bold truncate">{collection.name}</div>
+            <div className="text-[11px] text-black font-mono truncate">{collection.slug}</div>
           </div>
         </div>
       ),
@@ -256,7 +256,7 @@ export const AdminCollectionsPage: React.FC = () => {
       key: 'tagline',
       header: 'Tagline / Summary',
       accessor: (collection) => (
-        <span className="text-slate-700 text-xs truncate max-w-xs block">
+        <span className="text-black text-xs truncate max-w-xs block">
           {collection.tagline || collection.description || '—'}
         </span>
       ),
@@ -265,7 +265,7 @@ export const AdminCollectionsPage: React.FC = () => {
     {
       key: 'display_order',
       header: 'Order',
-      accessor: (collection) => <span className="font-mono text-slate-700 font-semibold">{collection.display_order}</span>,
+      accessor: (collection) => <span className="font-mono text-black font-semibold">{collection.display_order}</span>,
       sortValue: (collection) => collection.display_order,
     },
     {
@@ -274,11 +274,11 @@ export const AdminCollectionsPage: React.FC = () => {
       accessor: (collection) => (
         collection.is_featured ? (
           <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-900 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
-            <Star className="h-3 w-3 fill-amber-600 text-slate-700" />
+            <Star className="h-3 w-3 fill-amber-600 text-black" />
             Featured
           </span>
         ) : (
-          <span className="text-slate-700 text-xs">—</span>
+          <span className="text-black text-xs">—</span>
         )
       ),
       sortValue: (collection) => (collection.is_featured ? 1 : 0),
@@ -293,7 +293,7 @@ export const AdminCollectionsPage: React.FC = () => {
           className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-bold border transition-colors cursor-pointer ${
             collection.is_active
               ? 'text-emerald-900 border-emerald-300 bg-emerald-50 hover:bg-emerald-100'
-              : 'text-slate-700 border-slate-300 bg-slate-100 hover:bg-slate-200'
+              : 'text-black border-slate-300 bg-slate-100 hover:bg-slate-200'
           }`}
         >
           {collection.is_active ? 'Active' : 'Inactive'}
@@ -312,7 +312,7 @@ export const AdminCollectionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openEditForm(collection)}
-              className="p-1.5 text-slate-800 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-black hover:text-black transition-colors cursor-pointer rounded hover:bg-slate-100"
               title="Edit Collection"
               aria-label="Edit collection"
             >
@@ -322,7 +322,7 @@ export const AdminCollectionsPage: React.FC = () => {
               type="button"
               disabled={isBusy}
               onClick={() => handleDuplicate(collection)}
-              className="p-1.5 text-slate-800 hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
+              className="p-1.5 text-black hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
               title="Duplicate Collection"
               aria-label="Duplicate collection"
             >
@@ -331,7 +331,7 @@ export const AdminCollectionsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setDeleteTarget(collection)}
-              className="p-1.5 text-slate-800 hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
+              className="p-1.5 text-black hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
               title="Delete Collection"
               aria-label="Delete collection"
             >
@@ -359,10 +359,10 @@ export const AdminCollectionsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-black tracking-tight">
             Curated Collections Engine
           </h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <p className="text-xs text-black font-semibold mt-1">
             Curate thematic product suites like Private Reserve, Oud Edition, and Atelier Exclusives.
           </p>
         </div>
@@ -378,7 +378,7 @@ export const AdminCollectionsPage: React.FC = () => {
 
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Display Status:</span>
+          <span className="font-semibold text-black">Display Status:</span>
           <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
             {(['all', 'active', 'inactive'] as const).map((st) => (
               <button
@@ -387,8 +387,8 @@ export const AdminCollectionsPage: React.FC = () => {
                 onClick={() => setStatusFilter(st)}
                 className={`px-3 py-1 rounded-md font-semibold transition-colors cursor-pointer capitalize ${
                   statusFilter === st
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-800 hover:text-slate-900'
+                    ? 'bg-white text-black shadow-2xs'
+                    : 'text-black hover:text-black'
                 }`}
               >
                 {st === 'all' ? `All (${collections.length})` : st}
@@ -414,15 +414,15 @@ export const AdminCollectionsPage: React.FC = () => {
           <div className="bg-white border border-slate-200 w-full max-w-2xl p-6 space-y-5 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto text-xs">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">
+                <h2 className="text-lg font-bold text-black">
                   {editing ? 'Edit Collection' : 'Create Curated Collection'}
                 </h2>
-                <p className="text-xs text-slate-700">Curate product themes and showcase banners.</p>
+                <p className="text-xs text-black">Curate product themes and showcase banners.</p>
               </div>
               <button
                 type="button"
                 onClick={closeForm}
-                className="p-1 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1 text-black hover:text-black rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -438,45 +438,45 @@ export const AdminCollectionsPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Collection Name *</label>
+                  <label className="block font-semibold text-black">Collection Name *</label>
                   <Input
                     value={form.name}
                     onChange={(e) => handleNameChange(e.target.value)}
                     placeholder="e.g. Private Reserve"
                     required
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Slug *</label>
+                  <label className="block font-semibold text-black">Slug *</label>
                   <Input
                     value={form.slug}
                     onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
                     placeholder="private-reserve"
                     required
-                    className="bg-white border-slate-300 text-slate-900 font-mono"
+                    className="bg-white border-slate-300 text-black font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block font-semibold text-slate-800">Tagline / Subtitle</label>
+                <label className="block font-semibold text-black">Tagline / Subtitle</label>
                 <Input
                   value={form.tagline}
                   onChange={(e) => setForm((p) => ({ ...p, tagline: e.target.value }))}
                   placeholder="e.g. Rare botanical extraits and vintage resin oils"
-                  className="bg-white border-slate-300 text-slate-900"
+                  className="bg-white border-slate-300 text-black"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block font-semibold text-slate-800">Description</label>
+                <label className="block font-semibold text-black">Description</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   rows={3}
                   placeholder="Detailed background regarding this collection..."
-                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-black placeholder:text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                 />
               </div>
 
@@ -498,45 +498,45 @@ export const AdminCollectionsPage: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block font-semibold text-slate-800">Display Order</label>
+                <label className="block font-semibold text-black">Display Order</label>
                 <Input
                   type="number"
                   min="0"
                   value={form.display_order}
                   onChange={(e) => setForm((p) => ({ ...p, display_order: e.target.value }))}
-                  className="bg-white border-slate-300 text-slate-900 w-32"
+                  className="bg-white border-slate-300 text-black w-32"
                 />
               </div>
 
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-slate-900">Featured Collection</div>
-                    <div className="text-slate-700 text-[11px]">Pin to storefront hero & homepage collections showcase</div>
+                    <div className="font-semibold text-black">Featured Collection</div>
+                    <div className="text-black text-[11px]">Pin to storefront hero & homepage collections showcase</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.is_featured}
                     onChange={(e) => setForm((p) => ({ ...p, is_featured: e.target.checked }))}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 h-4 w-4 cursor-pointer"
                   />
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                   <div>
-                    <div className="font-semibold text-slate-900">Active Status</div>
-                    <div className="text-slate-700 text-[11px]">Make this collection visible across storefront navigation</div>
+                    <div className="font-semibold text-black">Active Status</div>
+                    <div className="text-black text-[11px]">Make this collection visible across storefront navigation</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 h-4 w-4 cursor-pointer"
                   />
                 </div>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
+                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
                   Cancel
                 </Button>
                 <Button
@@ -556,12 +556,12 @@ export const AdminCollectionsPage: React.FC = () => {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-2xl shadow-2xl">
-            <h3 className="text-lg font-bold text-slate-900">Remove Collection?</h3>
-            <p className="text-xs text-slate-800 leading-relaxed">
-              This will permanently delete <span className="font-bold text-slate-900">"{deleteTarget.name}"</span>. This action cannot be undone.
+            <h3 className="text-lg font-bold text-black">Remove Collection?</h3>
+            <p className="text-xs text-black leading-relaxed">
+              This will permanently delete <span className="font-bold text-black">"{deleteTarget.name}"</span>. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
-              <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={isDeletingId === deleteTarget.id} className="border-slate-300 text-slate-700">
+              <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={isDeletingId === deleteTarget.id} className="border-slate-300 text-black">
                 Cancel
               </Button>
               <Button variant="destructive" onClick={confirmDelete} disabled={isDeletingId === deleteTarget.id} className="gap-2">

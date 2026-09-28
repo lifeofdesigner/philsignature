@@ -1,4 +1,4 @@
-import { productRepository, type ProductRepository } from '@/repositories/ProductRepository';
+import { productRepository, type ProductRepository, type VariantInput } from '@/repositories/ProductRepository';
 import { productSchema } from '@/schemas/product.schema';
 import { ValidationError } from '@/errors/ValidationError';
 import type { Product, Review, FragranceFamily } from '@/types/database';
@@ -226,6 +226,10 @@ export class ProductService {
 
   async setProductImages(productId: string, imageUrls: string[]): Promise<void> {
     return this.repo.syncImages(productId, imageUrls);
+  }
+
+  async setProductVariants(productId: string, variants: VariantInput[]): Promise<void> {
+    return this.repo.syncVariants(productId, variants);
   }
 }
 
