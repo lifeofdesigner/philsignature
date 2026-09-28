@@ -30,14 +30,14 @@ export const AdminPaymentsPage: React.FC = () => {
   const { profile, role } = useAuth();
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const userIsSuperAdmin = isSuperAdmin(currentRole);
-  const canManagePaystack = userIsSuperAdmin || hasPermission(currentRole, 'payments:manage_paystack');
+  const canManageGateways = userIsSuperAdmin || hasPermission(currentRole, 'payments:manage_gateways');
   const {
     config,
     isLoading,
     save,
     isSaving,
-    savePaystackOnly,
-    isSavingPaystackOnly,
+    saveGatewaysOnly,
+    isSavingGatewaysOnly,
     savePublicOnly,
     isSavingPublicOnly,
   } = useAdminPayments();
@@ -48,15 +48,15 @@ export const AdminPaymentsPage: React.FC = () => {
     setForm(config);
   }, [config]);
 
-  const isPendingSave = isSaving || isSavingPaystackOnly || isSavingPublicOnly;
+  const isPendingSave = isSaving || isSavingGatewaysOnly || isSavingPublicOnly;
 
   const handleSave = async () => {
     if (!form) return;
     try {
       if (userIsSuperAdmin) {
         await save(form);
-      } else if (canManagePaystack) {
-        await savePaystackOnly(form);
+      } else if (canManageGateways) {
+        await saveGatewaysOnly(form);
       } else {
         await savePublicOnly(form);
       }
@@ -141,13 +141,13 @@ export const AdminPaymentsPage: React.FC = () => {
       <div className="space-y-6">
         {!userIsSuperAdmin && (
           <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium">
-            {canManagePaystack
-              ? 'You can manage Paystack credentials below. Flutterwave and Korapay API credentials are only visible to Super Administrators.'
+            {canManageGateways
+              ? 'You can manage Paystack, Flutterwave, and Korapay credentials below.'
               : 'Gateway API credentials (Paystack, Flutterwave, Korapay) are only visible to Super Administrators. You can still view and update the Direct Bank Transfer details below.'}
           </div>
         )}
 
-        {canManagePaystack && (
+        {canManageGateways && (
         <>
         {/* Paystack Gateway Card */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
@@ -237,8 +237,6 @@ export const AdminPaymentsPage: React.FC = () => {
           </div>
         </div>
 
-        {userIsSuperAdmin && (
-        <>
         {/* Flutterwave Gateway Card */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-5 shadow-2xs">
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200">
@@ -421,8 +419,6 @@ export const AdminPaymentsPage: React.FC = () => {
             </div>
           </div>
         </div>
-        </>
-        )}
         </>
         )}
 

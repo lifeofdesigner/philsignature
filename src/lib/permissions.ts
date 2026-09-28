@@ -24,7 +24,7 @@ export type Permission =
   | 'orders:shipping'
   | 'shipping:manage'
   | 'payments:view'
-  | 'payments:manage_paystack'
+  | 'payments:manage_gateways'
   | 'analytics:view'
   // Customers & Community
   | 'customers:read'
@@ -87,7 +87,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   admin: [
     'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:instagram',
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
-    'orders:read', 'orders:write', 'orders:shipping', 'payments:view', 'payments:manage_paystack', 'analytics:view',
+    'orders:read', 'orders:write', 'orders:shipping', 'payments:view', 'payments:manage_gateways', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
     'users:read', 'users:manage', 'roles:manage',
   ],
@@ -95,7 +95,7 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
   administrator: [
     'cms:read', 'cms:write', 'cms:publish', 'cms:hero', 'cms:menu', 'cms:homepage', 'cms:instagram',
     'products:read', 'products:write', 'products:delete', 'inventory:manage', 'categories:manage', 'collections:manage', 'media:manage',
-    'orders:read', 'orders:write', 'orders:shipping', 'payments:view', 'payments:manage_paystack', 'analytics:view',
+    'orders:read', 'orders:write', 'orders:shipping', 'payments:view', 'payments:manage_gateways', 'analytics:view',
     'customers:read', 'customers:write', 'reviews:manage', 'coupons:manage',
     'users:read', 'users:manage', 'roles:manage',
   ],

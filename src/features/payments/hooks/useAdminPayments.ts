@@ -149,11 +149,12 @@ export const useAdminPayments = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
   });
 
-  // For admins who may only manage Paystack: the public flags/URLs still go
-  // through the regular (RLS-gated) settings write, but the secret keys are
-  // sent to a server endpoint that only ever touches paystack_* fields in
-  // the shared secrets blob, so this can never clobber other gateways' keys.
-  const savePaystackOnlyMutation = useMutation({
+  // For admins who may manage Paystack, Flutterwave, and Korapay (but not raw
+  // DB access): the public flags/URLs still go through the regular
+  // (RLS-gated) settings write, but each gateway's secret keys are sent to
+  // its own server endpoint that only ever touches that gateway's fields in
+  // the shared secrets blob, so this can never clobber another gateway's keys.
+  const saveGatewaysOnlyMutation = useMutation({
     mutationFn: async (config: PaymentGatewaysConfig) => {
       const publicConfig: PaymentGatewaysPublicConfig = {
         paystack_enabled: config.paystack_enabled,
@@ -181,18 +182,38 @@ export const useAdminPayments = () => {
         'Payment gateway configuration (public)'
       );
 
-      // Only call the serverless endpoint if at least one Paystack secret/public key is populated
+      // Only call each serverless endpoint if at least one of its keys is populated
       const paystackPayload: Record<string, string> = {};
       if (config.paystack_test_public_key?.trim()) paystackPayload.paystack_test_public_key = config.paystack_test_public_key.trim();
       if (config.paystack_test_secret_key?.trim()) paystackPayload.paystack_test_secret_key = config.paystack_test_secret_key.trim();
       if (config.paystack_live_public_key?.trim()) paystackPayload.paystack_live_public_key = config.paystack_live_public_key.trim();
       if (config.paystack_live_secret_key?.trim()) paystackPayload.paystack_live_secret_key = config.paystack_live_secret_key.trim();
 
-      if (Object.keys(paystackPayload).length > 0) {
-        await callAdminApi('/api/admin/payment-gateway/paystack', {
-          body: paystackPayload,
-        });
-      }
+      const flutterwavePayload: Record<string, string> = {};
+      if (config.flutterwave_test_public_key?.trim()) flutterwavePayload.flutterwave_test_public_key = config.flutterwave_test_public_key.trim();
+      if (config.flutterwave_test_secret_key?.trim()) flutterwavePayload.flutterwave_test_secret_key = config.flutterwave_test_secret_key.trim();
+      if (config.flutterwave_test_webhook_secret_hash?.trim()) flutterwavePayload.flutterwave_test_webhook_secret_hash = config.flutterwave_test_webhook_secret_hash.trim();
+      if (config.flutterwave_live_public_key?.trim()) flutterwavePayload.flutterwave_live_public_key = config.flutterwave_live_public_key.trim();
+      if (config.flutterwave_live_secret_key?.trim()) flutterwavePayload.flutterwave_live_secret_key = config.flutterwave_live_secret_key.trim();
+      if (config.flutterwave_live_webhook_secret_hash?.trim()) flutterwavePayload.flutterwave_live_webhook_secret_hash = config.flutterwave_live_webhook_secret_hash.trim();
+
+      const korapayPayload: Record<string, string> = {};
+      if (config.korapay_test_public_key?.trim()) korapayPayload.korapay_test_public_key = config.korapay_test_public_key.trim();
+      if (config.korapay_test_secret_key?.trim()) korapayPayload.korapay_test_secret_key = config.korapay_test_secret_key.trim();
+      if (config.korapay_live_public_key?.trim()) korapayPayload.korapay_live_public_key = config.korapay_live_public_key.trim();
+      if (config.korapay_live_secret_key?.trim()) korapayPayload.korapay_live_secret_key = config.korapay_live_secret_key.trim();
+
+      await Promise.all([
+        Object.keys(paystackPayload).length > 0
+          ? callAdminApi('/api/admin/payment-gateway/paystack', { body: paystackPayload })
+          : Promise.resolve(),
+        Object.keys(flutterwavePayload).length > 0
+          ? callAdminApi('/api/admin/payment-gateway/flutterwave', { body: flutterwavePayload })
+          : Promise.resolve(),
+        Object.keys(korapayPayload).length > 0
+          ? callAdminApi('/api/admin/payment-gateway/korapay', { body: korapayPayload })
+          : Promise.resolve(),
+      ]);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
   });
@@ -243,8 +264,8 @@ export const useAdminPayments = () => {
     isLoading: configQuery.isLoading,
     save: saveMutation.mutateAsync,
     isSaving: saveMutation.isPending,
-    savePaystackOnly: savePaystackOnlyMutation.mutateAsync,
-    isSavingPaystackOnly: savePaystackOnlyMutation.isPending,
+    saveGatewaysOnly: saveGatewaysOnlyMutation.mutateAsync,
+    isSavingGatewaysOnly: saveGatewaysOnlyMutation.isPending,
     savePublicOnly: savePublicOnlyMutation.mutateAsync,
     isSavingPublicOnly: savePublicOnlyMutation.isPending,
   };
