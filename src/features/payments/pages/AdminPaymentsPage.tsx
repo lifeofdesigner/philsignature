@@ -31,7 +31,16 @@ export const AdminPaymentsPage: React.FC = () => {
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const userIsSuperAdmin = isSuperAdmin(currentRole);
   const canManagePaystack = userIsSuperAdmin || hasPermission(currentRole, 'payments:manage_paystack');
-  const { config, isLoading, save, isSaving, savePaystackOnly, isSavingPaystackOnly } = useAdminPayments();
+  const {
+    config,
+    isLoading,
+    save,
+    isSaving,
+    savePaystackOnly,
+    isSavingPaystackOnly,
+    savePublicOnly,
+    isSavingPublicOnly,
+  } = useAdminPayments();
   const [form, setForm] = useState<PaymentGatewaysConfig | null>(null);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
 
@@ -39,13 +48,17 @@ export const AdminPaymentsPage: React.FC = () => {
     setForm(config);
   }, [config]);
 
+  const isPendingSave = isSaving || isSavingPaystackOnly || isSavingPublicOnly;
+
   const handleSave = async () => {
     if (!form) return;
     try {
       if (userIsSuperAdmin) {
         await save(form);
-      } else {
+      } else if (canManagePaystack) {
         await savePaystackOnly(form);
+      } else {
+        await savePublicOnly(form);
       }
       toast.success('Payment gateway configurations saved to database.');
     } catch (err) {
@@ -117,10 +130,10 @@ export const AdminPaymentsPage: React.FC = () => {
         <Button
           size="sm"
           className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
-          disabled={isSaving || isSavingPaystackOnly}
+          disabled={isPendingSave}
           onClick={handleSave}
         >
-          {isSaving || isSavingPaystackOnly ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+          {isPendingSave ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Gateway Settings</span>
         </Button>
       </div>

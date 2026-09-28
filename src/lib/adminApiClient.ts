@@ -25,9 +25,24 @@ export async function callAdminApi<T = unknown>(
     body: options.method === 'GET' ? undefined : JSON.stringify(options.body || {}),
   });
 
-  const json = await res.json();
+  const text = await res.text();
+  let json: Record<string, unknown> | null = null;
+  try {
+    json = text ? (JSON.parse(text) as Record<string, unknown>) : null;
+  } catch {
+    if (!res.ok) {
+      throw new Error(
+        res.status === 404
+          ? 'Server API endpoint not found. Please contact a super administrator.'
+          : `Server returned an error (${res.status}).`
+      );
+    }
+    throw new Error('Invalid response from server.');
+  }
+
   if (!res.ok) {
-    throw new Error(json?.error || 'Request failed');
+    const errorMsg = (typeof json?.error === 'string' && json.error) || `Request failed (${res.status})`;
+    throw new Error(errorMsg);
   }
   return json as T;
 }
