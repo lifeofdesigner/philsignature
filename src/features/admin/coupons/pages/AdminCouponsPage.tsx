@@ -165,13 +165,13 @@ export const AdminCouponsPage: React.FC = () => {
       header: 'Coupon Code',
       accessor: (coupon: Coupon) => (
         <div className="flex items-center gap-2">
-          <div className="font-mono text-sm font-bold text-slate-900 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded">
+          <div className="font-mono text-sm font-bold text-black bg-slate-100 border border-slate-200 px-2.5 py-1 rounded">
             {coupon.code}
           </div>
           <button
             type="button"
             onClick={() => copyToClipboard(coupon.code)}
-            className="p-1 text-slate-700 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
+            className="p-1 text-black hover:text-black hover:bg-slate-100 rounded transition-colors"
             title="Copy Code"
           >
             {copiedCode === coupon.code ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
@@ -189,7 +189,7 @@ export const AdminCouponsPage: React.FC = () => {
             {coupon.discount_type === 'percentage' ? `${coupon.value}% OFF` : `${formatCurrency(coupon.value)} OFF`}
           </span>
           {coupon.max_discount && (
-            <p className="text-[11px] text-slate-700">Max cap: {formatCurrency(coupon.max_discount)}</p>
+            <p className="text-[11px] text-black">Max cap: {formatCurrency(coupon.max_discount)}</p>
           )}
         </div>
       ),
@@ -199,7 +199,7 @@ export const AdminCouponsPage: React.FC = () => {
       key: 'min_spend',
       header: 'Min Spend',
       accessor: (coupon: Coupon) => (
-        <span className="text-slate-700 text-xs font-medium">
+        <span className="text-black text-xs font-medium">
           {coupon.min_spend ? formatCurrency(coupon.min_spend) : 'No minimum'}
         </span>
       ),
@@ -210,8 +210,8 @@ export const AdminCouponsPage: React.FC = () => {
       header: 'Usage & Limit',
       accessor: (coupon: Coupon) => (
         <div className="text-xs">
-          <span className="font-semibold text-slate-900">{coupon.used_count || 0}</span>
-          <span className="text-slate-700"> {coupon.usage_limit ? `/ ${coupon.usage_limit} redeemed` : 'redeemed (unlimited)'}</span>
+          <span className="font-semibold text-black">{coupon.used_count || 0}</span>
+          <span className="text-black"> {coupon.usage_limit ? `/ ${coupon.usage_limit} redeemed` : 'redeemed (unlimited)'}</span>
         </div>
       ),
       sortValue: (c: Coupon) => c.used_count ?? 0,
@@ -221,11 +221,11 @@ export const AdminCouponsPage: React.FC = () => {
       header: 'Expiration',
       accessor: (coupon: Coupon) => {
         if (!coupon.expires_at) {
-          return <span className="text-xs text-slate-700 font-medium">Never expires</span>;
+          return <span className="text-xs text-black font-medium">Never expires</span>;
         }
         const isExpired = new Date(coupon.expires_at).getTime() < Date.now();
         return (
-          <span className={`text-xs font-medium ${isExpired ? 'text-red-600 font-semibold' : 'text-slate-700'}`}>
+          <span className={`text-xs font-medium ${isExpired ? 'text-red-600 font-semibold' : 'text-black'}`}>
             {new Date(coupon.expires_at).toLocaleDateString('en-GB', {
               day: 'numeric',
               month: 'short',
@@ -245,7 +245,7 @@ export const AdminCouponsPage: React.FC = () => {
           className={`inline-flex items-center text-[11px] uppercase tracking-wider px-2.5 py-0.5 rounded-full font-bold border ${
             coupon.is_active
               ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
-              : 'text-slate-800 border-slate-200 bg-slate-100'
+              : 'text-black border-slate-200 bg-slate-100'
           }`}
         >
           {coupon.is_active ? 'Active' : 'Disabled'}
@@ -261,7 +261,7 @@ export const AdminCouponsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(coupon)}
-            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-black hover:text-black hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Coupon"
             aria-label="Edit coupon"
           >
@@ -270,7 +270,7 @@ export const AdminCouponsPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setDeleteTarget(coupon)}
-            className="p-1.5 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-black hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
             title="Delete Coupon"
             aria-label="Delete coupon"
           >
@@ -297,8 +297,8 @@ export const AdminCouponsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Privilege Coupons &amp; Discounts</h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <h1 className="text-2xl font-bold text-black tracking-tight">Privilege Coupons &amp; Discounts</h1>
+          <p className="text-xs text-black font-semibold mt-1">
             Configure promotional percentage discounts, fixed reductions, minimum order thresholds, and expiry limits.
           </p>
         </div>
@@ -317,14 +317,14 @@ export const AdminCouponsPage: React.FC = () => {
           placeholder="Search by coupon code (e.g. LUXURY10)..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="max-w-md bg-white border-slate-300 text-slate-900 text-xs"
+          className="max-w-md bg-white border-slate-300 text-black text-xs"
         />
         <div className="flex items-center gap-2">
-          <span className="text-xs text-slate-700 font-medium">Type:</span>
+          <span className="text-xs text-black font-medium">Type:</span>
           <select
             value={discountTypeFilter}
             onChange={(e) => setDiscountTypeFilter(e.target.value as 'all' | 'percentage' | 'fixed')}
-            className="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-600"
+            className="h-9 rounded-lg border border-slate-300 bg-white px-3 text-xs text-black focus:outline-none focus:ring-2 focus:ring-slate-600"
           >
             <option value="all">All Discount Types</option>
             <option value="percentage">Percentage (%)</option>
@@ -347,13 +347,13 @@ export const AdminCouponsPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-2xl p-6 space-y-5 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-black">
                 {editing ? 'Edit Privilege Coupon' : 'Create New Coupon'}
               </h2>
               <button
                 type="button"
                 onClick={closeForm}
-                className="text-slate-700 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                className="text-black hover:text-black p-1 rounded-md hover:bg-slate-100 transition-colors"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -369,20 +369,20 @@ export const AdminCouponsPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Coupon Code <span className="text-red-500">*</span>
                   </label>
                   <Input
                     value={form.code}
                     onChange={(e) => setForm((p) => ({ ...p, code: e.target.value.toUpperCase() }))}
                     placeholder="e.g. EXCLUSIVE15"
-                    className="bg-white border-slate-300 text-slate-900 font-mono font-bold uppercase"
+                    className="bg-white border-slate-300 text-black font-mono font-bold uppercase"
                     required
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Discount Type <span className="text-red-500">*</span>
                   </label>
                   <select
@@ -390,7 +390,7 @@ export const AdminCouponsPage: React.FC = () => {
                     onChange={(e) =>
                       setForm((p) => ({ ...p, discount_type: e.target.value as 'percentage' | 'fixed' }))
                     }
-                    className="flex h-10 w-full rounded-lg bg-white border border-slate-300 px-3.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-600 font-medium"
+                    className="flex h-10 w-full rounded-lg bg-white border border-slate-300 px-3.5 text-sm text-black focus:outline-none focus:ring-2 focus:ring-slate-600 font-medium"
                   >
                     <option value="percentage">Percentage Discount (%)</option>
                     <option value="fixed">Fixed Amount (₦)</option>
@@ -400,7 +400,7 @@ export const AdminCouponsPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     {form.discount_type === 'percentage' ? 'Discount Rate (%)' : 'Discount Amount (₦)'} <span className="text-red-500">*</span>
                   </label>
                   <Input
@@ -410,13 +410,13 @@ export const AdminCouponsPage: React.FC = () => {
                     value={form.value}
                     onChange={(e) => setForm((p) => ({ ...p, value: e.target.value }))}
                     placeholder={form.discount_type === 'percentage' ? '15' : '5000'}
-                    className="bg-white border-slate-300 text-slate-900 font-semibold"
+                    className="bg-white border-slate-300 text-black font-semibold"
                     required
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Min Spend (₦)
                   </label>
                   <Input
@@ -425,12 +425,12 @@ export const AdminCouponsPage: React.FC = () => {
                     value={form.min_spend}
                     onChange={(e) => setForm((p) => ({ ...p, min_spend: e.target.value }))}
                     placeholder="e.g. 50000"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Max Discount Cap (₦)
                   </label>
                   <Input
@@ -439,14 +439,14 @@ export const AdminCouponsPage: React.FC = () => {
                     value={form.max_discount}
                     onChange={(e) => setForm((p) => ({ ...p, max_discount: e.target.value }))}
                     placeholder="e.g. 20000"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Usage Limit (Redemptions)
                   </label>
                   <Input
@@ -455,37 +455,37 @@ export const AdminCouponsPage: React.FC = () => {
                     value={form.usage_limit}
                     onChange={(e) => setForm((p) => ({ ...p, usage_limit: e.target.value }))}
                     placeholder="Leave empty for unlimited"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Expiration Date
                   </label>
                   <Input
                     type="date"
                     value={form.expires_at}
                     onChange={(e) => setForm((p) => ({ ...p, expires_at: e.target.value }))}
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
               </div>
 
               <div className="pt-2">
-                <label className="flex items-center gap-2.5 text-sm text-slate-900 font-semibold cursor-pointer select-none">
+                <label className="flex items-center gap-2.5 text-sm text-black font-semibold cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))}
-                    className="w-4 h-4 text-slate-900 rounded border-slate-400 focus:ring-slate-900 cursor-pointer"
+                    className="w-4 h-4 text-black rounded border-slate-400 focus:ring-slate-900 cursor-pointer"
                   />
                   <span>Active &amp; Eligible for Checkout Application</span>
                 </label>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
+                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
                   Cancel
                 </Button>
                 <Button
@@ -506,9 +506,9 @@ export const AdminCouponsPage: React.FC = () => {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
-            <h3 className="text-lg font-bold text-slate-900">Remove Privilege Coupon?</h3>
-            <p className="text-sm text-slate-800">
-              This will permanently delete coupon code <span className="font-semibold text-slate-900 font-mono">"{deleteTarget.code}"</span>. Customers will no longer be able to claim this discount.
+            <h3 className="text-lg font-bold text-black">Remove Privilege Coupon?</h3>
+            <p className="text-sm text-black">
+              This will permanently delete coupon code <span className="font-semibold text-black font-mono">"{deleteTarget.code}"</span>. Customers will no longer be able to claim this discount.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
               <Button

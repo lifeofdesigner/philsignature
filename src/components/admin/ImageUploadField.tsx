@@ -51,10 +51,10 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
 
   return (
     <div className="space-y-1.5">
-      <label className="block font-semibold text-slate-800">{label}</label>
-      {helpText && <p className="text-[11px] text-slate-700 font-medium">{helpText}</p>}
+      <label className="block font-semibold text-black">{label}</label>
+      {helpText && <p className="text-[11px] text-black font-medium">{helpText}</p>}
       <div className="flex items-center gap-3">
-        <div className="h-16 w-16 shrink-0 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden">
+        <div className="h-16 w-16 shrink-0 bg-white border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden">
           {currentUrl ? (
             <img src={currentUrl} alt={label} className="h-full w-full object-cover" />
           ) : (
@@ -72,7 +72,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         />
         <label
           htmlFor={inputId}
-          className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-lg border border-slate-300 transition-colors cursor-pointer shadow-2xs"
+          className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-black text-xs font-semibold rounded-lg border border-slate-300 transition-colors cursor-pointer shadow-2xs"
         >
           {isUploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
           <span>{isUploading ? 'Uploading...' : currentUrl ? 'Replace Image' : 'Upload Image'}</span>
@@ -82,7 +82,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
           <button
             type="button"
             onClick={onRemove}
-            className="p-1.5 text-slate-700 hover:text-red-700 rounded hover:bg-red-50 transition-colors cursor-pointer"
+            className="p-1.5 text-black hover:text-red-700 rounded hover:bg-red-50 transition-colors cursor-pointer"
             title={`Remove ${label}`}
             aria-label={`Remove ${label}`}
           >

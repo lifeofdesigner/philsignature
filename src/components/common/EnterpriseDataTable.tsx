@@ -150,7 +150,7 @@ export function EnterpriseDataTable<T>({
       {/* Control Bar */}
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
         <div className="relative max-w-sm w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-700" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-black" />
           <Input
             placeholder={searchPlaceholder}
             value={search}
@@ -158,7 +158,7 @@ export function EnterpriseDataTable<T>({
               setSearch(e.target.value);
               setCurrentPage(1);
             }}
-            className="pl-9 text-xs border-slate-300 focus:border-slate-900 focus:ring-slate-900 bg-white font-medium text-slate-900 placeholder:text-slate-700"
+            className="pl-9 text-xs border-slate-300 focus:border-slate-900 focus:ring-slate-900 bg-white font-medium text-black placeholder:text-black"
           />
         </div>
 
@@ -169,15 +169,15 @@ export function EnterpriseDataTable<T>({
               size="sm"
               variant="outline"
               onClick={() => setShowColPicker(!showColPicker)}
-              className="text-xs border-slate-300 text-slate-700 hover:bg-slate-50 gap-1.5 font-medium"
+              className="text-xs border-slate-300 text-black hover:bg-slate-100 gap-1.5 font-medium"
             >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-slate-800" />
+              <SlidersHorizontal className="h-3.5 w-3.5 text-black" />
               <span>Columns</span>
             </Button>
 
             {showColPicker && (
               <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-30 p-2 space-y-1 animate-fade-in">
-                <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider px-2 py-1">
+                <div className="text-[10px] font-bold text-black uppercase tracking-wider px-2 py-1">
                   Toggle Columns
                 </div>
                 {columns.map((col) => {
@@ -191,10 +191,10 @@ export function EnterpriseDataTable<T>({
                         else next.add(col.key);
                         setVisibleColumns(next);
                       }}
-                      className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100 rounded-lg text-left"
+                      className="w-full flex items-center justify-between px-2.5 py-1.5 text-xs font-medium text-black hover:bg-slate-100 rounded-lg text-left"
                     >
                       <span>{col.header}</span>
-                      {isVisible && <Check className="h-3.5 w-3.5 text-slate-900 font-bold" />}
+                      {isVisible && <Check className="h-3.5 w-3.5 text-black font-bold" />}
                     </button>
                   );
                 })}
@@ -207,9 +207,9 @@ export function EnterpriseDataTable<T>({
             size="sm"
             variant="outline"
             onClick={handleExportCSV}
-            className="text-xs border-slate-300 text-slate-700 hover:bg-slate-50 gap-1.5 font-medium"
+            className="text-xs border-slate-300 text-black hover:bg-slate-100 gap-1.5 font-medium"
           >
-            <Download className="h-3.5 w-3.5 text-slate-800" />
+            <Download className="h-3.5 w-3.5 text-black" />
             <span>Export CSV</span>
           </Button>
         </div>
@@ -243,14 +243,14 @@ export function EnterpriseDataTable<T>({
       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-700 uppercase tracking-wider border-b border-slate-200 font-bold sticky top-0">
+            <thead className="bg-white text-black uppercase tracking-wider border-b border-slate-200 font-bold sticky top-0">
               <tr>
                 <th className="py-3 px-3 w-10 text-center">
                   <input
                     type="checkbox"
                     checked={allPaginatedSelected}
                     onChange={toggleSelectAll}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 cursor-pointer"
                   />
                 </th>
                 {columns
@@ -261,8 +261,8 @@ export function EnterpriseDataTable<T>({
                       <th
                         key={col.key}
                         style={{ width: col.width }}
-                        className={`py-3 px-4 text-slate-700 font-bold ${
-                          col.sortable !== false ? 'cursor-pointer select-none hover:text-slate-900' : ''
+                        className={`py-3 px-4 text-black font-bold ${
+                          col.sortable !== false ? 'cursor-pointer select-none hover:text-black' : ''
                         }`}
                         onClick={() => {
                           if (col.sortable === false) return;
@@ -279,12 +279,12 @@ export function EnterpriseDataTable<T>({
                           {col.sortable !== false &&
                             (isSorted ? (
                               sortDirection === 'asc' ? (
-                                <ChevronUp className="h-3.5 w-3.5 text-slate-900 font-bold" />
+                                <ChevronUp className="h-3.5 w-3.5 text-black font-bold" />
                               ) : (
-                                <ChevronDown className="h-3.5 w-3.5 text-slate-900 font-bold" />
+                                <ChevronDown className="h-3.5 w-3.5 text-black font-bold" />
                               )
                             ) : (
-                              <ChevronsUpDown className="h-3.5 w-3.5 text-slate-700 opacity-0 group-hover:opacity-100" />
+                              <ChevronsUpDown className="h-3.5 w-3.5 text-black opacity-0 group-hover:opacity-100" />
                             ))}
                         </div>
                       </th>
@@ -295,7 +295,7 @@ export function EnterpriseDataTable<T>({
             <tbody className="divide-y divide-slate-100">
               {paginatedData.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length + 1} className="py-12 text-center text-slate-700 font-medium">
+                  <td colSpan={columns.length + 1} className="py-12 text-center text-black font-medium">
                     {emptyMessage}
                   </td>
                 </tr>
@@ -307,7 +307,7 @@ export function EnterpriseDataTable<T>({
                     <tr
                       key={id}
                       className={`transition-colors ${
-                        isSelected ? 'bg-slate-100/90 font-medium' : 'hover:bg-slate-50/80'
+                        isSelected ? 'bg-slate-100/90 font-medium' : 'hover:bg-slate-100'
                       }`}
                     >
                       <td className="py-3 px-3 text-center">
@@ -315,13 +315,13 @@ export function EnterpriseDataTable<T>({
                           type="checkbox"
                           checked={isSelected}
                           onChange={() => toggleSelectRow(id)}
-                          className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 cursor-pointer"
+                          className="rounded border-slate-400 text-black focus:ring-slate-900 cursor-pointer"
                         />
                       </td>
                       {columns
                         .filter((c) => visibleColumns.has(c.key))
                         .map((col) => (
-                          <td key={col.key} className="py-3 px-4 text-slate-900 font-medium">
+                          <td key={col.key} className="py-3 px-4 text-black font-medium">
                             {col.accessor(item)}
                           </td>
                         ))}
@@ -334,23 +334,23 @@ export function EnterpriseDataTable<T>({
         </div>
 
         {/* Pagination Footer */}
-        <div className="px-4 py-3 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-800 font-medium">
+        <div className="px-4 py-3 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-black font-medium">
           <div>
-            Showing <span className="font-bold text-slate-900">{paginatedData.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}</span> to{' '}
-            <span className="font-bold text-slate-900">{Math.min(currentPage * pageSize, sortedData.length)}</span> of{' '}
-            <span className="font-bold text-slate-900">{sortedData.length}</span> entries
+            Showing <span className="font-bold text-black">{paginatedData.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}</span> to{' '}
+            <span className="font-bold text-black">{Math.min(currentPage * pageSize, sortedData.length)}</span> of{' '}
+            <span className="font-bold text-black">{sortedData.length}</span> entries
           </div>
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
-              <span className="text-slate-800">Rows per page:</span>
+              <span className="text-black">Rows per page:</span>
               <select
                 value={pageSize}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="bg-white border border-slate-300 rounded px-2 py-1 text-xs text-slate-900 font-medium cursor-pointer"
+                className="bg-white border border-slate-300 rounded px-2 py-1 text-xs text-black font-medium cursor-pointer"
               >
                 {[10, 25, 50, 100].map((sz) => (
                   <option key={sz} value={sz}>
@@ -366,11 +366,11 @@ export function EnterpriseDataTable<T>({
                 variant="outline"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="h-7 px-2.5 text-xs border-slate-300 text-slate-700 font-medium"
+                className="h-7 px-2.5 text-xs border-slate-300 text-black font-medium"
               >
                 Previous
               </Button>
-              <span className="px-2 font-semibold text-slate-900">
+              <span className="px-2 font-semibold text-black">
                 {currentPage} / {totalPages}
               </span>
               <Button
@@ -378,7 +378,7 @@ export function EnterpriseDataTable<T>({
                 variant="outline"
                 disabled={currentPage >= totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="h-7 px-2.5 text-xs border-slate-300 text-slate-700 font-medium"
+                className="h-7 px-2.5 text-xs border-slate-300 text-black font-medium"
               >
                 Next
               </Button>

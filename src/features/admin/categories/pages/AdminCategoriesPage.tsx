@@ -166,15 +166,15 @@ export const AdminCategoriesPage: React.FC = () => {
               }}
             />
           ) : (
-            <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0 text-slate-700">
+            <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0 text-black">
               <Tags className="w-5 h-5" />
             </div>
           )}
           <div>
-            <div className="text-sm font-semibold text-slate-900">{category.name}</div>
-            <div className="text-xs font-mono text-slate-700">/{category.slug}</div>
+            <div className="text-sm font-semibold text-black">{category.name}</div>
+            <div className="text-xs font-mono text-black">/{category.slug}</div>
             {category.description && (
-              <p className="text-xs text-slate-800 line-clamp-1 mt-0.5 max-w-sm">{category.description}</p>
+              <p className="text-xs text-black line-clamp-1 mt-0.5 max-w-sm">{category.description}</p>
             )}
           </div>
         </div>
@@ -185,7 +185,7 @@ export const AdminCategoriesPage: React.FC = () => {
       key: 'display_order',
       header: 'Display Order',
       accessor: (category: Category) => (
-        <span className="font-mono text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded">
+        <span className="font-mono text-xs font-semibold text-black bg-slate-100 px-2 py-1 rounded">
           {category.display_order ?? 0}
         </span>
       ),
@@ -199,7 +199,7 @@ export const AdminCategoriesPage: React.FC = () => {
           className={`inline-flex items-center text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-full font-bold border ${
             category.is_active
               ? 'text-emerald-800 border-emerald-200 bg-emerald-50'
-              : 'text-slate-800 border-slate-200 bg-slate-100'
+              : 'text-black border-slate-200 bg-slate-100'
           }`}
         >
           {category.is_active ? 'Active' : 'Inactive'}
@@ -215,7 +215,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleDuplicate(category)}
-            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-black hover:text-black hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Duplicate Category"
             aria-label="Duplicate category"
           >
@@ -224,7 +224,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => openEditForm(category)}
-            className="p-1.5 text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-black hover:text-black hover:bg-slate-100 transition-colors cursor-pointer rounded"
             title="Edit Category"
             aria-label="Edit category"
           >
@@ -233,7 +233,7 @@ export const AdminCategoriesPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setDeleteTarget(category)}
-            className="p-1.5 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
+            className="p-1.5 text-black hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
             title="Delete Category"
             aria-label="Delete category"
           >
@@ -260,8 +260,8 @@ export const AdminCategoriesPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Fragrance Categories</h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <h1 className="text-2xl font-bold text-black tracking-tight">Fragrance Categories</h1>
+          <p className="text-xs text-black font-semibold mt-1">
             Organize catalog formulations into Extrait, Perfume Oils, Scented Candles, and Room Sprays.
           </p>
         </div>
@@ -289,13 +289,13 @@ export const AdminCategoriesPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-lg p-6 space-y-5 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-              <h2 className="text-lg font-bold text-slate-900">
+              <h2 className="text-lg font-bold text-black">
                 {editing ? 'Edit Fragrance Category' : 'New Fragrance Category'}
               </h2>
               <button
                 type="button"
                 onClick={closeForm}
-                className="text-slate-700 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                className="text-black hover:text-black p-1 rounded-md hover:bg-slate-100 transition-colors"
                 aria-label="Close"
               >
                 <X className="h-5 w-5" />
@@ -310,33 +310,33 @@ export const AdminCategoriesPage: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                   Category Name <span className="text-red-500">*</span>
                 </label>
                 <Input
                   value={form.name}
                   onChange={(e) => handleNameChange(e.target.value)}
                   placeholder="e.g. Extrait de Parfum"
-                  className="bg-white border-slate-300 text-slate-900"
+                  className="bg-white border-slate-300 text-black"
                   required
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                   URL Slug <span className="text-red-500">*</span>
                 </label>
                 <Input
                   value={form.slug}
                   onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
                   placeholder="e.g. extrait-de-parfum"
-                  className="bg-white border-slate-300 text-slate-900 font-mono text-xs"
+                  className="bg-white border-slate-300 text-black font-mono text-xs"
                   required
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                   Description
                 </label>
                 <textarea
@@ -344,22 +344,22 @@ export const AdminCategoriesPage: React.FC = () => {
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   rows={3}
                   placeholder="Detailed category notes and luxury formulation highlights..."
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
+                  className="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-sm text-black placeholder:text-black focus:outline-none focus:ring-2 focus:ring-slate-600 focus:border-transparent transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                   Image URL
                 </label>
                 <Input
                   value={form.image_url}
                   onChange={(e) => setForm((p) => ({ ...p, image_url: e.target.value }))}
                   placeholder="https://... image asset path"
-                  className="bg-white border-slate-300 text-slate-900"
+                  className="bg-white border-slate-300 text-black"
                 />
                 {form.image_url && (
-                  <div className="mt-2 p-2 bg-slate-50 border border-slate-200 rounded-lg flex items-center gap-3">
+                  <div className="mt-2 p-2 bg-white border border-slate-200 rounded-lg flex items-center gap-3">
                     <img
                       src={form.image_url}
                       alt="Preview"
@@ -368,13 +368,13 @@ export const AdminCategoriesPage: React.FC = () => {
                         (e.target as HTMLElement).style.display = 'none';
                       }}
                     />
-                    <span className="text-xs text-slate-700">Image Preview</span>
+                    <span className="text-xs text-black">Image Preview</span>
                   </div>
                 )}
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                   Display Order
                 </label>
                 <Input
@@ -382,24 +382,24 @@ export const AdminCategoriesPage: React.FC = () => {
                   min="0"
                   value={form.display_order}
                   onChange={(e) => setForm((p) => ({ ...p, display_order: e.target.value }))}
-                  className="bg-white border-slate-300 text-slate-900"
+                  className="bg-white border-slate-300 text-black"
                 />
               </div>
 
               <div className="pt-2">
-                <label className="flex items-center gap-2.5 text-sm text-slate-900 font-semibold cursor-pointer select-none">
+                <label className="flex items-center gap-2.5 text-sm text-black font-semibold cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={form.is_active}
                     onChange={(e) => setForm((p) => ({ ...p, is_active: e.target.checked }))}
-                    className="w-4 h-4 text-slate-900 rounded border-slate-400 focus:ring-slate-900 cursor-pointer"
+                    className="w-4 h-4 text-black rounded border-slate-400 focus:ring-slate-900 cursor-pointer"
                   />
                   <span>Active &amp; Visible in Storefront Navigation</span>
                 </label>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
+                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
                   Cancel
                 </Button>
                 <Button
@@ -420,9 +420,9 @@ export const AdminCategoriesPage: React.FC = () => {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
-            <h3 className="text-lg font-bold text-slate-900">Delete Category?</h3>
-            <p className="text-sm text-slate-800">
-              This will permanently delete <span className="font-semibold text-slate-900">"{deleteTarget.name}"</span> from the database. Any products assigned to this category may lose their categorization.
+            <h3 className="text-lg font-bold text-black">Delete Category?</h3>
+            <p className="text-sm text-black">
+              This will permanently delete <span className="font-semibold text-black">"{deleteTarget.name}"</span> from the database. Any products assigned to this category may lose their categorization.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
               <Button

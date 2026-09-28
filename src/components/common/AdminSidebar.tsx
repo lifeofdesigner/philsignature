@@ -126,7 +126,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         )}
       >
         {/* Brand Header */}
-        <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
+        <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 bg-white">
           <div className="flex items-center gap-3 min-w-0">
             {logoUrl ? (
               <img
@@ -136,10 +136,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               />
             ) : null}
             <div className="flex flex-col min-w-0">
-              <span className="font-bold text-xs tracking-wider text-slate-900 uppercase truncate">
+              <span className="font-bold text-xs tracking-wider text-black uppercase truncate">
                 PHILZ SIGNATURE
               </span>
-              <span className="text-[10px] text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded font-bold tracking-wider uppercase truncate w-fit mt-0.5">
+              <span className="text-[10px] text-black bg-slate-100 px-1.5 py-0.5 rounded font-bold tracking-wider uppercase truncate w-fit mt-0.5">
                 {currentRole && currentRole in ROLE_LABELS ? ROLE_LABELS[currentRole] : 'ADMIN PORTAL'}
               </span>
             </div>
@@ -154,7 +154,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
             return (
               <div key={group.category} className="space-y-1">
-                <div className="px-3 text-[10px] font-bold text-slate-700 uppercase tracking-widest">
+                <div className="px-3 text-[10px] font-bold text-black uppercase tracking-widest">
                   {group.category}
                 </div>
                 <div className="space-y-0.5 mt-1">
@@ -171,7 +171,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                             'group flex items-center gap-2.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all',
                             isActive
                               ? 'bg-slate-900 text-white shadow-xs'
-                              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-100'
+                              : 'text-black hover:text-black hover:bg-slate-100'
                           )
                         }
                       >
@@ -180,7 +180,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                             <Icon
                               className={cn(
                                 'h-4 w-4 shrink-0 transition-colors',
-                                isActive ? 'text-white' : 'text-slate-700 group-hover:text-slate-800'
+                                isActive ? 'text-white' : 'text-black group-hover:text-black'
                               )}
                             />
                             <span>{item.title}</span>
@@ -196,15 +196,15 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
         </nav>
 
         {/* Footer Quick Actions */}
-        <div className="p-3 border-t border-slate-200 bg-slate-50/80 space-y-1">
+        <div className="p-3 border-t border-slate-200 bg-white space-y-1">
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-700 hover:text-slate-900 transition-colors rounded-lg hover:bg-slate-200/60 font-semibold"
+            className="flex items-center justify-between px-3 py-1.5 text-xs text-black hover:text-black transition-colors rounded-lg hover:bg-slate-200/60 font-semibold"
           >
             <span>Live Storefront</span>
-            <ExternalLink className="h-3.5 w-3.5 text-slate-700" />
+            <ExternalLink className="h-3.5 w-3.5 text-black" />
           </a>
 
           <button

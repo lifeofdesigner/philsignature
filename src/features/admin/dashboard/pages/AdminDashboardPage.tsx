@@ -79,14 +79,14 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-slate-800 border border-slate-300">
-              <Sparkles className="h-3 w-3 mr-1 text-slate-700" />
+            <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-100 text-black border border-slate-300">
+              <Sparkles className="h-3 w-3 mr-1 text-black" />
               {roleTitle} Workspace
             </span>
-            <span className="text-xs text-slate-700">•</span>
-            <span className="text-xs text-slate-800 font-semibold">Philz Signature Enterprise Portal</span>
+            <span className="text-xs text-black">•</span>
+            <span className="text-xs text-black font-semibold">Philz Signature Enterprise Portal</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1">
+          <h1 className="text-2xl font-bold text-black tracking-tight mt-1">
             Store Executive Summary
           </h1>
         </div>
@@ -97,10 +97,10 @@ export const AdminDashboardPage: React.FC = () => {
             variant="outline"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="border-slate-300 text-slate-700 hover:bg-slate-50 gap-1.5 font-medium"
+            className="border-slate-300 text-black hover:bg-slate-100 gap-1.5 font-medium"
             title="Refresh metrics from Supabase"
           >
-            <RefreshCw className={`h-3.5 w-3.5 text-slate-800 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 text-black ${isRefreshing ? 'animate-spin' : ''}`} />
             <span>Sync</span>
           </Button>
           <Link to="/admin/products?action=create">
@@ -110,8 +110,8 @@ export const AdminDashboardPage: React.FC = () => {
             </Button>
           </Link>
           <Link to="/admin/cms">
-            <Button size="sm" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-50 gap-1.5 font-medium">
-              <FileText className="h-4 w-4 text-slate-800" />
+            <Button size="sm" variant="outline" className="border-slate-300 text-black hover:bg-slate-100 gap-1.5 font-medium">
+              <FileText className="h-4 w-4 text-black" />
               <span>Edit Website</span>
             </Button>
           </Link>
@@ -122,7 +122,7 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="hover:border-slate-300 transition-all bg-white border-slate-200 shadow-2xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-black">
               Total Sales Revenue
             </CardTitle>
             <div className="p-2 bg-emerald-50 rounded-lg text-emerald-800 border border-emerald-200/60">
@@ -130,7 +130,7 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900 tracking-tight">
+            <div className="text-2xl font-bold text-black tracking-tight">
               {formatCurrency(snapshot?.totalRevenue || 0)}
             </div>
             <div className="flex items-center text-xs text-emerald-800 font-semibold mt-1">
@@ -142,19 +142,19 @@ export const AdminDashboardPage: React.FC = () => {
 
         <Card className="hover:border-slate-300 transition-all bg-white border-slate-200 shadow-2xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-black">
               Orders Placed
             </CardTitle>
-            <div className="p-2 bg-slate-100 rounded-lg text-slate-800 border border-slate-300">
-              <ShoppingBag className="h-4 w-4 text-slate-700" />
+            <div className="p-2 bg-slate-100 rounded-lg text-black border border-slate-300">
+              <ShoppingBag className="h-4 w-4 text-black" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900 tracking-tight">
+            <div className="text-2xl font-bold text-black tracking-tight">
               {snapshot?.totalOrders || 0}
             </div>
-            <div className="flex items-center text-xs text-slate-700 font-semibold mt-1">
-              <Clock className="h-3.5 w-3.5 mr-1 text-slate-700" />
+            <div className="flex items-center text-xs text-black font-semibold mt-1">
+              <Clock className="h-3.5 w-3.5 mr-1 text-black" />
               <span>{pendingFulfillmentCount + processingCount} awaiting dispatch</span>
             </div>
           </CardContent>
@@ -162,7 +162,7 @@ export const AdminDashboardPage: React.FC = () => {
 
         <Card className="hover:border-slate-300 transition-all bg-white border-slate-200 shadow-2xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-black">
               Avg Order Value
             </CardTitle>
             <div className="p-2 bg-blue-50 rounded-lg text-blue-800 border border-blue-200/60">
@@ -170,16 +170,16 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900 tracking-tight">
+            <div className="text-2xl font-bold text-black tracking-tight">
               {formatCurrency(Math.round(snapshot?.averageOrderValue || 0))}
             </div>
-            <p className="text-xs text-slate-800 mt-1 font-medium">Per completed customer order</p>
+            <p className="text-xs text-black mt-1 font-medium">Per completed customer order</p>
           </CardContent>
         </Card>
 
         <Card className="hover:border-slate-300 transition-all bg-white border-slate-200 shadow-2xs">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-800">
+            <CardTitle className="text-xs font-bold uppercase tracking-wider text-black">
               Active Formulations
             </CardTitle>
             <div className="p-2 bg-purple-50 rounded-lg text-purple-800 border border-purple-200/60">
@@ -187,7 +187,7 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-slate-900 tracking-tight">
+            <div className="text-2xl font-bold text-black tracking-tight">
               {productCount}
             </div>
             <p className="text-xs text-emerald-800 font-semibold mt-1">Catalog synchronized in Supabase</p>
@@ -201,17 +201,17 @@ export const AdminDashboardPage: React.FC = () => {
         <Card className="lg:col-span-2 bg-white border-slate-200 shadow-2xs">
           <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 pb-4">
             <div>
-              <CardTitle className="text-base font-bold text-slate-900">Recent Customer Orders</CardTitle>
-              <CardDescription className="text-slate-800 font-medium">Live fulfillment & status stream from Supabase</CardDescription>
+              <CardTitle className="text-base font-bold text-black">Recent Customer Orders</CardTitle>
+              <CardDescription className="text-black font-medium">Live fulfillment & status stream from Supabase</CardDescription>
             </div>
-            <Link to="/admin/orders" className="text-xs font-bold text-slate-900 hover:underline">
+            <Link to="/admin/orders" className="text-xs font-bold text-black hover:underline">
               View all orders &rarr;
             </Link>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 text-slate-700 uppercase tracking-wider border-b border-slate-200 font-bold">
+                <thead className="bg-white text-black uppercase tracking-wider border-b border-slate-200 font-bold">
                   <tr>
                     <th className="py-3 px-4">Order #</th>
                     <th className="py-3 px-4">Customer Email</th>
@@ -223,33 +223,33 @@ export const AdminDashboardPage: React.FC = () => {
                 <tbody className="divide-y divide-slate-100 font-medium">
                   {recentOrders.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="py-8 text-center text-slate-700">
+                      <td colSpan={5} className="py-8 text-center text-black">
                         No customer orders recorded yet in Supabase.
                       </td>
                     </tr>
                   ) : (
                     recentOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-slate-50/80 transition-colors">
-                        <td className="py-3 px-4 font-bold text-slate-900">
-                          <Link to="/admin/orders" className="hover:text-slate-900 hover:underline">
+                      <tr key={order.id} className="hover:bg-slate-100 transition-colors">
+                        <td className="py-3 px-4 font-bold text-black">
+                          <Link to="/admin/orders" className="hover:text-black hover:underline">
                             #{order.order_number}
                           </Link>
                         </td>
-                        <td className="py-3 px-4 text-slate-700 font-mono">{order.email}</td>
-                        <td className="py-3 px-4 font-bold text-slate-900">{formatCurrency(order.total_amount)}</td>
+                        <td className="py-3 px-4 text-black font-mono">{order.email}</td>
+                        <td className="py-3 px-4 font-bold text-black">{formatCurrency(order.total_amount)}</td>
                         <td className="py-3 px-4">
                           <span
                             className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold ${
                               order.financial_status === 'paid'
                                 ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                : 'bg-slate-100 text-slate-800 border border-slate-300'
+                                : 'bg-slate-100 text-black border border-slate-300'
                             }`}
                           >
                             {order.financial_status}
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-800 border border-slate-200 capitalize">
+                          <span className="inline-flex px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-black border border-slate-200 capitalize">
                             {order.fulfillment_status}
                           </span>
                         </td>
@@ -266,26 +266,26 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="space-y-6">
           <Card className="bg-white border-slate-200 shadow-2xs">
             <CardHeader className="border-b border-slate-100 pb-3">
-              <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <CardTitle className="text-base font-bold text-black flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-emerald-600" />
                 <span>Security & Role Access</span>
               </CardTitle>
-              <CardDescription className="text-slate-800 font-medium">RBAC Permission Enforcement Active</CardDescription>
+              <CardDescription className="text-black font-medium">RBAC Permission Enforcement Active</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 text-xs pt-4">
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-                <span className="text-slate-700 font-medium">Active Role:</span>
-                <span className="font-bold text-slate-900 uppercase tracking-wide">{roleTitle}</span>
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between">
+                <span className="text-black font-medium">Active Role:</span>
+                <span className="font-bold text-black uppercase tracking-wide">{roleTitle}</span>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
-                <span className="text-slate-700 font-medium">Live Database Sync:</span>
+              <div className="p-3 bg-white rounded-lg border border-slate-200 flex items-center justify-between">
+                <span className="text-black font-medium">Live Database Sync:</span>
                 <span className="font-semibold text-emerald-800 flex items-center gap-1">
                   <Activity className="h-3.5 w-3.5 animate-pulse text-emerald-600" /> Supabase Realtime
                 </span>
               </div>
               <Link to="/admin/users" className="block pt-1">
-                <Button variant="outline" size="sm" className="w-full text-xs text-slate-700 border-slate-300 hover:bg-slate-50 justify-center font-medium">
-                  <Users className="h-3.5 w-3.5 mr-1.5 text-slate-800" /> Manage Staff & Roles
+                <Button variant="outline" size="sm" className="w-full text-xs text-black border-slate-300 hover:bg-slate-100 justify-center font-medium">
+                  <Users className="h-3.5 w-3.5 mr-1.5 text-black" /> Manage Staff & Roles
                 </Button>
               </Link>
             </CardContent>

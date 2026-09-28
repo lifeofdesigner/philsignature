@@ -313,10 +313,10 @@ export const AdminUsersPage: React.FC = () => {
       {/* SaaS Page Title */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-black tracking-tight">
             Users, Roles &amp; Access Control (RBAC)
           </h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <p className="text-xs text-black font-semibold mt-1">
             Configure dynamic role permissions, assign staff roles, and monitor system audit activity.
           </p>
         </div>
@@ -347,8 +347,8 @@ export const AdminUsersPage: React.FC = () => {
               onClick={() => setSearchParams({ tab: tab.id })}
               className={`flex items-center gap-2 px-4 py-2.5 border-b-2 transition-all cursor-pointer ${
                 isActive
-                  ? 'border-slate-900 text-slate-900 font-bold bg-slate-100/80'
-                  : 'border-transparent text-slate-800 hover:text-slate-900 hover:border-slate-300'
+                  ? 'border-slate-900 text-black font-bold bg-slate-100/80'
+                  : 'border-transparent text-black hover:text-black hover:border-slate-300'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -363,17 +363,17 @@ export const AdminUsersPage: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-4">
             <div className="relative max-w-md w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-700" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-black" />
               <Input
                 placeholder="Search staff by name or email..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 text-xs bg-white border-slate-300 text-slate-900 focus:border-slate-900"
+                className="pl-9 text-xs bg-white border-slate-300 text-black focus:border-slate-900"
               />
             </div>
             <div className="flex items-center gap-4">
-              <div className="text-xs text-slate-800 font-medium">
-                Total Accounts: <span className="font-bold text-slate-900">{filteredUsers.length}</span>
+              <div className="text-xs text-black font-medium">
+                Total Accounts: <span className="font-bold text-black">{filteredUsers.length}</span>
               </div>
               {canManageRoles && canCreateUsers && (
                 <Button
@@ -392,7 +392,7 @@ export const AdminUsersPage: React.FC = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-100/90 text-slate-800 uppercase tracking-wider border-b border-slate-200 font-bold">
+                  <thead className="bg-slate-100/90 text-black uppercase tracking-wider border-b border-slate-200 font-bold">
                     <tr>
                       <th className="py-3 px-4">User</th>
                       <th className="py-3 px-4">Assigned Role</th>
@@ -410,10 +410,10 @@ export const AdminUsersPage: React.FC = () => {
                       const canEditThisRole = canManageRoles && (userIsSuperAdmin || u.role !== 'super_admin');
 
                       return (
-                        <tr key={u.id} className="hover:bg-slate-50 transition-colors">
+                        <tr key={u.id} className="hover:bg-slate-100 transition-colors">
                           <td className="py-3.5 px-4">
-                            <div className="font-bold text-slate-900 text-sm">{name}</div>
-                            <div className="text-xs text-slate-700 font-mono mt-0.5">{u.email}</div>
+                            <div className="font-bold text-black text-sm">{name}</div>
+                            <div className="text-xs text-black font-mono mt-0.5">{u.email}</div>
                           </td>
                           <td className="py-3.5 px-4">
                             {canEditThisRole ? (
@@ -421,7 +421,7 @@ export const AdminUsersPage: React.FC = () => {
                                 value={u.role}
                                 disabled={isMe || isUpdatingRole}
                                 onChange={(e) => handleRoleChange(u.id, name, e.target.value as UserRole)}
-                                className="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-slate-900 font-semibold focus:outline-none focus:ring-1 focus:ring-slate-900 disabled:opacity-60 disabled:bg-slate-50 shadow-2xs"
+                                className="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-black font-semibold focus:outline-none focus:ring-1 focus:ring-slate-900 disabled:opacity-60 disabled:bg-white shadow-2xs"
                               >
                                 {assignableRoles.map((r) => (
                                   <option key={r} value={r}>
@@ -430,7 +430,7 @@ export const AdminUsersPage: React.FC = () => {
                                 ))}
                               </select>
                             ) : (
-                              <span className="inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200">
+                              <span className="inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold text-black bg-slate-100 border border-slate-200">
                                 {ROLE_LABELS[u.role] || u.role}
                               </span>
                             )}
@@ -462,7 +462,7 @@ export const AdminUsersPage: React.FC = () => {
                                 {isUpdatingActive ? <Loader2 className="h-3 w-3 animate-spin" /> : u.is_active ? 'Suspend Account' : 'Reactivate'}
                               </Button>
                             ) : (
-                              <span className="text-xs text-slate-700 font-medium">—</span>
+                              <span className="text-xs text-black font-medium">—</span>
                             )}
                           </td>
                         </tr>
@@ -483,10 +483,10 @@ export const AdminUsersPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
             <div>
               <div className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-slate-900" />
-                <h3 className="text-base font-bold text-slate-900">Custom Role-Based Access Control</h3>
+                <Lock className="h-5 w-5 text-black" />
+                <h3 className="text-base font-bold text-black">Custom Role-Based Access Control</h3>
               </div>
-              <p className="text-xs text-slate-800 font-normal mt-1">
+              <p className="text-xs text-black font-normal mt-1">
                 {userIsSuperAdmin
                   ? 'Check or uncheck permissions for any role. Click "Save Permissions" to persist changes to database.'
                   : 'View permissions assigned to each system role. Contact Super Administrator to request permission changes.'}
@@ -500,9 +500,9 @@ export const AdminUsersPage: React.FC = () => {
                   variant="outline"
                   onClick={handleResetMatrix}
                   disabled={isResettingRbac || isSavingRbac}
-                  className="gap-1.5 text-xs text-slate-700 border-slate-300 hover:bg-slate-100 font-medium"
+                  className="gap-1.5 text-xs text-black border-slate-300 hover:bg-slate-100 font-medium"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 text-slate-700" />
+                  <RotateCcw className="h-3.5 w-3.5 text-black" />
                   <span>Reset to Defaults</span>
                 </Button>
 
@@ -522,11 +522,11 @@ export const AdminUsersPage: React.FC = () => {
           {/* Quick Role Inspector / Single Role Mode Selector */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-800">Highlight Focus Role:</span>
+              <span className="text-xs font-bold text-black">Highlight Focus Role:</span>
               <select
                 value={selectedMatrixRole}
                 onChange={(e) => setSelectedMatrixRole(e.target.value as UserRole)}
-                className="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900"
+                className="bg-white border border-slate-300 rounded-lg px-3 py-1 text-xs font-semibold text-black focus:outline-none focus:ring-1 focus:ring-slate-900"
               >
                 {ROLE_ORDER.map((r) => (
                   <option key={r} value={r}>
@@ -536,8 +536,8 @@ export const AdminUsersPage: React.FC = () => {
               </select>
             </div>
 
-            <div className="text-xs text-slate-800 font-medium flex items-center gap-1.5">
-              <Info className="h-4 w-4 text-slate-700" />
+            <div className="text-xs text-black font-medium flex items-center gap-1.5">
+              <Info className="h-4 w-4 text-black" />
               <span>{ROLE_DESCRIPTIONS[selectedMatrixRole]}</span>
             </div>
           </div>
@@ -547,9 +547,9 @@ export const AdminUsersPage: React.FC = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
-                  <thead className="bg-slate-100 text-slate-800 uppercase tracking-wider border-b border-slate-200 font-bold">
+                  <thead className="bg-slate-100 text-black uppercase tracking-wider border-b border-slate-200 font-bold">
                     <tr>
-                      <th className="py-3.5 px-4 border-r border-slate-200 w-80 text-slate-900">
+                      <th className="py-3.5 px-4 border-r border-slate-200 w-80 text-black">
                         Capability / Permission
                       </th>
                       {ROLE_ORDER.slice(0, 8).map((r) => {
@@ -558,7 +558,7 @@ export const AdminUsersPage: React.FC = () => {
                           <th
                             key={r}
                             className={`py-3 px-3 text-center border-r border-slate-200 min-w-[120px] transition-colors ${
-                              isFocused ? 'bg-slate-900 text-white' : 'text-slate-800'
+                              isFocused ? 'bg-slate-900 text-white' : 'text-black'
                             }`}
                           >
                             <div className="font-bold">{ROLE_LABELS[r]}</div>
@@ -575,21 +575,21 @@ export const AdminUsersPage: React.FC = () => {
                   <tbody className="divide-y divide-slate-100">
                     {PERMISSION_GROUPS.map((group) => (
                       <React.Fragment key={group.label}>
-                        <tr className="bg-slate-200/80 text-slate-900 font-bold uppercase tracking-wider text-[11px]">
+                        <tr className="bg-slate-200/80 text-black font-bold uppercase tracking-wider text-[11px]">
                           <td colSpan={9} className="py-2.5 px-4 border-y border-slate-300">
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-slate-900">{group.label}</span>
-                              <span className="text-[10px] font-normal text-slate-800 normal-case">
+                              <span className="font-bold text-black">{group.label}</span>
+                              <span className="text-[10px] font-normal text-black normal-case">
                                 {group.description}
                               </span>
                             </div>
                           </td>
                         </tr>
                         {group.permissions.map((perm) => (
-                          <tr key={perm.key} className="hover:bg-slate-50 transition-colors">
-                            <td className="py-3 px-4 font-semibold text-slate-900 border-r border-slate-200">
-                              <div className="text-slate-900 font-medium">{perm.label}</div>
-                              <div className="text-[10px] text-slate-700 font-mono mt-0.5">{perm.key}</div>
+                          <tr key={perm.key} className="hover:bg-slate-100 transition-colors">
+                            <td className="py-3 px-4 font-semibold text-black border-r border-slate-200">
+                              <div className="text-black font-medium">{perm.label}</div>
+                              <div className="text-[10px] text-black font-mono mt-0.5">{perm.key}</div>
                             </td>
                             {ROLE_ORDER.slice(0, 8).map((r) => {
                               const isSuper = r === 'super_admin';
@@ -601,7 +601,7 @@ export const AdminUsersPage: React.FC = () => {
                                 <td
                                   key={r}
                                   className={`py-3 px-3 text-center border-r border-slate-100 transition-colors ${
-                                    isFocused ? 'bg-slate-50' : ''
+                                    isFocused ? 'bg-white' : ''
                                   }`}
                                 >
                                   {isSuper ? (
@@ -626,7 +626,7 @@ export const AdminUsersPage: React.FC = () => {
                                       className={`inline-flex p-1 rounded ${
                                         has
                                           ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                          : 'text-slate-700'
+                                          : 'text-black'
                                       }`}
                                     >
                                       {has ? <Check className="h-3.5 w-3.5" /> : <X className="h-3.5 w-3.5" />}
@@ -651,25 +651,25 @@ export const AdminUsersPage: React.FC = () => {
       {currentTab === 'audit' && (
         <Card className="border-slate-200 shadow-xs">
           <CardHeader className="border-b border-slate-100">
-            <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <History className="h-4 w-4 text-slate-900" />
+            <CardTitle className="text-base font-bold text-black flex items-center gap-2">
+              <History className="h-4 w-4 text-black" />
               <span>Audit Trail Activity Logs</span>
             </CardTitle>
-            <CardDescription className="text-slate-800">
+            <CardDescription className="text-black">
               Immutable chronological record of administrative actions, permission edits, and database updates
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             {isLoadingLogs ? (
               <div className="p-8 text-center">
-                <Loader2 className="h-5 w-5 animate-spin mx-auto text-slate-700" />
+                <Loader2 className="h-5 w-5 animate-spin mx-auto text-black" />
               </div>
             ) : auditLogs.length === 0 ? (
-              <div className="p-8 text-center text-xs text-slate-700">No activity logs recorded yet.</div>
+              <div className="p-8 text-center text-xs text-black">No activity logs recorded yet.</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-100 text-slate-800 uppercase tracking-wider border-b border-slate-200 font-bold">
+                  <thead className="bg-slate-100 text-black uppercase tracking-wider border-b border-slate-200 font-bold">
                     <tr>
                       <th className="py-3 px-4">Date &amp; Time</th>
                       <th className="py-3 px-4">User</th>
@@ -680,18 +680,18 @@ export const AdminUsersPage: React.FC = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {auditLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="py-3 px-4 font-mono text-slate-800 text-xs">
+                      <tr key={log.id} className="hover:bg-slate-100 transition-colors">
+                        <td className="py-3 px-4 font-mono text-black text-xs">
                           {new Date(log.created_at).toLocaleString()}
                         </td>
-                        <td className="py-3 px-4 font-bold text-slate-900">{log.user_email}</td>
+                        <td className="py-3 px-4 font-bold text-black">{log.user_email}</td>
                         <td className="py-3 px-4">
-                          <span className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-800 border border-slate-300 uppercase">
+                          <span className="inline-flex px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-black border border-slate-300 uppercase">
                             {log.action}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-slate-700 font-mono text-xs">{log.entity_type}</td>
-                        <td className="py-3 px-4 text-slate-800 font-mono text-[11px] max-w-md truncate">
+                        <td className="py-3 px-4 text-black font-mono text-xs">{log.entity_type}</td>
+                        <td className="py-3 px-4 text-black font-mono text-[11px] max-w-md truncate">
                           {JSON.stringify(log.details)}
                         </td>
                       </tr>
@@ -708,25 +708,25 @@ export const AdminUsersPage: React.FC = () => {
       {currentTab === 'trash' && (
         <Card className="border-slate-200 shadow-xs">
           <CardHeader className="border-b border-slate-100">
-            <CardTitle className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Trash2 className="h-4 w-4 text-slate-900" />
+            <CardTitle className="text-base font-bold text-black flex items-center gap-2">
+              <Trash2 className="h-4 w-4 text-black" />
               <span>Soft Delete Recycle Bin</span>
             </CardTitle>
-            <CardDescription className="text-slate-800">
+            <CardDescription className="text-black">
               Recover accidentally deleted products, collections, categories, or media items
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             {isLoadingLogs ? (
               <div className="p-8 text-center">
-                <Loader2 className="h-5 w-5 animate-spin mx-auto text-slate-700" />
+                <Loader2 className="h-5 w-5 animate-spin mx-auto text-black" />
               </div>
             ) : trashItems.length === 0 ? (
-              <div className="p-8 text-center text-xs text-slate-700">Recycle Bin is currently empty.</div>
+              <div className="p-8 text-center text-xs text-black">Recycle Bin is currently empty.</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-100 text-slate-800 uppercase tracking-wider border-b border-slate-200 font-bold">
+                  <thead className="bg-slate-100 text-black uppercase tracking-wider border-b border-slate-200 font-bold">
                     <tr>
                       <th className="py-3 px-4">Item Name</th>
                       <th className="py-3 px-4">Type</th>
@@ -736,10 +736,10 @@ export const AdminUsersPage: React.FC = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {trashItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="py-3 px-4 font-bold text-slate-900">{item.entity_name}</td>
-                        <td className="py-3 px-4 font-mono text-slate-800 text-xs">{item.entity_type}</td>
-                        <td className="py-3 px-4 text-slate-800 text-xs">{new Date(item.created_at).toLocaleString()}</td>
+                      <tr key={item.id} className="hover:bg-slate-100 transition-colors">
+                        <td className="py-3 px-4 font-bold text-black">{item.entity_name}</td>
+                        <td className="py-3 px-4 font-mono text-black text-xs">{item.entity_type}</td>
+                        <td className="py-3 px-4 text-black text-xs">{new Date(item.created_at).toLocaleString()}</td>
                         <td className="py-3 px-4 text-right">
                           <Button
                             size="sm"
@@ -764,14 +764,14 @@ export const AdminUsersPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 rounded-xl w-full max-w-md p-6 space-y-5 shadow-lg">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <UserPlus className="h-4 w-4 text-slate-900" />
+              <h3 className="text-base font-bold text-black flex items-center gap-2">
+                <UserPlus className="h-4 w-4 text-black" />
                 <span>New Staff / Admin Account</span>
               </h3>
               <button
                 type="button"
                 onClick={() => setShowCreateUser(false)}
-                className="text-slate-700 hover:text-slate-900"
+                className="text-black hover:text-black"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -783,14 +783,14 @@ export const AdminUsersPage: React.FC = () => {
                   value={newUser.firstName}
                   onChange={(e) => setNewUser((p) => ({ ...p, firstName: e.target.value }))}
                   required
-                  className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
+                  className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
                 />
                 <Input
                   placeholder="Last name"
                   value={newUser.lastName}
                   onChange={(e) => setNewUser((p) => ({ ...p, lastName: e.target.value }))}
                   required
-                  className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
+                  className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
                 />
               </div>
               <Input
@@ -799,7 +799,7 @@ export const AdminUsersPage: React.FC = () => {
                 value={newUser.email}
                 onChange={(e) => setNewUser((p) => ({ ...p, email: e.target.value }))}
                 required
-                className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
+                className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
               />
               <Input
                 type="password"
@@ -807,14 +807,14 @@ export const AdminUsersPage: React.FC = () => {
                 value={newUser.password}
                 onChange={(e) => setNewUser((p) => ({ ...p, password: e.target.value }))}
                 required
-                className="!bg-white !text-slate-900 placeholder:!text-slate-700 !border-slate-300 text-xs"
+                className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
               />
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold text-slate-900">Role</label>
+                <label className="block text-xs font-bold text-black">Role</label>
                 <select
                   value={newUser.role}
                   onChange={(e) => setNewUser((p) => ({ ...p, role: e.target.value as UserRole }))}
-                  className="w-full text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-2 text-slate-900 font-semibold focus:outline-none focus:ring-1 focus:ring-slate-900"
+                  className="w-full text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-2 text-black font-semibold focus:outline-none focus:ring-1 focus:ring-slate-900"
                 >
                   {assignableRoles.map((r) => (
                     <option key={r} value={r}>
@@ -823,7 +823,7 @@ export const AdminUsersPage: React.FC = () => {
                   ))}
                 </select>
                 {!userIsSuperAdmin && (
-                  <p className="text-[11px] text-slate-700 font-medium">
+                  <p className="text-[11px] text-black font-medium">
                     Only a Super Administrator can create another Super Admin account.
                   </p>
                 )}

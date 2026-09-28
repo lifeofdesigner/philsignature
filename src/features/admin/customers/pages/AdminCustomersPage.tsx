@@ -55,11 +55,11 @@ export const AdminCustomersPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelectedCustomer(c)}
-              className="font-bold text-slate-900 hover:text-slate-900 hover:underline text-left cursor-pointer truncate block"
+              className="font-bold text-black hover:text-black hover:underline text-left cursor-pointer truncate block"
             >
               {[c.first_name, c.last_name].filter(Boolean).join(' ') || 'Anonymous Patron'}
             </button>
-            <div className="text-[11px] text-slate-700 font-mono truncate">{c.email}</div>
+            <div className="text-[11px] text-black font-mono truncate">{c.email}</div>
           </div>
         </div>
       ),
@@ -68,14 +68,14 @@ export const AdminCustomersPage: React.FC = () => {
     {
       key: 'created_at',
       header: 'Member Since',
-      accessor: (c) => <span className="text-slate-800 font-medium">{formatDate(c.created_at)}</span>,
+      accessor: (c) => <span className="text-black font-medium">{formatDate(c.created_at)}</span>,
       sortValue: (c) => c.created_at,
     },
     {
       key: 'orderCount',
       header: 'Orders',
       accessor: (c) => (
-        <span className="font-semibold text-slate-900 bg-slate-100 px-2 py-0.5 rounded text-xs">
+        <span className="font-semibold text-black bg-slate-100 px-2 py-0.5 rounded text-xs">
           {c.orderCount} orders
         </span>
       ),
@@ -84,7 +84,7 @@ export const AdminCustomersPage: React.FC = () => {
     {
       key: 'lifetimeSpend',
       header: 'Lifetime Spend',
-      accessor: (c) => <span className="font-bold text-slate-900">{formatCurrency(c.lifetimeSpend)}</span>,
+      accessor: (c) => <span className="font-bold text-black">{formatCurrency(c.lifetimeSpend)}</span>,
       sortValue: (c) => c.lifetimeSpend,
     },
     {
@@ -116,9 +116,9 @@ export const AdminCustomersPage: React.FC = () => {
               size="sm"
               variant="outline"
               onClick={() => setSelectedCustomer(c)}
-              className="text-xs h-7 px-2.5 border-slate-300 text-slate-700 hover:bg-slate-50 gap-1 cursor-pointer"
+              className="text-xs h-7 px-2.5 border-slate-300 text-black hover:bg-slate-100 gap-1 cursor-pointer"
             >
-              <Eye className="h-3 w-3 text-slate-700" />
+              <Eye className="h-3 w-3 text-black" />
               <span>Inspect</span>
             </Button>
             <Button
@@ -155,10 +155,10 @@ export const AdminCustomersPage: React.FC = () => {
       {/* SaaS Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-black tracking-tight">
             Client & Customer Directory
           </h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <p className="text-xs text-black font-semibold mt-1">
             Registered patrons, order history stats, lifetime acquisitions, and account standing.
           </p>
         </div>
@@ -167,7 +167,7 @@ export const AdminCustomersPage: React.FC = () => {
       {/* Filter Bar */}
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Account Status:</span>
+          <span className="font-semibold text-black">Account Status:</span>
           <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
             {(['all', 'active', 'suspended'] as const).map((st) => (
               <button
@@ -176,8 +176,8 @@ export const AdminCustomersPage: React.FC = () => {
                 onClick={() => setStatusFilter(st)}
                 className={`px-3 py-1 rounded-md font-semibold transition-colors cursor-pointer capitalize ${
                   statusFilter === st
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-800 hover:text-slate-900'
+                    ? 'bg-white text-black shadow-2xs'
+                    : 'text-black hover:text-black'
                 }`}
               >
                 {st === 'all' ? `All (${customers.length})` : st}
@@ -208,40 +208,40 @@ export const AdminCustomersPage: React.FC = () => {
                   {(selectedCustomer.first_name?.[0] || selectedCustomer.email?.[0] || 'C').toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">
+                  <h3 className="text-base font-bold text-black">
                     {[selectedCustomer.first_name, selectedCustomer.last_name].filter(Boolean).join(' ') || 'Customer Profile'}
                   </h3>
-                  <div className="text-[11px] text-slate-700 font-mono">{selectedCustomer.email}</div>
+                  <div className="text-[11px] text-black font-mono">{selectedCustomer.email}</div>
                 </div>
               </div>
               <button
                 onClick={() => setSelectedCustomer(null)}
-                className="p-1.5 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1.5 text-black hover:text-black rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                <div className="text-slate-700 font-medium">Total Orders Placed</div>
-                <div className="text-lg font-bold text-slate-900">{selectedCustomer.orderCount}</div>
+              <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1">
+                <div className="text-black font-medium">Total Orders Placed</div>
+                <div className="text-lg font-bold text-black">{selectedCustomer.orderCount}</div>
               </div>
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-                <div className="text-slate-700 font-medium">Lifetime Acquisition</div>
-                <div className="text-lg font-bold text-slate-900">{formatCurrency(selectedCustomer.lifetimeSpend)}</div>
+              <div className="p-3 bg-white rounded-xl border border-slate-200 space-y-1">
+                <div className="text-black font-medium">Lifetime Acquisition</div>
+                <div className="text-lg font-bold text-black">{formatCurrency(selectedCustomer.lifetimeSpend)}</div>
               </div>
             </div>
 
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-              <div className="font-semibold text-slate-900">Patron Information</div>
-              <div className="grid grid-cols-2 gap-2 text-slate-700">
+            <div className="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2">
+              <div className="font-semibold text-black">Patron Information</div>
+              <div className="grid grid-cols-2 gap-2 text-black">
                 <div>
-                  <span className="text-slate-700 block text-[10px] uppercase">Registered:</span>
+                  <span className="text-black block text-[10px] uppercase">Registered:</span>
                   <span className="font-medium">{formatDate(selectedCustomer.created_at)}</span>
                 </div>
                 <div>
-                  <span className="text-slate-700 block text-[10px] uppercase">Standing:</span>
+                  <span className="text-black block text-[10px] uppercase">Standing:</span>
                   <span className={`font-bold ${selectedCustomer.is_active ? 'text-emerald-800' : 'text-red-700'}`}>
                     {selectedCustomer.is_active ? 'Active Customer' : 'Suspended'}
                   </span>
@@ -267,7 +267,7 @@ export const AdminCustomersPage: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={() => setSelectedCustomer(null)}
-                className="border-slate-300 text-slate-700"
+                className="border-slate-300 text-black"
               >
                 Close
               </Button>

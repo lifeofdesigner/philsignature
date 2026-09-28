@@ -72,8 +72,8 @@ export const AdminReviewsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Customer Testimonials &amp; Reviews</h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <h1 className="text-2xl font-bold text-black tracking-tight">Customer Testimonials &amp; Reviews</h1>
+          <p className="text-xs text-black font-semibold mt-1">
             Moderate, approve, or reject customer ratings and olfactory reviews across the fragrance collection.
           </p>
         </div>
@@ -82,30 +82,30 @@ export const AdminReviewsPage: React.FC = () => {
       {/* Overview Analytics Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
-          <div className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Average Rating</div>
-          <div className="text-2xl font-bold text-slate-900 mt-1 flex items-center gap-1.5">
+          <div className="text-xs font-semibold text-black uppercase tracking-wider">Average Rating</div>
+          <div className="text-2xl font-bold text-black mt-1 flex items-center gap-1.5">
             <span>{stats.avgRating}</span>
             <Star className="w-5 h-5 text-amber-500 fill-amber-400 inline" />
           </div>
-          <div className="text-xs text-slate-700 mt-1">From {stats.total} total reviews</div>
+          <div className="text-xs text-black mt-1">From {stats.total} total reviews</div>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
-          <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Pending Moderation</div>
-          <div className="text-2xl font-bold text-slate-900 mt-1">{stats.pending}</div>
-          <div className="text-xs text-slate-700 mt-1">Awaiting verification</div>
+          <div className="text-xs font-bold text-black uppercase tracking-wider">Pending Moderation</div>
+          <div className="text-2xl font-bold text-black mt-1">{stats.pending}</div>
+          <div className="text-xs text-black mt-1">Awaiting verification</div>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
           <div className="text-xs font-semibold text-emerald-800 uppercase tracking-wider">Published</div>
           <div className="text-2xl font-bold text-emerald-900 mt-1">{stats.approved}</div>
-          <div className="text-xs text-slate-700 mt-1">Live on storefront</div>
+          <div className="text-xs text-black mt-1">Live on storefront</div>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
-          <div className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Rejected</div>
-          <div className="text-2xl font-bold text-slate-700 mt-1">{stats.rejected}</div>
-          <div className="text-xs text-slate-700 mt-1">Declined or flagged</div>
+          <div className="text-xs font-semibold text-black uppercase tracking-wider">Rejected</div>
+          <div className="text-2xl font-bold text-black mt-1">{stats.rejected}</div>
+          <div className="text-xs text-black mt-1">Declined or flagged</div>
         </div>
       </div>
 
@@ -118,8 +118,8 @@ export const AdminReviewsPage: React.FC = () => {
             onClick={() => setStatusFilter(st)}
             className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer capitalize ${
               statusFilter === st
-                ? 'bg-white text-slate-900 shadow-xs'
-                : 'text-slate-800 hover:text-slate-900 hover:bg-slate-200/60'
+                ? 'bg-white text-black shadow-xs'
+                : 'text-black hover:text-black hover:bg-slate-200/60'
             }`}
           >
             {st === 'all'
@@ -157,16 +157,16 @@ export const AdminReviewsPage: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="space-y-0.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-slate-900 font-bold text-sm">{reviewerName}</span>
+                      <span className="text-black font-bold text-sm">{reviewerName}</span>
                       {review.is_verified_purchase && (
                         <span className="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold">
                           Verified Buyer
                         </span>
                       )}
                     </div>
-                    <div className="text-xs text-slate-700 font-medium">
+                    <div className="text-xs text-black font-medium">
                       Product:{' '}
-                      <span className="font-semibold text-slate-800">
+                      <span className="font-semibold text-black">
                         {review.product?.name || 'Fragrance Item'}
                       </span>{' '}
                       • {formatDate(review.created_at)}
@@ -195,17 +195,17 @@ export const AdminReviewsPage: React.FC = () => {
                       }`}
                     />
                   ))}
-                  <span className="text-xs font-bold text-slate-700 ml-1.5">{review.rating} / 5</span>
+                  <span className="text-xs font-bold text-black ml-1.5">{review.rating} / 5</span>
                 </div>
 
-                {review.title && <p className="text-sm text-slate-900 font-semibold">{review.title}</p>}
-                <p className="text-xs text-slate-700 leading-relaxed bg-slate-50/80 p-3 rounded-lg border border-slate-100">
+                {review.title && <p className="text-sm text-black font-semibold">{review.title}</p>}
+                <p className="text-xs text-black leading-relaxed bg-white p-3 rounded-lg border border-slate-100">
                   {review.comment || 'No written comment provided.'}
                 </p>
 
                 <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
                   {isUpdatingId === review.id ? (
-                    <Loader2 className="h-4 w-4 animate-spin text-slate-700" />
+                    <Loader2 className="h-4 w-4 animate-spin text-black" />
                   ) : (
                     <>
                       {review.status !== 'approved' && (
@@ -223,7 +223,7 @@ export const AdminReviewsPage: React.FC = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="gap-1.5 text-slate-800 hover:text-red-600 hover:bg-red-50 border-slate-300 font-medium"
+                          className="gap-1.5 text-black hover:text-red-600 hover:bg-red-50 border-slate-300 font-medium"
                           onClick={() => handleStatusChange(review, 'rejected')}
                         >
                           <X className="h-3.5 w-3.5" />
@@ -233,7 +233,7 @@ export const AdminReviewsPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setDeleteTarget(review)}
-                        className="p-1.5 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
+                        className="p-1.5 text-black hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer rounded"
                         title="Delete Review"
                         aria-label="Delete review"
                       >
@@ -252,8 +252,8 @@ export const AdminReviewsPage: React.FC = () => {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-xl shadow-2xl">
-            <h3 className="text-lg font-bold text-slate-900">Remove Customer Review?</h3>
-            <p className="text-sm text-slate-800">
+            <h3 className="text-lg font-bold text-black">Remove Customer Review?</h3>
+            <p className="text-sm text-black">
               This will permanently remove this customer testimonial from the database. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">

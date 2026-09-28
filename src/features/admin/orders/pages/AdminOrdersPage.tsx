@@ -164,7 +164,7 @@ export const AdminOrdersPage: React.FC = () => {
         <button
           type="button"
           onClick={() => handleOpenInspect(o)}
-          className="font-bold text-slate-900 hover:text-slate-900 hover:underline cursor-pointer text-left"
+          className="font-bold text-black hover:text-black hover:underline cursor-pointer text-left"
         >
           #{o.order_number}
         </button>
@@ -176,8 +176,8 @@ export const AdminOrdersPage: React.FC = () => {
       header: 'Customer',
       accessor: (o) => (
         <div>
-          <div className="font-mono text-slate-800 font-medium">{o.email}</div>
-          {o.phone && <div className="text-[11px] text-slate-700">{o.phone}</div>}
+          <div className="font-mono text-black font-medium">{o.email}</div>
+          {o.phone && <div className="text-[11px] text-black">{o.phone}</div>}
         </div>
       ),
       sortValue: (o) => o.email,
@@ -185,13 +185,13 @@ export const AdminOrdersPage: React.FC = () => {
     {
       key: 'created_at',
       header: 'Date Placed',
-      accessor: (o) => <span className="text-slate-800">{formatDate(o.created_at)}</span>,
+      accessor: (o) => <span className="text-black">{formatDate(o.created_at)}</span>,
       sortValue: (o) => o.created_at,
     },
     {
       key: 'total_amount',
       header: 'Total Amount',
-      accessor: (o) => <span className="font-bold text-slate-900">{formatCurrency(o.total_amount)}</span>,
+      accessor: (o) => <span className="font-bold text-black">{formatCurrency(o.total_amount)}</span>,
       sortValue: (o) => Number(o.total_amount),
     },
     {
@@ -218,7 +218,7 @@ export const AdminOrdersPage: React.FC = () => {
           value={o.fulfillment_status}
           disabled={updatingId === o.id}
           onChange={(e) => handleStatusChange(o, e.target.value as OrderFulfillmentStatus)}
-          className="text-xs bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 text-slate-900 font-semibold focus:outline-hidden focus:ring-1 focus:ring-slate-600 capitalize cursor-pointer"
+          className="text-xs bg-white border border-slate-300 rounded-lg px-2 py-1 text-black font-semibold focus:outline-hidden focus:ring-1 focus:ring-slate-600 capitalize cursor-pointer"
         >
           {FULFILLMENT_STATUSES.map((st) => (
             <option key={st} value={st} className="capitalize">
@@ -237,9 +237,9 @@ export const AdminOrdersPage: React.FC = () => {
           size="sm"
           variant="outline"
           onClick={() => handleOpenInspect(o)}
-          className="text-xs h-7 px-2.5 border-slate-300 text-slate-700 hover:bg-slate-50 gap-1 cursor-pointer"
+          className="text-xs h-7 px-2.5 border-slate-300 text-black hover:bg-slate-100 gap-1 cursor-pointer"
         >
-          <Eye className="h-3 w-3 text-slate-800" />
+          <Eye className="h-3 w-3 text-black" />
           <span>Inspect</span>
         </Button>
       ),
@@ -273,10 +273,10 @@ export const AdminOrdersPage: React.FC = () => {
       {/* SaaS Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-black tracking-tight">
             Orders & Consignments Fulfillment
           </h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <p className="text-xs text-black font-semibold mt-1">
             Track customer checkouts, update parcel dispatch status, and inspect transaction manifests.
           </p>
         </div>
@@ -285,7 +285,7 @@ export const AdminOrdersPage: React.FC = () => {
       {/* Filter Bar */}
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Financial:</span>
+          <span className="font-semibold text-black">Financial:</span>
           <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
             {(['all', 'paid', 'pending'] as const).map((st) => (
               <button
@@ -294,8 +294,8 @@ export const AdminOrdersPage: React.FC = () => {
                 onClick={() => setFinancialFilter(st)}
                 className={`px-3 py-1 rounded-md font-semibold transition-colors cursor-pointer capitalize ${
                   financialFilter === st
-                    ? 'bg-white text-slate-900 shadow-2xs'
-                    : 'text-slate-800 hover:text-slate-900'
+                    ? 'bg-white text-black shadow-2xs'
+                    : 'text-black hover:text-black'
                 }`}
               >
                 {st === 'all' ? `All (${orders.length})` : st}
@@ -305,11 +305,11 @@ export const AdminOrdersPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-700">Fulfillment:</span>
+          <span className="font-semibold text-black">Fulfillment:</span>
           <select
             value={fulfillmentFilter}
             onChange={(e) => setFulfillmentFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-600 capitalize"
+            className="bg-white border border-slate-300 text-black rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-600 capitalize"
           >
             <option value="all">All Fulfillment Stages</option>
             {FULFILLMENT_STATUSES.map((st) => (
@@ -340,7 +340,7 @@ export const AdminOrdersPage: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-bold text-slate-900">Order #{selectedOrder.order_number}</h3>
+                  <h3 className="text-lg font-bold text-black">Order #{selectedOrder.order_number}</h3>
                   <span
                     className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold ${
                       selectedOrder.financial_status === 'paid'
@@ -351,21 +351,21 @@ export const AdminOrdersPage: React.FC = () => {
                     {selectedOrder.financial_status}
                   </span>
                 </div>
-                <span className="text-[11px] text-slate-700 font-medium">Placed on {formatDate(selectedOrder.created_at)}</span>
+                <span className="text-[11px] text-black font-medium">Placed on {formatDate(selectedOrder.created_at)}</span>
               </div>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="p-1.5 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1.5 text-black hover:text-black rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {/* Quick Status Bar */}
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
+            <div className="p-3.5 bg-white border border-slate-200 rounded-xl flex items-center justify-between">
               <div>
-                <span className="text-slate-800 font-medium">Current Fulfillment Status:</span>
-                <div className="font-bold text-slate-900 uppercase text-xs mt-0.5">
+                <span className="text-black font-medium">Current Fulfillment Status:</span>
+                <div className="font-bold text-black uppercase text-xs mt-0.5">
                   {selectedOrder.fulfillment_status}
                 </div>
               </div>
@@ -373,7 +373,7 @@ export const AdminOrdersPage: React.FC = () => {
                 value={selectedOrder.fulfillment_status}
                 disabled={updatingId === selectedOrder.id}
                 onChange={(e) => handleStatusChange(selectedOrder, e.target.value as OrderFulfillmentStatus)}
-                className="bg-white border border-slate-300 text-slate-900 font-semibold rounded-lg px-3 py-1.5 focus:ring-1 focus:ring-slate-600 capitalize cursor-pointer"
+                className="bg-white border border-slate-300 text-black font-semibold rounded-lg px-3 py-1.5 focus:ring-1 focus:ring-slate-600 capitalize cursor-pointer"
               >
                 {FULFILLMENT_STATUSES.map((st) => (
                   <option key={st} value={st} className="capitalize">
@@ -385,27 +385,27 @@ export const AdminOrdersPage: React.FC = () => {
 
             {/* Customer & Payment Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                  <Mail className="h-3.5 w-3.5 text-slate-700" />
+              <div className="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2">
+                <div className="font-semibold text-black flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5 text-black" />
                   <span>Customer Contact</span>
                 </div>
-                <div className="text-slate-800 font-medium">{selectedOrder.email}</div>
+                <div className="text-black font-medium">{selectedOrder.email}</div>
                 {selectedOrder.phone && (
-                  <div className="text-slate-800 flex items-center gap-1">
-                    <Phone className="h-3 w-3 text-slate-700" />
+                  <div className="text-black flex items-center gap-1">
+                    <Phone className="h-3 w-3 text-black" />
                     <span>{selectedOrder.phone}</span>
                   </div>
                 )}
               </div>
 
-              <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                  <DollarSign className="h-3.5 w-3.5 text-slate-700" />
+              <div className="p-3.5 bg-white rounded-xl border border-slate-200 space-y-2">
+                <div className="font-semibold text-black flex items-center gap-1.5">
+                  <DollarSign className="h-3.5 w-3.5 text-black" />
                   <span>Payment Settlement</span>
                 </div>
-                <div className="text-slate-700 capitalize font-medium">Gateway: {selectedOrder.payment_method || 'Online Card'}</div>
-                <div className="font-bold text-slate-900 text-sm">{formatCurrency(selectedOrder.total_amount)}</div>
+                <div className="text-black capitalize font-medium">Gateway: {selectedOrder.payment_method || 'Online Card'}</div>
+                <div className="font-bold text-black text-sm">{formatCurrency(selectedOrder.total_amount)}</div>
                 {selectedOrder.payment_method === 'bank_transfer' && selectedOrder.financial_status === 'pending' && (
                   <Button
                     size="sm"
@@ -425,35 +425,35 @@ export const AdminOrdersPage: React.FC = () => {
             </div>
 
             {/* Shipping Address */}
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
-              <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5 text-slate-700" />
+            <div className="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5">
+              <div className="font-semibold text-black flex items-center gap-1.5">
+                <MapPin className="h-3.5 w-3.5 text-black" />
                 <span>Shipping Destination</span>
               </div>
               {shippingAddr && typeof shippingAddr === 'object' ? (
-                <div className="text-slate-700 space-y-0.5 leading-relaxed font-normal">
-                  <div className="font-semibold text-slate-900">{shippingAddr.recipient_name || shippingAddr.street}</div>
+                <div className="text-black space-y-0.5 leading-relaxed font-normal">
+                  <div className="font-semibold text-black">{shippingAddr.recipient_name || shippingAddr.street}</div>
                   <div>{shippingAddr.street}</div>
                   <div>
                     {[shippingAddr.city, shippingAddr.state, shippingAddr.postal_code].filter(Boolean).join(', ')}
                   </div>
                   <div>{shippingAddr.country || 'Nigeria'}</div>
-                  {shippingAddr.phone && <div className="text-slate-700">Phone: {shippingAddr.phone}</div>}
+                  {shippingAddr.phone && <div className="text-black">Phone: {shippingAddr.phone}</div>}
                 </div>
               ) : (
-                <div className="text-slate-800 italic">No formal address payload provided.</div>
+                <div className="text-black italic">No formal address payload provided.</div>
               )}
             </div>
 
             {/* Order Items List */}
             <div className="space-y-2">
-              <div className="font-semibold text-slate-900 flex items-center gap-1.5">
-                <Package className="h-3.5 w-3.5 text-slate-700" />
+              <div className="font-semibold text-black flex items-center gap-1.5">
+                <Package className="h-3.5 w-3.5 text-black" />
                 <span>Line Items ({selectedOrder.items?.length || 0})</span>
               </div>
               <div className="border border-slate-200 rounded-xl overflow-hidden">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                  <thead className="bg-white text-black font-semibold border-b border-slate-200">
                     <tr>
                       <th className="py-2.5 px-3">Item Description</th>
                       <th className="py-2.5 px-3">Qty</th>
@@ -464,16 +464,16 @@ export const AdminOrdersPage: React.FC = () => {
                   <tbody className="divide-y divide-slate-100">
                     {selectedOrder.items && selectedOrder.items.length > 0 ? (
                       selectedOrder.items.map((item, idx) => (
-                        <tr key={idx} className="hover:bg-slate-50/60">
-                          <td className="py-2.5 px-3 font-medium text-slate-900">{item.product_name}</td>
-                          <td className="py-2.5 px-3 text-slate-700">{item.quantity}</td>
-                          <td className="py-2.5 px-3 text-slate-700">{formatCurrency(item.price)}</td>
-                          <td className="py-2.5 px-3 text-slate-900 font-bold text-right">{formatCurrency(item.subtotal)}</td>
+                        <tr key={idx} className="hover:bg-slate-100">
+                          <td className="py-2.5 px-3 font-medium text-black">{item.product_name}</td>
+                          <td className="py-2.5 px-3 text-black">{item.quantity}</td>
+                          <td className="py-2.5 px-3 text-black">{formatCurrency(item.price)}</td>
+                          <td className="py-2.5 px-3 text-black font-bold text-right">{formatCurrency(item.subtotal)}</td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={4} className="py-4 text-center text-slate-700">
+                        <td colSpan={4} className="py-4 text-center text-black">
                           Single consignment purchase ({formatCurrency(selectedOrder.total_amount)})
                         </td>
                       </tr>
@@ -484,10 +484,10 @@ export const AdminOrdersPage: React.FC = () => {
             </div>
 
             {/* Dispatch Tracking Input */}
-            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">
-                <div className="font-semibold text-slate-900">Courier Tracking Code</div>
-                <div className="text-slate-700 text-[11px]">Attach tracking number for customer order lookup</div>
+                <div className="font-semibold text-black">Courier Tracking Code</div>
+                <div className="text-black text-[11px]">Attach tracking number for customer order lookup</div>
               </div>
               <div className="flex items-center gap-2">
                 <Input
@@ -506,7 +506,7 @@ export const AdminOrdersPage: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={() => setSelectedOrder(null)}
-                className="border-slate-300 text-slate-700"
+                className="border-slate-300 text-black"
               >
                 Close Drawer
               </Button>

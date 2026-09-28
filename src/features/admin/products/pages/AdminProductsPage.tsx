@@ -546,19 +546,19 @@ export const AdminProductsPage: React.FC = () => {
             />
           ) : (
             <div className="h-10 w-10 rounded-md bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
-              <Package className="h-4 w-4 text-slate-700" />
+              <Package className="h-4 w-4 text-black" />
             </div>
           )}
           <div className="min-w-0 max-w-xs">
             <div className="flex items-center gap-1.5">
-              <span className="text-slate-900 font-bold truncate">{product.name}</span>
+              <span className="text-black font-bold truncate">{product.name}</span>
               {product.best_for && (
-                <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 border border-slate-300 text-slate-700">
+                <span className="text-[9px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 border border-slate-300 text-black">
                   {product.best_for}
                 </span>
               )}
             </div>
-            <div className="text-[11px] text-slate-800 font-medium truncate">
+            <div className="text-[11px] text-black font-medium truncate">
               {product.scent_profile || product.fragrance_family || 'Standard formulation'}
             </div>
           </div>
@@ -569,7 +569,7 @@ export const AdminProductsPage: React.FC = () => {
     {
       key: 'sku',
       header: 'SKU',
-      accessor: (product) => <span className="font-mono text-xs text-slate-700 font-medium">{product.sku}</span>,
+      accessor: (product) => <span className="font-mono text-xs text-black font-medium">{product.sku}</span>,
       sortValue: (product) => product.sku,
     },
     {
@@ -591,8 +591,8 @@ export const AdminProductsPage: React.FC = () => {
           : '4 Sizes (15ml - 100ml)';
         return (
           <div>
-            <div className="text-slate-900 font-bold">{formatCurrency(product.price)}</div>
-            <div className="text-[10px] text-slate-700 font-medium">{variantText}</div>
+            <div className="text-black font-bold">{formatCurrency(product.price)}</div>
+            <div className="text-[10px] text-black font-medium">{variantText}</div>
           </div>
         );
       },
@@ -602,7 +602,7 @@ export const AdminProductsPage: React.FC = () => {
       key: 'category',
       header: 'Category / Line',
       accessor: (product) => (
-        <span className="text-slate-700 text-xs font-medium">
+        <span className="text-black text-xs font-medium">
           {product.category_id && categoryMap.has(product.category_id)
             ? categoryMap.get(product.category_id)
             : 'Unassigned'}
@@ -621,7 +621,7 @@ export const AdminProductsPage: React.FC = () => {
                 ? 'text-red-700'
                 : product.stock_quantity <= 5
                 ? 'text-amber-800 font-bold'
-                : 'text-slate-800'
+                : 'text-black'
             }`}
           >
             {product.stock_quantity}
@@ -651,7 +651,7 @@ export const AdminProductsPage: React.FC = () => {
               ? 'text-emerald-900 border-emerald-300 bg-emerald-50'
               : product.status === 'draft'
               ? 'text-amber-900 border-amber-300 bg-amber-50'
-              : 'text-slate-700 border-slate-300 bg-slate-100'
+              : 'text-black border-slate-300 bg-slate-100'
           }`}
         >
           {product.status}
@@ -670,7 +670,7 @@ export const AdminProductsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => openEditForm(product)}
-              className="p-1.5 text-slate-800 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-black hover:text-black transition-colors cursor-pointer rounded hover:bg-slate-100"
               title="Edit Product"
               aria-label="Edit product"
             >
@@ -680,7 +680,7 @@ export const AdminProductsPage: React.FC = () => {
               type="button"
               disabled={isBusy}
               onClick={() => handleDuplicate(product)}
-              className="p-1.5 text-slate-800 hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
+              className="p-1.5 text-black hover:text-blue-700 transition-colors cursor-pointer rounded hover:bg-blue-50"
               title="Duplicate Formulation"
               aria-label="Duplicate product"
             >
@@ -690,7 +690,7 @@ export const AdminProductsPage: React.FC = () => {
               type="button"
               disabled={isBusy}
               onClick={() => handleToggleArchive(product)}
-              className="p-1.5 text-slate-800 hover:text-slate-900 transition-colors cursor-pointer rounded hover:bg-slate-100"
+              className="p-1.5 text-black hover:text-black transition-colors cursor-pointer rounded hover:bg-slate-100"
               title={product.status === 'archived' ? 'Restore Product' : 'Archive Product'}
               aria-label="Archive toggle"
             >
@@ -699,7 +699,7 @@ export const AdminProductsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setDeleteTarget(product)}
-              className="p-1.5 text-slate-800 hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
+              className="p-1.5 text-black hover:text-red-700 transition-colors cursor-pointer rounded hover:bg-red-50"
               title="Delete Product"
               aria-label="Delete product"
             >
@@ -729,10 +729,10 @@ export const AdminProductsPage: React.FC = () => {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-black tracking-tight">
             Products & Catalog
           </h1>
-          <p className="text-xs text-slate-700 font-semibold mt-1">
+          <p className="text-xs text-black font-semibold mt-1">
             Manage perfumes, scented candles, luxury room sprays, pricing, batch stock levels, and publication status.
           </p>
         </div>
@@ -748,11 +748,11 @@ export const AdminProductsPage: React.FC = () => {
 
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center gap-3 shadow-2xs text-xs">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-slate-700">Status:</span>
+          <span className="font-bold text-black">Status:</span>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
+            className="bg-white border border-slate-300 text-black rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Statuses ({products.length})</option>
             <option value="published">Published</option>
@@ -762,11 +762,11 @@ export const AdminProductsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-bold text-slate-700">Category:</span>
+          <span className="font-bold text-black">Category:</span>
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
+            className="bg-white border border-slate-300 text-black rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Categories</option>
             {categories.map((c) => (
@@ -778,11 +778,11 @@ export const AdminProductsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-bold text-slate-700">Family:</span>
+          <span className="font-bold text-black">Family:</span>
           <select
             value={familyFilter}
             onChange={(e) => setFamilyFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
+            className="bg-white border border-slate-300 text-black rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Fragrance Families</option>
             {FRAGRANCE_FAMILIES.map((f) => (
@@ -794,11 +794,11 @@ export const AdminProductsPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="font-bold text-slate-700">Stock:</span>
+          <span className="font-bold text-black">Stock:</span>
           <select
             value={stockFilter}
             onChange={(e) => setStockFilter(e.target.value)}
-            className="bg-slate-50 border border-slate-300 text-slate-900 rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
+            className="bg-white border border-slate-300 text-black rounded-lg px-2.5 py-1 font-medium focus:ring-1 focus:ring-slate-900 cursor-pointer"
           >
             <option value="all">All Stock Levels</option>
             <option value="in_stock">In Stock (&gt; 0)</option>
@@ -824,15 +824,15 @@ export const AdminProductsPage: React.FC = () => {
           <div className="bg-white border border-slate-200 w-full max-w-2xl p-6 space-y-5 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
-                <h2 className="text-lg font-bold text-slate-900">
+                <h2 className="text-lg font-bold text-black">
                   {editingProduct ? 'Edit Fragrance Formulation' : 'Create New Formulation'}
                 </h2>
-                <p className="text-xs text-slate-700">Configure fragrance notes, inventory, and pricing.</p>
+                <p className="text-xs text-black">Configure fragrance notes, inventory, and pricing.</p>
               </div>
               <button
                 type="button"
                 onClick={closeForm}
-                className="p-1 text-slate-700 hover:text-slate-700 rounded-lg hover:bg-slate-100 cursor-pointer"
+                className="p-1 text-black hover:text-black rounded-lg hover:bg-slate-100 cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -848,40 +848,40 @@ export const AdminProductsPage: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Fragrance Name *</label>
+                  <label className="block font-semibold text-black">Fragrance Name *</label>
                   <Input
                     value={form.name}
                     onChange={(e) => handleNameChange(e.target.value)}
                     placeholder="e.g. Royal Oud Extrait"
                     required
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">URL Slug *</label>
+                  <label className="block font-semibold text-black">URL Slug *</label>
                   <Input
                     value={form.slug}
                     onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
                     placeholder="royal-oud-extrait"
                     required
-                    className="bg-white border-slate-300 text-slate-900 font-mono"
+                    className="bg-white border-slate-300 text-black font-mono"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block font-semibold text-slate-800">Subtitle / Tagline</label>
+                <label className="block font-semibold text-black">Subtitle / Tagline</label>
                 <Input
                   value={form.tagline}
                   onChange={(e) => setForm((p) => ({ ...p, tagline: e.target.value }))}
                   placeholder="e.g. Pure Artisanal Extrait de Parfum"
-                  className="bg-white border-slate-300 text-slate-900"
+                  className="bg-white border-slate-300 text-black"
                 />
               </div>
 
-              <div className="space-y-2 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
-                <label className="block font-semibold text-slate-800">Product Images</label>
-                <p className="text-[11px] text-slate-700 font-medium">
+              <div className="space-y-2 p-3.5 bg-white border border-slate-200 rounded-xl">
+                <label className="block font-semibold text-black">Product Images</label>
+                <p className="text-[11px] text-black font-medium">
                   The first image is used as the primary thumbnail across the storefront.
                 </p>
                 {form.images.length > 0 && (
@@ -913,7 +913,7 @@ export const AdminProductsPage: React.FC = () => {
                   </div>
                 )}
                 {form.images.length === 0 && (
-                  <div className="flex items-center gap-2 text-slate-700 text-[11px]">
+                  <div className="flex items-center gap-2 text-black text-[11px]">
                     <ImageOff className="h-4 w-4" />
                     <span>No images uploaded yet.</span>
                   </div>
@@ -926,27 +926,27 @@ export const AdminProductsPage: React.FC = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block font-semibold text-slate-800">Fragrance Description *</label>
+                <label className="block font-semibold text-black">Fragrance Description *</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   required
                   rows={3}
                   placeholder="Describe the olfactory composition and story..."
-                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                  className="flex w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2 text-xs text-black placeholder:text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">SKU Code *</label>
+                  <label className="block font-semibold text-black">SKU Code *</label>
                   <div className="flex items-center gap-1.5">
                     <Input
                       value={form.sku}
                       onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))}
                       placeholder="PS-OUD-01"
                       required
-                      className="bg-white border-slate-300 text-slate-900 font-mono"
+                      className="bg-white border-slate-300 text-black font-mono"
                     />
                     <Button
                       type="button"
@@ -954,14 +954,14 @@ export const AdminProductsPage: React.FC = () => {
                       size="sm"
                       onClick={handleGenerateSku}
                       title="Auto-generate SKU from fragrance name"
-                      className="h-9 px-2.5 shrink-0 border-slate-300 text-slate-700 hover:bg-slate-50"
+                      className="h-9 px-2.5 shrink-0 border-slate-300 text-black hover:bg-slate-100"
                     >
                       <Wand2 className="h-3.5 w-3.5" />
                     </Button>
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Price (₦) *</label>
+                  <label className="block font-semibold text-black">Price (₦) *</label>
                   <Input
                     type="number"
                     min="0"
@@ -970,11 +970,11 @@ export const AdminProductsPage: React.FC = () => {
                     onChange={(e) => setForm((p) => ({ ...p, price: e.target.value }))}
                     placeholder="75000"
                     required
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Sale Price (₦)</label>
+                  <label className="block font-semibold text-black">Sale Price (₦)</label>
                   <Input
                     type="number"
                     min="0"
@@ -982,30 +982,30 @@ export const AdminProductsPage: React.FC = () => {
                     value={form.sale_price}
                     onChange={(e) => setForm((p) => ({ ...p, sale_price: e.target.value }))}
                     placeholder="65000"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Stock Quantity *</label>
+                  <label className="block font-semibold text-black">Stock Quantity *</label>
                   <Input
                     type="number"
                     min="0"
                     value={form.stock_quantity}
                     onChange={(e) => setForm((p) => ({ ...p, stock_quantity: e.target.value }))}
                     required
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Fragrance Family</label>
+                  <label className="block font-semibold text-black">Fragrance Family</label>
                   <select
                     value={form.fragrance_family}
                     onChange={(e) => setForm((p) => ({ ...p, fragrance_family: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="">— Select Family —</option>
                     {FRAGRANCE_FAMILIES.map((f) => (
@@ -1017,11 +1017,11 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Publication Status</label>
+                  <label className="block font-semibold text-black">Publication Status</label>
                   <select
                     value={form.status}
                     onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as ProductStatus }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     {STATUSES.map((s) => (
                       <option key={s} value={s} className="capitalize">
@@ -1034,11 +1034,11 @@ export const AdminProductsPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Category</label>
+                  <label className="block font-semibold text-black">Category</label>
                   <select
                     value={form.category_id}
                     onChange={(e) => setForm((p) => ({ ...p, category_id: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="">— None / General —</option>
                     {categories.map((c) => (
@@ -1050,11 +1050,11 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Curated Collection</label>
+                  <label className="block font-semibold text-black">Curated Collection</label>
                   <select
                     value={form.collection_id}
                     onChange={(e) => setForm((p) => ({ ...p, collection_id: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="">— None / General —</option>
                     {collections.map((c) => (
@@ -1067,22 +1067,22 @@ export const AdminProductsPage: React.FC = () => {
               </div>
 
               {/* Scent Profile & Audience */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-3.5 bg-white border border-slate-200 rounded-xl">
                 <div className="sm:col-span-2 space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Scent Profile Notes</label>
+                  <label className="block font-semibold text-black">Scent Profile Notes</label>
                   <Input
                     value={form.scent_profile}
                     onChange={(e) => setForm((p) => ({ ...p, scent_profile: e.target.value }))}
                     placeholder="e.g. Exotic Fruits • Oud • Spices • Florals • Amber"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Best For</label>
+                  <label className="block font-semibold text-black">Best For</label>
                   <select
                     value={form.best_for}
                     onChange={(e) => setForm((p) => ({ ...p, best_for: e.target.value }))}
-                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-slate-900 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex h-9 w-full bg-white border border-slate-300 rounded-lg px-3 text-xs text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   >
                     <option value="Unisex">Unisex</option>
                     <option value="Men">Men</option>
@@ -1093,11 +1093,11 @@ export const AdminProductsPage: React.FC = () => {
               </div>
 
               {/* Sizes & Pricing Variants */}
-              <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+              <div className="space-y-3 p-3.5 bg-white border border-slate-200 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-slate-900">Sizes / Variants</div>
-                    <p className="text-[11px] text-slate-700 font-medium">
+                    <div className="font-semibold text-black">Sizes / Variants</div>
+                    <p className="text-[11px] text-black font-medium">
                       Offer this fragrance in multiple sizes with independent pricing and stock. Leave empty to sell
                       only at the base price/quantity above.
                     </p>
@@ -1107,7 +1107,7 @@ export const AdminProductsPage: React.FC = () => {
                     variant="outline"
                     size="sm"
                     onClick={handleAddVariant}
-                    className="gap-1.5 border-slate-300 text-slate-700 hover:bg-white shrink-0"
+                    className="gap-1.5 border-slate-300 text-black hover:bg-slate-100 shrink-0"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     <span>Add Size</span>
@@ -1115,34 +1115,34 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
 
                 {form.variants.length === 0 ? (
-                  <div className="text-slate-700 text-[11px]">No size variants added yet.</div>
+                  <div className="text-black text-[11px]">No size variants added yet.</div>
                 ) : (
                   <div className="space-y-3">
                     {form.variants.map((variant, index) => (
                       <div key={index} className="bg-white border border-slate-200 rounded-lg p-3 space-y-2.5">
                         <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5">
                           <div className="space-y-1 sm:col-span-1">
-                            <label className="block text-[10px] font-semibold text-slate-700">Label *</label>
+                            <label className="block text-[10px] font-semibold text-black">Label *</label>
                             <Input
                               value={variant.name}
                               onChange={(e) => handleVariantChange(index, { name: e.target.value })}
                               placeholder="30ml"
-                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                              className="bg-white border-slate-300 text-black h-8 text-xs"
                             />
                           </div>
                           <div className="space-y-1 sm:col-span-1">
-                            <label className="block text-[10px] font-semibold text-slate-700">Size (ml)</label>
+                            <label className="block text-[10px] font-semibold text-black">Size (ml)</label>
                             <Input
                               type="number"
                               min="0"
                               value={variant.size_ml}
                               onChange={(e) => handleVariantChange(index, { size_ml: e.target.value })}
                               placeholder="30"
-                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                              className="bg-white border-slate-300 text-black h-8 text-xs"
                             />
                           </div>
                           <div className="space-y-1 sm:col-span-1">
-                            <label className="block text-[10px] font-semibold text-slate-700">Price (₦) *</label>
+                            <label className="block text-[10px] font-semibold text-black">Price (₦) *</label>
                             <Input
                               type="number"
                               min="0"
@@ -1150,11 +1150,11 @@ export const AdminProductsPage: React.FC = () => {
                               value={variant.price}
                               onChange={(e) => handleVariantChange(index, { price: e.target.value })}
                               placeholder="45000"
-                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                              className="bg-white border-slate-300 text-black h-8 text-xs"
                             />
                           </div>
                           <div className="space-y-1 sm:col-span-1">
-                            <label className="block text-[10px] font-semibold text-slate-700">Sale Price (₦)</label>
+                            <label className="block text-[10px] font-semibold text-black">Sale Price (₦)</label>
                             <Input
                               type="number"
                               min="0"
@@ -1162,31 +1162,31 @@ export const AdminProductsPage: React.FC = () => {
                               value={variant.sale_price}
                               onChange={(e) => handleVariantChange(index, { sale_price: e.target.value })}
                               placeholder="Optional"
-                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                              className="bg-white border-slate-300 text-black h-8 text-xs"
                             />
                           </div>
                           <div className="space-y-1 sm:col-span-1">
-                            <label className="block text-[10px] font-semibold text-slate-700">Stock</label>
+                            <label className="block text-[10px] font-semibold text-black">Stock</label>
                             <Input
                               type="number"
                               min="0"
                               value={variant.stock_quantity}
                               onChange={(e) => handleVariantChange(index, { stock_quantity: e.target.value })}
-                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs"
+                              className="bg-white border-slate-300 text-black h-8 text-xs"
                             />
                           </div>
                           <div className="space-y-1 sm:col-span-1">
-                            <label className="block text-[10px] font-semibold text-slate-700">SKU</label>
+                            <label className="block text-[10px] font-semibold text-black">SKU</label>
                             <Input
                               value={variant.sku}
                               onChange={(e) => handleVariantChange(index, { sku: e.target.value })}
                               placeholder="PS-OUD-01-30ML"
-                              className="bg-white border-slate-300 text-slate-900 h-8 text-xs font-mono"
+                              className="bg-white border-slate-300 text-black h-8 text-xs font-mono"
                             />
                           </div>
                         </div>
                         <div className="flex items-center justify-between pt-1.5 border-t border-slate-100">
-                          <label className="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-700 cursor-pointer">
+                          <label className="inline-flex items-center gap-1.5 text-[11px] font-medium text-black cursor-pointer">
                             <input
                               type="radio"
                               name="default-variant"
@@ -1199,7 +1199,7 @@ export const AdminProductsPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveVariant(index)}
-                            className="p-1 text-slate-700 hover:text-red-700 rounded hover:bg-red-50 transition-colors cursor-pointer"
+                            className="p-1 text-black hover:text-red-700 rounded hover:bg-red-50 transition-colors cursor-pointer"
                             aria-label={`Remove size ${index + 1}`}
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -1212,203 +1212,203 @@ export const AdminProductsPage: React.FC = () => {
               </div>
 
               {/* Fragrance Notes & Composition */}
-              <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
-                <div className="font-semibold text-slate-900 text-xs">Fragrance Notes & Composition</div>
+              <div className="space-y-3 p-3.5 bg-white border border-slate-200 rounded-xl">
+                <div className="font-semibold text-black text-xs">Fragrance Notes & Composition</div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1.5">
-                    <label className="block text-slate-700 font-medium text-[11px]">Top Notes</label>
+                    <label className="block text-black font-medium text-[11px]">Top Notes</label>
                     <Input
                       value={form.top_notes}
                       onChange={(e) => setForm((p) => ({ ...p, top_notes: e.target.value }))}
                       placeholder="Bergamot, Pink Pepper"
-                      className="bg-white border-slate-300 text-slate-900 text-xs"
+                      className="bg-white border-slate-300 text-black text-xs"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-slate-700 font-medium text-[11px]">Middle Notes</label>
+                    <label className="block text-black font-medium text-[11px]">Middle Notes</label>
                     <Input
                       value={form.middle_notes}
                       onChange={(e) => setForm((p) => ({ ...p, middle_notes: e.target.value }))}
                       placeholder="Jasmine, Rose"
-                      className="bg-white border-slate-300 text-slate-900 text-xs"
+                      className="bg-white border-slate-300 text-black text-xs"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="block text-slate-700 font-medium text-[11px]">Base Notes</label>
+                    <label className="block text-black font-medium text-[11px]">Base Notes</label>
                     <Input
                       value={form.base_notes}
                       onChange={(e) => setForm((p) => ({ ...p, base_notes: e.target.value }))}
                       placeholder="Oud, Amber, Musk"
-                      className="bg-white border-slate-300 text-slate-900 text-xs"
+                      className="bg-white border-slate-300 text-black text-xs"
                     />
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-700 font-normal">Separate multiple notes with commas.</p>
+                <p className="text-[10px] text-black font-normal">Separate multiple notes with commas.</p>
 
                 <div className="space-y-1.5">
-                  <label className="block text-slate-700 font-medium text-[11px]">Short Description</label>
+                  <label className="block text-black font-medium text-[11px]">Short Description</label>
                   <Input
                     value={form.short_description}
                     onChange={(e) => setForm((p) => ({ ...p, short_description: e.target.value }))}
                     placeholder="One-line summary shown in product listings"
-                    className="bg-white border-slate-300 text-slate-900 text-xs"
+                    className="bg-white border-slate-300 text-black text-xs"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block text-slate-700 font-medium text-[11px]">Ingredients</label>
+                  <label className="block text-black font-medium text-[11px]">Ingredients</label>
                   <textarea
                     value={form.ingredients}
                     onChange={(e) => setForm((p) => ({ ...p, ingredients: e.target.value }))}
                     rows={2}
                     placeholder="Alcohol Denat., Parfum, Aqua..."
-                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-black placeholder:text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block text-slate-700 font-medium text-[11px]">How to Use</label>
+                  <label className="block text-black font-medium text-[11px]">How to Use</label>
                   <textarea
                     value={form.how_to_use}
                     onChange={(e) => setForm((p) => ({ ...p, how_to_use: e.target.value }))}
                     rows={2}
                     placeholder="Apply to pulse points after showering..."
-                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-black placeholder:text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   />
                 </div>
               </div>
 
               {/* Additional Specifications */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-3.5 bg-white border border-slate-200 rounded-xl">
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Concentration</label>
+                  <label className="block font-semibold text-black">Concentration</label>
                   <Input
                     value={form.concentration}
                     onChange={(e) => setForm((p) => ({ ...p, concentration: e.target.value }))}
                     placeholder="Extrait de Parfum"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Volume (ml)</label>
+                  <label className="block font-semibold text-black">Volume (ml)</label>
                   <Input
                     type="number"
                     min="0"
                     value={form.volume_ml}
                     onChange={(e) => setForm((p) => ({ ...p, volume_ml: e.target.value }))}
                     placeholder="30"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Weight (g)</label>
+                  <label className="block font-semibold text-black">Weight (g)</label>
                   <Input
                     type="number"
                     min="0"
                     value={form.weight_grams}
                     onChange={(e) => setForm((p) => ({ ...p, weight_grams: e.target.value }))}
                     placeholder="120"
-                    className="bg-white border-slate-300 text-slate-900"
+                    className="bg-white border-slate-300 text-black"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block font-semibold text-slate-800">Barcode</label>
+                  <label className="block font-semibold text-black">Barcode</label>
                   <Input
                     value={form.barcode}
                     onChange={(e) => setForm((p) => ({ ...p, barcode: e.target.value }))}
                     placeholder="EAN/UPC"
-                    className="bg-white border-slate-300 text-slate-900 font-mono"
+                    className="bg-white border-slate-300 text-black font-mono"
                   />
                 </div>
               </div>
 
               {/* SEO Engine & Search Metadata */}
-              <div className="space-y-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
-                <div className="font-semibold text-slate-900 text-xs flex items-center justify-between">
+              <div className="space-y-3 p-3.5 bg-white border border-slate-200 rounded-xl">
+                <div className="font-semibold text-black text-xs flex items-center justify-between">
                   <span>SEO Engine & Search Metadata</span>
-                  <span className="text-[10px] text-slate-700 font-normal">Search engine indexing</span>
+                  <span className="text-[10px] text-black font-normal">Search engine indexing</span>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block text-slate-700 font-medium text-[11px]">Meta Title</label>
+                  <label className="block text-black font-medium text-[11px]">Meta Title</label>
                   <Input
                     value={form.meta_title}
                     onChange={(e) => setForm((p) => ({ ...p, meta_title: e.target.value }))}
                     placeholder="e.g. Oud Maracuja | Philz Signature Luxury Perfume Oil"
-                    className="bg-white border-slate-300 text-slate-900 text-xs"
+                    className="bg-white border-slate-300 text-black text-xs"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block text-slate-700 font-medium text-[11px]">Meta Description</label>
+                  <label className="block text-black font-medium text-[11px]">Meta Description</label>
                   <textarea
                     value={form.meta_description}
                     onChange={(e) => setForm((p) => ({ ...p, meta_description: e.target.value }))}
                     rows={2}
                     placeholder="Discover Oud Maracuja by Philz Signature..."
-                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-700 focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
+                    className="flex w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-black placeholder:text-black focus:outline-hidden focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="block text-slate-700 font-medium text-[11px]">Search Keywords</label>
+                  <label className="block text-black font-medium text-[11px]">Search Keywords</label>
                   <Input
                     value={form.meta_keywords}
                     onChange={(e) => setForm((p) => ({ ...p, meta_keywords: e.target.value }))}
                     placeholder="Oud Maracuja, Fruity, Oud, Philz Signature, Luxury perfume"
-                    className="bg-white border-slate-300 text-slate-900 text-xs font-mono"
+                    className="bg-white border-slate-300 text-black text-xs font-mono"
                   />
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2.5">
+              <div className="p-3 bg-white border border-slate-200 rounded-lg space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-slate-900">Feature on Storefront Homepage</div>
-                    <div className="text-slate-700 text-[11px]">Pin this fragrance to the featured highlights section</div>
+                    <div className="font-semibold text-black">Feature on Storefront Homepage</div>
+                    <div className="text-black text-[11px]">Pin this fragrance to the featured highlights section</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.is_featured}
                     onChange={(e) => setForm((p) => ({ ...p, is_featured: e.target.checked }))}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 h-4 w-4 cursor-pointer"
                   />
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                   <div>
-                    <div className="font-semibold text-slate-900">Bestseller</div>
-                    <div className="text-slate-700 text-[11px]">Show a "Bestseller" badge on this fragrance</div>
+                    <div className="font-semibold text-black">Bestseller</div>
+                    <div className="text-black text-[11px]">Show a "Bestseller" badge on this fragrance</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.is_bestseller}
                     onChange={(e) => setForm((p) => ({ ...p, is_bestseller: e.target.checked }))}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 h-4 w-4 cursor-pointer"
                   />
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                   <div>
-                    <div className="font-semibold text-slate-900">New Arrival</div>
-                    <div className="text-slate-700 text-[11px]">Show a "New" badge on this fragrance</div>
+                    <div className="font-semibold text-black">New Arrival</div>
+                    <div className="text-black text-[11px]">Show a "New" badge on this fragrance</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.is_new_arrival}
                     onChange={(e) => setForm((p) => ({ ...p, is_new_arrival: e.target.checked }))}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 h-4 w-4 cursor-pointer"
                   />
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                   <div>
-                    <div className="font-semibold text-slate-900">Trending</div>
-                    <div className="text-slate-700 text-[11px]">Show a "Trending" badge on this fragrance</div>
+                    <div className="font-semibold text-black">Trending</div>
+                    <div className="text-black text-[11px]">Show a "Trending" badge on this fragrance</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.is_trending}
                     onChange={(e) => setForm((p) => ({ ...p, is_trending: e.target.checked }))}
-                    className="rounded border-slate-400 text-slate-900 focus:ring-slate-900 h-4 w-4 cursor-pointer"
+                    className="rounded border-slate-400 text-black focus:ring-slate-900 h-4 w-4 cursor-pointer"
                   />
                 </div>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
+                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
                   Cancel
                 </Button>
                 <Button
@@ -1428,16 +1428,16 @@ export const AdminProductsPage: React.FC = () => {
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
           <div className="bg-white border border-slate-200 w-full max-w-md p-6 space-y-4 rounded-2xl shadow-2xl">
-            <h3 className="text-lg font-bold text-slate-900">Remove Formulation?</h3>
-            <p className="text-xs text-slate-800 leading-relaxed">
-              This will permanently delete <span className="font-bold text-slate-900">"{deleteTarget.name}"</span> from the database. This action cannot be undone.
+            <h3 className="text-lg font-bold text-black">Remove Formulation?</h3>
+            <p className="text-xs text-black leading-relaxed">
+              This will permanently delete <span className="font-bold text-black">"{deleteTarget.name}"</span> from the database. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
               <Button
                 variant="outline"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeletingId === deleteTarget.id}
-                className="border-slate-300 text-slate-700"
+                className="border-slate-300 text-black"
               >
                 Cancel
               </Button>

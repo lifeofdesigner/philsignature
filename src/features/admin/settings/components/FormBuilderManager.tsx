@@ -82,8 +82,8 @@ export const FormBuilderManager: React.FC = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
-          <FileInput className="h-4 w-4 text-slate-700" />
+        <CardTitle className="text-base font-semibold text-black flex items-center gap-2">
+          <FileInput className="h-4 w-4 text-black" />
           <span>Visual Form Builder & Email Routing</span>
         </CardTitle>
         <CardDescription>Manage inquiry fields, validation rules, and notification emails for storefront forms</CardDescription>
@@ -98,7 +98,7 @@ export const FormBuilderManager: React.FC = () => {
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 selectedFormId === f.id
                   ? 'bg-amber-50 text-amber-950 border border-amber-200'
-                  : 'bg-slate-50 text-slate-800 hover:bg-slate-100'
+                  : 'bg-white text-black hover:bg-slate-100'
               }`}
             >
               {f.title}
@@ -114,8 +114,8 @@ export const FormBuilderManager: React.FC = () => {
             onChange={(e) => handleUpdateForm({ recipient_email: e.target.value })}
             className="text-xs"
           />
-          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
-            <span className="text-xs font-medium text-slate-700">Send Autoresponder Email:</span>
+          <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200">
+            <span className="text-xs font-medium text-black">Send Autoresponder Email:</span>
             <Switch
               checked={selectedForm.autoresponder_enabled}
               onCheckedChange={(val) => handleUpdateForm({ autoresponder_enabled: val })}
@@ -126,7 +126,7 @@ export const FormBuilderManager: React.FC = () => {
         {/* Fields List */}
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Form Fields & Validation</h4>
+            <h4 className="text-xs font-bold text-black uppercase tracking-wider">Form Fields & Validation</h4>
             <Button size="sm" variant="outline" onClick={handleAddField} className="text-xs h-7 gap-1 border-slate-200">
               <Plus className="h-3 w-3" /> Add Field
             </Button>
@@ -134,7 +134,7 @@ export const FormBuilderManager: React.FC = () => {
 
           <div className="space-y-2">
             {selectedForm.fields.map((field) => (
-              <div key={field.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between gap-3">
+              <div key={field.id} className="p-3 bg-white border border-slate-200 rounded-lg flex items-center justify-between gap-3">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
                   <Input
                     placeholder="Field Label"
@@ -151,7 +151,7 @@ export const FormBuilderManager: React.FC = () => {
                       const updated = selectedForm.fields.map((f) => (f.id === field.id ? { ...f, type: e.target.value as any } : f));
                       handleUpdateForm({ fields: updated });
                     }}
-                    className="text-xs bg-white border border-slate-200 rounded-lg px-2 text-slate-800"
+                    className="text-xs bg-white border border-slate-200 rounded-lg px-2 text-black"
                   >
                     <option value="text">Text Input</option>
                     <option value="email">Email Input</option>
@@ -160,7 +160,7 @@ export const FormBuilderManager: React.FC = () => {
                     <option value="phone">Phone Input</option>
                   </select>
                   <div className="flex items-center gap-2">
-                    <label className="text-xs text-slate-800 flex items-center gap-1.5 cursor-pointer">
+                    <label className="text-xs text-black flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={field.required}
@@ -168,7 +168,7 @@ export const FormBuilderManager: React.FC = () => {
                           const updated = selectedForm.fields.map((f) => (f.id === field.id ? { ...f, required: e.target.checked } : f));
                           handleUpdateForm({ fields: updated });
                         }}
-                        className="rounded border-slate-300 text-slate-700"
+                        className="rounded border-slate-300 text-black"
                       />
                       <span>Required</span>
                     </label>
@@ -177,7 +177,7 @@ export const FormBuilderManager: React.FC = () => {
 
                 <button
                   onClick={() => handleRemoveField(field.id)}
-                  className="p-1.5 text-slate-700 hover:text-red-600 rounded transition-colors"
+                  className="p-1.5 text-black hover:text-red-600 rounded transition-colors"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>

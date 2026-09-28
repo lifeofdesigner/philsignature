@@ -58,7 +58,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleSidebar}
-          className="p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100 lg:hidden"
+          className="p-2 text-black hover:text-black rounded-lg hover:bg-slate-100 lg:hidden"
           aria-label="Toggle Sidebar"
         >
           <Menu className="h-5 w-5" />
@@ -67,13 +67,13 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {/* Global Command Search Bar Trigger */}
         <button
           onClick={onOpenCommandPalette}
-          className="flex items-center gap-3 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-300 rounded-lg text-slate-700 text-xs transition-all w-48 sm:w-80 justify-between group font-medium"
+          className="flex items-center gap-3 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 border border-slate-300 rounded-lg text-black text-xs transition-all w-48 sm:w-80 justify-between group font-medium"
         >
           <div className="flex items-center gap-2 truncate">
-            <Search className="h-4 w-4 text-slate-700 group-hover:text-slate-900 transition-colors" />
-            <span className="truncate text-slate-800 group-hover:text-slate-900">Search products, orders, CMS...</span>
+            <Search className="h-4 w-4 text-black group-hover:text-black transition-colors" />
+            <span className="truncate text-black group-hover:text-black">Search products, orders, CMS...</span>
           </div>
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-slate-800 rounded border border-slate-300 shadow-2xs font-semibold">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-black rounded border border-slate-300 shadow-2xs font-semibold">
             <Command className="h-2.5 w-2.5" /> K
           </kbd>
         </button>
@@ -85,17 +85,17 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
           href="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-300"
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-black hover:text-black bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-300"
         >
           <span>Live Store</span>
-          <ExternalLink className="h-3.5 w-3.5 text-slate-700" />
+          <ExternalLink className="h-3.5 w-3.5 text-black" />
         </a>
 
         {/* Notifications Bell Dropdown */}
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="p-2 text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors relative"
+            className="p-2 text-black hover:text-black hover:bg-slate-100 rounded-lg transition-colors relative"
             aria-label="Notifications"
           >
             <Bell className="h-4 w-4" />
@@ -106,14 +106,14 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
           {showNotifications && (
             <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-slate-200 z-50 overflow-hidden animate-fade-in">
-              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+              <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between bg-white">
+                <span className="text-xs font-bold text-black uppercase tracking-wider">
                   Notifications ({unreadCount} unread)
                 </span>
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllRead}
-                    className="text-[11px] text-slate-700 hover:text-slate-900 hover:underline flex items-center gap-1 font-semibold"
+                    className="text-[11px] text-black hover:text-black hover:underline flex items-center gap-1 font-semibold"
                   >
                     <CheckCheck className="h-3 w-3" /> Mark all read
                   </button>
@@ -122,7 +122,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
               <div className="max-h-80 overflow-y-auto divide-y divide-slate-100">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-slate-700 font-medium">
+                  <div className="p-6 text-center text-xs text-black font-medium">
                     No recent notifications.
                   </div>
                 ) : (
@@ -130,16 +130,16 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                     <div
                       key={n.id}
                       className={`p-3 text-xs transition-colors ${
-                        !n.is_read ? 'bg-slate-100/90 font-medium' : 'hover:bg-slate-50'
+                        !n.is_read ? 'bg-slate-100/90 font-medium' : 'hover:bg-slate-100'
                       }`}
                     >
-                      <div className="flex items-center justify-between font-bold text-slate-900">
+                      <div className="flex items-center justify-between font-bold text-black">
                         <span>{n.title}</span>
-                        <span className="text-[10px] text-slate-700 font-normal">
+                        <span className="text-[10px] text-black font-normal">
                           {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                       </div>
-                      <p className="text-slate-700 mt-0.5 leading-tight font-normal">{n.message}</p>
+                      <p className="text-black mt-0.5 leading-tight font-normal">{n.message}</p>
                     </div>
                   ))
                 )}
@@ -154,10 +154,10 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
             {(profile?.first_name?.[0] || 'A').toUpperCase()}
           </div>
           <div className="hidden md:flex flex-col text-left">
-            <span className="text-xs font-bold text-slate-900 leading-tight">
+            <span className="text-xs font-bold text-black leading-tight">
               {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Staff Member'}
             </span>
-            <span className="text-[10px] text-slate-800 font-bold uppercase tracking-wider">
+            <span className="text-[10px] text-black font-bold uppercase tracking-wider">
               {roleLabel}
             </span>
           </div>
@@ -166,7 +166,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {/* Sign Out Button */}
         <button
           onClick={handleLogout}
-          className="p-2 text-slate-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+          className="p-2 text-black hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
           title="Sign Out"
           aria-label="Sign Out"
         >

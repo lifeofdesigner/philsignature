@@ -105,33 +105,33 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-200 pb-3">
         <div>
           <div className="flex items-center gap-2">
-            <Sliders className="h-4 w-4 text-slate-700" />
-            <h3 className="text-base font-bold text-slate-900">Logo &amp; Header Branding Scale</h3>
+            <Sliders className="h-4 w-4 text-black" />
+            <h3 className="text-base font-bold text-black">Logo &amp; Header Branding Scale</h3>
           </div>
-          <p className="text-xs text-slate-800 mt-0.5 font-medium">
+          <p className="text-xs text-black mt-0.5 font-medium">
             Scale your brand logo and manage business name layout across desktop and mobile views.
           </p>
         </div>
         {isSaving && (
-          <span className="text-[11px] text-slate-900 animate-pulse font-mono font-semibold">
+          <span className="text-[11px] text-black animate-pulse font-mono font-semibold">
             Saving changes...
           </span>
         )}
       </div>
 
       {/* Business Name Visibility & Layout */}
-      <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-xl">
+      <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl">
         <div className="space-y-0.5 pr-4">
-          <label className="text-xs font-bold text-slate-900 flex items-center gap-2">
-            <Type className="h-3.5 w-3.5 text-slate-700" />
+          <label className="text-xs font-bold text-black flex items-center gap-2">
+            <Type className="h-3.5 w-3.5 text-black" />
             <span>Show Business Name in Header</span>
             {showBusinessName && (
-              <span className="text-[10px] px-2 py-0.5 bg-slate-200 text-slate-900 rounded font-bold uppercase tracking-wider">
+              <span className="text-[10px] px-2 py-0.5 bg-slate-200 text-black rounded font-bold uppercase tracking-wider">
                 Visible
               </span>
             )}
           </label>
-          <p className="text-xs text-slate-800 font-medium">
+          <p className="text-xs text-black font-medium">
             Shows brand name beside logo on mobile and beneath emblem on desktop. Toggle off to display only the logo insignia.
           </p>
         </div>
@@ -144,7 +144,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
 
       {/* Preset Buttons */}
       <div className="space-y-2">
-        <label className="text-xs font-bold uppercase tracking-wider text-slate-700">Logo Size Presets</label>
+        <label className="text-xs font-bold uppercase tracking-wider text-black">Logo Size Presets</label>
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
           {PRESETS.map((preset) => {
             const isSelected = currentPreset === preset.id || currentHeight === preset.height;
@@ -156,7 +156,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
                 className={`flex flex-col items-center justify-center p-3 rounded-lg border text-center transition-all cursor-pointer ${
                   isSelected
                     ? 'border-slate-900 bg-slate-900 text-white font-bold shadow-xs'
-                    : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
+                    : 'border-slate-200 bg-white text-black hover:border-slate-300 hover:bg-slate-100'
                 }`}
               >
                 <div className="flex items-center gap-1">
@@ -165,7 +165,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
                   </span>
                   {isSelected && <Check className="h-3.5 w-3.5 text-white font-bold" />}
                 </div>
-                <span className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-slate-300' : 'text-slate-700'}`}>
+                <span className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-slate-300' : 'text-black'}`}>
                   {preset.height}px
                 </span>
               </button>
@@ -177,15 +177,15 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
       {/* Precision Height Slider */}
       <div className="space-y-3 pt-2">
         <div className="flex items-center justify-between">
-          <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+          <label className="text-xs font-bold uppercase tracking-wider text-black">
             Fine-Tune Desktop Height
           </label>
-          <span className="text-xs font-mono px-2.5 py-1 bg-slate-100 border border-slate-200 rounded-lg text-slate-900 font-bold">
+          <span className="text-xs font-mono px-2.5 py-1 bg-slate-100 border border-slate-200 rounded-lg text-black font-bold">
             {currentHeight} px
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-slate-700 font-mono">40px</span>
+          <span className="text-xs text-black font-mono">40px</span>
           <input
             type="range"
             min={40}
@@ -197,15 +197,15 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
             onTouchEnd={(e) => handleSliderCommit(Number((e.target as HTMLInputElement).value))}
             className="flex-1 accent-amber-700 h-2 bg-slate-200 rounded-lg cursor-pointer"
           />
-          <span className="text-xs text-slate-700 font-mono">160px</span>
+          <span className="text-xs text-black font-mono">160px</span>
         </div>
       </div>
 
       {/* Live Visual Preview */}
       <div className="space-y-2 pt-2 border-t border-slate-200">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-700">Live Header Preview</span>
-          <span className="text-xs text-slate-700 font-medium">
+          <span className="text-xs font-bold uppercase tracking-wider text-black">Live Header Preview</span>
+          <span className="text-xs text-black font-medium">
             Height: {currentHeight}px (Desktop) • {currentMobileHeight}px (Mobile)
           </span>
         </div>
