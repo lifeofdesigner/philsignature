@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { CheckCircle2, Clock, PackageCheck, Truck, ArrowRight, ShieldCheck } from 'lucide-react';
+import { CheckCircle2, Clock, PackageCheck, Truck, ArrowRight, ShieldCheck, XCircle } from 'lucide-react';
 import { useOrderDetail } from '../hooks/useOrders';
 import { BankTransferDetails } from '../components/BankTransferDetails';
 import { paymentService } from '@/services/PaymentService';
@@ -47,6 +47,7 @@ export const OrderConfirmationPage: React.FC = () => {
 
   const isPaid = order.financial_status === 'paid';
   const isBankTransfer = order.payment_method === 'bank_transfer' || methodParam === 'bank_transfer';
+  const isFailedOrPending = !isPaid && !isBankTransfer;
   const shippingAddr = (order.shipping_address as Record<string, string>) || {};
 
   return (
@@ -57,20 +58,24 @@ export const OrderConfirmationPage: React.FC = () => {
           <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-luxury-gold/10 border border-luxury-gold/40 flex items-center justify-center text-luxury-gold">
             {isPaid ? (
               <CheckCircle2 className="h-7 w-7" />
+            ) : isFailedOrPending ? (
+              <XCircle className="h-7 w-7 text-red-400" />
             ) : (
               <Clock className="h-7 w-7 text-amber-400" />
             )}
           </div>
 
           <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-gold font-medium block mb-1">
-            {isPaid ? 'Payment Confirmed' : 'Order Placed — Waiting for Payment'}
+            {isPaid ? 'Payment Confirmed' : isFailedOrPending ? 'Payment Not Completed' : 'Order Placed — Waiting for Payment'}
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-            Thank You for Your Order!
+            {isFailedOrPending ? 'Your Payment Was Not Completed' : 'Thank You for Your Order!'}
           </h1>
           <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed">
             {isPaid
               ? 'Your order has been confirmed and sent to our team. A confirmation email has been sent to you.'
+              : isFailedOrPending
+              ? 'We saved your order, but your payment was cancelled or could not be verified. Your items are still in your cart — please retry payment to complete your purchase.'
               : 'Your order has been saved. Please complete your bank transfer using your order number as the reference.'}
           </p>
 
@@ -78,6 +83,19 @@ export const OrderConfirmationPage: React.FC = () => {
             <span className="text-luxury-muted">Order Number:</span>
             <span className="text-luxury-gold font-mono font-bold tracking-wider">{order.order_number}</span>
           </div>
+
+          {isFailedOrPending && (
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => navigate('/checkout')}
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
+              >
+                <span>Retry Payment</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Bank Transfer Instructions (if applicable) */}
@@ -97,10 +115,12 @@ export const OrderConfirmationPage: React.FC = () => {
               className={`text-[10px] uppercase tracking-wider px-2.5 py-0.5 border rounded-sm font-medium ${
                 isPaid
                   ? 'text-emerald-700 border-emerald-300 bg-emerald-50 dark:text-emerald-300 dark:border-emerald-800/40 dark:bg-emerald-950/60'
+                  : isFailedOrPending
+                  ? 'text-red-700 border-red-300 bg-red-50 dark:text-red-300 dark:border-red-800/40 dark:bg-red-950/60'
                   : 'text-amber-800 border-amber-300 bg-amber-50 dark:text-amber-300 dark:border-amber-800/40 dark:bg-amber-950/60'
               }`}
             >
-              {isPaid ? 'Paid' : 'Payment Pending'}
+              {isPaid ? 'Paid' : isFailedOrPending ? 'Payment Not Completed' : 'Payment Pending'}
             </span>
           </div>
 
