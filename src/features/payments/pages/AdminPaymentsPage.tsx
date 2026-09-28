@@ -30,7 +30,9 @@ export const AdminPaymentsPage: React.FC = () => {
   const { profile, role } = useAuth();
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const userIsSuperAdmin = isSuperAdmin(currentRole);
-  const canManageGateways = userIsSuperAdmin || hasPermission(currentRole, 'payments:manage_gateways');
+  const isStaffAdmin = currentRole === 'admin' || currentRole === 'administrator';
+  const canManageGateways =
+    userIsSuperAdmin || isStaffAdmin || hasPermission(currentRole, 'payments:manage_gateways');
   const {
     config,
     isLoading,
