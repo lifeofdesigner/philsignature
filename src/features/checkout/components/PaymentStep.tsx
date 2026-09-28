@@ -9,6 +9,7 @@ interface PaymentStepProps {
   orderNotes: string;
   setOrderNotes: (notes: string) => void;
   bankDetails: BankTransferConfig;
+  enabledPaymentMethods: Record<'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer', boolean>;
   totalAmount: number;
   isSubmitting: boolean;
   onBack: () => void;
@@ -21,6 +22,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   orderNotes,
   setOrderNotes,
   bankDetails,
+  enabledPaymentMethods,
   totalAmount,
   isSubmitting,
   onBack,
@@ -34,39 +36,43 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
     }).format(amount);
   };
 
-  const paymentOptions: {
-    id: 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer';
+  type PaymentOptionId = 'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer';
+
+  const allPaymentOptions: {
+    id: PaymentOptionId;
     title: string;
     description: string;
     badge?: string;
     icon: React.ReactNode;
   }[] = [
     {
-      id: 'paystack',
+      id: 'paystack' as PaymentOptionId,
       title: 'Paystack (Cards, Bank Transfer, USSD)',
       description: 'Pay easily with your Nigerian ATM card (Mastercard, Visa, Verve), USSD, or Instant Transfer.',
       badge: 'Recommended',
       icon: <CreditCard className="h-5 w-5 text-luxury-gold" />,
     },
     {
-      id: 'flutterwave',
+      id: 'flutterwave' as PaymentOptionId,
       title: 'Flutterwave',
       description: 'Pay with International Cards, Mobile Money, or Bank Transfer.',
       icon: <Sparkles className="h-5 w-5 text-luxury-gold" />,
     },
     {
-      id: 'korapay',
+      id: 'korapay' as PaymentOptionId,
       title: 'Korapay',
       description: 'Pay with Cards, Bank Transfer, or Mobile Money.',
       icon: <CreditCard className="h-5 w-5 text-luxury-gold" />,
     },
     {
-      id: 'bank_transfer',
+      id: 'bank_transfer' as PaymentOptionId,
       title: 'Direct Bank Transfer',
       description: 'Transfer directly to our GTBank business account. Order is confirmed once payment is received.',
       icon: <Landmark className="h-5 w-5 text-luxury-gold" />,
     },
   ];
+
+  const paymentOptions = allPaymentOptions.filter((option) => enabledPaymentMethods[option.id]);
 
   return (
     <div className="space-y-8 animate-fadeIn">

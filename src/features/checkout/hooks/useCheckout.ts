@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCart } from '@/features/cart/hooks/useCart';
@@ -58,6 +58,24 @@ export function useCheckout() {
     queryFn: () => paymentService.getBankTransferConfig(),
     staleTime: 1000 * 60 * 10,
   });
+
+  const { data: enabledPaymentMethods } = useQuery({
+    queryKey: ['payment-enabled-methods'],
+    queryFn: () => paymentService.getEnabledMethods(),
+    staleTime: 1000 * 60 * 10,
+  });
+
+  // If the current selection becomes disabled (or was never enabled to begin
+  // with), fall back to the first enabled method instead of leaving a
+  // disabled gateway silently selected.
+  useEffect(() => {
+    if (!enabledPaymentMethods) return;
+    if (enabledPaymentMethods[paymentMethod]) return;
+    const fallback = (['paystack', 'flutterwave', 'korapay', 'bank_transfer'] as const).find(
+      (m) => enabledPaymentMethods[m]
+    );
+    if (fallback) setPaymentMethod(fallback);
+  }, [enabledPaymentMethods, paymentMethod]);
 
   // Coupon State
   const [couponCode, setCouponCode] = useState<string>('');
@@ -198,6 +216,7 @@ export function useCheckout() {
         shipping_address: {
           first_name: addressForm.firstName,
           last_name: addressForm.lastName,
+          phone: addressForm.phone,
           address_line1: addressForm.streetAddress,
           city: addressForm.city,
           state: addressForm.state,
@@ -207,6 +226,7 @@ export function useCheckout() {
         billing_address: {
           first_name: addressForm.firstName,
           last_name: addressForm.lastName,
+          phone: addressForm.phone,
           address_line1: addressForm.streetAddress,
           city: addressForm.city,
           state: addressForm.state,
@@ -325,5 +345,7 @@ export function useCheckout() {
         currency: 'NGN',
         instructions: '',
       },
+    enabledPaymentMethods:
+      enabledPaymentMethods || { paystack: true, flutterwave: false, korapay: false, bank_transfer: true },
   };
 }

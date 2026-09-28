@@ -14,6 +14,7 @@ export interface PlaceOrderParams {
   shipping_address: {
     first_name: string;
     last_name: string;
+    phone: string;
     address_line1: string;
     address_line2?: string;
     city: string;
@@ -24,6 +25,7 @@ export interface PlaceOrderParams {
   billing_address?: {
     first_name: string;
     last_name: string;
+    phone: string;
     address_line1: string;
     address_line2?: string;
     city: string;

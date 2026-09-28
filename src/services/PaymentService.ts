@@ -117,6 +117,17 @@ export class PaymentService {
     return this.publicSettingsCache;
   }
 
+  /** Returns which payment methods are currently enabled, for filtering the checkout's option list. */
+  async getEnabledMethods(): Promise<Record<SupportedGateway | 'bank_transfer', boolean>> {
+    const settings = await this.getPublicSettings();
+    return {
+      paystack: settings.paystack_enabled,
+      flutterwave: settings.flutterwave_enabled,
+      korapay: settings.korapay_enabled,
+      bank_transfer: settings.bank_transfer_enabled,
+    };
+  }
+
   async getBankTransferConfig(): Promise<BankTransferConfig> {
     const settings = await this.getPublicSettings();
     return {

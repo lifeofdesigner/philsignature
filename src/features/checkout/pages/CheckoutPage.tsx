@@ -110,6 +110,7 @@ export const CheckoutPage: React.FC = () => {
                 orderNotes={checkout.orderNotes}
                 setOrderNotes={checkout.setOrderNotes}
                 bankDetails={checkout.bankDetails}
+                enabledPaymentMethods={checkout.enabledPaymentMethods}
                 totalAmount={checkout.totalAmount}
                 isSubmitting={checkout.isSubmitting}
                 onBack={() => checkout.setCurrentStep('shipping')}
