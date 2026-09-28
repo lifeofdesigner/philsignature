@@ -185,7 +185,7 @@ export const AdminCouponsPage: React.FC = () => {
       header: 'Discount Benefit',
       accessor: (coupon: Coupon) => (
         <div>
-          <span className="font-bold text-amber-900 text-sm">
+          <span className="font-bold text-slate-900 text-sm">
             {coupon.discount_type === 'percentage' ? `${coupon.value}% OFF` : `${formatCurrency(coupon.value)} OFF`}
           </span>
           {coupon.max_discount && (

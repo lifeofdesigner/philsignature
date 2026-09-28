@@ -151,7 +151,7 @@ export const AdminShippingPage: React.FC = () => {
       header: 'Method Name & Coverage',
       accessor: (method: ShippingMethod) => (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-800 flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 flex-shrink-0">
             <Truck className="w-5 h-5" />
           </div>
           <div>

@@ -324,7 +324,7 @@ export const AdminUsersPage: React.FC = () => {
         {userIsSuperAdmin && (
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white rounded-lg text-xs font-semibold shadow-xs">
-              <Sparkles className="h-3.5 w-3.5 text-amber-400" />
+              <Sparkles className="h-3.5 w-3.5 text-white" />
               <span>Super Admin Mode</span>
             </span>
           </div>
@@ -563,7 +563,7 @@ export const AdminUsersPage: React.FC = () => {
                           >
                             <div className="font-bold">{ROLE_LABELS[r]}</div>
                             {r === 'super_admin' && (
-                              <span className="text-[9px] font-mono tracking-normal block text-amber-300 mt-0.5">
+                              <span className="text-[9px] font-mono tracking-normal block text-slate-300 mt-0.5">
                                 Full Root
                               </span>
                             )}

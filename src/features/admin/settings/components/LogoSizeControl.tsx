@@ -195,7 +195,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
             onChange={(e) => handleSliderChange(Number(e.target.value))}
             onMouseUp={(e) => handleSliderCommit(Number((e.target as HTMLInputElement).value))}
             onTouchEnd={(e) => handleSliderCommit(Number((e.target as HTMLInputElement).value))}
-            className="flex-1 accent-amber-700 h-2 bg-slate-200 rounded-lg cursor-pointer"
+            className="flex-1 accent-slate-900 h-2 bg-slate-200 rounded-lg cursor-pointer"
           />
           <span className="text-xs text-black font-mono">160px</span>
         </div>

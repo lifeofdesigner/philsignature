@@ -396,7 +396,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             {faqForm.items.map((item, idx) => (
               <div key={idx} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-amber-900">Question {idx + 1}</span>
+                  <span className="text-xs font-mono font-bold text-slate-900">Question {idx + 1}</span>
                   <Button
                     variant="outline"
                     size="sm"

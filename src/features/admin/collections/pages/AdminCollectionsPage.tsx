@@ -273,8 +273,8 @@ export const AdminCollectionsPage: React.FC = () => {
       header: 'Featured',
       accessor: (collection) => (
         collection.is_featured ? (
-          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-900 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
-            <Star className="h-3 w-3 fill-amber-600 text-black" />
+          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-900 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded-full">
+            <Star className="h-3 w-3 fill-slate-700 text-slate-900" />
             Featured
           </span>
         ) : (

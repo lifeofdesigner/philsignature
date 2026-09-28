@@ -92,7 +92,7 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
                   {item.label}
                 </span>
                 {item.badge && (
-                  <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold bg-amber-100 text-amber-800 border border-amber-200 rounded-md">
+                  <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-semibold bg-slate-100 text-slate-800 border border-slate-200 rounded-md">
                     {item.badge}
                   </span>
                 )}
