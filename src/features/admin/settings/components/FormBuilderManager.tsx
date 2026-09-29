@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { FileInput, Plus, Trash2, Save } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
+import { AdminButton, AdminInput, AdminSwitch } from '@/components/admin-ui';
 
 export interface FormField {
   id: string;
@@ -108,7 +106,7 @@ export const FormBuilderManager: React.FC = () => {
 
         {/* Form Settings */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
+          <AdminInput
             label="Form Recipient Email"
             value={selectedForm.recipient_email}
             onChange={(e) => handleUpdateForm({ recipient_email: e.target.value })}
@@ -116,7 +114,7 @@ export const FormBuilderManager: React.FC = () => {
           />
           <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200">
             <span className="text-xs font-medium text-black">Send Autoresponder Email:</span>
-            <Switch
+            <AdminSwitch
               checked={selectedForm.autoresponder_enabled}
               onCheckedChange={(val) => handleUpdateForm({ autoresponder_enabled: val })}
             />
@@ -127,16 +125,16 @@ export const FormBuilderManager: React.FC = () => {
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
             <h4 className="text-xs font-bold text-black uppercase tracking-wider">Form Fields & Validation</h4>
-            <Button size="sm" variant="outline" onClick={handleAddField} className="text-xs h-7 gap-1 border-slate-200">
+            <AdminButton size="sm" variant="secondary" onClick={handleAddField} className="text-xs h-7 gap-1">
               <Plus className="h-3 w-3" /> Add Field
-            </Button>
+            </AdminButton>
           </div>
 
           <div className="space-y-2">
             {selectedForm.fields.map((field) => (
               <div key={field.id} className="p-3 bg-white border border-slate-200 rounded-lg flex items-center justify-between gap-3">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1">
-                  <Input
+                  <AdminInput
                     placeholder="Field Label"
                     value={field.label}
                     onChange={(e) => {
@@ -187,9 +185,9 @@ export const FormBuilderManager: React.FC = () => {
         </div>
 
         <div className="flex justify-end pt-2">
-          <Button size="sm" onClick={handleSave} className="bg-slate-900 hover:bg-slate-800 text-white font-medium gap-1.5">
+          <AdminButton variant="primary" size="sm" onClick={handleSave} className="font-medium gap-1.5">
             <Save className="h-3.5 w-3.5" /> Save Form Schema
-          </Button>
+          </AdminButton>
         </div>
       </CardContent>
     </Card>

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { Truck, Plus, Pencil, Trash2, X, Loader2, Copy, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column } from '@/components/common/EnterpriseDataTable';
@@ -266,14 +265,15 @@ export const AdminShippingPage: React.FC = () => {
             Configure delivery zones, nationwide flat rates, express couriers, and free shipping triggers.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
-          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+          className="gap-1.5 shadow-xs"
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
           <span>New Rate Zone</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <EnterpriseDataTable
@@ -313,7 +313,7 @@ export const AdminShippingPage: React.FC = () => {
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Method Name / Zone <span className="text-red-500">*</span>
                 </label>
-                <Input
+                <AdminInput
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                   placeholder="e.g. Lagos Express Courier (Island & Mainland)"
@@ -326,7 +326,7 @@ export const AdminShippingPage: React.FC = () => {
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Description / Service Details
                 </label>
-                <Input
+                <AdminInput
                   value={form.description}
                   onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                   placeholder="Handled by dedicated courier in climate-controlled transit"
@@ -339,7 +339,7 @@ export const AdminShippingPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
                     Delivery Rate (₦) <span className="text-red-500">*</span>
                   </label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.price}
@@ -354,7 +354,7 @@ export const AdminShippingPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
                     Free Threshold (₦)
                   </label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.free_threshold}
@@ -369,7 +369,7 @@ export const AdminShippingPage: React.FC = () => {
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
                   Estimated Transit Time <span className="text-red-500">*</span>
                 </label>
-                <Input
+                <AdminInput
                   placeholder="e.g. 24 - 48 Hours"
                   value={form.estimated_days}
                   onChange={(e) => setForm((p) => ({ ...p, estimated_days: e.target.value }))}
@@ -391,17 +391,18 @@ export const AdminShippingPage: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-slate-700 font-medium">
+                <AdminButton type="button" variant="secondary" onClick={closeForm} className="font-medium">
                   Cancel
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   type="submit"
+                  variant="primary"
                   disabled={isCreating || isUpdating}
-                  className="bg-slate-900 hover:bg-slate-800 text-white gap-2 font-semibold shadow-xs cursor-pointer"
+                  className="gap-2 shadow-xs"
                 >
                   {(isCreating || isUpdating) && <Loader2 className="h-4 w-4 animate-spin" />}
                   <span>{editing ? 'Save Changes' : 'Create Shipping Method'}</span>
-                </Button>
+                </AdminButton>
               </div>
             </form>
           </div>
@@ -417,22 +418,22 @@ export const AdminShippingPage: React.FC = () => {
               This will permanently delete shipping method <span className="font-semibold text-slate-900">"{deleteTarget.name}"</span>. Customers in this zone will no longer see this option.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
-              <Button
-                variant="outline"
+              <AdminButton
+                variant="secondary"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeletingId === deleteTarget.id}
               >
                 Cancel
-              </Button>
-              <Button
-                variant="destructive"
+              </AdminButton>
+              <AdminButton
+                variant="danger"
                 onClick={confirmDelete}
                 disabled={isDeletingId === deleteTarget.id}
                 className="gap-2"
               >
                 {isDeletingId === deleteTarget.id && <Loader2 className="h-4 w-4 animate-spin" />}
                 <span>Delete Method</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

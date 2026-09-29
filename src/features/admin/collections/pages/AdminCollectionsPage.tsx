@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Layers, Plus, Pencil, Trash2, X, Loader2, Star, Copy, CheckCircle2, AlertTriangle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column, type BulkAction } from '@/components/common/EnterpriseDataTable';
@@ -366,14 +365,15 @@ export const AdminCollectionsPage: React.FC = () => {
             Curate thematic product suites like Private Reserve, Oud Edition, and Atelier Exclusives.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
-          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+          className="gap-1.5 shadow-xs"
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
           <span>New Collection</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs text-xs">
@@ -439,7 +439,7 @@ export const AdminCollectionsPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Collection Name *</label>
-                  <Input
+                  <AdminInput
                     value={form.name}
                     onChange={(e) => handleNameChange(e.target.value)}
                     placeholder="e.g. Private Reserve"
@@ -449,7 +449,7 @@ export const AdminCollectionsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Slug *</label>
-                  <Input
+                  <AdminInput
                     value={form.slug}
                     onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
                     placeholder="private-reserve"
@@ -461,7 +461,7 @@ export const AdminCollectionsPage: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block font-semibold text-black">Tagline / Subtitle</label>
-                <Input
+                <AdminInput
                   value={form.tagline}
                   onChange={(e) => setForm((p) => ({ ...p, tagline: e.target.value }))}
                   placeholder="e.g. Rare botanical extraits and vintage resin oils"
@@ -499,7 +499,7 @@ export const AdminCollectionsPage: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block font-semibold text-black">Display Order</label>
-                <Input
+                <AdminInput
                   type="number"
                   min="0"
                   value={form.display_order}
@@ -536,17 +536,18 @@ export const AdminCollectionsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
+                <AdminButton type="button" variant="secondary" onClick={closeForm} className="font-medium">
                   Cancel
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   type="submit"
+                  variant="primary"
                   disabled={isCreating || isUpdating}
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                  className="gap-1.5 shadow-xs"
                 >
                   {(isCreating || isUpdating) && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>{editing ? 'Save Changes' : 'Create Collection'}</span>
-                </Button>
+                </AdminButton>
               </div>
             </form>
           </div>
@@ -561,13 +562,13 @@ export const AdminCollectionsPage: React.FC = () => {
               This will permanently delete <span className="font-bold text-black">"{deleteTarget.name}"</span>. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
-              <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={isDeletingId === deleteTarget.id} className="border-slate-300 text-black">
+              <AdminButton variant="secondary" onClick={() => setDeleteTarget(null)} disabled={isDeletingId === deleteTarget.id}>
                 Cancel
-              </Button>
-              <Button variant="destructive" onClick={confirmDelete} disabled={isDeletingId === deleteTarget.id} className="gap-2">
+              </AdminButton>
+              <AdminButton variant="danger" onClick={confirmDelete} disabled={isDeletingId === deleteTarget.id} className="gap-2">
                 {isDeletingId === deleteTarget.id && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 <span>Delete Collection</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

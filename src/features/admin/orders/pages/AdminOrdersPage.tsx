@@ -14,8 +14,7 @@ import {
   Package,
   Loader2,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column, type BulkAction } from '@/components/common/EnterpriseDataTable';
@@ -233,15 +232,15 @@ export const AdminOrdersPage: React.FC = () => {
       header: 'Actions',
       sortable: false,
       accessor: (o) => (
-        <Button
+        <AdminButton
           size="sm"
-          variant="outline"
+          variant="secondary"
           onClick={() => handleOpenInspect(o)}
-          className="text-xs h-7 px-2.5 border-slate-300 text-black hover:bg-slate-100 gap-1 cursor-pointer"
+          className="text-xs h-7 px-2.5 gap-1"
         >
-          <Eye className="h-3 w-3 text-black" />
+          <Eye className="h-3 w-3" />
           <span>Inspect</span>
-        </Button>
+        </AdminButton>
       ),
     },
   ];
@@ -407,11 +406,12 @@ export const AdminOrdersPage: React.FC = () => {
                 <div className="text-black capitalize font-medium">Gateway: {selectedOrder.payment_method || 'Online Card'}</div>
                 <div className="font-bold text-black text-sm">{formatCurrency(selectedOrder.total_amount)}</div>
                 {selectedOrder.payment_method === 'bank_transfer' && selectedOrder.financial_status === 'pending' && (
-                  <Button
+                  <AdminButton
                     size="sm"
+                    variant="success"
                     disabled={isConfirmingPayment}
                     onClick={() => handleConfirmBankTransfer(selectedOrder)}
-                    className="w-full mt-1.5 gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
+                    className="w-full mt-1.5 gap-1.5"
                   >
                     {isConfirmingPayment ? (
                       <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -419,7 +419,7 @@ export const AdminOrdersPage: React.FC = () => {
                       <CheckCircle2 className="h-3.5 w-3.5" />
                     )}
                     <span>Mark Payment Received</span>
-                  </Button>
+                  </AdminButton>
                 )}
               </div>
             </div>
@@ -490,26 +490,25 @@ export const AdminOrdersPage: React.FC = () => {
                 <div className="text-black text-[11px]">Attach tracking number for customer order lookup</div>
               </div>
               <div className="flex items-center gap-2">
-                <Input
+                <AdminInput
                   value={trackingNumberInput}
                   onChange={(e) => setTrackingNumberInput(e.target.value)}
                   placeholder="e.g. DHL-81928374"
-                  className="bg-white border-slate-300 text-xs w-44 font-mono"
+                  className="text-xs w-44 font-mono"
                 />
-                <Button size="sm" onClick={handleSaveTrackingNumber} className="bg-slate-900 hover:bg-slate-800 text-white text-xs h-9">
+                <AdminButton size="sm" variant="primary" onClick={handleSaveTrackingNumber} className="text-xs h-9">
                   Save
-                </Button>
+                </AdminButton>
               </div>
             </div>
 
             <div className="flex justify-end pt-2 border-t border-slate-100">
-              <Button
-                variant="outline"
+              <AdminButton
+                variant="secondary"
                 onClick={() => setSelectedOrder(null)}
-                className="border-slate-300 text-black"
               >
                 Close Drawer
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

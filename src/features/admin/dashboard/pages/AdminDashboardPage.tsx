@@ -15,7 +15,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { AdminButton } from '@/components/admin-ui';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { ROLE_LABELS } from '@/lib/permissions';
@@ -92,28 +92,28 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
+          <AdminButton
             size="sm"
-            variant="outline"
+            variant="secondary"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="border-slate-300 text-black hover:bg-slate-100 gap-1.5 font-medium"
+            className="gap-1.5 font-medium"
             title="Refresh metrics from Supabase"
           >
-            <RefreshCw className={`h-3.5 w-3.5 text-black ${isRefreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
             <span>Sync</span>
-          </Button>
+          </AdminButton>
           <Link to="/admin/products?action=create">
-            <Button size="sm" className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs">
+            <AdminButton size="sm" variant="primary" className="gap-1.5 shadow-xs">
               <Plus className="h-4 w-4" />
               <span>Add Fragrance</span>
-            </Button>
+            </AdminButton>
           </Link>
           <Link to="/admin/cms">
-            <Button size="sm" variant="outline" className="border-slate-300 text-black hover:bg-slate-100 gap-1.5 font-medium">
-              <FileText className="h-4 w-4 text-black" />
+            <AdminButton size="sm" variant="secondary" className="gap-1.5 font-medium">
+              <FileText className="h-4 w-4" />
               <span>Edit Website</span>
-            </Button>
+            </AdminButton>
           </Link>
         </div>
       </div>
@@ -284,9 +284,9 @@ export const AdminDashboardPage: React.FC = () => {
                 </span>
               </div>
               <Link to="/admin/users" className="block pt-1">
-                <Button variant="outline" size="sm" className="w-full text-xs text-black border-slate-300 hover:bg-slate-100 justify-center font-medium">
-                  <Users className="h-3.5 w-3.5 mr-1.5 text-black" /> Manage Staff & Roles
-                </Button>
+                <AdminButton variant="secondary" size="sm" className="w-full text-xs justify-center font-medium">
+                  <Users className="h-3.5 w-3.5 mr-1.5" /> Manage Staff & Roles
+                </AdminButton>
               </Link>
             </CardContent>
           </Card>

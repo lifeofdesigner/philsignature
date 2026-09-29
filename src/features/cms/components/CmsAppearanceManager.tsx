@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Palette, Save, Loader2, Upload, ImageOff } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { mediaService } from '@/services/MediaService';
 import { useAuth } from '@/hooks/useAuth';
 import { LogoSizeControl } from '@/features/admin/settings/components/LogoSizeControl';
@@ -105,19 +104,19 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           Brand Colors & Accents
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Input
+          <AdminInput
             label="Primary Brand Color"
             value={appearance.primary_brand_color}
             onChange={(e) => onChange({ ...appearance, primary_brand_color: e.target.value })}
             placeholder="#A17836"
           />
-          <Input
+          <AdminInput
             label="Secondary Brand Charcoal"
             value={appearance.secondary_brand_color}
             onChange={(e) => onChange({ ...appearance, secondary_brand_color: e.target.value })}
             placeholder="#111827"
           />
-          <Input
+          <AdminInput
             label="Accent Gold Accent"
             value={appearance.accent_gold_color}
             onChange={(e) => onChange({ ...appearance, accent_gold_color: e.target.value })}
@@ -195,15 +194,15 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
       />
 
       <div className="flex justify-end pt-4">
-        <Button
-          size="default"
+        <AdminButton
+          variant="primary"
           onClick={onSave}
           disabled={isSaving}
-          className="gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
+          className="gap-2 shadow-xs"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Appearance Settings</span>
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

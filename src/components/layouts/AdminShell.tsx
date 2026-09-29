@@ -3,6 +3,7 @@ import { Outlet, useLocation, Link } from 'react-router-dom';
 import { AdminSidebar } from '@/components/common/AdminSidebar';
 import { AdminHeader } from '@/components/common/AdminHeader';
 import { CommandPaletteModal } from '@/components/common/CommandPaletteModal';
+import { AdminThemeProvider } from '@/components/admin-ui';
 import { ChevronRight, Home } from 'lucide-react';
 
 export const AdminShell: React.FC = () => {
@@ -17,6 +18,7 @@ export const AdminShell: React.FC = () => {
     .slice(1);
 
   return (
+    <AdminThemeProvider>
     <div className="admin-scope min-h-screen bg-white text-black font-sans flex antialiased">
       <AdminSidebar
         isOpen={sidebarOpen}
@@ -73,6 +75,7 @@ export const AdminShell: React.FC = () => {
         onClose={() => setCommandPaletteOpen(false)}
       />
     </div>
+    </AdminThemeProvider>
   );
 };
 

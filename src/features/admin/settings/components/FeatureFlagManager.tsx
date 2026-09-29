@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Flag, Loader2, RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
+import { AdminSwitch } from '@/components/admin-ui';
 import { featureFlagService } from '@/services/FeatureFlagService';
 import { auditLogService } from '@/services/AuditLogService';
 import { useAuth } from '@/hooks/useAuth';
@@ -88,7 +88,7 @@ export const FeatureFlagManager: React.FC = () => {
                 {updatingKey === flag.key ? (
                   <Loader2 className="h-4 w-4 animate-spin text-black" />
                 ) : (
-                  <Switch
+                  <AdminSwitch
                     checked={flag.is_enabled}
                     onCheckedChange={() => handleToggle(flag)}
                   />

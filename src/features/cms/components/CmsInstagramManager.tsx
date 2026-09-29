@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Plus, Trash2, ArrowUp, ArrowDown, Save, Loader2, Image as ImageIcon, Upload } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { AdminButton, AdminInput, AdminTextarea, AdminSwitch } from '@/components/admin-ui';
 import { mediaService } from '@/services/MediaService';
 import { useAuth } from '@/hooks/useAuth';
 import type { CmsInstagramSection, CmsInstagramPost } from '@/services/CMSService';
@@ -87,7 +84,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs font-semibold text-slate-700">Section Enabled</span>
-            <Switch
+            <AdminSwitch
               checked={instagram.enabled}
               onCheckedChange={(checked) => onChange({ ...instagram, enabled: checked })}
             />
@@ -95,13 +92,13 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
+          <AdminInput
             label="Section Title"
             value={instagram.title}
             onChange={(e) => onChange({ ...instagram, title: e.target.value })}
             className="bg-white border-slate-300 text-slate-900"
           />
-          <Input
+          <AdminInput
             label="Instagram Handle"
             value={instagram.handle}
             onChange={(e) => onChange({ ...instagram, handle: e.target.value })}
@@ -110,7 +107,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
           />
         </div>
 
-        <Textarea
+        <AdminTextarea
           label="Section Subtitle"
           rows={2}
           value={instagram.subtitle || ''}
@@ -119,7 +116,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
+          <AdminInput
             label="Public Instagram Profile URL"
             value={instagram.profile_url}
             onChange={(e) => onChange({ ...instagram, profile_url: e.target.value })}
@@ -146,10 +143,10 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
           <h3 className="text-lg font-bold text-slate-900">Feed Posts</h3>
           <p className="text-xs text-slate-700 font-medium">Add the posts you want to showcase — image, caption, and engagement counts.</p>
         </div>
-        <Button size="sm" onClick={handleAddPost} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
+        <AdminButton variant="primary" size="sm" onClick={handleAddPost} className="gap-1.5 shadow-xs">
           <Plus className="h-3.5 w-3.5" />
           <span>Add Post</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="space-y-5">
@@ -173,15 +170,15 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Button variant="outline" size="sm" className="h-7 w-7 p-0 border-slate-200" onClick={() => handleMovePost(index, -1)} disabled={index === 0} title="Move Up">
+                  <AdminButton variant="secondary" size="sm" className="h-7 w-7 p-0" onClick={() => handleMovePost(index, -1)} disabled={index === 0} title="Move Up">
                     <ArrowUp className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button variant="outline" size="sm" className="h-7 w-7 p-0 border-slate-200" onClick={() => handleMovePost(index, 1)} disabled={index === posts.length - 1} title="Move Down">
+                  </AdminButton>
+                  <AdminButton variant="secondary" size="sm" className="h-7 w-7 p-0" onClick={() => handleMovePost(index, 1)} disabled={index === posts.length - 1} title="Move Down">
                     <ArrowDown className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button variant="outline" size="sm" className="h-7 w-7 p-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200" onClick={() => handleDeletePost(post.id)} title="Delete Post">
+                  </AdminButton>
+                  <AdminButton variant="danger" size="sm" className="h-7 w-7 p-0" onClick={() => handleDeletePost(post.id)} title="Delete Post">
                     <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
+                  </AdminButton>
                 </div>
               </div>
 
@@ -219,7 +216,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
                 </div>
               </div>
 
-              <Textarea
+              <AdminTextarea
                 label="Caption"
                 rows={2}
                 value={post.caption || ''}
@@ -228,7 +225,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <Input
+                <AdminInput
                   label="Likes Count"
                   type="number"
                   min={0}
@@ -236,7 +233,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
                   onChange={(e) => handleUpdatePost(post.id, { likes_count: parseInt(e.target.value, 10) || 0 })}
                   className="bg-white border-slate-300 text-slate-900"
                 />
-                <Input
+                <AdminInput
                   label="Comments Count"
                   type="number"
                   min={0}
@@ -244,7 +241,7 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
                   onChange={(e) => handleUpdatePost(post.id, { comments_count: parseInt(e.target.value, 10) || 0 })}
                   className="bg-white border-slate-300 text-slate-900"
                 />
-                <Input
+                <AdminInput
                   label="Post Link (Optional)"
                   value={post.post_url || ''}
                   onChange={(e) => handleUpdatePost(post.id, { post_url: e.target.value })}
@@ -258,10 +255,10 @@ export const CmsInstagramManager: React.FC<CmsInstagramManagerProps> = ({
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button size="default" onClick={onSave} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-2 shadow-xs cursor-pointer">
+        <AdminButton variant="primary" onClick={onSave} disabled={isSaving} className="gap-2 shadow-xs">
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Instagram Feed</span>
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

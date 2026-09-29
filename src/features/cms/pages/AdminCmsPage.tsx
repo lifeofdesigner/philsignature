@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Save, Loader2, Sparkles, CheckCircle2, Layers, Eye, Megaphone, FileText, Menu as MenuIcon, Palette, Heart, LayoutGrid, Instagram, Code2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import {
+  AdminButton,
+  AdminTabs as Tabs,
+  AdminTabsList as TabsList,
+  AdminTabsTrigger as TabsTrigger,
+  AdminTabsContent as TabsContent,
+  AdminInput,
+  AdminTextarea,
+  AdminSwitch,
+} from '@/components/admin-ui';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminCms } from '../hooks/useAdminCms';
@@ -207,27 +212,27 @@ export const AdminCmsPage: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs font-medium text-slate-800">Enabled:</span>
-                <Switch
+                <AdminSwitch
                   checked={announcementForm.enabled}
                   onCheckedChange={(checked) => setAnnouncementForm((p) => (p ? { ...p, enabled: checked } : p))}
                 />
               </div>
             </CardHeader>
             <CardContent className="space-y-4 pt-4">
-              <Input
+              <AdminInput
                 label="Announcement Banner Text"
                 value={announcementForm.text}
                 onChange={(e) => setAnnouncementForm((p) => (p ? { ...p, text: e.target.value } : p))}
                 className="text-xs"
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
+                <AdminInput
                   label="Action Button Label"
                   value={announcementForm.link_text || ''}
                   onChange={(e) => setAnnouncementForm((p) => (p ? { ...p, link_text: e.target.value } : p))}
                   className="text-xs"
                 />
-                <Input
+                <AdminInput
                   label="Target Destination URL"
                   value={announcementForm.link_url || ''}
                   onChange={(e) => setAnnouncementForm((p) => (p ? { ...p, link_url: e.target.value } : p))}
@@ -236,15 +241,16 @@ export const AdminCmsPage: React.FC = () => {
               </div>
 
               <div className="flex justify-end pt-2">
-                <Button
+                <AdminButton
+                  variant="primary"
                   size="sm"
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                  className="gap-1.5 shadow-xs"
                   disabled={isSaving}
                   onClick={() => handleSave('announcement_bar', 'header', 'Announcement Bar', announcementForm as unknown as Record<string, unknown>)}
                 >
                   {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                   <span>Save Announcement</span>
-                </Button>
+                </AdminButton>
               </div>
             </CardContent>
           </Card>
@@ -308,17 +314,17 @@ export const AdminCmsPage: React.FC = () => {
               <CardDescription>Edit official brand philosophy rendered across storefront homepage and About Us page</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Input
+              <AdminInput
                 label="Story Headline"
                 value={storyForm.title}
                 onChange={(e) => setStoryForm((p) => (p ? { ...p, title: e.target.value } : p))}
               />
-              <Input
+              <AdminInput
                 label="Story Subtitle"
                 value={storyForm.subtitle || ''}
                 onChange={(e) => setStoryForm((p) => (p ? { ...p, subtitle: e.target.value } : p))}
               />
-              <Textarea
+              <AdminTextarea
                 label="Manifesto Body Copy"
                 rows={5}
                 value={storyForm.body_paragraphs ? storyForm.body_paragraphs.join('\n\n') : ''}
@@ -326,15 +332,16 @@ export const AdminCmsPage: React.FC = () => {
               />
 
               <div className="flex justify-end pt-2">
-                <Button
+                <AdminButton
+                  variant="primary"
                   size="sm"
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                  className="gap-1.5 shadow-xs"
                   disabled={isSaving}
                   onClick={() => handleSave('brand_story', 'about', 'Brand Story', storyForm as unknown as Record<string, unknown>)}
                 >
                   {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                   <span>Save Brand Story</span>
-                </Button>
+                </AdminButton>
               </div>
             </CardContent>
           </Card>
@@ -364,28 +371,29 @@ export const AdminCmsPage: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Input
+                <AdminInput
                   label="Credit Text (emoji supported)"
                   value={footerForm.credit_text || ''}
                   onChange={(e) => setFooterForm((p) => (p ? { ...p, credit_text: e.target.value } : p))}
                   placeholder="✨ Designed & Developed by Your Studio"
                 />
-                <Input
+                <AdminInput
                   label="Link URL (optional)"
                   value={footerForm.credit_url || ''}
                   onChange={(e) => setFooterForm((p) => (p ? { ...p, credit_url: e.target.value } : p))}
                   placeholder="https://yourstudio.com"
                 />
                 <div className="flex justify-end pt-2">
-                  <Button
+                  <AdminButton
+                    variant="primary"
                     size="sm"
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                    className="gap-1.5 shadow-xs"
                     disabled={isSaving}
                     onClick={() => handleSave('footer_config', 'footer', 'Global Boutique Footer', footerForm as unknown as Record<string, unknown>)}
                   >
                     {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                     <span>Save Site Credit</span>
-                  </Button>
+                  </AdminButton>
                 </div>
               </CardContent>
             </Card>
@@ -403,7 +411,7 @@ export const AdminCmsPage: React.FC = () => {
               <CardDescription className="text-slate-800 font-medium">Draft perfume descriptions, FAQs, SEO metadata, or landing page copy</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Textarea
+              <AdminTextarea
                 label="Describe fragrance or topic (e.g. 'Smoky Amber Extrait with Top notes of Bergamot and Vanilla base')"
                 rows={3}
                 value={aiPrompt}
@@ -411,31 +419,32 @@ export const AdminCmsPage: React.FC = () => {
                 placeholder="Type your prompt..."
                 className="text-xs"
               />
-              <Button
+              <AdminButton
+                variant="primary"
                 size="sm"
                 onClick={handleGenerateAi}
                 disabled={isGeneratingAi}
-                className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                className="gap-1.5 shadow-xs"
               >
                 {isGeneratingAi ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
                 <span>Generate Marketing Copy</span>
-              </Button>
+              </AdminButton>
 
               {aiOutput && (
                 <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
                   <div className="text-xs font-semibold text-slate-900 uppercase tracking-wider">Generated Output:</div>
                   <p className="text-xs text-slate-700 leading-relaxed italic">{aiOutput}</p>
-                  <Button
+                  <AdminButton
                     size="sm"
-                    variant="outline"
+                    variant="secondary"
                     onClick={() => {
                       navigator.clipboard.writeText(aiOutput);
                       toast.success('Copy saved to clipboard!');
                     }}
-                    className="text-xs h-7 border-slate-200 text-slate-700"
+                    className="text-xs h-7"
                   >
                     Copy to Clipboard
-                  </Button>
+                  </AdminButton>
                 </div>
               )}
             </CardContent>

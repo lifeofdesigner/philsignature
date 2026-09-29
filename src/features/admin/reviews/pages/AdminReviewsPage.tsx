@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Star, Check, X, Trash2, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { AdminButton } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminReviews } from '../hooks/useAdminReviews';
@@ -209,26 +209,26 @@ export const AdminReviewsPage: React.FC = () => {
                   ) : (
                     <>
                       {review.status !== 'approved' && (
-                        <Button
-                          variant="outline"
+                        <AdminButton
+                          variant="success"
                           size="sm"
-                          className="gap-1.5 text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50 border-emerald-300 font-medium"
+                          className="gap-1.5 font-medium"
                           onClick={() => handleStatusChange(review, 'approved')}
                         >
                           <Check className="h-3.5 w-3.5" />
                           <span>Approve &amp; Publish</span>
-                        </Button>
+                        </AdminButton>
                       )}
                       {review.status !== 'rejected' && (
-                        <Button
-                          variant="outline"
+                        <AdminButton
+                          variant="secondary"
                           size="sm"
-                          className="gap-1.5 text-black hover:text-red-600 hover:bg-red-50 border-slate-300 font-medium"
+                          className="gap-1.5 font-medium"
                           onClick={() => handleStatusChange(review, 'rejected')}
                         >
                           <X className="h-3.5 w-3.5" />
                           <span>Reject</span>
-                        </Button>
+                        </AdminButton>
                       )}
                       <button
                         type="button"
@@ -257,22 +257,22 @@ export const AdminReviewsPage: React.FC = () => {
               This will permanently remove this customer testimonial from the database. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
-              <Button
-                variant="outline"
+              <AdminButton
+                variant="secondary"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeletingId === deleteTarget.id}
               >
                 Cancel
-              </Button>
-              <Button
-                variant="destructive"
+              </AdminButton>
+              <AdminButton
+                variant="danger"
                 onClick={confirmDelete}
                 disabled={isDeletingId === deleteTarget.id}
                 className="gap-2"
               >
                 {isDeletingId === deleteTarget.id && <Loader2 className="h-4 w-4 animate-spin" />}
                 <span>Delete Review</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

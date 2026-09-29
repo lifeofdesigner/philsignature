@@ -1,8 +1,7 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Upload, Image as ImageIcon, Trash2, Loader2, Copy, Check, ExternalLink, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminMedia } from '../hooks/useAdminMedia';
@@ -99,21 +98,22 @@ export const AdminMediaPage: React.FC = () => {
         </div>
         <div className="flex items-center gap-2">
           <input ref={fileInputRef} type="file" accept="image/*,.pdf,.svg" onChange={handleFileSelect} className="hidden" id="media-upload-input" />
-          <Button
+          <AdminButton
+            variant="primary"
             size="sm"
-            className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+            className="gap-1.5 shadow-xs"
             disabled={isUploading}
             onClick={() => fileInputRef.current?.click()}
           >
             {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
             <span>{isUploading ? 'Uploading...' : 'Upload Asset'}</span>
-          </Button>
+          </AdminButton>
         </div>
       </div>
 
       {/* Filter & Search Bar */}
       <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-2xs">
-        <Input
+        <AdminInput
           placeholder="Search assets by file name..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -261,15 +261,15 @@ export const AdminMediaPage: React.FC = () => {
 
             <div className="flex items-center justify-between text-xs text-slate-700 pt-2 border-t border-slate-100">
               <span>Bucket: <strong className="text-slate-800 uppercase">{previewTarget.bucket}</strong> • Size: {formatSize(previewTarget.size_bytes)}</span>
-              <Button
+              <AdminButton
                 size="sm"
-                variant="outline"
+                variant="secondary"
                 className="gap-1.5 text-xs"
                 onClick={() => copyUrl(previewTarget)}
               >
                 <Copy className="h-3.5 w-3.5" />
                 <span>Copy Asset URL</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>
@@ -284,22 +284,22 @@ export const AdminMediaPage: React.FC = () => {
               This will permanently delete file <span className="font-semibold text-slate-900">"{deleteTarget.file_name}"</span> from the <span className="uppercase font-mono font-bold">{deleteTarget.bucket}</span> storage bucket.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
-              <Button
-                variant="outline"
+              <AdminButton
+                variant="secondary"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeletingId === deleteTarget.id}
               >
                 Cancel
-              </Button>
-              <Button
-                variant="destructive"
+              </AdminButton>
+              <AdminButton
+                variant="danger"
                 onClick={confirmDelete}
                 disabled={isDeletingId === deleteTarget.id}
                 className="gap-2"
               >
                 {isDeletingId === deleteTarget.id && <Loader2 className="h-4 w-4 animate-spin" />}
                 <span>Delete Asset</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

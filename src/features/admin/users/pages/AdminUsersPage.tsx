@@ -17,8 +17,7 @@ import {
   Info,
   UserPlus,
 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { AdminInput, AdminButton } from '@/components/admin-ui';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminUsers } from '../hooks/useAdminUsers';
@@ -364,7 +363,7 @@ export const AdminUsersPage: React.FC = () => {
           <div className="flex items-center justify-between gap-4">
             <div className="relative max-w-md w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-black" />
-              <Input
+              <AdminInput
                 placeholder="Search staff by name or email..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -376,14 +375,15 @@ export const AdminUsersPage: React.FC = () => {
                 Total Accounts: <span className="font-bold text-black">{filteredUsers.length}</span>
               </div>
               {canManageRoles && canCreateUsers && (
-                <Button
+                <AdminButton
+                  variant="primary"
                   size="sm"
                   onClick={() => setShowCreateUser(true)}
-                  className="gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs"
+                  className="gap-1.5 text-xs shadow-xs"
                 >
                   <UserPlus className="h-3.5 w-3.5" />
                   <span>New Staff / Admin Account</span>
-                </Button>
+                </AdminButton>
               )}
             </div>
           </div>
@@ -448,19 +448,15 @@ export const AdminUsersPage: React.FC = () => {
                           </td>
                           <td className="py-3.5 px-4 text-right">
                             {canEditThisRole ? (
-                              <Button
+                              <AdminButton
                                 size="sm"
-                                variant="outline"
+                                variant={u.is_active ? 'danger' : 'success'}
                                 disabled={isMe || isUpdatingActive}
                                 onClick={() => handleToggleActive(u.id, name, u.is_active, u.role)}
-                                className={`text-xs h-7 px-2.5 font-medium border-slate-300 ${
-                                  u.is_active
-                                    ? 'text-rose-700 hover:bg-rose-50 hover:text-rose-800'
-                                    : 'text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800'
-                                }`}
+                                className="text-xs h-7 px-2.5 font-medium"
                               >
                                 {isUpdatingActive ? <Loader2 className="h-3 w-3 animate-spin" /> : u.is_active ? 'Suspend Account' : 'Reactivate'}
-                              </Button>
+                              </AdminButton>
                             ) : (
                               <span className="text-xs text-black font-medium">—</span>
                             )}
@@ -495,26 +491,27 @@ export const AdminUsersPage: React.FC = () => {
 
             {userIsSuperAdmin && (
               <div className="flex flex-wrap items-center gap-3">
-                <Button
+                <AdminButton
                   size="sm"
-                  variant="outline"
+                  variant="secondary"
                   onClick={handleResetMatrix}
                   disabled={isResettingRbac || isSavingRbac}
-                  className="gap-1.5 text-xs text-black border-slate-300 hover:bg-slate-100 font-medium"
+                  className="gap-1.5 text-xs font-medium"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 text-black" />
+                  <RotateCcw className="h-3.5 w-3.5" />
                   <span>Reset to Defaults</span>
-                </Button>
+                </AdminButton>
 
-                <Button
+                <AdminButton
+                  variant="primary"
                   size="sm"
                   onClick={handleSaveMatrix}
                   disabled={isSavingRbac || isResettingRbac}
-                  className="gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs"
+                  className="gap-1.5 text-xs shadow-xs"
                 >
                   {isSavingRbac ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                   <span>Save Role Permissions</span>
-                </Button>
+                </AdminButton>
               </div>
             )}
           </div>
@@ -741,13 +738,14 @@ export const AdminUsersPage: React.FC = () => {
                         <td className="py-3 px-4 font-mono text-black text-xs">{item.entity_type}</td>
                         <td className="py-3 px-4 text-black text-xs">{new Date(item.created_at).toLocaleString()}</td>
                         <td className="py-3 px-4 text-right">
-                          <Button
+                          <AdminButton
+                            variant="primary"
                             size="sm"
                             onClick={() => handleRestoreTrash(item)}
-                            className="bg-slate-900 hover:bg-slate-800 text-white text-xs h-7 px-3 gap-1.5 font-semibold"
+                            className="text-xs h-7 px-3 gap-1.5"
                           >
                             <RefreshCw className="h-3 w-3" /> Restore
-                          </Button>
+                          </AdminButton>
                         </td>
                       </tr>
                     ))}
@@ -778,36 +776,36 @@ export const AdminUsersPage: React.FC = () => {
             </div>
             <form onSubmit={handleCreateUser} className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
-                <Input
+                <AdminInput
                   placeholder="First name"
                   value={newUser.firstName}
                   onChange={(e) => setNewUser((p) => ({ ...p, firstName: e.target.value }))}
                   required
-                  className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
+                  className="text-xs"
                 />
-                <Input
+                <AdminInput
                   placeholder="Last name"
                   value={newUser.lastName}
                   onChange={(e) => setNewUser((p) => ({ ...p, lastName: e.target.value }))}
                   required
-                  className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
+                  className="text-xs"
                 />
               </div>
-              <Input
+              <AdminInput
                 type="email"
                 placeholder="Email address"
                 value={newUser.email}
                 onChange={(e) => setNewUser((p) => ({ ...p, email: e.target.value }))}
                 required
-                className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
+                className="text-xs"
               />
-              <Input
+              <AdminInput
                 type="password"
                 placeholder="Password (min 8 chars, mixed case, symbols)"
                 value={newUser.password}
                 onChange={(e) => setNewUser((p) => ({ ...p, password: e.target.value }))}
                 required
-                className="!bg-white !text-black placeholder:!text-black !border-slate-300 text-xs"
+                className="text-xs"
               />
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold text-black">Role</label>
@@ -829,18 +827,19 @@ export const AdminUsersPage: React.FC = () => {
                 )}
               </div>
               <div className="flex items-center justify-end gap-3 pt-1">
-                <Button type="button" variant="outline" size="sm" onClick={() => setShowCreateUser(false)}>
+                <AdminButton type="button" variant="secondary" size="sm" onClick={() => setShowCreateUser(false)}>
                   Cancel
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   type="submit"
+                  variant="primary"
                   size="sm"
                   disabled={isCreatingUser}
-                  className="gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold"
+                  className="gap-1.5"
                 >
                   {isCreatingUser ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <UserPlus className="h-3.5 w-3.5" />}
                   <span>{isCreatingUser ? 'Creating...' : 'Create Account'}</span>
-                </Button>
+                </AdminButton>
               </div>
             </form>
           </div>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Plus, Trash2, ArrowUp, ArrowDown, Save, Loader2, Navigation } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
+import { AdminButton, AdminInput, AdminSwitch } from '@/components/admin-ui';
 import type { CmsNavigationMenu, CmsMenuItem } from '@/services/CMSService';
 
 interface CmsMenuBuilderProps {
@@ -65,14 +63,15 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
             Build and reorder top header navigation links, promotional badges, and mega-menu links.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
           onClick={handleAddItem}
-          className="gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
+          className="gap-1.5 text-xs shadow-xs"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Menu Item</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="space-y-4">
@@ -101,58 +100,58 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 mr-2">
                   <span className="text-xs font-medium text-slate-800">Visible</span>
-                  <Switch
+                  <AdminSwitch
                     checked={item.is_active}
                     onCheckedChange={(checked) => handleUpdateItem(item.id, { is_active: checked })}
                   />
                 </div>
-                <Button
-                  variant="outline"
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={index === 0}
                   onClick={() => handleMoveItem(index, -1)}
-                  className="h-8 w-8 p-0 border-slate-200 text-slate-700 hover:bg-slate-50"
+                  className="h-8 w-8 p-0"
                   title="Move Up"
                 >
                   <ArrowUp className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={index === items.length - 1}
                   onClick={() => handleMoveItem(index, 1)}
-                  className="h-8 w-8 p-0 border-slate-200 text-slate-700 hover:bg-slate-50"
+                  className="h-8 w-8 p-0"
                   title="Move Down"
                 >
                   <ArrowDown className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="danger"
                   size="sm"
                   disabled={items.length <= 1}
                   onClick={() => handleDeleteItem(index)}
-                  className="h-8 w-8 p-0 border-slate-200 text-red-600 hover:text-red-700 hover:bg-red-50"
+                  className="h-8 w-8 p-0"
                   title="Delete Item"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                </AdminButton>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Input
+              <AdminInput
                 label="Menu Label"
                 value={item.label}
                 onChange={(e) => handleUpdateItem(item.id, { label: e.target.value })}
                 placeholder="e.g. Exclusive Extraits"
               />
-              <Input
+              <AdminInput
                 label="Destination URL"
                 value={item.url}
                 onChange={(e) => handleUpdateItem(item.id, { url: e.target.value })}
                 placeholder="/shop, /collections, etc."
               />
-              <Input
+              <AdminInput
                 label="Promotional Badge (Optional)"
                 value={item.badge || ''}
                 onChange={(e) => handleUpdateItem(item.id, { badge: e.target.value })}
@@ -189,15 +188,15 @@ export const CmsMenuBuilder: React.FC<CmsMenuBuilderProps> = ({
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button
-          size="default"
+        <AdminButton
+          variant="primary"
           onClick={onSave}
           disabled={isSaving}
-          className="gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
+          className="gap-2 shadow-xs"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Navigation Menu</span>
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

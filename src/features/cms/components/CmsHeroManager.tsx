@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Plus, Trash2, ArrowUp, ArrowDown, Copy, Save, Loader2, Video, Image as ImageIcon, Upload } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { AdminButton, AdminInput, AdminTextarea, AdminSwitch } from '@/components/admin-ui';
 import { mediaService } from '@/services/MediaService';
 import { useAuth } from '@/hooks/useAuth';
 import type { CmsHeroContent, CmsHeroSlide } from '@/services/CMSService';
@@ -129,7 +126,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs font-semibold text-slate-700">Autoplay Enabled</span>
-            <Switch
+            <AdminSwitch
               checked={hero.settings?.autoplay ?? true}
               onCheckedChange={(checked) =>
                 onChange({
@@ -145,7 +142,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
+          <AdminInput
             label="Autoplay Interval (Milliseconds)"
             type="number"
             min={3000}
@@ -162,7 +159,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
             }
             className="bg-white border-slate-300 text-slate-900"
           />
-          <Input
+          <AdminInput
             label="Transition Duration (Milliseconds)"
             type="number"
             min={300}
@@ -188,10 +185,10 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
           <h3 className="text-lg font-bold text-slate-900">Active Slide Sequences</h3>
           <p className="text-xs text-slate-700 font-medium">Add, order, and customize billboard slides with imagery or background video.</p>
         </div>
-        <Button size="sm" onClick={handleAddSlide} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
+        <AdminButton variant="primary" size="sm" onClick={handleAddSlide} className="gap-1.5 shadow-xs">
           <Plus className="h-3.5 w-3.5" />
           <span>Add New Slide</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="space-y-6">
@@ -210,62 +207,62 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 mr-2">
                   <span className="text-xs font-semibold text-slate-800">Active</span>
-                  <Switch
+                  <AdminSwitch
                     checked={slide.is_active}
                     onCheckedChange={(checked) => handleUpdateSlide(slide.id, { is_active: checked })}
                   />
                 </div>
-                <Button
-                  variant="outline"
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={index === 0}
                   onClick={() => handleMoveSlide(index, -1)}
-                  className="h-7 w-7 p-0 border-slate-200"
+                  className="h-7 w-7 p-0"
                   title="Move Up"
                 >
                   <ArrowUp className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={index === slides.length - 1}
                   onClick={() => handleMoveSlide(index, 1)}
-                  className="h-7 w-7 p-0 border-slate-200"
+                  className="h-7 w-7 p-0"
                   title="Move Down"
                 >
                   <ArrowDown className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   onClick={() => handleDuplicateSlide(index)}
-                  className="h-7 w-7 p-0 border-slate-200"
+                  className="h-7 w-7 p-0"
                   title="Duplicate Slide"
                 >
                   <Copy className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={slides.length <= 1}
                   onClick={() => handleDeleteSlide(index)}
-                  className="h-7 w-7 p-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200"
+                  className="h-7 w-7 p-0"
                   title="Delete Slide"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                </AdminButton>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <AdminInput
                 label="Badge / Tagline"
                 value={slide.badge || ''}
                 onChange={(e) => handleUpdateSlide(slide.id, { badge: e.target.value })}
                 placeholder="e.g. Haute Parfumerie, Private Reserve"
                 className="bg-white border-slate-300 text-slate-900"
               />
-              <Input
+              <AdminInput
                 label="Headline / Title"
                 value={slide.headline}
                 onChange={(e) => handleUpdateSlide(slide.id, { headline: e.target.value })}
@@ -274,7 +271,7 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
               />
             </div>
 
-            <Textarea
+            <AdminTextarea
               label="Editorial Subtitle"
               rows={2}
               value={slide.subtitle}
@@ -284,13 +281,13 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <AdminInput
                 label="Primary CTA Button Text"
                 value={slide.primary_cta_text}
                 onChange={(e) => handleUpdateSlide(slide.id, { primary_cta_text: e.target.value })}
                 className="bg-white border-slate-300 text-slate-900"
               />
-              <Input
+              <AdminInput
                 label="Primary CTA Destination URL"
                 value={slide.primary_cta_url}
                 onChange={(e) => handleUpdateSlide(slide.id, { primary_cta_url: e.target.value })}
@@ -299,13 +296,13 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <AdminInput
                 label="Secondary CTA Button Text (Optional)"
                 value={slide.secondary_cta_text || ''}
                 onChange={(e) => handleUpdateSlide(slide.id, { secondary_cta_text: e.target.value })}
                 className="bg-white border-slate-300 text-slate-900"
               />
-              <Input
+              <AdminInput
                 label="Secondary CTA Destination URL"
                 value={slide.secondary_cta_url || ''}
                 onChange={(e) => handleUpdateSlide(slide.id, { secondary_cta_url: e.target.value })}
@@ -384,15 +381,15 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
                   <span>{uploadingKey === `${slide.id}-video_url` ? 'Uploading...' : slide.video_url ? 'Replace' : 'Upload'}</span>
                 </label>
                 {slide.video_url && (
-                  <Button
-                    variant="outline"
+                  <AdminButton
+                    variant="secondary"
                     size="sm"
-                    className="h-7 w-7 p-0 shrink-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200"
+                    className="h-7 w-7 p-0 shrink-0"
                     onClick={() => handleUpdateSlide(slide.id, { video_url: undefined })}
                     title="Remove Video"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
+                  </AdminButton>
                 )}
               </div>
             </div>
@@ -444,14 +441,14 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
+                <AdminInput
                   label="Category Label"
                   value={slide.featured_product_subtitle || ''}
                   onChange={(e) => handleUpdateSlide(slide.id, { featured_product_subtitle: e.target.value })}
                   placeholder="e.g. Masculine • Feminine • Unisex"
                   className="bg-white border-slate-300 text-slate-900"
                 />
-                <Input
+                <AdminInput
                   label="Product Name"
                   value={slide.featured_product_title || ''}
                   onChange={(e) => handleUpdateSlide(slide.id, { featured_product_title: e.target.value })}
@@ -461,14 +458,14 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
+                <AdminInput
                   label="Price"
                   value={slide.featured_product_price || ''}
                   onChange={(e) => handleUpdateSlide(slide.id, { featured_product_price: e.target.value })}
                   placeholder="e.g. ₦45,000"
                   className="bg-white border-slate-300 text-slate-900"
                 />
-                <Input
+                <AdminInput
                   label="Link URL"
                   value={slide.featured_product_url || ''}
                   onChange={(e) => handleUpdateSlide(slide.id, { featured_product_url: e.target.value })}
@@ -479,14 +476,14 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-200">
-              <Input
+              <AdminInput
                 label="Vignette Overlay Color (HEX)"
                 value={slide.overlay_color || '#000000'}
                 onChange={(e) => handleUpdateSlide(slide.id, { overlay_color: e.target.value })}
                 placeholder="#000000"
                 className="bg-white border-slate-300 text-slate-900"
               />
-              <Input
+              <AdminInput
                 label="Overlay Opacity (0.0 to 1.0)"
                 type="number"
                 step="0.05"
@@ -502,10 +499,10 @@ export const CmsHeroManager: React.FC<CmsHeroManagerProps> = ({
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button size="default" onClick={onSave} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-2 shadow-xs cursor-pointer">
+        <AdminButton variant="primary" onClick={onSave} disabled={isSaving} className="gap-2 shadow-xs">
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Hero Configuration</span>
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

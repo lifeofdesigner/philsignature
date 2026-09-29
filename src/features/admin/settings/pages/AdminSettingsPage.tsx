@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminSettings, type GeneralSettingsForm } from '../hooks/useAdminSettings';
@@ -132,13 +131,13 @@ export const AdminSettingsPage: React.FC = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <AdminInput
                 label="Boutique Name"
                 value={form.store_name}
                 onChange={(e) => setForm((p) => (p ? { ...p, store_name: e.target.value } : p))}
                 className="text-xs"
               />
-              <Input
+              <AdminInput
                 label="Primary Concierge Email"
                 value={form.concierge_email}
                 onChange={(e) => setForm((p) => (p ? { ...p, concierge_email: e.target.value } : p))}
@@ -146,20 +145,20 @@ export const AdminSettingsPage: React.FC = () => {
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
+              <AdminInput
                 label="Customer Service Phone"
                 value={form.concierge_phone || ''}
                 onChange={(e) => setForm((p) => (p ? { ...p, concierge_phone: e.target.value } : p))}
                 className="text-xs"
               />
-              <Input
+              <AdminInput
                 label="Store Currency Symbol"
                 value={form.currency_symbol}
                 onChange={(e) => setForm((p) => (p ? { ...p, currency_symbol: e.target.value } : p))}
                 className="text-xs"
               />
             </div>
-            <Input
+            <AdminInput
               label="Boutique Address & Atelier Location"
               value={form.store_address || ''}
               onChange={(e) => setForm((p) => (p ? { ...p, store_address: e.target.value } : p))}
@@ -167,10 +166,10 @@ export const AdminSettingsPage: React.FC = () => {
             />
 
             <div className="flex justify-end pt-2">
-              <Button size="sm" onClick={handleSaveGeneral} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
+              <AdminButton variant="primary" size="sm" onClick={handleSaveGeneral} disabled={isSaving} className="gap-1.5 shadow-xs">
                 {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
                 <span>Save General Settings</span>
-              </Button>
+              </AdminButton>
             </div>
           </CardContent>
         </Card>
@@ -230,10 +229,10 @@ export const AdminSettingsPage: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <Link to="/admin/payments">
-                <Button size="sm" className="gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold">
+                <AdminButton variant="primary" size="sm" className="gap-1.5">
                   <Key className="h-3.5 w-3.5" />
                   <span>Open Payment Gateways & Settlement</span>
-                </Button>
+                </AdminButton>
               </Link>
             </CardContent>
           </Card>
@@ -254,14 +253,14 @@ export const AdminSettingsPage: React.FC = () => {
                   <div className="font-semibold text-black">Enforce Staff 2FA Authentication</div>
                   <div className="text-black text-[11px]">Require staff roles to present OTP authenticator challenge on login</div>
                 </div>
-                <Button size="sm" variant="outline" className="text-xs border-slate-200">Configured</Button>
+                <AdminButton size="sm" variant="secondary" className="text-xs">Configured</AdminButton>
               </div>
               <div className="p-4 bg-white border border-slate-200 rounded-lg flex items-center justify-between">
                 <div>
                   <div className="font-semibold text-black">Admin Session Timeout</div>
                   <div className="text-black text-[11px]">Automatically terminate idle admin sessions after 30 minutes</div>
                 </div>
-                <Button size="sm" variant="outline" className="text-xs border-slate-200">30 Min</Button>
+                <AdminButton size="sm" variant="secondary" className="text-xs">30 Min</AdminButton>
               </div>
             </CardContent>
           </Card>

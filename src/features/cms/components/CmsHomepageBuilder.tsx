@@ -1,9 +1,6 @@
 import React from 'react';
 import { Plus, Trash2, ArrowUp, ArrowDown, Copy, Save, Loader2, LayoutGrid, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
+import { AdminButton, AdminInput, AdminTextarea, AdminSwitch } from '@/components/admin-ui';
 import type { CmsHomepageLayout, CmsHomepageSection, CmsHomepageSectionType, CmsPublishStatus } from '@/services/CMSService';
 
 interface CmsHomepageBuilderProps {
@@ -82,14 +79,15 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
             Drag, reorder, configure backgrounds, spacing, and animations for each section on the storefront homepage.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
           onClick={handleAddSection}
-          className="gap-1.5 text-xs bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
+          className="gap-1.5 text-xs shadow-xs"
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add New Section</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="space-y-5">
@@ -120,55 +118,55 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-2 mr-2">
                   <span className="text-xs font-medium text-slate-800">Active</span>
-                  <Switch
+                  <AdminSwitch
                     checked={section.is_enabled}
                     onCheckedChange={(checked) => handleUpdateSection(section.id, { is_enabled: checked })}
                   />
                 </div>
-                <Button
-                  variant="outline"
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={index === 0}
                   onClick={() => handleMoveSection(index, -1)}
-                  className="h-8 w-8 p-0 border-slate-200 text-slate-700 hover:bg-slate-50"
+                  className="h-8 w-8 p-0"
                   title="Move Up"
                 >
                   <ArrowUp className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   disabled={index === sections.length - 1}
                   onClick={() => handleMoveSection(index, 1)}
-                  className="h-8 w-8 p-0 border-slate-200 text-slate-700 hover:bg-slate-50"
+                  className="h-8 w-8 p-0"
                   title="Move Down"
                 >
                   <ArrowDown className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="secondary"
                   size="sm"
                   onClick={() => handleDuplicateSection(index)}
-                  className="h-8 w-8 p-0 border-slate-200 text-slate-700 hover:bg-slate-50"
+                  className="h-8 w-8 p-0"
                   title="Duplicate Section"
                 >
                   <Copy className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="outline"
+                </AdminButton>
+                <AdminButton
+                  variant="danger"
                   size="sm"
                   disabled={sections.length <= 1}
                   onClick={() => handleDeleteSection(index)}
-                  className="h-8 w-8 p-0 border-slate-200 text-red-600 hover:text-red-700 hover:bg-red-50"
+                  className="h-8 w-8 p-0"
                   title="Delete Section"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                </AdminButton>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Input
+              <AdminInput
                 label="Section Display Title"
                 value={section.title}
                 onChange={(e) => handleUpdateSection(section.id, { title: e.target.value })}
@@ -266,7 +264,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   <Calendar className="h-3.5 w-3.5 text-slate-700" />
                   <span>Scheduled Publish Date & Time (Optional)</span>
                 </div>
-                <Input
+                <AdminInput
                   type="datetime-local"
                   value={section.scheduled_publish_at || ''}
                   onChange={(e) => handleUpdateSection(section.id, { scheduled_publish_at: e.target.value })}
@@ -277,7 +275,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
                   <Calendar className="h-3.5 w-3.5 text-slate-700" />
                   <span>Scheduled Unpublish Date & Time (Optional)</span>
                 </div>
-                <Input
+                <AdminInput
                   type="datetime-local"
                   value={section.scheduled_unpublish_at || ''}
                   onChange={(e) => handleUpdateSection(section.id, { scheduled_unpublish_at: e.target.value })}
@@ -286,7 +284,7 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
             </div>
 
             {section.type === 'custom_html' && (
-              <Textarea
+              <AdminTextarea
                 label="Custom HTML / Embed Code"
                 rows={4}
                 value={section.custom_content || ''}
@@ -299,15 +297,15 @@ export const CmsHomepageBuilder: React.FC<CmsHomepageBuilderProps> = ({
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button
-          size="default"
+        <AdminButton
+          variant="primary"
           onClick={onSave}
           disabled={isSaving}
-          className="gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-xs cursor-pointer"
+          className="gap-2 shadow-xs"
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Homepage Layout</span>
-        </Button>
+        </AdminButton>
       </div>
     </div>
   );

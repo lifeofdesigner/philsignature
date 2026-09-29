@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Users, Loader2, Eye, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { AdminButton } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column } from '@/components/common/EnterpriseDataTable';
@@ -112,26 +112,24 @@ export const AdminCustomersPage: React.FC = () => {
         const isUpdating = isUpdatingId === c.id;
         return (
           <div className="flex items-center justify-end gap-1.5">
-            <Button
+            <AdminButton
               size="sm"
-              variant="outline"
+              variant="secondary"
               onClick={() => setSelectedCustomer(c)}
-              className="text-xs h-7 px-2.5 border-slate-300 text-black hover:bg-slate-100 gap-1 cursor-pointer"
+              className="text-xs h-7 px-2.5 gap-1"
             >
-              <Eye className="h-3 w-3 text-black" />
+              <Eye className="h-3 w-3" />
               <span>Inspect</span>
-            </Button>
-            <Button
+            </AdminButton>
+            <AdminButton
               size="sm"
-              variant="outline"
+              variant={c.is_active ? 'danger' : 'success'}
               disabled={isUpdating}
               onClick={() => handleToggleActive(c.id, c.is_active, name)}
-              className={`text-xs h-7 px-2.5 border-slate-300 ${
-                c.is_active ? 'text-red-700 hover:bg-red-50' : 'text-emerald-800 hover:bg-emerald-50'
-              }`}
+              className="text-xs h-7 px-2.5"
             >
               {isUpdating ? <Loader2 className="h-3 w-3 animate-spin" /> : c.is_active ? 'Suspend' : 'Reactivate'}
-            </Button>
+            </AdminButton>
           </div>
         );
       },
@@ -250,9 +248,9 @@ export const AdminCustomersPage: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-              <Button
+              <AdminButton
                 size="sm"
-                variant="outline"
+                variant={selectedCustomer.is_active ? 'danger' : 'success'}
                 onClick={() =>
                   handleToggleActive(
                     selectedCustomer.id,
@@ -260,17 +258,15 @@ export const AdminCustomersPage: React.FC = () => {
                     [selectedCustomer.first_name, selectedCustomer.last_name].filter(Boolean).join(' ') || selectedCustomer.email
                   )
                 }
-                className={selectedCustomer.is_active ? 'text-red-700 border-red-200 hover:bg-red-50' : 'text-emerald-800 border-emerald-200 hover:bg-emerald-50'}
               >
                 {selectedCustomer.is_active ? 'Suspend Account' : 'Reactivate Account'}
-              </Button>
-              <Button
-                variant="outline"
+              </AdminButton>
+              <AdminButton
+                variant="secondary"
                 onClick={() => setSelectedCustomer(null)}
-                className="border-slate-300 text-black"
               >
                 Close
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

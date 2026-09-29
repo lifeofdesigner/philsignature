@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sliders, Check, Type } from 'lucide-react';
-import { Switch } from '@/components/ui/switch';
+import { AdminSwitch } from '@/components/admin-ui';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 
 interface LogoSizeControlProps {
@@ -135,7 +135,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
             Shows brand name beside logo on mobile and beneath emblem on desktop. Toggle off to display only the logo insignia.
           </p>
         </div>
-        <Switch
+        <AdminSwitch
           checked={showBusinessName}
           onCheckedChange={handleToggleBusinessName}
           disabled={isSaving}

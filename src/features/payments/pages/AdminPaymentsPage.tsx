@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { CreditCard, Save, Loader2, Landmark, Wallet, Eye, EyeOff, Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminSwitch, AdminInput } from '@/components/admin-ui';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import {
   useAdminPayments,
@@ -83,7 +81,7 @@ export const AdminPaymentsPage: React.FC = () => {
           <span>{revealed[field] ? 'Hide' : 'Reveal'}</span>
         </button>
       </div>
-      <Input
+      <AdminInput
         type={revealed[field] ? 'text' : 'password'}
         placeholder={placeholder}
         value={form[field]}
@@ -103,15 +101,16 @@ export const AdminPaymentsPage: React.FC = () => {
             Each gateway has separate Test and Live credentials — switch modes freely to test safely before going live.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
-          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+          className="gap-1.5 shadow-xs"
           disabled={isSaving}
           onClick={handleSave}
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Gateway Settings</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="space-y-6">
@@ -145,7 +144,7 @@ export const AdminPaymentsPage: React.FC = () => {
                 value={form.paystack_mode}
                 onChange={(mode) => setForm((p) => (p ? { ...p, paystack_mode: mode } : p))}
               />
-              <Switch
+              <AdminSwitch
                 checked={form.paystack_enabled}
                 onCheckedChange={(checked) => setForm((p) => (p ? { ...p, paystack_enabled: checked } : p))}
               />
@@ -157,7 +156,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 {form.paystack_mode === 'live' ? 'Live Public Key' : 'Test Public Key'}
               </label>
-              <Input
+              <AdminInput
                 placeholder={form.paystack_mode === 'live' ? 'pk_live_...' : 'pk_test_...'}
                 value={form.paystack_mode === 'live' ? form.paystack_live_public_key : form.paystack_test_public_key}
                 onChange={(e) =>
@@ -183,7 +182,7 @@ export const AdminPaymentsPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">Callback URL</label>
-              <Input
+              <AdminInput
                 placeholder="https://philzsignature.com/checkout/verify"
                 value={form.paystack_callback_url}
                 onChange={(e) => setForm((p) => (p ? { ...p, paystack_callback_url: e.target.value } : p))}
@@ -193,7 +192,7 @@ export const AdminPaymentsPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">Webhook URL</label>
-              <Input
+              <AdminInput
                 placeholder="https://philzsignature.com/api/payments/paystack/webhook"
                 value={form.paystack_webhook_url}
                 onChange={(e) => setForm((p) => (p ? { ...p, paystack_webhook_url: e.target.value } : p))}
@@ -233,7 +232,7 @@ export const AdminPaymentsPage: React.FC = () => {
                 value={form.flutterwave_mode}
                 onChange={(mode) => setForm((p) => (p ? { ...p, flutterwave_mode: mode } : p))}
               />
-              <Switch
+              <AdminSwitch
                 checked={form.flutterwave_enabled}
                 onCheckedChange={(checked) => setForm((p) => (p ? { ...p, flutterwave_enabled: checked } : p))}
               />
@@ -245,7 +244,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 {form.flutterwave_mode === 'live' ? 'Live Public Key' : 'Test Public Key'}
               </label>
-              <Input
+              <AdminInput
                 placeholder={form.flutterwave_mode === 'live' ? 'FLWPUBK-...' : 'FLWPUBK_TEST-...'}
                 value={
                   form.flutterwave_mode === 'live'
@@ -288,7 +287,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 Callback / Redirect URL
               </label>
-              <Input
+              <AdminInput
                 placeholder="https://philzsignature.com/checkout/verify"
                 value={form.flutterwave_callback_url}
                 onChange={(e) => setForm((p) => (p ? { ...p, flutterwave_callback_url: e.target.value } : p))}
@@ -298,7 +297,7 @@ export const AdminPaymentsPage: React.FC = () => {
 
             <div className="space-y-1.5 sm:col-span-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">Webhook URL</label>
-              <Input
+              <AdminInput
                 placeholder="https://philzsignature.com/api/payments/flutterwave/webhook"
                 value={form.flutterwave_webhook_url}
                 onChange={(e) => setForm((p) => (p ? { ...p, flutterwave_webhook_url: e.target.value } : p))}
@@ -338,7 +337,7 @@ export const AdminPaymentsPage: React.FC = () => {
                 value={form.korapay_mode}
                 onChange={(mode) => setForm((p) => (p ? { ...p, korapay_mode: mode } : p))}
               />
-              <Switch
+              <AdminSwitch
                 checked={form.korapay_enabled}
                 onCheckedChange={(checked) => setForm((p) => (p ? { ...p, korapay_enabled: checked } : p))}
               />
@@ -350,7 +349,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 {form.korapay_mode === 'live' ? 'Live Public Key' : 'Test Public Key'}
               </label>
-              <Input
+              <AdminInput
                 placeholder={form.korapay_mode === 'live' ? 'pk_live_...' : 'pk_test_...'}
                 value={form.korapay_mode === 'live' ? form.korapay_live_public_key : form.korapay_test_public_key}
                 onChange={(e) =>
@@ -376,7 +375,7 @@ export const AdminPaymentsPage: React.FC = () => {
 
             <div className="space-y-1.5 sm:col-span-2">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">Webhook URL</label>
-              <Input
+              <AdminInput
                 placeholder="https://philzsignature.com/api/payments/korapay/webhook"
                 value={form.korapay_webhook_url}
                 onChange={(e) => setForm((p) => (p ? { ...p, korapay_webhook_url: e.target.value } : p))}
@@ -412,7 +411,7 @@ export const AdminPaymentsPage: React.FC = () => {
                 </p>
               </div>
             </div>
-            <Switch
+            <AdminSwitch
               checked={form.bank_transfer_enabled}
               onCheckedChange={(checked) => setForm((p) => (p ? { ...p, bank_transfer_enabled: checked } : p))}
             />
@@ -421,7 +420,7 @@ export const AdminPaymentsPage: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">Bank Name</label>
-              <Input
+              <AdminInput
                 placeholder="e.g. Zenith Bank / GTBank"
                 value={form.bank_name}
                 onChange={(e) => setForm((p) => (p ? { ...p, bank_name: e.target.value } : p))}
@@ -431,7 +430,7 @@ export const AdminPaymentsPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">Account Number</label>
-              <Input
+              <AdminInput
                 placeholder="10-digit NUBAN"
                 value={form.account_number}
                 onChange={(e) => setForm((p) => (p ? { ...p, account_number: e.target.value } : p))}
@@ -443,7 +442,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 Account Beneficiary Name
               </label>
-              <Input
+              <AdminInput
                 placeholder="PHILZ SIGNATURE LTD"
                 value={form.account_name}
                 onChange={(e) => setForm((p) => (p ? { ...p, account_name: e.target.value } : p))}
@@ -455,7 +454,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 SWIFT / Sort Code (optional)
               </label>
-              <Input
+              <AdminInput
                 placeholder="e.g. ZEIBNGLA"
                 value={form.bank_swift_code}
                 onChange={(e) => setForm((p) => (p ? { ...p, bank_swift_code: e.target.value } : p))}
@@ -467,7 +466,7 @@ export const AdminPaymentsPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-700">
                 Additional Instructions (optional)
               </label>
-              <Input
+              <AdminInput
                 placeholder="e.g. Send payment receipt to orders@philzsignature.com to confirm"
                 value={form.bank_transfer_instructions}
                 onChange={(e) => setForm((p) => (p ? { ...p, bank_transfer_instructions: e.target.value } : p))}

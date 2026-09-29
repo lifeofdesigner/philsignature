@@ -15,9 +15,8 @@ import {
   Wand2,
   ImageOff,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { EmptyState } from '@/components/feedback/EmptyState';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column, type BulkAction } from '@/components/common/EnterpriseDataTable';
 import { ImageUploadField } from '@/components/admin/ImageUploadField';
@@ -738,14 +737,15 @@ export const AdminProductsPage: React.FC = () => {
             Manage perfumes, scented candles, luxury room sprays, pricing, batch stock levels, and publication status.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
-          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+          className="gap-1.5 shadow-xs"
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
           <span>Add Product</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-wrap items-center gap-3 shadow-2xs text-xs">
@@ -851,7 +851,7 @@ export const AdminProductsPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Fragrance Name *</label>
-                  <Input
+                  <AdminInput
                     value={form.name}
                     onChange={(e) => handleNameChange(e.target.value)}
                     placeholder="e.g. Royal Oud Extrait"
@@ -861,7 +861,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">URL Slug *</label>
-                  <Input
+                  <AdminInput
                     value={form.slug}
                     onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
                     placeholder="royal-oud-extrait"
@@ -873,7 +873,7 @@ export const AdminProductsPage: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="block font-semibold text-black">Subtitle / Tagline</label>
-                <Input
+                <AdminInput
                   value={form.tagline}
                   onChange={(e) => setForm((p) => ({ ...p, tagline: e.target.value }))}
                   placeholder="e.g. Pure Artisanal Extrait de Parfum"
@@ -943,28 +943,28 @@ export const AdminProductsPage: React.FC = () => {
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">SKU Code *</label>
                   <div className="flex items-center gap-1.5">
-                    <Input
+                    <AdminInput
                       value={form.sku}
                       onChange={(e) => setForm((p) => ({ ...p, sku: e.target.value }))}
                       placeholder="PS-OUD-01"
                       required
                       className="bg-white border-slate-300 text-black font-mono"
                     />
-                    <Button
+                    <AdminButton
                       type="button"
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       onClick={handleGenerateSku}
                       title="Auto-generate SKU from fragrance name"
-                      className="h-9 px-2.5 shrink-0 border-slate-300 text-black hover:bg-slate-100"
+                      className="h-9 px-2.5 shrink-0"
                     >
                       <Wand2 className="h-3.5 w-3.5" />
-                    </Button>
+                    </AdminButton>
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Price (₦) *</label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     step="0.01"
@@ -977,7 +977,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Sale Price (₦)</label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     step="0.01"
@@ -992,7 +992,7 @@ export const AdminProductsPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Stock Quantity *</label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.stock_quantity}
@@ -1072,7 +1072,7 @@ export const AdminProductsPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-3.5 bg-white border border-slate-200 rounded-xl">
                 <div className="sm:col-span-2 space-y-1.5">
                   <label className="block font-semibold text-black">Scent Profile Notes</label>
-                  <Input
+                  <AdminInput
                     value={form.scent_profile}
                     onChange={(e) => setForm((p) => ({ ...p, scent_profile: e.target.value }))}
                     placeholder="e.g. Exotic Fruits • Oud • Spices • Florals • Amber"
@@ -1104,16 +1104,16 @@ export const AdminProductsPage: React.FC = () => {
                       only at the base price/quantity above.
                     </p>
                   </div>
-                  <Button
+                  <AdminButton
                     type="button"
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     onClick={handleAddVariant}
-                    className="gap-1.5 border-slate-300 text-black hover:bg-slate-100 shrink-0"
+                    className="gap-1.5 shrink-0"
                   >
                     <Plus className="h-3.5 w-3.5" />
                     <span>Add Size</span>
-                  </Button>
+                  </AdminButton>
                 </div>
 
                 {form.variants.length === 0 ? (
@@ -1125,7 +1125,7 @@ export const AdminProductsPage: React.FC = () => {
                         <div className="grid grid-cols-2 sm:grid-cols-6 gap-2.5">
                           <div className="space-y-1 sm:col-span-1">
                             <label className="block text-[10px] font-semibold text-black">Label *</label>
-                            <Input
+                            <AdminInput
                               value={variant.name}
                               onChange={(e) => handleVariantChange(index, { name: e.target.value })}
                               placeholder="30ml"
@@ -1134,7 +1134,7 @@ export const AdminProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-1 sm:col-span-1">
                             <label className="block text-[10px] font-semibold text-black">Size (ml)</label>
-                            <Input
+                            <AdminInput
                               type="number"
                               min="0"
                               value={variant.size_ml}
@@ -1145,7 +1145,7 @@ export const AdminProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-1 sm:col-span-1">
                             <label className="block text-[10px] font-semibold text-black">Price (₦) *</label>
-                            <Input
+                            <AdminInput
                               type="number"
                               min="0"
                               step="0.01"
@@ -1157,7 +1157,7 @@ export const AdminProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-1 sm:col-span-1">
                             <label className="block text-[10px] font-semibold text-black">Sale Price (₦)</label>
-                            <Input
+                            <AdminInput
                               type="number"
                               min="0"
                               step="0.01"
@@ -1169,7 +1169,7 @@ export const AdminProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-1 sm:col-span-1">
                             <label className="block text-[10px] font-semibold text-black">Stock</label>
-                            <Input
+                            <AdminInput
                               type="number"
                               min="0"
                               value={variant.stock_quantity}
@@ -1179,7 +1179,7 @@ export const AdminProductsPage: React.FC = () => {
                           </div>
                           <div className="space-y-1 sm:col-span-1">
                             <label className="block text-[10px] font-semibold text-black">SKU</label>
-                            <Input
+                            <AdminInput
                               value={variant.sku}
                               onChange={(e) => handleVariantChange(index, { sku: e.target.value })}
                               placeholder="PS-OUD-01-30ML"
@@ -1219,7 +1219,7 @@ export const AdminProductsPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1.5">
                     <label className="block text-black font-medium text-[11px]">Top Notes</label>
-                    <Input
+                    <AdminInput
                       value={form.top_notes}
                       onChange={(e) => setForm((p) => ({ ...p, top_notes: e.target.value }))}
                       placeholder="Bergamot, Pink Pepper"
@@ -1228,7 +1228,7 @@ export const AdminProductsPage: React.FC = () => {
                   </div>
                   <div className="space-y-1.5">
                     <label className="block text-black font-medium text-[11px]">Middle Notes</label>
-                    <Input
+                    <AdminInput
                       value={form.middle_notes}
                       onChange={(e) => setForm((p) => ({ ...p, middle_notes: e.target.value }))}
                       placeholder="Jasmine, Rose"
@@ -1237,7 +1237,7 @@ export const AdminProductsPage: React.FC = () => {
                   </div>
                   <div className="space-y-1.5">
                     <label className="block text-black font-medium text-[11px]">Base Notes</label>
-                    <Input
+                    <AdminInput
                       value={form.base_notes}
                       onChange={(e) => setForm((p) => ({ ...p, base_notes: e.target.value }))}
                       placeholder="Oud, Amber, Musk"
@@ -1249,7 +1249,7 @@ export const AdminProductsPage: React.FC = () => {
 
                 <div className="space-y-1.5">
                   <label className="block text-black font-medium text-[11px]">Short Description</label>
-                  <Input
+                  <AdminInput
                     value={form.short_description}
                     onChange={(e) => setForm((p) => ({ ...p, short_description: e.target.value }))}
                     placeholder="One-line summary shown in product listings"
@@ -1282,7 +1282,7 @@ export const AdminProductsPage: React.FC = () => {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-3.5 bg-white border border-slate-200 rounded-xl">
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Concentration</label>
-                  <Input
+                  <AdminInput
                     value={form.concentration}
                     onChange={(e) => setForm((p) => ({ ...p, concentration: e.target.value }))}
                     placeholder="Extrait de Parfum"
@@ -1291,7 +1291,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Volume (ml)</label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.volume_ml}
@@ -1302,7 +1302,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Weight (g)</label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.weight_grams}
@@ -1313,7 +1313,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block font-semibold text-black">Barcode</label>
-                  <Input
+                  <AdminInput
                     value={form.barcode}
                     onChange={(e) => setForm((p) => ({ ...p, barcode: e.target.value }))}
                     placeholder="EAN/UPC"
@@ -1330,7 +1330,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block text-black font-medium text-[11px]">Meta Title</label>
-                  <Input
+                  <AdminInput
                     value={form.meta_title}
                     onChange={(e) => setForm((p) => ({ ...p, meta_title: e.target.value }))}
                     placeholder="e.g. Oud Maracuja | Philz Signature Luxury Perfume Oil"
@@ -1349,7 +1349,7 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block text-black font-medium text-[11px]">Search Keywords</label>
-                  <Input
+                  <AdminInput
                     value={form.meta_keywords}
                     onChange={(e) => setForm((p) => ({ ...p, meta_keywords: e.target.value }))}
                     placeholder="Oud Maracuja, Fruity, Oud, Philz Signature, Luxury perfume"
@@ -1410,17 +1410,18 @@ export const AdminProductsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
+                <AdminButton type="button" variant="secondary" onClick={closeForm} className="font-medium">
                   Cancel
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   type="submit"
+                  variant="primary"
                   disabled={isCreating || isUpdating}
-                  className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+                  className="gap-1.5 shadow-xs"
                 >
                   {(isCreating || isUpdating) && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                   <span>{editingProduct ? 'Save Changes' : 'Create Formulation'}</span>
-                </Button>
+                </AdminButton>
               </div>
             </form>
           </div>
@@ -1435,23 +1436,22 @@ export const AdminProductsPage: React.FC = () => {
               This will permanently delete <span className="font-bold text-black">"{deleteTarget.name}"</span> from the database. This action cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-3 pt-2">
-              <Button
-                variant="outline"
+              <AdminButton
+                variant="secondary"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeletingId === deleteTarget.id}
-                className="border-slate-300 text-black"
               >
                 Cancel
-              </Button>
-              <Button
-                variant="destructive"
+              </AdminButton>
+              <AdminButton
+                variant="danger"
                 onClick={confirmDelete}
                 disabled={isDeletingId === deleteTarget.id}
                 className="gap-2"
               >
                 {isDeletingId === deleteTarget.id && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                 <span>Delete Formulation</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

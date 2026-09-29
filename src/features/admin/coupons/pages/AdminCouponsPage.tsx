@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { TicketPercent, Plus, Pencil, Trash2, X, Loader2, Copy, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { EnterpriseDataTable, type Column } from '@/components/common/EnterpriseDataTable';
@@ -302,18 +301,19 @@ export const AdminCouponsPage: React.FC = () => {
             Configure promotional percentage discounts, fixed reductions, minimum order thresholds, and expiry limits.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
-          className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+          className="gap-1.5 shadow-xs"
           onClick={openCreateForm}
         >
           <Plus className="h-3.5 w-3.5" />
           <span>New Coupon</span>
-        </Button>
+        </AdminButton>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-2xs">
-        <Input
+        <AdminInput
           placeholder="Search by coupon code (e.g. LUXURY10)..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -372,7 +372,7 @@ export const AdminCouponsPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Coupon Code <span className="text-red-500">*</span>
                   </label>
-                  <Input
+                  <AdminInput
                     value={form.code}
                     onChange={(e) => setForm((p) => ({ ...p, code: e.target.value.toUpperCase() }))}
                     placeholder="e.g. EXCLUSIVE15"
@@ -403,7 +403,7 @@ export const AdminCouponsPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     {form.discount_type === 'percentage' ? 'Discount Rate (%)' : 'Discount Amount (₦)'} <span className="text-red-500">*</span>
                   </label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     step="any"
@@ -419,7 +419,7 @@ export const AdminCouponsPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Min Spend (₦)
                   </label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.min_spend}
@@ -433,7 +433,7 @@ export const AdminCouponsPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Max Discount Cap (₦)
                   </label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.max_discount}
@@ -449,7 +449,7 @@ export const AdminCouponsPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Usage Limit (Redemptions)
                   </label>
-                  <Input
+                  <AdminInput
                     type="number"
                     min="0"
                     value={form.usage_limit}
@@ -463,7 +463,7 @@ export const AdminCouponsPage: React.FC = () => {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-black">
                     Expiration Date
                   </label>
-                  <Input
+                  <AdminInput
                     type="date"
                     value={form.expires_at}
                     onChange={(e) => setForm((p) => ({ ...p, expires_at: e.target.value }))}
@@ -485,17 +485,18 @@ export const AdminCouponsPage: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-                <Button type="button" variant="outline" onClick={closeForm} className="border-slate-300 text-black font-medium">
+                <AdminButton type="button" variant="secondary" onClick={closeForm} className="font-medium">
                   Cancel
-                </Button>
-                <Button
+                </AdminButton>
+                <AdminButton
                   type="submit"
+                  variant="primary"
                   disabled={isCreating || isUpdating}
-                  className="bg-slate-900 hover:bg-slate-800 text-white gap-2 font-semibold shadow-xs cursor-pointer"
+                  className="gap-2 shadow-xs"
                 >
                   {(isCreating || isUpdating) && <Loader2 className="h-4 w-4 animate-spin" />}
                   <span>{editing ? 'Save Changes' : 'Create Coupon'}</span>
-                </Button>
+                </AdminButton>
               </div>
             </form>
           </div>
@@ -511,22 +512,22 @@ export const AdminCouponsPage: React.FC = () => {
               This will permanently delete coupon code <span className="font-semibold text-black font-mono">"{deleteTarget.code}"</span>. Customers will no longer be able to claim this discount.
             </p>
             <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
-              <Button
-                variant="outline"
+              <AdminButton
+                variant="secondary"
                 onClick={() => setDeleteTarget(null)}
                 disabled={isDeletingId === deleteTarget.id}
               >
                 Cancel
-              </Button>
-              <Button
-                variant="destructive"
+              </AdminButton>
+              <AdminButton
+                variant="danger"
                 onClick={confirmDelete}
                 disabled={isDeletingId === deleteTarget.id}
                 className="gap-2"
               >
                 {isDeletingId === deleteTarget.id && <Loader2 className="h-4 w-4 animate-spin" />}
                 <span>Delete Coupon</span>
-              </Button>
+              </AdminButton>
             </div>
           </div>
         </div>

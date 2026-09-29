@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import { FileText, Save, Loader2, Plus, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { AdminButton, AdminInput, AdminTextarea } from '@/components/admin-ui';
 import type { CmsFaqContent, CmsContactContent, CmsPolicyPageContent } from '@/services/CMSService';
 
 interface CmsPoliciesManagerProps {
@@ -191,26 +189,26 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
       {activeTab === 'privacy' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="Policy Page Title"
               value={privacyPolicy.title}
               onChange={(e) => setPrivacyPolicy({ ...privacyPolicy, title: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Effective Date"
               value={privacyPolicy.last_updated}
               onChange={(e) => setPrivacyPolicy({ ...privacyPolicy, last_updated: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
           </div>
-          <Input
+          <AdminInput
             label="Editorial Subtitle"
             value={privacyPolicy.subtitle || ''}
             onChange={(e) => setPrivacyPolicy({ ...privacyPolicy, subtitle: e.target.value })}
             className="bg-white border-slate-300 text-slate-900"
           />
-          <Textarea
+          <AdminTextarea
             label="Policy Body Content"
             rows={8}
             value={privacyPolicy.content}
@@ -218,15 +216,16 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             className="bg-white border-slate-300 text-slate-900"
           />
           <div className="flex justify-end pt-2">
-            <Button
+            <AdminButton
+              variant="primary"
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('privacy_policy', privacyPolicy)}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+              className="gap-1.5 shadow-xs"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Privacy Policy</span>
-            </Button>
+            </AdminButton>
           </div>
         </div>
       )}
@@ -235,26 +234,26 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
       {activeTab === 'terms' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="Policy Page Title"
               value={termsPolicy.title}
               onChange={(e) => setTermsPolicy({ ...termsPolicy, title: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Effective Date"
               value={termsPolicy.last_updated}
               onChange={(e) => setTermsPolicy({ ...termsPolicy, last_updated: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
           </div>
-          <Input
+          <AdminInput
             label="Editorial Subtitle"
             value={termsPolicy.subtitle || ''}
             onChange={(e) => setTermsPolicy({ ...termsPolicy, subtitle: e.target.value })}
             className="bg-white border-slate-300 text-slate-900"
           />
-          <Textarea
+          <AdminTextarea
             label="Terms &amp; Conditions Content"
             rows={8}
             value={termsPolicy.content}
@@ -262,15 +261,16 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             className="bg-white border-slate-300 text-slate-900"
           />
           <div className="flex justify-end pt-2">
-            <Button
+            <AdminButton
+              variant="primary"
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('terms', termsPolicy)}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+              className="gap-1.5 shadow-xs"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Terms of Service</span>
-            </Button>
+            </AdminButton>
           </div>
         </div>
       )}
@@ -279,26 +279,26 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
       {activeTab === 'shipping' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="Policy Page Title"
               value={shippingPolicy.title}
               onChange={(e) => setShippingPolicy({ ...shippingPolicy, title: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Effective Date"
               value={shippingPolicy.last_updated}
               onChange={(e) => setShippingPolicy({ ...shippingPolicy, last_updated: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
           </div>
-          <Input
+          <AdminInput
             label="Editorial Subtitle"
             value={shippingPolicy.subtitle || ''}
             onChange={(e) => setShippingPolicy({ ...shippingPolicy, subtitle: e.target.value })}
             className="bg-white border-slate-300 text-slate-900"
           />
-          <Textarea
+          <AdminTextarea
             label="Shipping &amp; Dispatch Content"
             rows={8}
             value={shippingPolicy.content}
@@ -306,15 +306,16 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             className="bg-white border-slate-300 text-slate-900"
           />
           <div className="flex justify-end pt-2">
-            <Button
+            <AdminButton
+              variant="primary"
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('shipping_policy', shippingPolicy)}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+              className="gap-1.5 shadow-xs"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Shipping Policy</span>
-            </Button>
+            </AdminButton>
           </div>
         </div>
       )}
@@ -323,26 +324,26 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
       {activeTab === 'returns' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="Policy Page Title"
               value={returnsPolicy.title}
               onChange={(e) => setReturnsPolicy({ ...returnsPolicy, title: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Effective Date"
               value={returnsPolicy.last_updated}
               onChange={(e) => setReturnsPolicy({ ...returnsPolicy, last_updated: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
           </div>
-          <Input
+          <AdminInput
             label="Editorial Subtitle"
             value={returnsPolicy.subtitle || ''}
             onChange={(e) => setReturnsPolicy({ ...returnsPolicy, subtitle: e.target.value })}
             className="bg-white border-slate-300 text-slate-900"
           />
-          <Textarea
+          <AdminTextarea
             label="Returns &amp; Replacements Content"
             rows={8}
             value={returnsPolicy.content}
@@ -350,15 +351,16 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             className="bg-white border-slate-300 text-slate-900"
           />
           <div className="flex justify-end pt-2">
-            <Button
+            <AdminButton
+              variant="primary"
               size="sm"
               disabled={isSaving}
               onClick={() => handleSavePolicy('returns_policy', returnsPolicy)}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer"
+              className="gap-1.5 shadow-xs"
             >
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Returns Policy</span>
-            </Button>
+            </AdminButton>
           </div>
         </div>
       )}
@@ -371,20 +373,20 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               <h4 className="text-base font-bold text-slate-900">Storefront FAQ Entries</h4>
               <p className="text-xs text-slate-700 font-medium">Manage question &amp; answer accordions shown on the FAQ page.</p>
             </div>
-            <Button variant="outline" size="sm" onClick={handleAddFaqItem} className="gap-1.5 text-xs border-slate-300">
-              <Plus className="h-3.5 w-3.5 text-slate-700" />
+            <AdminButton variant="secondary" size="sm" onClick={handleAddFaqItem} className="gap-1.5 text-xs">
+              <Plus className="h-3.5 w-3.5" />
               <span>Add Question</span>
-            </Button>
+            </AdminButton>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="FAQ Section Title"
               value={faqForm.title}
               onChange={(e) => setFaqForm({ ...faqForm, title: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Section Subtitle"
               value={faqForm.subtitle}
               onChange={(e) => setFaqForm({ ...faqForm, subtitle: e.target.value })}
@@ -397,16 +399,16 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
               <div key={idx} className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono font-bold text-slate-900">Question {idx + 1}</span>
-                  <Button
-                    variant="outline"
+                  <AdminButton
+                    variant="danger"
                     size="sm"
                     onClick={() => handleDeleteFaqItem(idx)}
-                    className="h-6 w-6 p-0 text-slate-700 hover:text-red-600 hover:bg-red-50 border-slate-200"
+                    className="h-6 w-6 p-0"
                   >
                     <Trash2 className="h-3 w-3" />
-                  </Button>
+                  </AdminButton>
                 </div>
-                <Input
+                <AdminInput
                   label="Question"
                   value={item.question}
                   onChange={(e) => {
@@ -416,7 +418,7 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
                   }}
                   className="bg-white border-slate-300 text-slate-900"
                 />
-                <Textarea
+                <AdminTextarea
                   label="Answer"
                   rows={2}
                   value={item.answer}
@@ -432,10 +434,10 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
           </div>
 
           <div className="flex justify-end pt-2">
-            <Button size="sm" onClick={handleSaveFaq} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
+            <AdminButton variant="primary" size="sm" onClick={handleSaveFaq} disabled={isSaving} className="gap-1.5 shadow-xs">
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save FAQ Database</span>
-            </Button>
+            </AdminButton>
           </div>
         </div>
       )}
@@ -444,13 +446,13 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
       {activeTab === 'contact' && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4 shadow-2xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="Contact Page Title"
               value={contactForm.title}
               onChange={(e) => setContactForm({ ...contactForm, title: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Subtitle"
               value={contactForm.subtitle}
               onChange={(e) => setContactForm({ ...contactForm, subtitle: e.target.value })}
@@ -458,13 +460,13 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="Concierge Email"
               value={contactForm.email}
               onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Phone Number"
               value={contactForm.phone}
               onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
@@ -472,30 +474,30 @@ export const CmsPoliciesManager: React.FC<CmsPoliciesManagerProps> = ({
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
+            <AdminInput
               label="WhatsApp Link / Number"
               value={contactForm.whatsapp}
               onChange={(e) => setContactForm({ ...contactForm, whatsapp: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
-            <Input
+            <AdminInput
               label="Concierge Hours"
               value={contactForm.hours}
               onChange={(e) => setContactForm({ ...contactForm, hours: e.target.value })}
               className="bg-white border-slate-300 text-slate-900"
             />
           </div>
-          <Input
+          <AdminInput
             label="Boutique Atelier Address"
             value={contactForm.address}
             onChange={(e) => setContactForm({ ...contactForm, address: e.target.value })}
             className="bg-white border-slate-300 text-slate-900"
           />
           <div className="flex justify-end pt-2">
-            <Button size="sm" onClick={handleSaveContact} disabled={isSaving} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold gap-1.5 shadow-xs cursor-pointer">
+            <AdminButton variant="primary" size="sm" onClick={handleSaveContact} disabled={isSaving} className="gap-1.5 shadow-xs">
               {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
               <span>Save Contact Info</span>
-            </Button>
+            </AdminButton>
           </div>
         </div>
       )}

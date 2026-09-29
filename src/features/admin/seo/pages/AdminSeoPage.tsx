@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Globe, Save, Loader2, Search, Share2, FileText, CheckCircle2, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { AdminButton, AdminInput, AdminTextarea } from '@/components/admin-ui';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminSeo, type SeoDefaults } from '../hooks/useAdminSeo';
 
@@ -37,15 +35,16 @@ export const AdminSeoPage: React.FC = () => {
             Control search engine snippets, OpenGraph social sharing, canonical URLs, robots.txt, and structured data schemas.
           </p>
         </div>
-        <Button
+        <AdminButton
+          variant="primary"
           size="sm"
-          className="bg-slate-900 hover:bg-slate-800 text-white font-medium gap-1.5 shadow-2xs"
+          className="font-medium gap-1.5 shadow-2xs"
           disabled={isSaving}
           onClick={handleSave}
         >
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
           <span>Save Changes</span>
-        </Button>
+        </AdminButton>
       </div>
 
       {/* Navigation Tabs */}
@@ -106,7 +105,7 @@ export const AdminSeoPage: React.FC = () => {
                 </label>
                 <span className="text-[11px] text-black font-mono">{form.meta_title?.length || 0} / 60 chars</span>
               </div>
-              <Input
+              <AdminInput
                 value={form.meta_title}
                 onChange={(e) => setForm((p) => (p ? { ...p, meta_title: e.target.value } : p))}
                 placeholder="e.g. PHILZ SIGNATURE | Haute Parfumerie & Luxury Fragrances"
@@ -121,7 +120,7 @@ export const AdminSeoPage: React.FC = () => {
                 </label>
                 <span className="text-[11px] text-black font-mono">{form.meta_description?.length || 0} / 160 chars</span>
               </div>
-              <Textarea
+              <AdminTextarea
                 rows={3}
                 value={form.meta_description}
                 onChange={(e) => setForm((p) => (p ? { ...p, meta_description: e.target.value } : p))}
@@ -134,7 +133,7 @@ export const AdminSeoPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-black">
                 Global Keywords (comma-separated)
               </label>
-              <Input
+              <AdminInput
                 value={form.keywords}
                 onChange={(e) => setForm((p) => (p ? { ...p, keywords: e.target.value } : p))}
                 placeholder="perfume, luxury fragrance, extrait de parfum, Lagos"
@@ -146,7 +145,7 @@ export const AdminSeoPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-black">
                 OpenGraph Social Share Image URL (1200 x 630 px)
               </label>
-              <Input
+              <AdminInput
                 value={form.og_image_url || ''}
                 onChange={(e) => setForm((p) => (p ? { ...p, og_image_url: e.target.value } : p))}
                 placeholder="https://.../og-banner.jpg"
@@ -158,7 +157,7 @@ export const AdminSeoPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-black">
                 Twitter / X Creator Handle
               </label>
-              <Input
+              <AdminInput
                 value={form.twitter_handle || ''}
                 onChange={(e) => setForm((p) => (p ? { ...p, twitter_handle: e.target.value } : p))}
                 placeholder="@philzsignature"
@@ -251,7 +250,7 @@ export const AdminSeoPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-black">
                 Canonical Base URL <span className="text-red-500">*</span>
               </label>
-              <Input
+              <AdminInput
                 value={form.canonical_url || ''}
                 onChange={(e) => setForm((p) => (p ? { ...p, canonical_url: e.target.value } : p))}
                 placeholder="https://philzsignature.com"
@@ -264,7 +263,7 @@ export const AdminSeoPage: React.FC = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-black">
                 Google Search Console Verification Token
               </label>
-              <Input
+              <AdminInput
                 value={form.google_site_verification || ''}
                 onChange={(e) => setForm((p) => (p ? { ...p, google_site_verification: e.target.value } : p))}
                 placeholder="google-site-verification=xxxx..."
@@ -278,7 +277,7 @@ export const AdminSeoPage: React.FC = () => {
             <label className="text-xs font-semibold uppercase tracking-wider text-black">
               Robots.txt Content
             </label>
-            <Textarea
+            <AdminTextarea
               rows={6}
               value={form.robots_txt || ''}
               onChange={(e) => setForm((p) => (p ? { ...p, robots_txt: e.target.value } : p))}
