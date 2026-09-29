@@ -17,7 +17,7 @@ export const AdminShell: React.FC = () => {
     .slice(1);
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans flex antialiased">
+    <div className="admin-scope min-h-screen bg-white text-black font-sans flex antialiased">
       <AdminSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

@@ -12,13 +12,13 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="w-full space-y-1.5">
         {label && (
-          <label className="block text-[11px] uppercase tracking-wider text-black dark:text-luxury-cream font-semibold mb-1">
+          <label className="block text-[11px] uppercase tracking-wider text-luxury-sand dark:text-luxury-cream/80 font-semibold mb-1">
             {label}
           </label>
         )}
         <textarea
           className={cn(
-            'flex min-h-[100px] w-full rounded-sm bg-white dark:bg-luxury-card border border-slate-300 dark:border-luxury-border px-3.5 py-2.5 text-sm text-black dark:text-luxury-cream placeholder:text-slate-500 dark:placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold focus-visible:ring-1 focus-visible:ring-luxury-gold transition-colors disabled:cursor-not-allowed disabled:opacity-50 resize-y',
+            'flex min-h-[100px] w-full rounded-sm bg-luxury-card border border-luxury-border px-3.5 py-2.5 text-sm text-luxury-cream placeholder:text-luxury-muted focus:outline-none focus:border-luxury-gold focus-visible:ring-1 focus-visible:ring-luxury-gold transition-colors disabled:cursor-not-allowed disabled:opacity-50 resize-y',
             error && 'border-red-600 focus:border-red-500',
             className
           )}

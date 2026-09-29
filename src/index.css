@@ -241,11 +241,64 @@
     color: #374151;
   }
 
-  /* Force pure black on any element explicitly marked text-black, no matter what else targets it */
-  html.light .text-black,
-  html:not(.dark) .text-black,
-  html.dark .text-black {
+  /* ===================================================================
+     Admin Panel Color System — fully independent of the storefront's
+     luxury dark-theme tokens. Everything under .admin-scope always
+     renders as a plain light UI: white/light surfaces, solid black
+     text, regardless of the storefront's light/dark mode class.
+     =================================================================== */
+  .admin-scope,
+  .admin-scope * {
+    color-scheme: light;
+  }
+
+  /* Only elements with NO explicit Tailwind text-color utility fall back to
+     black — badges, buttons and status pills that set their own text-*
+     color (e.g. text-emerald-800, text-white) are left alone. */
+  .admin-scope p:not([class*="text-"]),
+  .admin-scope span:not([class*="text-"]),
+  .admin-scope label:not([class*="text-"]),
+  .admin-scope h1:not([class*="text-"]),
+  .admin-scope h2:not([class*="text-"]),
+  .admin-scope h3:not([class*="text-"]),
+  .admin-scope h4:not([class*="text-"]),
+  .admin-scope h5:not([class*="text-"]),
+  .admin-scope h6:not([class*="text-"]),
+  .admin-scope div:not([class*="text-"]),
+  .admin-scope td:not([class*="text-"]),
+  .admin-scope th:not([class*="text-"]),
+  .admin-scope li:not([class*="text-"]),
+  .admin-scope a:not([class*="text-"]) {
     color: #000000 !important;
+  }
+
+  /* Any element that explicitly opts into text-black always renders true black */
+  .admin-scope .text-black {
+    color: #000000 !important;
+  }
+
+  .admin-scope input,
+  .admin-scope textarea,
+  .admin-scope select {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: #CBD5E1 !important;
+  }
+
+  .admin-scope input::placeholder,
+  .admin-scope textarea::placeholder {
+    color: #6B7280 !important;
+    opacity: 1 !important;
+  }
+
+  .admin-scope .bg-luxury-card,
+  .admin-scope .bg-luxury-black,
+  .admin-scope .bg-luxury-charcoal {
+    background-color: #FFFFFF !important;
+  }
+
+  .admin-scope .border-luxury-border {
+    border-color: #E2E8F0 !important;
   }
 
   html.light .text-luxury-cream,
