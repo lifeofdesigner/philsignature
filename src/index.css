@@ -236,8 +236,8 @@
   }
 
   /* Complete Text Color System Guarantees in Light Theme */
-  html.light p,
-  html:not(.dark) p {
+  html.light p:not([class*="text-"]),
+  html:not(.dark) p:not([class*="text-"]) {
     color: #374151;
   }
 
@@ -295,7 +295,7 @@
   }
 
   /* Complete Text Color System Guarantees in Dark Theme */
-  html.dark p {
+  html.dark p:not([class*="text-"]) {
     color: #D5CCBF;
   }
 
