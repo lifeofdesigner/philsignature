@@ -139,15 +139,17 @@
     color: #111827 !important;
   }
 
-  /* text-white becomes dark text in white mode (unless on a badge or gold button) */
-  html.light .text-white:not(.btn-gold *):not([data-keep-white]),
-  html:not(.dark) .text-white:not(.btn-gold *):not([data-keep-white]) {
+  /* text-white becomes dark text in white mode ONLY on storefront light surfaces.
+     Never apply to: admin scope, buttons, dark surfaces (bg-black, bg-slate, bg-red, etc.),
+     badges, dropdown menus, or explicit data-keep-white elements. */
+  html.light :not(.admin-scope):not(.admin-scope *) .text-white:not(.btn-gold *):not([data-keep-white]):not([data-keep-white] *):not(button):not(button *):not([role="menu"]):not([role="menu"] *):not([class*="bg-black"]):not([class*="bg-black"] *):not([class*="bg-slate-900"]):not([class*="bg-slate-900"] *):not([class*="bg-slate-800"]):not([class*="bg-slate-800"] *):not([class*="bg-[#111111]"]):not([class*="bg-[#111111]"] *):not([class*="bg-[#DC2626]"]):not([class*="bg-[#DC2626]"] *):not([class*="bg-[#16A34A]"]):not([class*="bg-[#16A34A]"] *):not([class*="bg-red-"]):not([class*="bg-red-"] *),
+  html:not(.dark) :not(.admin-scope):not(.admin-scope *) .text-white:not(.btn-gold *):not([data-keep-white]):not([data-keep-white] *):not(button):not(button *):not([role="menu"]):not([role="menu"] *):not([class*="bg-black"]):not([class*="bg-black"] *):not([class*="bg-slate-900"]):not([class*="bg-slate-900"] *):not([class*="bg-slate-800"]):not([class*="bg-slate-800"] *):not([class*="bg-[#111111]"]):not([class*="bg-[#111111]"] *):not([class*="bg-[#DC2626]"]):not([class*="bg-[#DC2626]"] *):not([class*="bg-[#16A34A]"]):not([class*="bg-[#16A34A]"] *):not([class*="bg-red-"]):not([class*="bg-red-"] *) {
     color: #111827 !important;
   }
 
-  /* bg-black becomes pure white in white mode */
-  html.light .bg-black:not([data-keep-black]),
-  html:not(.dark) .bg-black:not([data-keep-black]) {
+  /* bg-black becomes pure white in white mode (unless explicitly marked keep-black or in admin scope) */
+  html.light :not(.admin-scope):not(.admin-scope *) .bg-black:not([data-keep-black]),
+  html:not(.dark) :not(.admin-scope):not(.admin-scope *) .bg-black:not([data-keep-black]) {
     background-color: #FFFFFF !important;
   }
 
@@ -262,21 +264,23 @@
   }
 
   /* Base text: anything without its own explicit text-* utility (badges,
-     status pills, white-on-dark buttons keep their own intentional color). */
-  .admin-scope p:not([class*="text-"]),
-  .admin-scope span:not([class*="text-"]),
-  .admin-scope label:not([class*="text-"]),
-  .admin-scope h1:not([class*="text-"]),
-  .admin-scope h2:not([class*="text-"]),
-  .admin-scope h3:not([class*="text-"]),
-  .admin-scope h4:not([class*="text-"]),
-  .admin-scope h5:not([class*="text-"]),
-  .admin-scope h6:not([class*="text-"]),
-  .admin-scope div:not([class*="text-"]),
-  .admin-scope td:not([class*="text-"]),
-  .admin-scope th:not([class*="text-"]),
-  .admin-scope li:not([class*="text-"]),
-  .admin-scope a:not([class*="text-"]) {
+     status pills, white-on-dark buttons keep their own intentional color).
+     Buttons and data-keep-white elements are strictly excluded so button text/spans
+     always maintain high contrast. */
+  .admin-scope p:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope span:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope label:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope h1:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope h2:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope h3:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope h4:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope h5:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope h6:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope div:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope td:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope th:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope li:not([class*="text-"]):not(button *):not([data-keep-white] *),
+  .admin-scope a:not([class*="text-"]):not(button *):not([data-keep-white] *) {
     color: #111111 !important;
   }
 
@@ -284,14 +288,56 @@
     color: #111111 !important;
   }
 
+  /* Admin Buttons: ensure high-contrast text and child elements */
+  .admin-scope button[data-admin-btn="primary"],
+  .admin-scope button[data-admin-btn="primary"] *,
+  .admin-scope button.bg-\[\#111111\],
+  .admin-scope button.bg-\[\#111111\] *,
+  .admin-scope button[data-admin-btn="danger"],
+  .admin-scope button[data-admin-btn="danger"] *,
+  .admin-scope button.bg-\[\#DC2626\],
+  .admin-scope button.bg-\[\#DC2626\] *,
+  .admin-scope button[data-admin-btn="success"],
+  .admin-scope button[data-admin-btn="success"] *,
+  .admin-scope button.bg-\[\#16A34A\],
+  .admin-scope button.bg-\[\#16A34A\] *,
+  .admin-scope button.bg-slate-900,
+  .admin-scope button.bg-slate-900 *,
+  .admin-scope .bg-slate-900.text-white,
+  .admin-scope .bg-slate-900.text-white *,
+  .admin-scope .bg-slate-800.text-white,
+  .admin-scope .bg-slate-800.text-white *,
+  .admin-scope [data-keep-white],
+  .admin-scope [data-keep-white] *,
+  .admin-scope .text-white {
+    color: #FFFFFF !important;
+  }
+
+  .admin-scope button[data-admin-btn="secondary"],
+  .admin-scope button[data-admin-btn="secondary"] * {
+    color: #111111 !important;
+  }
+
+  .admin-scope button[data-admin-btn="ghost"],
+  .admin-scope button[data-admin-btn="ghost"] * {
+    color: #374151 !important;
+  }
+
   /* Inputs, selects, textareas: white surface, black text, gray border */
   .admin-scope input,
   .admin-scope textarea,
   .admin-scope select {
+    color-scheme: light !important;
     background-color: #FFFFFF !important;
     color: #111111 !important;
     border-color: #D1D5DB !important;
     box-shadow: none !important;
+  }
+
+  /* Admin select dropdown options: guaranteed crisp black text on white surface across OS/browsers */
+  .admin-scope select option {
+    background-color: #FFFFFF !important;
+    color: #111111 !important;
   }
 
   .admin-scope input::placeholder,
@@ -390,9 +436,16 @@
   html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
   html:not(.dark) textarea,
   html:not(.dark) select {
+    color-scheme: light;
     color: #111827 !important;
     background-color: #FFFFFF !important;
     border-color: #D1D5DB !important;
+  }
+
+  html.light select option,
+  html:not(.dark) select option {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
   }
 
   html.light input::placeholder,
@@ -441,9 +494,36 @@
   html.dark input:not([type="checkbox"]):not([type="radio"]),
   html.dark textarea,
   html.dark select {
+    color-scheme: dark;
     color: #FAF8F5 !important;
     background-color: #181818 !important;
     border-color: #2A2A2A !important;
+  }
+
+  html.dark select option,
+  .dark select option {
+    background-color: #181818 !important;
+    color: #FAF8F5 !important;
+  }
+
+  /* Dropdown Menu & Popover high-contrast guarantees */
+  [role="menu"].bg-black\/95,
+  [role="menu"].bg-black\/95 * {
+    color-scheme: dark;
+  }
+  [role="menu"].bg-black\/95 .text-white,
+  [role="menu"].bg-black\/95 .text-white\/90,
+  [role="menu"].bg-black\/95 .text-white\/80 {
+    color: #FFFFFF !important;
+  }
+  [role="menu"].bg-black\/95 .text-luxury-gold {
+    color: #C5A880 !important;
+  }
+  [role="menu"].bg-black\/95 .text-red-400 {
+    color: #F87171 !important;
+  }
+  [role="menu"].bg-black\/95 p.font-mono {
+    color: rgba(255, 255, 255, 0.6) !important;
   }
 
   html.dark input::placeholder,

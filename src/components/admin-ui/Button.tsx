@@ -29,16 +29,25 @@ const sizes: Record<NonNullable<AdminButtonProps['size']>, string> = {
 };
 
 export const AdminButton = React.forwardRef<HTMLButtonElement, AdminButtonProps>(
-  ({ className, variant = 'primary', size = 'md', loading, disabled, children, ...props }, ref) => (
-    <button
-      ref={ref}
-      className={cn(base, variants[variant], sizes[size], className)}
-      disabled={disabled || loading}
-      {...props}
-    >
-      {loading && <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" />}
-      {children}
-    </button>
-  )
+  ({ className, variant = 'primary', size = 'md', loading, disabled, children, style, ...props }, ref) => {
+    const isDarkVariant = variant === 'primary' || variant === 'danger' || variant === 'success';
+    return (
+      <button
+        ref={ref}
+        data-admin-btn={variant}
+        data-keep-white={isDarkVariant ? 'true' : undefined}
+        style={{
+          ...(isDarkVariant ? { color: '#FFFFFF' } : {}),
+          ...style,
+        }}
+        className={cn(base, variants[variant], sizes[size], className)}
+        disabled={disabled || loading}
+        {...props}
+      >
+        {loading && <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0 text-white" />}
+        {children}
+      </button>
+    );
+  }
 );
 AdminButton.displayName = 'AdminButton';

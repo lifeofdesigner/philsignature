@@ -217,8 +217,8 @@ export function EnterpriseDataTable<T>({
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
-        <div className="bg-slate-900 text-white rounded-xl p-3 flex items-center justify-between text-xs font-semibold shadow-xs animate-fade-in">
-          <span className="flex items-center gap-2">
+        <div data-keep-white className="bg-slate-900 text-white rounded-xl p-3 flex items-center justify-between text-xs font-semibold shadow-xs animate-fade-in">
+          <span className="flex items-center gap-2" data-keep-white>
             <span className="h-2 w-2 rounded-full bg-emerald-400" />
             {selectedIds.size} item(s) selected
           </span>
@@ -227,12 +227,13 @@ export function EnterpriseDataTable<T>({
               <Button
                 key={i}
                 size="sm"
+                data-keep-white
                 variant={action.variant || 'outline'}
                 onClick={() => action.action(selectedItems)}
                 className="text-xs h-7 gap-1 bg-slate-800 hover:bg-slate-700 text-white border-slate-700 font-medium"
               >
-                {action.icon && <action.icon className="h-3 w-3" />}
-                <span>{action.label}</span>
+                {action.icon && <action.icon className="h-3 w-3 text-white" />}
+                <span data-keep-white>{action.label}</span>
               </Button>
             ))}
           </div>
@@ -350,10 +351,11 @@ export function EnterpriseDataTable<T>({
                   setPageSize(Number(e.target.value));
                   setCurrentPage(1);
                 }}
+                style={{ colorScheme: 'light' }}
                 className="bg-white border border-slate-300 rounded px-2 py-1 text-xs text-black font-medium cursor-pointer"
               >
                 {[10, 25, 50, 100].map((sz) => (
-                  <option key={sz} value={sz}>
+                  <option key={sz} value={sz} className="text-black bg-white">
                     {sz}
                   </option>
                 ))}

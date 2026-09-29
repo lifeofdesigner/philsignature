@@ -231,6 +231,8 @@ export const Navbar: React.FC = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                        data-keep-black
+                        data-keep-white
                         className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[640px] bg-black/95 backdrop-blur-2xl border border-white/15 rounded-xl shadow-2xl p-6 z-50 pointer-events-auto"
                       >
                         <div className="grid grid-cols-3 gap-6 text-left">
@@ -413,34 +415,39 @@ export const Navbar: React.FC = () => {
                   <span className="absolute bottom-0.5 right-0.5 h-1.5 w-1.5 rounded-full bg-luxury-gold ring-1 ring-black" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 p-2 space-y-1 bg-black/95 backdrop-blur-2xl border border-white/15 shadow-2xl">
-                <div className="px-2.5 py-2 border-b border-white/10 mb-1">
-                  <p className="text-xs font-serif font-medium text-white truncate">
+              <DropdownMenuContent
+                align="end"
+                data-keep-black
+                data-keep-white
+                className="w-56 p-2 space-y-1 bg-black/95 backdrop-blur-2xl border border-white/15 shadow-2xl text-white"
+              >
+                <div className="px-2.5 py-2 border-b border-white/10 mb-1" data-keep-white>
+                  <p className="text-xs font-serif font-medium text-white truncate" data-keep-white>
                     {profile?.first_name ? `${profile.first_name} ${profile.last_name || ''}` : 'Privileged Patron'}
                   </p>
-                  <p className="text-[10px] text-white/50 truncate font-mono mt-0.5">{user.email}</p>
+                  <p className="text-[10px] text-white/60 truncate font-mono mt-0.5" data-keep-white>{user.email}</p>
                 </div>
-                <DropdownMenuItem asChild>
-                  <Link to="/account" className="flex items-center gap-2.5 w-full text-xs text-white/80 hover:text-white">
+                <DropdownMenuItem asChild data-keep-white>
+                  <Link to="/account" className="flex items-center gap-2.5 w-full text-xs text-white/90 hover:text-white" data-keep-white>
                     <User className="h-3.5 w-3.5 text-luxury-gold" />
-                    <span>My Account</span>
+                    <span data-keep-white>My Account</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/account/orders" className="flex items-center gap-2.5 w-full text-xs text-white/80 hover:text-white">
+                <DropdownMenuItem asChild data-keep-white>
+                  <Link to="/account/orders" className="flex items-center gap-2.5 w-full text-xs text-white/90 hover:text-white" data-keep-white>
                     <ShoppingBag className="h-3.5 w-3.5 text-luxury-gold" />
-                    <span>My Orders</span>
+                    <span data-keep-white>My Orders</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/wishlist" className="flex items-center gap-2.5 w-full text-xs text-white/80 hover:text-white">
+                <DropdownMenuItem asChild data-keep-white>
+                  <Link to="/wishlist" className="flex items-center gap-2.5 w-full text-xs text-white/90 hover:text-white" data-keep-white>
                     <Heart className="h-3.5 w-3.5 text-luxury-gold" />
-                    <span>My Wishlist</span>
+                    <span data-keep-white>My Wishlist</span>
                   </Link>
                 </DropdownMenuItem>
                 {canAccessAdmin && (
-                  <DropdownMenuItem asChild>
-                    <Link to="/admin" className="flex items-center gap-2.5 w-full text-xs text-luxury-gold font-medium">
+                  <DropdownMenuItem asChild data-keep-white>
+                    <Link to="/admin" className="flex items-center gap-2.5 w-full text-xs text-luxury-gold font-medium" data-keep-white>
                       <Shield className="h-3.5 w-3.5" />
                       <span>Admin Portal</span>
                     </Link>
@@ -450,6 +457,7 @@ export const Navbar: React.FC = () => {
                 <DropdownMenuItem
                   onClick={handleLogout}
                   className="flex items-center gap-2.5 w-full text-xs text-red-400 hover:text-red-300 hover:bg-red-950/30 cursor-pointer"
+                  data-keep-white
                 >
                   <LogOut className="h-3.5 w-3.5" />
                   <span>Sign Out</span>
@@ -485,13 +493,14 @@ export const Navbar: React.FC = () => {
           {/* ACTION 4: CART */}
           <Link
             to="/cart"
+            data-keep-white
             className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-luxury-gold hover:text-black border border-white/20 hover:border-luxury-gold transition-all text-xs font-medium text-white flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group"
             title="Shopping Cart"
             aria-label="View shopping cart"
           >
             <ShoppingBag className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
-            <span className="text-[11px] uppercase tracking-wider font-semibold">Cart</span>
-            <span className="font-mono text-xs font-semibold">({cartCount})</span>
+            <span className="text-[11px] uppercase tracking-wider font-semibold" data-keep-white>Cart</span>
+            <span className="font-mono text-xs font-semibold" data-keep-white>({cartCount})</span>
           </Link>
 
           {/* Mobile Menu Trigger */}
@@ -514,6 +523,8 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            data-keep-black
+            data-keep-white
             className="lg:hidden mt-2 mx-4 bg-black/98 backdrop-blur-2xl border border-luxury-gold/30 rounded-2xl overflow-hidden shadow-2xl pointer-events-auto"
           >
             <div className="p-6 space-y-6">

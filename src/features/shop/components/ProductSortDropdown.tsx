@@ -23,12 +23,12 @@ export const ProductSortDropdown: React.FC<ProductSortDropdownProps> = ({
         className="min-h-[44px] bg-luxury-card border border-luxury-border text-luxury-cream text-xs py-2 px-3 rounded-sm focus:outline-none focus:border-luxury-gold cursor-pointer"
         aria-label="Sort products by"
       >
-        <option value="featured" className="bg-luxury-card text-luxury-cream">Featured Allocations</option>
-        <option value="newest" className="bg-luxury-card text-luxury-cream">Newest Arrivals</option>
-        <option value="bestseller" className="bg-luxury-card text-luxury-cream">Bestseller Creations</option>
-        <option value="price_asc" className="bg-luxury-card text-luxury-cream">Price: Low to High</option>
-        <option value="price_desc" className="bg-luxury-card text-luxury-cream">Price: High to Low</option>
-        <option value="rating" className="bg-luxury-card text-luxury-cream">Client Acclaim (Rating)</option>
+        <option value="featured">Featured Allocations</option>
+        <option value="newest">Newest Arrivals</option>
+        <option value="bestseller">Bestseller Creations</option>
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+        <option value="rating">Client Acclaim (Rating)</option>
       </select>
     </div>
   );

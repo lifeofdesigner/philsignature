@@ -14,6 +14,7 @@ export const AdminSelect = React.forwardRef<HTMLSelectElement, AdminSelectProps>
       )}
       <select
         ref={ref}
+        style={{ colorScheme: 'light', ...props.style }}
         className={cn(
           'w-full h-10 rounded-md border border-[#D1D5DB] bg-white px-3 text-sm text-[#111111] focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
           className
