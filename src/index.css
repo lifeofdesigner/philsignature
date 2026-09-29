@@ -241,6 +241,13 @@
     color: #374151;
   }
 
+  /* Force pure black on any element explicitly marked text-black, no matter what else targets it */
+  html.light .text-black,
+  html:not(.dark) .text-black,
+  html.dark .text-black {
+    color: #000000 !important;
+  }
+
   html.light .text-luxury-cream,
   html:not(.dark) .text-luxury-cream {
     color: #111827 !important;
