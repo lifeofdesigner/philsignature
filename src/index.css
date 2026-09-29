@@ -242,19 +242,27 @@
   }
 
   /* ===================================================================
-     Admin Panel Color System — fully independent of the storefront's
-     luxury dark-theme tokens. Everything under .admin-scope always
-     renders as a plain light UI: white/light surfaces, solid black
-     text, regardless of the storefront's light/dark mode class.
+     ADMIN DESIGN SYSTEM — fully independent of the storefront.
+     The storefront stays the luxury Philz Signature experience; the
+     admin CMS is a plain, professional, white-first SaaS interface
+     (Shopify/Stripe/Supabase/Vercel-style), with zero dependence on
+     storefront colors, tokens, gradients, or theme mode. Everything
+     under .admin-scope is forced to this palette regardless of what
+     shared component or storefront token it was built from:
+       surfaces  -> #FFFFFF
+       primary   -> #111111
+       secondary -> #374151
+       muted     -> #6B7280
+       border    -> #E5E7EB
+       accent    -> black (never gold)
      =================================================================== */
   .admin-scope,
   .admin-scope * {
     color-scheme: light;
   }
 
-  /* Only elements with NO explicit Tailwind text-color utility fall back to
-     black — badges, buttons and status pills that set their own text-*
-     color (e.g. text-emerald-800, text-white) are left alone. */
+  /* Base text: anything without its own explicit text-* utility (badges,
+     status pills, white-on-dark buttons keep their own intentional color). */
   .admin-scope p:not([class*="text-"]),
   .admin-scope span:not([class*="text-"]),
   .admin-scope label:not([class*="text-"]),
@@ -269,36 +277,95 @@
   .admin-scope th:not([class*="text-"]),
   .admin-scope li:not([class*="text-"]),
   .admin-scope a:not([class*="text-"]) {
-    color: #000000 !important;
+    color: #111111 !important;
   }
 
-  /* Any element that explicitly opts into text-black always renders true black */
   .admin-scope .text-black {
-    color: #000000 !important;
+    color: #111111 !important;
   }
 
+  /* Inputs, selects, textareas: white surface, black text, gray border */
   .admin-scope input,
   .admin-scope textarea,
   .admin-scope select {
     background-color: #FFFFFF !important;
-    color: #000000 !important;
-    border-color: #CBD5E1 !important;
+    color: #111111 !important;
+    border-color: #D1D5DB !important;
+    box-shadow: none !important;
   }
 
   .admin-scope input::placeholder,
   .admin-scope textarea::placeholder {
-    color: #6B7280 !important;
+    color: #9CA3AF !important;
     opacity: 1 !important;
   }
 
+  .admin-scope input:focus,
+  .admin-scope textarea:focus,
+  .admin-scope select:focus {
+    outline: none !important;
+    border-color: #111111 !important;
+    box-shadow: 0 0 0 1px #111111 !important;
+  }
+
+  /* Every surface (cards, panels, tables, dropdowns, modals) -> pure white */
   .admin-scope .bg-luxury-card,
   .admin-scope .bg-luxury-black,
-  .admin-scope .bg-luxury-charcoal {
+  .admin-scope .bg-luxury-charcoal,
+  .admin-scope .bg-luxury-graphite {
     background-color: #FFFFFF !important;
   }
 
   .admin-scope .border-luxury-border {
-    border-color: #E2E8F0 !important;
+    border-color: #E5E7EB !important;
+  }
+
+  /* Secondary / muted text tokens map to plain SaaS grays, never gold/cream */
+  .admin-scope .text-luxury-cream,
+  .admin-scope .text-luxury-cream-soft,
+  .admin-scope .text-luxury-cream-dim {
+    color: #111111 !important;
+  }
+
+  .admin-scope .text-luxury-sand {
+    color: #374151 !important;
+  }
+
+  .admin-scope .text-luxury-muted {
+    color: #6B7280 !important;
+  }
+
+  /* Eliminate gold entirely: any gold background becomes a solid black
+     "primary" surface with white text (matches the Stripe/Shopify button
+     spec); any gold text/border becomes plain black. */
+  .admin-scope .bg-luxury-gold,
+  .admin-scope .bg-luxury-gold-light,
+  .admin-scope .bg-luxury-gold-dark {
+    background-color: #111111 !important;
+    color: #FFFFFF !important;
+  }
+
+  .admin-scope .text-luxury-gold,
+  .admin-scope .text-luxury-gold-light,
+  .admin-scope .text-luxury-gold-dark {
+    color: #111111 !important;
+  }
+
+  .admin-scope .border-luxury-gold {
+    border-color: #111111 !important;
+  }
+
+  .admin-scope .ring-luxury-gold {
+    --tw-ring-color: #111111 !important;
+  }
+
+  .admin-scope .ring-offset-luxury-black {
+    --tw-ring-offset-color: #FFFFFF !important;
+  }
+
+  .admin-scope ::selection {
+    background-color: rgba(17, 17, 17, 0.15) !important;
+    color: #111111 !important;
   }
 
   html.light .text-luxury-cream,
