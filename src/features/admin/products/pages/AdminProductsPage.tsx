@@ -576,23 +576,25 @@ export const AdminProductsPage: React.FC = () => {
       key: 'price',
       header: 'Pricing & Variants',
       accessor: (product) => {
-        const isCandle =
-          product.category_id === 'c3333333-3333-3333-3333-333333333333' ||
-          Boolean(product.concentration?.toLowerCase().includes('candle'));
-        const isRoomSpray =
-          product.category_id === 'c4444444-4444-4444-4444-444444444444' ||
-          Boolean(product.concentration?.toLowerCase().includes('room spray'));
-        const variantText = isCandle
-          ? '300g Vessel'
-          : isRoomSpray
-          ? '150ml Atomizer'
-          : product.variants && product.variants.length > 0
-          ? `${product.variants.length} Sizes`
-          : '4 Sizes (15ml - 100ml)';
+        const hasVariants = Boolean(product.variants && product.variants.length > 0);
+        const isMissingSize = !hasVariants && !product.volume_ml && !product.weight_grams;
+
+        const variantText = hasVariants
+          ? `${product.variants!.length} Size${product.variants!.length === 1 ? '' : 's'}`
+          : product.weight_grams
+          ? `${product.weight_grams}g Vessel`
+          : product.volume_ml
+          ? `${product.volume_ml}ml`
+          : null;
+
         return (
           <div>
             <div className="text-black font-bold">{formatCurrency(product.price)}</div>
-            <div className="text-[10px] text-black font-medium">{variantText}</div>
+            {isMissingSize ? (
+              <div className="text-[10px] text-amber-600 font-semibold">⚠ No size/weight set</div>
+            ) : (
+              <div className="text-[10px] text-black font-medium">{variantText}</div>
+            )}
           </div>
         );
       },
