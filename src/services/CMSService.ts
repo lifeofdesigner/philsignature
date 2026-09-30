@@ -192,6 +192,7 @@ export interface CmsAppearanceConfig {
   logo_height?: number; // Desktop logo height in pixels (40 - 160)
   logo_mobile_height?: number; // Mobile logo height in pixels (38 - 100)
   show_business_name?: boolean; // When true: Beside logo on mobile, Under logo on desktop
+  show_company_registration_number?: boolean; // Toggle visibility of reg number beside the logo
   // Additional brand image variants (Website Builder: Brand Settings)
   logo_light_url?: string;
   logo_dark_url?: string;
@@ -471,6 +472,7 @@ export class CMSService {
     logo_height: 72,
     logo_mobile_height: 52,
     show_business_name: true,
+    show_company_registration_number: true,
   };
 
   public static DEFAULT_FOOTER: CmsFooterContent = {

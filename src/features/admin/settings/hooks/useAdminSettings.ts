@@ -16,6 +16,7 @@ export interface GeneralSettingsForm {
   google_maps_url: string;
   currency_code: string;
   currency_symbol: string;
+  company_registration_number: string;
 }
 
 export const DEFAULT_GENERAL_SETTINGS: GeneralSettingsForm = {
@@ -30,6 +31,7 @@ export const DEFAULT_GENERAL_SETTINGS: GeneralSettingsForm = {
   google_maps_url: '',
   currency_code: '',
   currency_symbol: '',
+  company_registration_number: '',
 };
 
 export const useAdminSettings = () => {

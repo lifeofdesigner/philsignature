@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck } from 'lucide-react';
-import { AdminButton, AdminInput } from '@/components/admin-ui';
+import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck, Hash, Eye, EyeOff } from 'lucide-react';
+import { AdminButton, AdminInput, AdminSwitch } from '@/components/admin-ui';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminSettings, type GeneralSettingsForm } from '../hooks/useAdminSettings';
@@ -124,56 +124,124 @@ export const AdminSettingsPage: React.FC = () => {
 
       {/* Tab 1: General Store Settings */}
       {activeTab === 'general' && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base font-bold text-black">General Store Identity</CardTitle>
-            <CardDescription className="text-black font-medium">Boutique title, contact emails, currency formatting, and physical location</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base font-bold text-black">General Store Identity</CardTitle>
+              <CardDescription className="text-black font-medium">Boutique title, contact emails, currency formatting, and physical location</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <AdminInput
+                  label="Boutique Name"
+                  value={form.store_name}
+                  onChange={(e) => setForm((p) => (p ? { ...p, store_name: e.target.value } : p))}
+                  className="text-xs"
+                />
+                <AdminInput
+                  label="Primary Concierge Email"
+                  value={form.concierge_email}
+                  onChange={(e) => setForm((p) => (p ? { ...p, concierge_email: e.target.value } : p))}
+                  className="text-xs"
+                />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <AdminInput
+                  label="Customer Service Phone"
+                  value={form.concierge_phone || ''}
+                  onChange={(e) => setForm((p) => (p ? { ...p, concierge_phone: e.target.value } : p))}
+                  className="text-xs"
+                />
+                <AdminInput
+                  label="Store Currency Symbol"
+                  value={form.currency_symbol}
+                  onChange={(e) => setForm((p) => (p ? { ...p, currency_symbol: e.target.value } : p))}
+                  className="text-xs"
+                />
+              </div>
               <AdminInput
-                label="Boutique Name"
-                value={form.store_name}
-                onChange={(e) => setForm((p) => (p ? { ...p, store_name: e.target.value } : p))}
+                label="Boutique Address & Atelier Location"
+                value={form.store_address || ''}
+                onChange={(e) => setForm((p) => (p ? { ...p, store_address: e.target.value } : p))}
                 className="text-xs"
               />
-              <AdminInput
-                label="Primary Concierge Email"
-                value={form.concierge_email}
-                onChange={(e) => setForm((p) => (p ? { ...p, concierge_email: e.target.value } : p))}
-                className="text-xs"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <AdminInput
-                label="Customer Service Phone"
-                value={form.concierge_phone || ''}
-                onChange={(e) => setForm((p) => (p ? { ...p, concierge_phone: e.target.value } : p))}
-                className="text-xs"
-              />
-              <AdminInput
-                label="Store Currency Symbol"
-                value={form.currency_symbol}
-                onChange={(e) => setForm((p) => (p ? { ...p, currency_symbol: e.target.value } : p))}
-                className="text-xs"
-              />
-            </div>
-            <AdminInput
-              label="Boutique Address & Atelier Location"
-              value={form.store_address || ''}
-              onChange={(e) => setForm((p) => (p ? { ...p, store_address: e.target.value } : p))}
-              className="text-xs"
-            />
 
-            <div className="flex justify-end pt-2">
-              <AdminButton variant="primary" size="sm" onClick={handleSaveGeneral} disabled={isSaving} className="gap-1.5 shadow-xs">
-                {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                <span>Save General Settings</span>
-              </AdminButton>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex justify-end pt-2">
+                <AdminButton variant="primary" size="sm" onClick={handleSaveGeneral} disabled={isSaving} className="gap-1.5 shadow-xs">
+                  {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                  <span>Save General Settings</span>
+                </AdminButton>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Company Registration Number */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base font-bold text-black flex items-center gap-2">
+                <Hash className="h-4 w-4 text-slate-500" />
+                Company Registration Number
+              </CardTitle>
+              <CardDescription className="text-black font-medium">
+                Display your business registration number beside the storefront logo. Admin can show or hide it at any time.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <AdminInput
+                label="Registration Number"
+                placeholder="e.g. BN 2671550"
+                value={form.company_registration_number || ''}
+                onChange={(e) => setForm((p) => (p ? { ...p, company_registration_number: e.target.value } : p))}
+                className="text-xs max-w-xs"
+              />
+
+              {/* Visibility Toggle */}
+              <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-3 max-w-xs">
+                <div className="flex items-center gap-2">
+                  {themeForm.show_company_registration_number !== false
+                    ? <Eye className="h-4 w-4 text-slate-500" />
+                    : <EyeOff className="h-4 w-4 text-slate-400" />}
+                  <div>
+                    <div className="text-xs font-semibold text-black">
+                      {themeForm.show_company_registration_number !== false ? 'Visible on Storefront' : 'Hidden from Storefront'}
+                    </div>
+                    <div className="text-[10px] text-slate-500">Toggle display beside the logo</div>
+                  </div>
+                </div>
+                <AdminSwitch
+                  checked={themeForm.show_company_registration_number !== false}
+                  onCheckedChange={(checked) =>
+                    setThemeForm((prev) => prev ? { ...prev, show_company_registration_number: checked } : prev)
+                  }
+                />
+              </div>
+
+              <div className="flex justify-end pt-1">
+                <AdminButton
+                  variant="primary"
+                  size="sm"
+                  disabled={isSaving}
+                  onClick={async () => {
+                    try {
+                      await save(form);
+                      await saveAppearance(themeForm);
+                      toast.success('Company registration number saved.');
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : 'Failed to save.');
+                    }
+                  }}
+                  className="gap-1.5 shadow-xs"
+                >
+                  {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                  <span>Save Registration Number</span>
+                </AdminButton>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       )}
+
+
 
       {/* Tab 2: Brand & Logos */}
       {activeTab === 'brand' && (
