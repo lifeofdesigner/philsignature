@@ -165,12 +165,14 @@ export const Navbar: React.FC = () => {
                 <span className="hidden xl:block text-[7.5px] sm:text-[8.5px] tracking-[0.32em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1.5px_4px_rgba(0,0,0,0.9)] opacity-95">
                   {settings.store_slogan || 'HAUTE PARFUMERIE'}
                 </span>
-                {appearance.show_company_registration_number !== false && settings.company_registration_number && (
-                  <span className="text-[9px] tracking-[0.18em] text-white/60 font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
-                    {settings.company_registration_number}
-                  </span>
-                )}
               </div>
+            )}
+
+            {/* Company registration number — standalone, independent of business name visibility */}
+            {appearance.show_company_registration_number !== false && settings.company_registration_number && (
+              <span className="text-[9px] tracking-[0.18em] text-white/60 font-medium uppercase whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] self-center">
+                {settings.company_registration_number}
+              </span>
             )}
           </Link>
         </div>
