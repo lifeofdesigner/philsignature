@@ -235,6 +235,9 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
               muted
               loop
               playsInline
+              webkit-playsinline="true"
+              preload="auto"
+              poster={currentSlide.desktop_image || currentSlide.mobile_image}
               className="w-full h-full object-cover object-center scale-105"
             />
           ) : (
