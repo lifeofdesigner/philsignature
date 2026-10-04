@@ -26,6 +26,7 @@ export interface AuthContextType {
   login: (credentials: SignInCredentials) => Promise<void>;
   register: (credentials: SignUpCredentials) => Promise<void>;
   logout: () => Promise<void>;
+  signOutAllDevices: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   updatePassword: (newPassword: string) => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -153,6 +154,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSession(null);
   }, [user]);
 
+  const signOutAllDevices = useCallback(async () => {
+    await authService.signOutAllDevices(user?.id);
+    setUser(null);
+    setProfile(null);
+    setSession(null);
+  }, [user]);
+
   const resetPassword = useCallback(async (email: string) => {
     await authService.requestPasswordReset(email);
   }, []);
@@ -195,6 +203,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       login,
       register,
       logout,
+      signOutAllDevices,
       resetPassword,
       updatePassword,
       refreshProfile,
@@ -218,6 +227,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       login,
       register,
       logout,
+      signOutAllDevices,
       resetPassword,
       updatePassword,
       refreshProfile,

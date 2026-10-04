@@ -1,6 +1,7 @@
 import { orderRepository, type OrderRepository } from '@/repositories/OrderRepository';
 import { couponService, type CouponService } from './CouponService';
 import { shippingService, type ShippingService } from './ShippingService';
+import { taxService, type TaxService } from './TaxService';
 import { createOrderSchema } from '@/schemas/order.schema';
 import { ValidationError } from '@/errors/ValidationError';
 import type { Order } from '@/types/database';
@@ -51,7 +52,8 @@ export class OrderService {
   constructor(
     private repo: OrderRepository = orderRepository,
     private coupons: CouponService = couponService,
-    private shipping: ShippingService = shippingService
+    private shipping: ShippingService = shippingService,
+    private tax: TaxService = taxService
   ) {}
 
   async trackOrder(orderNumber: string, email?: string): Promise<Order | null> {
@@ -129,20 +131,25 @@ export class OrderService {
       }
     }
 
-    const tax = 0; // Included in luxury pricing
+    // 4. Calculate Tax dynamically from site_settings
+    const taxSettings = await this.tax.getTaxSettings();
+    const taxCalculation = this.tax.calculateTax(subtotal, taxSettings);
+    const tax = taxCalculation.amount;
+    const taxRate = taxCalculation.rate;
     const total = Math.max(0, subtotal + shippingCost - discount + tax);
 
-    // 4. Generate Luxury Order Consignment Number
+    // 5. Generate Luxury Order Consignment Number
     const timestampPart = Date.now().toString().slice(-4);
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const orderNumber = `PS-${timestampPart}-${randomSuffix}`;
 
-    // 5. Atomic Order Creation, Inventory Decrement, & Rollback Safeguard
+    // 6. Atomic Order Creation, Inventory Decrement, & Rollback Safeguard
     const order = await this.repo.create(input, {
       subtotal,
       shipping: shippingCost,
       discount,
       tax,
+      taxRate,
       total,
       orderNumber,
     });

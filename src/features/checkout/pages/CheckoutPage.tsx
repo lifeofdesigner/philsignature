@@ -126,6 +126,10 @@ export const CheckoutPage: React.FC = () => {
               subtotal={checkout.subtotal}
               shippingCost={checkout.shippingCost}
               discountAmount={checkout.discountAmount}
+              taxAmount={checkout.taxAmount}
+              taxRate={checkout.taxRate}
+              taxName={checkout.taxName}
+              isTaxEnabled={checkout.isTaxEnabled}
               totalAmount={checkout.totalAmount}
               couponCode={checkout.couponCode}
               setCouponCode={checkout.setCouponCode}

@@ -40,3 +40,42 @@ export function isStaffTier(role: string): boolean {
 export function isSuperAdmin(role: string): boolean {
   return role === 'super_admin';
 }
+
+/**
+ * Enterprise Audit Logger: Records caller ID, action, entity, IP, and User-Agent
+ */
+export async function logAdminAction(
+  caller: CallerProfile,
+  action: string,
+  entityType: string,
+  entityId?: string,
+  details?: Record<string, unknown>,
+  req?: VercelRequest
+): Promise<void> {
+  try {
+    let ip = '127.0.0.1';
+    let userAgent = 'unknown';
+    if (req) {
+      const xForwardedFor = req.headers['x-forwarded-for'];
+      ip =
+        (typeof xForwardedFor === 'string'
+          ? xForwardedFor.split(',')[0].trim()
+          : Array.isArray(xForwardedFor)
+            ? xForwardedFor[0].trim()
+            : req.socket?.remoteAddress) || '127.0.0.1';
+      userAgent = (req.headers['user-agent'] as string) || 'unknown';
+    }
+
+    await supabaseAdmin.from('activity_logs').insert({
+      user_id: caller.id,
+      action,
+      entity_type: entityType,
+      entity_id: entityId || null,
+      details: details || {},
+      ip_address: ip,
+      user_agent: userAgent,
+    });
+  } catch (err) {
+    console.warn('[Admin Audit Log Error]:', err);
+  }
+}

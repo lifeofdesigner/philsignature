@@ -68,17 +68,75 @@ export class AuthRepository extends BaseRepository {
   async signOut(): Promise<void> {
     try {
       const { error } = await this.client.auth.signOut();
-      // The local session can already be stale/expired (token expired,
-      // storage cleared in another tab, a prior sign-out already fired).
-      // supabase-js surfaces that as AuthSessionMissingError, but there's
-      // nothing left to revoke -- the user is already signed out locally,
-      // so treat it as success instead of failing the sign-out action.
       if (error && error.name !== 'AuthSessionMissingError') {
         this.handleError(error, 'Sign out failed');
       }
     } catch (err) {
       if (err instanceof Error && err.name === 'AuthSessionMissingError') return;
       this.handleError(err, 'Error signing out of session');
+    }
+  }
+
+  async signOutGlobal(): Promise<void> {
+    try {
+      const { error } = await this.client.auth.signOut({ scope: 'global' });
+      if (error && error.name !== 'AuthSessionMissingError') {
+        this.handleError(error, 'Global sign out failed');
+      }
+    } catch (err) {
+      if (err instanceof Error && err.name === 'AuthSessionMissingError') return;
+      this.handleError(err, 'Error signing out of all devices');
+    }
+  }
+
+  async checkAccountLockout(email: string): Promise<{ is_locked: boolean; remaining_seconds: number; failed_attempts: number }> {
+    try {
+      const { data, error } = await this.client.rpc('check_account_lockout', { p_email: email.trim().toLowerCase() });
+      if (error) return { is_locked: false, remaining_seconds: 0, failed_attempts: 0 };
+      return data || { is_locked: false, remaining_seconds: 0, failed_attempts: 0 };
+    } catch {
+      return { is_locked: false, remaining_seconds: 0, failed_attempts: 0 };
+    }
+  }
+
+  async recordFailedLogin(email: string, ip?: string, userAgent?: string): Promise<{ is_locked: boolean; failed_attempts: number; just_locked: boolean; unlock_token?: string }> {
+    try {
+      const { data, error } = await this.client.rpc('record_failed_login_attempt', {
+        p_email: email.trim().toLowerCase(),
+        p_ip: ip || null,
+        p_user_agent: userAgent || null,
+      });
+      if (error) return { is_locked: false, failed_attempts: 1, just_locked: false };
+      return data || { is_locked: false, failed_attempts: 1, just_locked: false };
+    } catch {
+      return { is_locked: false, failed_attempts: 1, just_locked: false };
+    }
+  }
+
+  async recordSuccessfulLogin(userId: string, email: string, ip?: string, userAgent?: string): Promise<{ is_new_device: boolean; is_new_ip: boolean; is_suspicious: boolean }> {
+    try {
+      const { data, error } = await this.client.rpc('record_successful_login', {
+        p_user_id: userId,
+        p_email: email.trim().toLowerCase(),
+        p_ip: ip || null,
+        p_user_agent: userAgent || null,
+      });
+      if (error) return { is_new_device: false, is_new_ip: false, is_suspicious: false };
+      return data || { is_new_device: false, is_new_ip: false, is_suspicious: false };
+    } catch {
+      return { is_new_device: false, is_new_ip: false, is_suspicious: false };
+    }
+  }
+
+  async unlockAccount(email: string, token: string): Promise<boolean> {
+    try {
+      const { data, error } = await this.client.rpc('unlock_account_with_token', {
+        p_email: email.trim().toLowerCase(),
+        p_token: token.trim(),
+      });
+      return !error && Boolean(data);
+    } catch {
+      return false;
     }
   }
 

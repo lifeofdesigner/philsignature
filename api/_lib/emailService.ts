@@ -1,12 +1,13 @@
 import { supabaseAdmin } from './supabaseAdmin';
 
-interface EmailPayload {
+export interface EmailPayload {
   to: string;
   subject: string;
   html: string;
   text: string;
-  emailType: 'payment_confirmation' | 'order_confirmation' | 'shipping_update';
-  orderId: string;
+  emailType: string;
+  orderId?: string;
+  userId?: string;
 }
 
 export interface PaymentEmailDetails {
@@ -16,14 +17,14 @@ export interface PaymentEmailDetails {
   paidAt?: string;
 }
 
-interface OrderItemEmailData {
+export interface OrderItemEmailData {
   product_name: string;
   sku?: string | null;
   quantity: number;
   subtotal: number;
 }
 
-interface OrderEmailData {
+export interface OrderEmailData {
   id: string;
   order_number: string;
   email: string;
@@ -39,14 +40,15 @@ interface OrderEmailData {
 
 const BRAND_NAME = 'Philz Signature';
 const BRAND_TAGLINE = 'Haute Parfumerie & Pure Luxury';
-const SUPPORT_EMAIL = 'Philzsignature1@gmail.com';
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'concierge@philzsignature.com';
+const ADMIN_NOTIFICATION_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || 'orders@philzsignature.com';
 const APP_URL = process.env.VITE_APP_URL || 'https://philzsignature.com';
 
 function formatNaira(amount: number): string {
   return `₦${Number(amount).toLocaleString('en-NG', { maximumFractionDigits: 0 })}`;
 }
 
-function getEmailWrapper(title: string, contentHtml: string): string {
+function getEmailWrapper(title: string, contentHtml: string, isMarketing: boolean = false): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,6 +64,7 @@ function getEmailWrapper(title: string, contentHtml: string): string {
     .content { padding: 32px 28px; }
     .card { background-color: #1c1917; border: 1px solid #292524; border-radius: 4px; padding: 20px; margin-bottom: 24px; }
     .gold-pill { display: inline-block; background-color: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 10px; border-radius: 2px; font-weight: 600; }
+    .alert-pill { display: inline-block; background-color: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 10px; border-radius: 2px; font-weight: 600; }
     .heading { font-size: 20px; font-weight: 400; color: #fafaf9; margin-top: 14px; margin-bottom: 8px; }
     .paragraph { font-size: 13px; line-height: 1.6; color: #a8a29e; margin-bottom: 18px; }
     .info-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
@@ -69,7 +72,7 @@ function getEmailWrapper(title: string, contentHtml: string): string {
     .info-label { color: #a8a29e; }
     .info-value { color: #fafaf9; text-align: right; font-weight: 500; }
     .button-container { text-align: center; margin: 30px 0; }
-    .btn-gold { display: inline-block; background: #d4af37; color: #0a0a0a; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; padding: 14px 32px; border-radius: 2px; }
+    .btn-gold { display: inline-block; background: #d4af37; color: #0a0a0a !important; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; padding: 14px 32px; border-radius: 2px; }
     .footer { padding: 24px; text-align: center; font-size: 11px; color: #78716c; border-top: 1px solid #292524; background-color: #121212; }
     .footer a { color: #d4af37; text-decoration: none; }
   </style>
@@ -86,6 +89,11 @@ function getEmailWrapper(title: string, contentHtml: string): string {
     <div class="footer">
       <p style="margin: 0 0 8px 0;">PHILZ SIGNATURE HAUTE PARFUMS &bull; LUXURY REDEFINED</p>
       <p style="margin: 0 0 8px 0;">Need concierge assistance? Contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></p>
+      ${
+        isMarketing
+          ? `<p style="margin: 0 0 8px 0;"><a href="${APP_URL}/unsubscribe" style="color: #78716c; text-decoration: underline;">Unsubscribe from marketing privileges</a></p>`
+          : `<p style="margin: 0 0 8px 0; font-size: 10px; color: #57534e;">This is an essential account/order notification. Marketing unsubscribe is not applicable.</p>`
+      }
       <p style="margin: 0; font-size: 10px; color: #57534e;">&copy; ${new Date().getFullYear()} ${BRAND_NAME}. All rights reserved.</p>
     </div>
   </div>
@@ -93,7 +101,7 @@ function getEmailWrapper(title: string, contentHtml: string): string {
 </html>`;
 }
 
-async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
+export async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
   let sentViaApi = false;
   const resendApiKey = process.env.RESEND_API_KEY;
 
@@ -124,14 +132,16 @@ async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
     } catch (err) {
       console.warn('[EmailService] API dispatch error:', err);
     }
+  } else {
+    console.info(`[EmailService Simulation] Key missing. Email "${payload.subject}" to ${payload.to}`);
   }
 
   // Record dispatch in database activity logs
   try {
     await supabaseAdmin.from('activity_logs').insert({
       action: 'transactional_email_dispatched',
-      entity_type: 'order',
-      entity_id: payload.orderId,
+      entity_type: payload.orderId ? 'order' : 'auth_security',
+      entity_id: payload.orderId || payload.userId || payload.to,
       details: {
         type: payload.emailType,
         recipient: payload.to,
@@ -147,85 +157,144 @@ async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
   return true;
 }
 
-/**
- * 1. Payment Confirmation Email
- */
-export async function sendPaymentConfirmationEmail(
-  order: OrderEmailData,
-  payment: PaymentEmailDetails
-): Promise<void> {
-  const subject = `Payment Confirmed — Philz Signature Order #${order.order_number}`;
-  const orderUrl = `${APP_URL}/checkout/confirmation/${order.order_number}`;
+// =============================================================================
+// CUSTOMER EMAILS (1 - 14)
+// =============================================================================
 
+/** 1. Welcome + Email Verification */
+export async function sendWelcomeVerificationEmail(email: string, name: string, verificationUrl: string): Promise<void> {
+  const subject = `Welcome to Philz Signature — Verify Your Email`;
   const html = getEmailWrapper(
     subject,
     `
     <div style="text-align: center; margin-bottom: 24px;">
-      <span class="gold-pill">Payment Confirmed</span>
-      <h1 class="heading">Payment Received with Thanks</h1>
-      <p class="paragraph">We have successfully verified your payment via ${payment.gateway.toUpperCase()}. Your fragrance consignment is now locked in and queued for priority preparation.</p>
+      <span class="gold-pill">Private Membership</span>
+      <h1 class="heading">Welcome to Philz Signature</h1>
+      <p class="paragraph">Dear ${name || 'Patron'}, thank you for stepping into the atelier of Philz Signature. Please verify your email to activate your client account.</p>
     </div>
-
     <div class="card">
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Transaction Receipt</div>
-      <table class="info-table">
-        <tr>
-          <td class="info-label">Order Number</td>
-          <td class="info-value">${order.order_number}</td>
-        </tr>
-        <tr>
-          <td class="info-label">Payment Gateway</td>
-          <td class="info-value">${payment.gateway.toUpperCase()}</td>
-        </tr>
-        <tr>
-          <td class="info-label">Payment Reference</td>
-          <td class="info-value" style="font-family: monospace; font-size: 12px;">${payment.reference}</td>
-        </tr>
-        <tr>
-          <td class="info-label">Amount Paid</td>
-          <td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 15px;">${formatNaira(payment.amountNaira)}</td>
-        </tr>
-        <tr>
-          <td class="info-label">Verification Status</td>
-          <td class="info-value" style="color: #10b981;">Verified &bull; Paid</td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="button-container">
-      <a href="${orderUrl}" class="btn-gold">View Order Receipt</a>
-    </div>
-  `
+      <p class="paragraph">For your security, unverified accounts expire after 24 hours. Click the button below to confirm your address and unlock your bespoke fragrance journey.</p>
+      <div class="button-container">
+        <a href="${verificationUrl}" class="btn-gold">Verify Account</a>
+      </div>
+      <p style="font-size: 11px; color: #78716c; text-align: center; margin-top: 12px;">Link expires in 24 hours.</p>
+    </div>`
   );
-
-  const text = `PAYMENT CONFIRMED — PHILZ SIGNATURE
-Order Number: ${order.order_number}
-Reference: ${payment.reference}
-Amount: ${formatNaira(payment.amountNaira)}
-Gateway: ${payment.gateway.toUpperCase()}
-Status: Verified & Paid
-
-View your order: ${orderUrl}`;
-
-  await dispatchEmail({
-    to: order.email,
-    subject,
-    html,
-    text,
-    emailType: 'payment_confirmation',
-    orderId: order.id,
-  });
+  const text = `Welcome to Philz Signature! Verify your email to activate your account: ${verificationUrl}\n(Link expires in 24 hours)`;
+  await dispatchEmail({ to: email, subject, html, text, emailType: 'welcome_verification' });
 }
 
-/**
- * 2. Order Confirmation Email
- */
-export async function sendOrderConfirmationEmail(
-  order: OrderEmailData,
-  items: OrderItemEmailData[] = []
+/** 2. Email Verified Confirmation */
+export async function sendEmailVerifiedConfirmationEmail(email: string, name: string): Promise<void> {
+  const subject = `Account Activated — Philz Signature`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Verified</span>
+      <h1 class="heading">Your Account is Active</h1>
+      <p class="paragraph">Dear ${name || 'Patron'}, your email address has been successfully verified. You now enjoy full privileges to curate your private collection.</p>
+    </div>
+    <div class="button-container">
+      <a href="${APP_URL}/shop" class="btn-gold">Explore The Collection</a>
+    </div>`
+  );
+  const text = `Your Philz Signature account has been successfully verified. Discover our collection: ${APP_URL}/shop`;
+  await dispatchEmail({ to: email, subject, html, text, emailType: 'email_verified_confirmation' });
+}
+
+/** 3. New Login Alert */
+export async function sendNewLoginAlertEmail(
+  email: string,
+  details: { date: string; time: string; device: string; ip: string; location?: string }
 ): Promise<void> {
-  const subject = `Order Confirmed: Consignment #${order.order_number} — Philz Signature`;
-  const trackingUrl = `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+  const subject = `Security Alert: New Sign-In to Philz Signature`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="alert-pill">Security Notice</span>
+      <h1 class="heading">New Sign-In Detected</h1>
+      <p class="paragraph">We noticed a sign-in to your Philz Signature account from a new device or browser.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Date & Time</td><td class="info-value">${details.date} at ${details.time}</td></tr>
+        <tr><td class="info-label">Device / Browser</td><td class="info-value">${details.device}</td></tr>
+        <tr><td class="info-label">IP Address</td><td class="info-value">${details.ip}</td></tr>
+        <tr><td class="info-label">Location</td><td class="info-value">${details.location || 'Nigeria'}</td></tr>
+      </table>
+    </div>
+    <p class="paragraph">If this was you, no action is required. If you do not recognize this activity, please reset your password immediately or contact Concierge.</p>
+    <div class="button-container">
+      <a href="${APP_URL}/forgot-password" class="btn-gold">Secure Account</a>
+    </div>`
+  );
+  const text = `Security Alert: A new sign-in to your Philz Signature account occurred on ${details.date} from ${details.device} (IP: ${details.ip}). If not you, secure your account at ${APP_URL}/forgot-password`;
+  await dispatchEmail({ to: email, subject, html, text, emailType: 'new_login_alert' });
+}
+
+/** 4. Password Changed Alert */
+export async function sendPasswordChangedAlertEmail(email: string, details: { date: string; time: string; ip: string }): Promise<void> {
+  const subject = `Security Notice: Your Password Has Been Changed`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Password Updated</span>
+      <h1 class="heading">Password Changed Successfully</h1>
+      <p class="paragraph">The password for your Philz Signature account was updated on ${details.date} at ${details.time} (IP: ${details.ip}).</p>
+    </div>
+    <p class="paragraph">If you initiated this change, you may disregard this email. If you did not make this change, please contact Concierge immediately.</p>`
+  );
+  const text = `Your Philz Signature password was changed on ${details.date} at ${details.time}. If you did not make this change, please contact us immediately.`;
+  await dispatchEmail({ to: email, subject, html, text, emailType: 'password_changed_alert' });
+}
+
+/** 5. Password Reset */
+export async function sendPasswordResetEmail(email: string, resetUrl: string): Promise<void> {
+  const subject = `Password Reset Instructions — Philz Signature`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Account Recovery</span>
+      <h1 class="heading">Reset Your Password</h1>
+      <p class="paragraph">We received a request to reset your Philz Signature password. Click below to establish a new password.</p>
+    </div>
+    <div class="button-container">
+      <a href="${resetUrl}" class="btn-gold">Reset Password</a>
+    </div>
+    <p class="paragraph" style="text-align: center; font-size: 11px;">This link is valid for 30 minutes and can only be used once. If you did not request this, you may safely ignore this email.</p>`
+  );
+  const text = `Reset your Philz Signature password: ${resetUrl} (Valid for 30 minutes, single use).`;
+  await dispatchEmail({ to: email, subject, html, text, emailType: 'password_reset' });
+}
+
+/** 6. Email Changed Notification (Sent to old and new address) */
+export async function sendEmailChangedNotification(oldEmail: string, newEmail: string, details: { date: string; ip: string }): Promise<void> {
+  const subject = `Notice: Email Address Update on Philz Signature`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Account Profile</span>
+      <h1 class="heading">Email Address Updated</h1>
+      <p class="paragraph">Your registered email address was changed from <strong>${oldEmail}</strong> to <strong>${newEmail}</strong> on ${details.date}.</p>
+    </div>
+    <p class="paragraph">If you performed this change, no further action is necessary. If this update was unauthorized, contact our boutique immediately.</p>`
+  );
+  const text = `Your Philz Signature email address was updated from ${oldEmail} to ${newEmail} on ${details.date}. Contact support if unauthorized.`;
+  await Promise.all([
+    dispatchEmail({ to: oldEmail, subject, html, text, emailType: 'email_changed_old' }),
+    dispatchEmail({ to: newEmail, subject, html, text, emailType: 'email_changed_new' }),
+  ]);
+}
+
+/** 7. Order Received */
+export async function sendOrderReceivedEmail(order: OrderEmailData, items: OrderItemEmailData[] = []): Promise<void> {
+  const subject = `Order Received: #${order.order_number} — Philz Signature`;
+  const orderUrl = `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
   const shipping = order.shipping_address as Record<string, string>;
 
   const itemsRows = (items || [])
@@ -247,153 +316,414 @@ export async function sendOrderConfirmationEmail(
     subject,
     `
     <div style="text-align: center; margin-bottom: 24px;">
-      <span class="gold-pill">Order Registered</span>
-      <h1 class="heading">Your Acquisition is Confirmed</h1>
-      <p class="paragraph">Thank you for patronizing Philz Signature Haute Parfums. Your order details and consignment information are outlined below.</p>
+      <span class="gold-pill">Order Received</span>
+      <h1 class="heading">Thank You for Your Acquisition</h1>
+      <p class="paragraph">Your order #${order.order_number} has been logged and is awaiting verification / processing.</p>
     </div>
-
     <div class="card">
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Purchased Fragrances</div>
-      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-        ${itemsRows}
-      </table>
-
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Consignment Summary</div>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">${itemsRows}</table>
       <table class="info-table" style="margin-top: 16px;">
-        <tr>
-          <td class="info-label">Subtotal</td>
-          <td class="info-value">${formatNaira(order.subtotal)}</td>
-        </tr>
-        <tr>
-          <td class="info-label">Delivery Fee</td>
-          <td class="info-value">${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}</td>
-        </tr>
-        ${
-          order.discount_amount > 0
-            ? `<tr><td class="info-label">Discount ${order.coupon_code ? `(${order.coupon_code})` : ''}</td><td class="info-value" style="color: #d4af37;">-${formatNaira(order.discount_amount)}</td></tr>`
-            : ''
-        }
-        <tr>
-          <td class="info-label" style="font-weight: 700; color: #fafaf9; font-size: 14px;">Total Amount</td>
-          <td class="info-value" style="font-weight: 700; color: #d4af37; font-size: 16px;">${formatNaira(order.total_amount)}</td>
-        </tr>
+        <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        <tr><td class="info-label">Delivery</td><td class="info-value">${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}</td></tr>
+        <tr><td class="info-label" style="font-weight: 700; color: #fafaf9;">Total</td><td class="info-value" style="font-weight: 700; color: #d4af37; font-size: 16px;">${formatNaira(order.total_amount)}</td></tr>
       </table>
     </div>
-
     <div class="card">
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Destination Delivery Address</div>
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Destination</div>
       <div style="font-size: 13px; color: #fafaf9; line-height: 1.6;">
-        <strong>${shipping?.first_name || ''} ${shipping?.last_name || ''}</strong><br/>
+        ${shipping?.first_name || ''} ${shipping?.last_name || ''}<br/>
         ${shipping?.address_line1 || shipping?.streetAddress || ''}<br/>
-        ${shipping?.city || ''}, ${shipping?.state || 'Lagos'}, ${shipping?.country || 'Nigeria'}<br/>
-        Phone: ${order.phone || shipping?.phone || 'On file'}
+        ${shipping?.city || ''}, ${shipping?.state || 'Lagos'}, ${shipping?.country || 'Nigeria'}
       </div>
     </div>
-
     <div class="button-container">
-      <a href="${trackingUrl}" class="btn-gold">Track Consignment</a>
-    </div>
-  `
+      <a href="${orderUrl}" class="btn-gold">Track Consignment</a>
+    </div>`
   );
-
-  const text = `ORDER CONFIRMED — PHILZ SIGNATURE
-Consignment Number: ${order.order_number}
-Total: ${formatNaira(order.total_amount)}
-Deliver to: ${shipping?.first_name || ''} ${shipping?.last_name || ''}, ${shipping?.city || ''}, ${shipping?.state || ''}
-
-Track your order: ${trackingUrl}`;
-
-  await dispatchEmail({
-    to: order.email,
-    subject,
-    html,
-    text,
-    emailType: 'order_confirmation',
-    orderId: order.id,
-  });
+  const text = `Order Received: #${order.order_number}\nTotal: ${formatNaira(order.total_amount)}\nTrack: ${orderUrl}`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_received', orderId: order.id });
 }
 
-/**
- * 3. Shipping / Preparation Update Email
- */
-export async function sendShippingUpdateEmail(order: OrderEmailData): Promise<void> {
-  const subject = `Consignment Preparation Notice — Philz Signature #${order.order_number}`;
-  const trackingUrl = `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+/** 8. Payment Confirmed */
+export async function sendPaymentConfirmationEmail(order: OrderEmailData, payment: PaymentEmailDetails): Promise<void> {
+  const subject = `Payment Confirmed — Philz Signature Order #${order.order_number}`;
+  const orderUrl = `${APP_URL}/checkout/confirmation/${order.order_number}?email=${encodeURIComponent(order.email)}`;
 
   const html = getEmailWrapper(
     subject,
     `
     <div style="text-align: center; margin-bottom: 24px;">
-      <span class="gold-pill">Boutique Preparation</span>
-      <h1 class="heading">Fragrance Consignment in Progress</h1>
-      <p class="paragraph">Our boutique specialists are carefully bottling, packaging, and seal-inspecting your fragrance consignment.</p>
+      <span class="gold-pill">Payment Confirmed</span>
+      <h1 class="heading">Payment Received with Thanks</h1>
+      <p class="paragraph">We have successfully verified your payment via ${payment.gateway.toUpperCase()}. Your consignment is now locked in and queued for priority preparation.</p>
     </div>
-
     <div class="card">
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Dispatch Expectations</div>
-      <p class="paragraph" style="margin-bottom: 12px;">
-        Every bottle is stored in temperature-controlled ateliers to preserve olfactory purity. Once packaged, our courier team will initiate delivery.
-      </p>
       <table class="info-table">
-        <tr>
-          <td class="info-label">Estimated Delivery (Lagos)</td>
-          <td class="info-value">1 - 2 Business Days</td>
-        </tr>
-        <tr>
-          <td class="info-label">Estimated Delivery (Nationwide)</td>
-          <td class="info-value">3 - 5 Business Days</td>
-        </tr>
-        <tr>
-          <td class="info-label">Fulfillment Status</td>
-          <td class="info-value" style="color: #f59e0b;">Processing &bull; In Preparation</td>
-        </tr>
+        <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
+        <tr><td class="info-label">Payment Gateway</td><td class="info-value">${payment.gateway.toUpperCase()}</td></tr>
+        <tr><td class="info-label">Payment Reference</td><td class="info-value" style="font-family: monospace; font-size: 12px;">${payment.reference}</td></tr>
+        <tr><td class="info-label">Amount Paid</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 15px;">${formatNaira(payment.amountNaira)}</td></tr>
+        <tr><td class="info-label">Status</td><td class="info-value" style="color: #10b981;">Verified &bull; Paid</td></tr>
       </table>
     </div>
-
     <div class="button-container">
-      <a href="${trackingUrl}" class="btn-gold">Check Consignment Stream</a>
-    </div>
-  `
+      <a href="${orderUrl}" class="btn-gold">View Order Receipt</a>
+    </div>`
   );
-
-  const text = `CONSIGNMENT PREPARATION NOTICE — PHILZ SIGNATURE
-Order: ${order.order_number}
-Your items are currently being prepared and inspected by our boutique specialists.
-Track: ${trackingUrl}`;
-
-  await dispatchEmail({
-    to: order.email,
-    subject,
-    html,
-    text,
-    emailType: 'shipping_update',
-    orderId: order.id,
-  });
+  const text = `Payment Confirmed for #${order.order_number}. Reference: ${payment.reference}, Amount: ${formatNaira(payment.amountNaira)}. View: ${orderUrl}`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'payment_confirmation', orderId: order.id });
 }
 
-/**
- * Aggregator: Send all transactional communications
- */
+/** 9. Order Processing */
+export async function sendOrderProcessingEmail(order: OrderEmailData): Promise<void> {
+  const subject = `Atelier In Progress: Order #${order.order_number} — Philz Signature`;
+  const trackingUrl = `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Boutique Preparation</span>
+      <h1 class="heading">Bottling & Inspection Underway</h1>
+      <p class="paragraph">Our fragrance specialists are preparing and inspecting each item in consignment #${order.order_number} to ensure immaculate quality.</p>
+    </div>
+    <div class="card">
+      <p class="paragraph">Estimated dispatch within 24 to 48 business hours. You will receive dispatch tracking as soon as your courier departs.</p>
+    </div>
+    <div class="button-container">
+      <a href="${trackingUrl}" class="btn-gold">Track Live Progress</a>
+    </div>`
+  );
+  const text = `Your order #${order.order_number} is being bottled and inspected. Track at: ${trackingUrl}`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_processing', orderId: order.id });
+}
+
+/** 10. Order Shipped */
+export async function sendOrderShippedEmail(
+  order: OrderEmailData,
+  shipping: { courier: string; trackingNumber: string; trackingUrl?: string }
+): Promise<void> {
+  const subject = `Consignment Dispatched: Order #${order.order_number} — Philz Signature`;
+  const trackBtnUrl = shipping.trackingUrl || `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Dispatched</span>
+      <h1 class="heading">Your Consignment is on Its Way</h1>
+      <p class="paragraph">Consignment #${order.order_number} has left our boutique atelier and is in transit with ${shipping.courier}.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Courier Partner</td><td class="info-value">${shipping.courier}</td></tr>
+        <tr><td class="info-label">Tracking Number</td><td class="info-value" style="font-family: monospace;">${shipping.trackingNumber}</td></tr>
+        <tr><td class="info-label">Delivery Window</td><td class="info-value">1 - 3 Business Days</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${trackBtnUrl}" class="btn-gold">Track Courier</a>
+    </div>`
+  );
+  const text = `Consignment #${order.order_number} has been shipped via ${shipping.courier}. Tracking: ${shipping.trackingNumber}. Track: ${trackBtnUrl}`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_shipped', orderId: order.id });
+}
+
+/** 11. Out for Delivery */
+export async function sendOutForDeliveryEmail(
+  order: OrderEmailData,
+  delivery: { courier: string; estimatedTime?: string }
+): Promise<void> {
+  const subject = `Arriving Today: Order #${order.order_number} — Philz Signature`;
+  const trackUrl = `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Out For Delivery</span>
+      <h1 class="heading">Arriving Today</h1>
+      <p class="paragraph">Your Philz Signature consignment #${order.order_number} is in the courier dispatch vehicle and will arrive today.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Courier</td><td class="info-value">${delivery.courier}</td></tr>
+        <tr><td class="info-label">Estimated Delivery</td><td class="info-value">${delivery.estimatedTime || 'Today'}</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${trackUrl}" class="btn-gold">Track Live Delivery</a>
+    </div>`
+  );
+  const text = `Order #${order.order_number} is out for delivery today via ${delivery.courier}. Track: ${trackUrl}`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'out_for_delivery', orderId: order.id });
+}
+
+/** 12. Delivered */
+export async function sendOrderDeliveredEmail(order: OrderEmailData, reviewUrl?: string): Promise<void> {
+  const subject = `Consignment Delivered — Philz Signature #${order.order_number}`;
+  const targetReviewUrl = reviewUrl || `${APP_URL}/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Delivered</span>
+      <h1 class="heading">Consignment Delivered</h1>
+      <p class="paragraph">We have confirmation that order #${order.order_number} has been safely delivered. We hope you savor every drop of your handcrafted fragrance.</p>
+    </div>
+    <div class="card">
+      <p class="paragraph" style="text-align: center;">How is your olfactory experience? Your review helps our perfumers uphold exacting standards.</p>
+      <div class="button-container">
+        <a href="${targetReviewUrl}" class="btn-gold">Leave a Boutique Review</a>
+      </div>
+    </div>`
+  );
+  const text = `Consignment #${order.order_number} has been delivered. Share your review: ${targetReviewUrl}`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_delivered', orderId: order.id });
+}
+
+/** 13. Order Cancelled */
+export async function sendOrderCancelledEmail(order: OrderEmailData, reason: string): Promise<void> {
+  const subject = `Order Cancelled: #${order.order_number} — Philz Signature`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="alert-pill">Cancelled</span>
+      <h1 class="heading">Order Cancellation Notice</h1>
+      <p class="paragraph">Consignment #${order.order_number} has been cancelled.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
+        <tr><td class="info-label">Reason</td><td class="info-value">${reason || 'Customer request / Inventory unavailable'}</td></tr>
+        <tr><td class="info-label">Total Amount</td><td class="info-value">${formatNaira(order.total_amount)}</td></tr>
+      </table>
+    </div>
+    <p class="paragraph">If payment was already deducted, a full refund will be processed promptly. Contact Concierge at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> for assistance.</p>`
+  );
+  const text = `Order #${order.order_number} has been cancelled. Reason: ${reason}. Please contact concierge if you have questions.`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_cancelled', orderId: order.id });
+}
+
+/** 14. Refund Processed */
+export async function sendRefundProcessedEmail(
+  order: OrderEmailData,
+  refund: { amountNaira: number; timeline: string; reference?: string }
+): Promise<void> {
+  const subject = `Refund Processed: #${order.order_number} — Philz Signature`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Refund Complete</span>
+      <h1 class="heading">Refund Issued</h1>
+      <p class="paragraph">A refund has been initiated for consignment #${order.order_number}.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Refund Amount</td><td class="info-value" style="color: #d4af37; font-weight: 700;">${formatNaira(refund.amountNaira)}</td></tr>
+        <tr><td class="info-label">Expected Settlement</td><td class="info-value">${refund.timeline || '3 - 5 Business Days'}</td></tr>
+        ${refund.reference ? `<tr><td class="info-label">Reference</td><td class="info-value" style="font-family: monospace;">${refund.reference}</td></tr>` : ''}
+      </table>
+    </div>
+    <p class="paragraph">Depending on your financial institution, funds typically reflect in your account within 3 to 5 business days.</p>`
+  );
+  const text = `Refund of ${formatNaira(refund.amountNaira)} processed for order #${order.order_number}. Timeline: ${refund.timeline}.`;
+  await dispatchEmail({ to: order.email, subject, html, text, emailType: 'refund_processed', orderId: order.id });
+}
+
+// =============================================================================
+// ADMIN EMAILS (1 - 6)
+// =============================================================================
+
+/** 1. New Order Received Alert */
+export async function sendAdminNewOrderEmail(order: OrderEmailData, adminEmail: string = ADMIN_NOTIFICATION_EMAIL): Promise<void> {
+  const subject = `[Admin Alert] New Order Received: #${order.order_number} (${formatNaira(order.total_amount)})`;
+  const adminUrl = `${APP_URL}/admin/orders`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Admin Alert</span>
+      <h1 class="heading">New Order Placed</h1>
+      <p class="paragraph">A customer has completed an order on Philz Signature storefront.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
+        <tr><td class="info-label">Customer Email</td><td class="info-value">${order.email}</td></tr>
+        <tr><td class="info-label">Order Total</td><td class="info-value" style="color: #d4af37; font-weight: 700;">${formatNaira(order.total_amount)}</td></tr>
+        <tr><td class="info-label">Items Count</td><td class="info-value">${order.items?.length || 'Multiple'}</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${adminUrl}" class="btn-gold">Open Admin Dashboard</a>
+    </div>`
+  );
+  const text = `[Admin Alert] New order #${order.order_number} placed by ${order.email} for ${formatNaira(order.total_amount)}.`;
+  await dispatchEmail({ to: adminEmail, subject, html, text, emailType: 'admin_new_order', orderId: order.id });
+}
+
+/** 2. High-Value Order Alert */
+export async function sendAdminHighValueOrderEmail(
+  order: OrderEmailData,
+  thresholdNaira: number = 250000,
+  adminEmail: string = ADMIN_NOTIFICATION_EMAIL
+): Promise<void> {
+  const subject = `[HIGH VALUE] Order #${order.order_number} Exceeds ${formatNaira(thresholdNaira)}`;
+  const adminUrl = `${APP_URL}/admin/orders`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="alert-pill">High-Value Order</span>
+      <h1 class="heading">Priority Consignment Alert</h1>
+      <p class="paragraph">An order exceeding your high-value threshold of ${formatNaira(thresholdNaira)} was recorded.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
+        <tr><td class="info-label">Customer Email</td><td class="info-value">${order.email}</td></tr>
+        <tr><td class="info-label">Order Amount</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 16px;">${formatNaira(order.total_amount)}</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${adminUrl}" class="btn-gold">Review High-Value Order</a>
+    </div>`
+  );
+  const text = `[High Value Order] #${order.order_number} for ${formatNaira(order.total_amount)} placed by ${order.email}. Review at ${adminUrl}`;
+  await dispatchEmail({ to: adminEmail, subject, html, text, emailType: 'admin_high_value_order', orderId: order.id });
+}
+
+/** 3. Failed Payment Alert */
+export async function sendAdminFailedPaymentEmail(
+  details: { orderNumber: string; email: string; amountNaira: number; gateway: string; reason: string },
+  adminEmail: string = ADMIN_NOTIFICATION_EMAIL
+): Promise<void> {
+  const subject = `[Alert] Payment Failed: #${details.orderNumber} via ${details.gateway.toUpperCase()}`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="alert-pill">Payment Failed</span>
+      <h1 class="heading">Gateway Payment Failure</h1>
+      <p class="paragraph">A customer encountered a payment failure during checkout.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Order Number</td><td class="info-value">${details.orderNumber}</td></tr>
+        <tr><td class="info-label">Customer Email</td><td class="info-value">${details.email}</td></tr>
+        <tr><td class="info-label">Amount</td><td class="info-value">${formatNaira(details.amountNaira)}</td></tr>
+        <tr><td class="info-label">Gateway</td><td class="info-value">${details.gateway.toUpperCase()}</td></tr>
+        <tr><td class="info-label">Failure Reason</td><td class="info-value" style="color: #f87171;">${details.reason}</td></tr>
+      </table>
+    </div>`
+  );
+  const text = `[Payment Failed] Order #${details.orderNumber} for ${details.email} failed via ${details.gateway}. Reason: ${details.reason}`;
+  await dispatchEmail({ to: adminEmail, subject, html, text, emailType: 'admin_failed_payment' });
+}
+
+/** 4. Refund Requested Alert */
+export async function sendAdminRefundRequestedEmail(
+  details: { orderNumber: string; customerEmail: string; amountNaira: number; reason: string },
+  adminEmail: string = ADMIN_NOTIFICATION_EMAIL
+): Promise<void> {
+  const subject = `[Action Required] Refund Requested for Order #${details.orderNumber}`;
+  const adminUrl = `${APP_URL}/admin/orders`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="alert-pill">Refund Requested</span>
+      <h1 class="heading">Customer Refund Request</h1>
+      <p class="paragraph">A refund request requires administrative review.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Order Number</td><td class="info-value">${details.orderNumber}</td></tr>
+        <tr><td class="info-label">Customer</td><td class="info-value">${details.customerEmail}</td></tr>
+        <tr><td class="info-label">Requested Amount</td><td class="info-value">${formatNaira(details.amountNaira)}</td></tr>
+        <tr><td class="info-label">Reason Stated</td><td class="info-value">${details.reason}</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${adminUrl}" class="btn-gold">Process In Admin</a>
+    </div>`
+  );
+  const text = `Refund requested for order #${details.orderNumber} by ${details.customerEmail} for ${formatNaira(details.amountNaira)}. Reason: ${details.reason}`;
+  await dispatchEmail({ to: adminEmail, subject, html, text, emailType: 'admin_refund_requested' });
+}
+
+/** 5. New Customer Registered Alert */
+export async function sendAdminNewCustomerRegisteredEmail(
+  details: { email: string; name: string; registeredAt: string },
+  adminEmail: string = ADMIN_NOTIFICATION_EMAIL
+): Promise<void> {
+  const subject = `[Client Registry] New Customer Registered: ${details.email}`;
+  const adminUrl = `${APP_URL}/admin/customers`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Client Registry</span>
+      <h1 class="heading">New Patron Registered</h1>
+      <p class="paragraph">A new client account was created on Philz Signature.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Email</td><td class="info-value">${details.email}</td></tr>
+        <tr><td class="info-label">Name</td><td class="info-value">${details.name || 'Not provided'}</td></tr>
+        <tr><td class="info-label">Registered At</td><td class="info-value">${details.registeredAt}</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${adminUrl}" class="btn-gold">View Customers</a>
+    </div>`
+  );
+  const text = `New client registered: ${details.email} (${details.name}) on ${details.registeredAt}.`;
+  await dispatchEmail({ to: adminEmail, subject, html, text, emailType: 'admin_new_customer' });
+}
+
+/** 6. Low Inventory Alert */
+export async function sendAdminLowInventoryAlertEmail(
+  details: { productName: string; sku: string; currentStock: number; minThreshold: number },
+  adminEmail: string = ADMIN_NOTIFICATION_EMAIL
+): Promise<void> {
+  const subject = `[INVENTORY ALERT] Low Stock: ${details.productName} (${details.currentStock} left)`;
+  const adminUrl = `${APP_URL}/admin/products`;
+  const html = getEmailWrapper(
+    subject,
+    `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="alert-pill">Stock Warning</span>
+      <h1 class="heading">Low Fragrance Inventory</h1>
+      <p class="paragraph">An atelier product has dipped below the configured replenishment threshold.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Product Name</td><td class="info-value">${details.productName}</td></tr>
+        <tr><td class="info-label">SKU</td><td class="info-value" style="font-family: monospace;">${details.sku}</td></tr>
+        <tr><td class="info-label">Current Stock</td><td class="info-value" style="color: #f87171; font-weight: 700;">${details.currentStock} units</td></tr>
+        <tr><td class="info-label">Threshold</td><td class="info-value">${details.minThreshold} units</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="${adminUrl}" class="btn-gold">Update Stock in Admin</a>
+    </div>`
+  );
+  const text = `[LOW INVENTORY] ${details.productName} (SKU: ${details.sku}) has only ${details.currentStock} units remaining (Threshold: ${details.minThreshold}). Manage at ${adminUrl}`;
+  await dispatchEmail({ to: adminEmail, subject, html, text, emailType: 'admin_low_inventory' });
+}
+
+/** Aggregator for payment confirmations (backward compatibility) */
 export async function sendAllTransactionalEmails(
   order: OrderEmailData,
   items: OrderItemEmailData[],
   payment: PaymentEmailDetails
 ): Promise<void> {
-  // Dispatches payment confirmation, order confirmation, and shipping updates
   await Promise.allSettled([
     sendPaymentConfirmationEmail(order, payment),
-    sendOrderConfirmationEmail(order, items),
-    sendShippingUpdateEmail(order),
+    sendOrderReceivedEmail(order, items),
+    sendAdminNewOrderEmail(order),
+    Number(order.total_amount) >= 250000 ? sendAdminHighValueOrderEmail(order, 250000) : Promise.resolve(),
   ]);
-
-  // Insert consolidated milestone into order timeline
-  try {
-    await supabaseAdmin.from('order_timeline').insert({
-      order_id: order.id,
-      status: 'communications_sent',
-      title: 'Transactional Communications Dispatched',
-      description: `Payment confirmation, order confirmation, and preparation notice transmitted to ${order.email}.`,
-    });
-  } catch (err) {
-    console.warn('Timeline update for email dispatch skipped:', err);
-  }
 }

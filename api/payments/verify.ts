@@ -48,6 +48,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  // Rate limiting: 60 req/min for general API
+  const { checkRateLimit, getClientIp } = await import('../_lib/rateLimit');
+  const clientIp = getClientIp(req);
+  const rateLimitResult = checkRateLimit(clientIp, 'general');
+  if (!rateLimitResult.allowed) {
+    return res.status(429).json({ success: false, reason: 'Too many requests. Please try again later.' });
+  }
+
   const { gateway, reference, orderId } = req.body || {};
   if (!gateway || !reference || !orderId) {
     res.status(400).json({ success: false, reason: 'gateway, reference, and orderId are required' });

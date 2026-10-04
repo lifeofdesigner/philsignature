@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { userService } from '@/services/UserService';
 
 export const CustomerProfilePage: React.FC = () => {
-  const { profile, user, refreshProfile, updatePassword } = useAuth();
+  const { profile, user, refreshProfile, updatePassword, signOutAllDevices } = useAuth();
 
   // Personal Info Form State
   const [firstName, setFirstName] = useState(profile?.first_name || '');
@@ -279,27 +279,51 @@ export const CustomerProfilePage: React.FC = () => {
         </form>
       </section>
 
-      {/* 3. Account Details Card */}
-      <section className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-5">
-        <div className="flex items-center gap-2 text-xs text-luxury-gold mb-3">
-          <ShieldCheck className="h-4 w-4" />
-          <span className="font-semibold uppercase tracking-wider text-[11px]">Account Information</span>
+      {/* 3. Account Details & Session Security Card */}
+      <section className="bg-luxury-card border border-luxury-border rounded-sm shadow-xs p-5 space-y-6">
+        <div>
+          <div className="flex items-center gap-2 text-xs text-luxury-gold mb-3">
+            <ShieldCheck className="h-4 w-4" />
+            <span className="font-semibold uppercase tracking-wider text-[11px]">Account Information</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-luxury-muted">
+            <div>
+              <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account ID</span>
+              <span className="font-mono text-[11px] text-luxury-cream truncate block">{user?.id || '—'}</span>
+            </div>
+            <div>
+              <span className="text-[10px] uppercase tracking-wider block mb-0.5">Member Since</span>
+              <span className="text-luxury-cream block">{formatDate(profile?.created_at || user?.created_at)}</span>
+            </div>
+            <div>
+              <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account Role</span>
+              <span className="text-luxury-gold uppercase tracking-wider text-[10px] font-semibold block">
+                {profile?.role || 'Customer'}
+              </span>
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-luxury-muted">
+
+        {/* Global Device Sign-out */}
+        <div className="pt-4 border-t border-luxury-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account ID</span>
-            <span className="font-mono text-[11px] text-luxury-cream truncate block">{user?.id || '—'}</span>
+            <h4 className="text-xs font-semibold text-luxury-cream">Active Sessions & Security</h4>
+            <p className="text-[11px] text-luxury-muted mt-0.5">
+              Lost your phone or signed in on a public computer? Revoke access across all browsers and devices immediately.
+            </p>
           </div>
-          <div>
-            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Member Since</span>
-            <span className="text-luxury-cream block">{formatDate(profile?.created_at || user?.created_at)}</span>
-          </div>
-          <div>
-            <span className="text-[10px] uppercase tracking-wider block mb-0.5">Account Role</span>
-            <span className="text-luxury-gold uppercase tracking-wider text-[10px] font-semibold block">
-              {profile?.role || 'Customer'}
-            </span>
-          </div>
+          <button
+            type="button"
+            onClick={async () => {
+              if (window.confirm('Are you sure you want to sign out of all devices? You will need to log in again.')) {
+                await signOutAllDevices();
+                window.location.href = '/login';
+              }
+            }}
+            className="shrink-0 px-4 py-2 border border-red-900/60 hover:bg-red-950/40 text-red-300 text-xs font-medium rounded-sm transition-colors cursor-pointer"
+          >
+            Sign Out of All Devices
+          </button>
         </div>
       </section>
     </div>

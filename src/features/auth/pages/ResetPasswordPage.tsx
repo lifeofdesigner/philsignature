@@ -27,7 +27,17 @@ export const ResetPasswordPage: React.FC = () => {
     setIsSubmitting(true);
     try {
       await updatePassword(newPassword);
-      navigate(ROUTES.LOGIN, { state: { message: 'Password updated successfully. Please log in.' } });
+      const params = new URLSearchParams(window.location.search);
+      const unlockToken = params.get('unlockToken');
+      const email = params.get('email');
+      if (unlockToken && email) {
+        await fetch('/api/auth/unlock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, token: unlockToken }),
+        }).catch(() => null);
+      }
+      navigate(ROUTES.LOGIN, { state: { message: 'Password updated and account unlocked successfully. Please log in.' } });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to update password. Recovery link may have expired.');
     } finally {

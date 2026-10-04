@@ -8,6 +8,7 @@ import { couponService } from '@/services/CouponService';
 import { addressService } from '@/services/AddressService';
 import { orderService } from '@/services/OrderService';
 import { paymentService } from '@/services/PaymentService';
+import { useTaxSettings } from '@/hooks/useTaxSettings';
 import type { CustomerAddress } from '@/types/database';
 
 export type CheckoutStep = 'address' | 'shipping' | 'payment';
@@ -64,6 +65,8 @@ export function useCheckout() {
     queryFn: () => paymentService.getEnabledMethods(),
     staleTime: 1000 * 60 * 10,
   });
+
+  const { taxSettings, calculateTax, isLoading: isLoadingTax } = useTaxSettings();
 
   // If the current selection becomes disabled (or was never enabled to begin
   // with), fall back to the first enabled method instead of leaving a
@@ -137,9 +140,17 @@ export function useCheckout() {
     return shippingService.calculateShippingCost(selectedShippingMethod, subtotal);
   }, [selectedShippingMethod, subtotal]);
 
-  // 4. Totals Calculation
+  // 4. Tax Calculation
+  const taxCalculation = useMemo(() => calculateTax(subtotal), [calculateTax, subtotal]);
+  const taxAmount = taxCalculation.amount;
+  const taxRate = taxCalculation.rate;
+  const taxName = taxCalculation.name;
+  const isTaxEnabled = taxCalculation.enabled;
+
+  // 5. Totals Calculation
+  // subtotal + tax + shipping - discount
   const discountAmount = appliedCoupon ? appliedCoupon.discount : 0;
-  const totalAmount = Math.max(0, subtotal + shippingCost - discountAmount);
+  const totalAmount = Math.max(0, subtotal + shippingCost - discountAmount + taxAmount);
 
   // 5. Coupon Application
   const handleApplyCoupon = async () => {
@@ -254,11 +265,30 @@ export function useCheckout() {
 
       const order = await placeOrderMutation.mutateAsync();
 
+      const encodedEmail = encodeURIComponent(addressForm.email);
+
       if (paymentMethod === 'bank_transfer') {
         clearCart();
         queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
         setIsProcessingPayment(false);
-        navigate(`/checkout/confirmation/${order.order_number}?method=bank_transfer`);
+        // Dispatch order received transactional email asynchronously
+        fetch('/api/email/dispatch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'order_received',
+            payload: {
+              order,
+              items: order.items || items.map((i) => ({
+                product_name: i.product.name,
+                quantity: i.quantity,
+                price: i.price,
+                subtotal: i.price * i.quantity,
+              })),
+            },
+          }),
+        }).catch((err) => console.warn('Order received email dispatch error:', err));
+        navigate(`/checkout/confirmation/${order.order_number}?method=bank_transfer&email=${encodedEmail}`);
         return;
       }
 
@@ -280,7 +310,7 @@ export function useCheckout() {
               clearCart();
               queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
               setIsProcessingPayment(false);
-              navigate(`/payment/callback?reference=${encodeURIComponent(reference)}`);
+              navigate(`/payment/callback?reference=${encodeURIComponent(reference)}&email=${encodedEmail}`);
               return;
             }
 
@@ -289,12 +319,12 @@ export function useCheckout() {
               setCheckoutError(
                 result.reason || 'We could not verify your payment. Please contact support with your order number.'
               );
-              navigate(`/checkout/confirmation/${order.order_number}?status=pending`);
+              navigate(`/checkout/confirmation/${order.order_number}?status=pending&email=${encodedEmail}`);
               return;
             }
             clearCart();
             queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
-            navigate(`/checkout/confirmation/${order.order_number}`);
+            navigate(`/checkout/confirmation/${order.order_number}?email=${encodedEmail}`);
           } catch (confirmErr: unknown) {
             const msg = confirmErr instanceof Error ? confirmErr.message : 'Error verifying payment';
             setCheckoutError(msg);
@@ -304,7 +334,7 @@ export function useCheckout() {
         },
         onCancel: () => {
           setIsProcessingPayment(false);
-          navigate(`/checkout/confirmation/${order.order_number}?status=pending`);
+          navigate(`/checkout/confirmation/${order.order_number}?status=pending&email=${encodedEmail}`);
         },
       });
     } catch (err: unknown) {
@@ -343,6 +373,12 @@ export function useCheckout() {
     subtotal,
     shippingCost,
     discountAmount,
+    taxAmount,
+    taxRate,
+    taxName,
+    isTaxEnabled,
+    isLoadingTax,
+    taxSettings,
     totalAmount,
     checkoutError,
     isSubmitting: placeOrderMutation.isPending || isProcessingPayment,

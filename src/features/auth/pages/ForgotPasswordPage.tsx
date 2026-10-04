@@ -21,6 +21,19 @@ export const ForgotPasswordPage: React.FC = () => {
 
     try {
       await resetPassword(email);
+      const resetUrl = `${window.location.origin}/reset-password?email=${encodeURIComponent(email)}`;
+      fetch('/api/email/dispatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'password_reset',
+          payload: {
+            email,
+            resetUrl,
+          },
+        }),
+      }).catch(() => null);
+
       setIsSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to send reset instructions. Please try again.');

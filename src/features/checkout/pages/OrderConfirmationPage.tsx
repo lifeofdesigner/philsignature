@@ -16,9 +16,10 @@ export const OrderConfirmationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const methodParam = searchParams.get('method');
+  const emailParam = searchParams.get('email') || undefined;
   const [isRetrying, setIsRetrying] = useState(false);
 
-  const { data: order, isLoading, error, refetch } = useOrderDetail(orderNumber);
+  const { data: order, isLoading, error, refetch } = useOrderDetail(orderNumber, emailParam);
   const { data: bankConfig } = useQuery({
     queryKey: ['payment-bank-transfer-config'],
     queryFn: () => paymentService.getBankTransferConfig(),
@@ -201,6 +202,12 @@ export const OrderConfirmationPage: React.FC = () => {
               <span>Subtotal</span>
               <span className="text-luxury-cream">{formatCurrency(order.subtotal)}</span>
             </div>
+            {Number(order.tax_amount || 0) > 0 && (
+              <div className="flex justify-between text-luxury-muted">
+                <span>Estimated Tax{order.tax_rate ? ` (${order.tax_rate}%)` : ''}</span>
+                <span className="text-luxury-cream">{formatCurrency(order.tax_amount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-luxury-muted">
               <span>Delivery Fee</span>
               <span className="text-luxury-cream">

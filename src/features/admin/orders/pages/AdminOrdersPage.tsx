@@ -483,6 +483,36 @@ export const AdminOrdersPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Financial Breakdown */}
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+              <div className="flex justify-between text-slate-600">
+                <span>Subtotal</span>
+                <span className="text-black font-semibold">{formatCurrency(selectedOrder.subtotal)}</span>
+              </div>
+              {Number(selectedOrder.tax_amount || 0) > 0 && (
+                <div className="flex justify-between text-slate-600">
+                  <span>Tax{selectedOrder.tax_rate ? ` (${selectedOrder.tax_rate}%)` : ''}</span>
+                  <span className="text-black font-semibold">{formatCurrency(selectedOrder.tax_amount)}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-slate-600">
+                <span>Delivery Fee</span>
+                <span className="text-black font-semibold">
+                  {selectedOrder.shipping_amount === 0 ? 'Complimentary' : formatCurrency(selectedOrder.shipping_amount)}
+                </span>
+              </div>
+              {selectedOrder.discount_amount > 0 && (
+                <div className="flex justify-between text-emerald-700">
+                  <span>Discount {selectedOrder.coupon_code ? `(${selectedOrder.coupon_code})` : ''}</span>
+                  <span className="font-semibold">-{formatCurrency(selectedOrder.discount_amount)}</span>
+                </div>
+              )}
+              <div className="border-t border-slate-200 pt-2 flex justify-between font-bold text-sm text-black">
+                <span>Final Total</span>
+                <span className="text-black">{formatCurrency(selectedOrder.total_amount)}</span>
+              </div>
+            </div>
+
             {/* Dispatch Tracking Input */}
             <div className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="space-y-0.5">

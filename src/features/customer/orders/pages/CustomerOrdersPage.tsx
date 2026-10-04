@@ -332,6 +332,12 @@ export const CustomerOrdersPage: React.FC = () => {
                 <span>Subtotal</span>
                 <span className="text-luxury-cream">{formatCurrency(selectedOrder.subtotal)}</span>
               </div>
+              {Number(selectedOrder.tax_amount || 0) > 0 && (
+                <div className="flex justify-between text-luxury-muted">
+                  <span>Estimated Tax{selectedOrder.tax_rate ? ` (${selectedOrder.tax_rate}%)` : ''}</span>
+                  <span className="text-luxury-cream">{formatCurrency(selectedOrder.tax_amount)}</span>
+                </div>
+              )}
               <div className="flex justify-between text-luxury-muted">
                 <span>Delivery Fee</span>
                 <span className="text-luxury-cream">

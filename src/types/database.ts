@@ -301,6 +301,7 @@ export interface Order {
   shipping_amount: number;
   discount_amount: number;
   tax_amount: number;
+  tax_rate?: number;
   total_amount: number;
   payment_method: PaymentGateway;
   payment_reference: string | null;
@@ -314,6 +315,12 @@ export interface Order {
   timeline?: OrderTimeline[];
   created_at: string;
   updated_at: string;
+}
+
+export interface TaxSettings {
+  enabled: boolean;
+  name: string;
+  rate: number;
 }
 
 export interface Review {

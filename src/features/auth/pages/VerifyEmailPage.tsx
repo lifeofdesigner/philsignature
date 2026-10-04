@@ -34,15 +34,42 @@ export const VerifyEmailPage: React.FC = () => {
 
         <p className="text-xs text-luxury-muted leading-relaxed font-light">
           Please check your inbox and click the link to confirm your email and activate your account.
+          <span className="block text-[11px] text-amber-400/80 mt-1">
+            Registration link expires in 24 hours. Unverified accounts will be deactivated.
+          </span>
         </p>
 
-        <div className="pt-2">
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link to={ROUTES.LOGIN}>
             <Button variant="outline" size="sm" className="gap-2">
               <span>Back to Sign In</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
+          {email && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs text-luxury-gold hover:text-luxury-cream"
+              onClick={async () => {
+                await fetch('/api/email/dispatch', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    type: 'welcome_verification',
+                    payload: {
+                      email,
+                      name: 'Valued Patron',
+                      verificationUrl: `${window.location.origin}/verify-email?email=${encodeURIComponent(email)}`,
+                    },
+                  }),
+                }).catch(() => null);
+                alert('A new verification email has been dispatched to ' + email);
+              }}
+            >
+              Resend Link
+            </Button>
+          )}
         </div>
       </div>
     </div>

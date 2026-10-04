@@ -6,10 +6,38 @@ import { CommandPaletteModal } from '@/components/common/CommandPaletteModal';
 import { AdminThemeProvider } from '@/components/admin-ui';
 import { ChevronRight, Home } from 'lucide-react';
 
+import { useAuth } from '@/hooks/useAuth';
+
+const INACTIVITY_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes
+
 export const AdminShell: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const location = useLocation();
+  const { logout } = useAuth();
+
+  // Inactivity auto-logout (30 minutes of inactivity)
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    const resetTimer = () => {
+      clearTimeout(timer);
+      timer = setTimeout(async () => {
+        sessionStorage.removeItem('ps_admin_2fa_verified');
+        await logout();
+        window.location.href = '/login?reason=timeout';
+      }, INACTIVITY_TIMEOUT_MS);
+    };
+
+    const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
+    events.forEach((evt) => window.addEventListener(evt, resetTimer, { passive: true }));
+    resetTimer();
+
+    return () => {
+      clearTimeout(timer);
+      events.forEach((evt) => window.removeEventListener(evt, resetTimer));
+    };
+  }, [logout]);
 
   // Generate breadcrumb segments
   const pathSegments = location.pathname

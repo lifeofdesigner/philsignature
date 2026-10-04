@@ -21,6 +21,16 @@ export class MediaRepository extends BaseRepository {
     return data.publicUrl;
   }
 
+  async createSignedUrl(bucket: string, path: string, expiresInSeconds: number = 3600): Promise<string> {
+    try {
+      const { data, error } = await this.client.storage.from(bucket).createSignedUrl(path, expiresInSeconds);
+      if (error) this.handleError(error, `Failed to generate signed URL for ${path}`);
+      return data?.signedUrl || '';
+    } catch (err) {
+      this.handleError(err, 'Error generating signed storage URL');
+    }
+  }
+
   async upload(bucket: MediaBucket, file: File, uploadedBy?: string): Promise<MediaItem> {
     try {
       const sanitizedName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '-');

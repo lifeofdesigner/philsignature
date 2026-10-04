@@ -7,6 +7,10 @@ interface OrderSummaryCardProps {
   subtotal: number;
   shippingCost: number;
   discountAmount: number;
+  taxAmount?: number;
+  taxRate?: number;
+  taxName?: string;
+  isTaxEnabled?: boolean;
   totalAmount: number;
   couponCode: string;
   setCouponCode: (code: string) => void;
@@ -22,6 +26,10 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   subtotal,
   shippingCost,
   discountAmount,
+  taxAmount = 0,
+  taxRate,
+  taxName = 'Tax',
+  isTaxEnabled = false,
   totalAmount,
   couponCode,
   setCouponCode,
@@ -146,6 +154,15 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
           <span>Subtotal</span>
           <span className="text-luxury-cream font-medium">{formatCurrency(subtotal)}</span>
         </div>
+
+        {isTaxEnabled && (
+          <div className="flex justify-between text-luxury-muted">
+            <span>{taxName || 'Estimated Tax'}{taxRate !== undefined ? ` (${taxRate}%)` : ''}</span>
+            <span className="text-luxury-cream font-medium">
+              {formatCurrency(taxAmount)}
+            </span>
+          </div>
+        )}
 
         <div className="flex justify-between text-luxury-muted">
           <span>Delivery Fee</span>

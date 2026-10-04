@@ -31,6 +31,10 @@ export class MediaService {
     return this.repo.getPublicUrl(bucket, path);
   }
 
+  async getSignedUrl(bucket: string, path: string, expiresInSeconds: number = 3600): Promise<string> {
+    return this.repo.createSignedUrl(bucket, path, expiresInSeconds);
+  }
+
   async uploadFile(bucket: MediaBucket, file: File, uploadedBy?: string): Promise<MediaItem> {
     const rules = BUCKET_RULES[bucket];
     if (!rules) {

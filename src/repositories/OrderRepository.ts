@@ -7,6 +7,7 @@ export interface OrderFinancialSummary {
   shipping: number;
   discount: number;
   tax: number;
+  taxRate?: number;
   total: number;
   orderNumber: string;
 }
@@ -71,13 +72,25 @@ export class OrderRepository extends BaseRepository {
         query = query.ilike('email', email.trim());
       }
 
-      const { data, error } = await query.single();
+      const { data, error } = await query.maybeSingle();
 
-      if (error) {
-        if (error.code === 'PGRST116') return null;
-        this.handleError(error, 'Order tracking query failed');
+      if (!error && data) {
+        return data as Order;
       }
-      return data as Order;
+
+      // If direct table read is restricted by RLS (e.g. guest order),
+      // securely invoke the track_guest_order RPC requiring matching email.
+      if (email && email.trim() !== '') {
+        const { data: rpcData, error: rpcError } = await this.client.rpc('track_guest_order', {
+          p_order_number: orderNumber.trim(),
+          p_email: email.trim(),
+        });
+        if (!rpcError && rpcData) {
+          return rpcData as Order;
+        }
+      }
+
+      return null;
     } catch (err) {
       this.handleError(err, 'Error tracking consignment');
     }
@@ -117,6 +130,7 @@ export class OrderRepository extends BaseRepository {
           shipping_amount: financialSummary.shipping,
           discount_amount: financialSummary.discount,
           tax_amount: financialSummary.tax,
+          tax_rate: financialSummary.taxRate ?? 0,
           total_amount: financialSummary.total,
           payment_method: input.payment_method,
           shipping_address: input.shipping_address,

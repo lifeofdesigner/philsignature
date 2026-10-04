@@ -94,5 +94,22 @@ export async function markOrderPaid(params: MarkOrderPaidParams) {
     console.warn('Admin notification insert skipped:', notifErr);
   }
 
+  // 4. Dispatch transactional communications (customer + admin notifications)
+  try {
+    const { sendAllTransactionalEmails } = await import('./emailService');
+    await sendAllTransactionalEmails(
+      updated,
+      updated.items || [],
+      {
+        reference,
+        amountNaira,
+        gateway,
+        paidAt: new Date().toISOString(),
+      }
+    );
+  } catch (emailErr) {
+    console.warn('Transactional email dispatch skipped/failed:', emailErr);
+  }
+
   return { success: true, order: updated };
 }

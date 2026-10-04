@@ -1,10 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../../_lib/supabaseAdmin';
-import { getCallerProfile, isSuperAdmin } from '../../_lib/requireAdmin';
+import { getCallerProfile, isSuperAdmin, logAdminAction } from '../../_lib/requireAdmin';
+import { checkRateLimit } from '../../_lib/rateLimit';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  // Rate limit: 60 requests/min per IP
+  if (!checkRateLimit(req, res, 60, 60000, 'admin_api')) {
     return;
   }
 
@@ -25,6 +31,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(500).json({ error: error.message });
     return;
   }
+
+  await logAdminAction(caller, 'RESET_USER_PASSWORD', 'profiles', userId, undefined, req);
 
   res.status(200).json({ success: true });
 }
