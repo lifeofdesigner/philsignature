@@ -22,7 +22,7 @@ export class DeveloperAdminRepository {
     role: UserRole;
   }): Promise<void> {
     try {
-      await callAdminApi('/api/admin/users/create', { body: params });
+      await callAdminApi('/api/admin/users?action=create', { body: { ...params, action: 'create' } });
     } catch (err) {
       throw new SupabaseError(err instanceof Error ? err.message : 'User creation failed');
     }
@@ -30,7 +30,7 @@ export class DeveloperAdminRepository {
 
   async deleteUser(userId: string): Promise<void> {
     try {
-      await callAdminApi('/api/admin/users/delete', { body: { userId } });
+      await callAdminApi('/api/admin/users?action=delete', { body: { userId, action: 'delete' } });
     } catch (err) {
       throw new SupabaseError(err instanceof Error ? err.message : 'Delete user failed');
     }
@@ -38,7 +38,7 @@ export class DeveloperAdminRepository {
 
   async setUserPassword(userId: string, newPassword: string): Promise<void> {
     try {
-      await callAdminApi('/api/admin/users/set-password', { body: { userId, password: newPassword } });
+      await callAdminApi('/api/admin/users?action=set-password', { body: { userId, password: newPassword, action: 'set-password' } });
     } catch (err) {
       throw new SupabaseError(err instanceof Error ? err.message : 'Password reset failed');
     }
@@ -46,7 +46,7 @@ export class DeveloperAdminRepository {
 
   async listUsers(): Promise<Profile[]> {
     try {
-      const result = await callAdminApi<{ users: Profile[] }>('/api/admin/users/list', { method: 'GET' });
+      const result = await callAdminApi<{ users: Profile[] }>('/api/admin/users?action=list', { method: 'GET' });
       return result.users || [];
     } catch (err) {
       throw new SupabaseError(err instanceof Error ? err.message : 'Failed to list users');
@@ -55,7 +55,7 @@ export class DeveloperAdminRepository {
 
   async setRole(userId: string, newRole: UserRole): Promise<void> {
     try {
-      await callAdminApi('/api/admin/users/set-role', { body: { userId, role: newRole } });
+      await callAdminApi('/api/admin/users?action=set-role', { body: { userId, role: newRole, action: 'set-role' } });
     } catch (err) {
       throw new SupabaseError(err instanceof Error ? err.message : 'Role change failed');
     }

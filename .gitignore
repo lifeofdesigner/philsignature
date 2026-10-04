@@ -32,3 +32,6 @@ dist-ssr
 !.env.example
 
 supabase/.temp/
+
+.vercel
+.env*
