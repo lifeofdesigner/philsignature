@@ -1,0 +1,26 @@
+{
+  "name": "PHILZ SIGNATURE | Luxury Parfums",
+  "short_name": "Philz Signature",
+  "description": "Artisanal Parfums & Haute Fragrance House. Handcrafted extraits de parfum and luxury olfactory creations.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050505",
+  "theme_color": "#0B0B0C",
+  "icons": [
+    {
+      "src": "/pwa-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/philz-favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"]
+}

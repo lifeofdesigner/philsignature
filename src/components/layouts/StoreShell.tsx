@@ -4,6 +4,7 @@ import { AnnouncementBar } from '@/components/common/AnnouncementBar';
 import { Navbar } from '@/components/common/Navbar';
 import { Footer } from '@/components/common/Footer';
 import { MobileFooterNav } from '@/components/common/MobileFooterNav';
+import { MobileInstallPrompt } from '@/components/common/MobileInstallPrompt';
 import { ScrollToTopButton } from '@/components/common/ScrollToTopButton';
 import { cn } from '@/lib/utils';
 
@@ -33,6 +34,7 @@ export const StoreShell: React.FC = () => {
 
       <Footer />
       <MobileFooterNav />
+      <MobileInstallPrompt />
       <ScrollToTopButton />
     </div>
   );
