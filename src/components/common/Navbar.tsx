@@ -164,9 +164,9 @@ export const Navbar: React.FC = () => {
               </div>
             )}
 
-            {/* Company registration number — standalone, independent of business name visibility */}
+            {/* Company registration number — visible on both mobile and desktop */}
             {appearance.show_company_registration_number !== false && settings.company_registration_number && (
-              <span className="text-[9px] tracking-[0.18em] text-white/60 font-medium uppercase whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] self-center">
+              <span className="text-[8.5px] sm:text-[9px] tracking-[0.16em] sm:tracking-[0.18em] text-white/70 font-medium uppercase whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] self-center px-1.5 py-0.5 rounded-xs bg-white/5 border border-white/10 sm:border-transparent sm:bg-transparent">
                 {settings.company_registration_number}
               </span>
             )}
@@ -526,6 +526,18 @@ export const Navbar: React.FC = () => {
           >
             <div className="p-6 space-y-6">
               
+              {/* Brand and Registration Header */}
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <span className="font-serif text-sm tracking-[0.2em] text-white uppercase font-normal">
+                  {settings.store_name || 'PHILZ SIGNATURE'}
+                </span>
+                {appearance.show_company_registration_number !== false && settings.company_registration_number && (
+                  <span className="text-[8px] tracking-[0.16em] text-luxury-gold/90 font-medium uppercase px-2 py-0.5 rounded-full bg-luxury-gold/10 border border-luxury-gold/30">
+                    {settings.company_registration_number}
+                  </span>
+                )}
+              </div>
+
               {/* Primary Nav Links */}
               <div className="space-y-3">
                 <Link

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
@@ -10,7 +10,10 @@ import { cmsService, CMSService, type CmsInquiryPillar } from '@/services/CMSSer
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { PageTransition, WordReveal, FadeIn, LUXURY_EASE } from '@/components/common/MotionWrapper';
 
+import { useStoreSettings } from '@/hooks/useStoreSettings';
+
 export const ContactPage: React.FC = () => {
+  const { settings } = useStoreSettings();
   const [searchParams] = useSearchParams();
   const initialSubject = searchParams.get('subject') || '';
 
@@ -195,13 +198,15 @@ export const ContactPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start space-x-3.5">
-                  <MapPin className="h-4 w-4 text-luxury-gold shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="uppercase tracking-wider font-medium text-white/60 text-[10px]">Location</h4>
-                    <p className="text-white/80 mt-0.5">{contact.address || 'Lagos, Nigeria'}</p>
+                {(contact.address || settings.store_address) && (
+                  <div className="flex items-start space-x-3.5">
+                    <MapPin className="h-4 w-4 text-luxury-gold shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="uppercase tracking-wider font-medium text-white/60 text-[10px]">Location</h4>
+                      <p className="text-white/80 mt-0.5">{contact.address || settings.store_address}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </FadeIn>
 

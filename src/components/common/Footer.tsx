@@ -214,7 +214,14 @@ export const Footer: React.FC = () => {
       {/* Bottom Copyright & Legal Links */}
       <div className="border-t border-white/10 pt-6 pb-20 lg:pb-6 bg-black/60">
         <div className="container mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/50 space-y-2 sm:space-y-0 font-light">
-          <p>{copyrightText}</p>
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+            <p>{copyrightText}</p>
+            {appearance.show_company_registration_number !== false && settings.company_registration_number && (
+              <span className="text-[10px] tracking-wider text-luxury-gold/90 font-mono border-l border-white/20 pl-2">
+                {settings.company_registration_number}
+              </span>
+            )}
+          </div>
           <div className="flex flex-wrap gap-4 sm:gap-6">
             <Link to="/policy/privacy_policy" className="hover:text-luxury-gold transition-colors">
               Privacy Policy

@@ -1,5 +1,5 @@
 // Service worker for PWA caching & offline support
-const CACHE_NAME = 'philz-signature-v1';
+const CACHE_NAME = 'philz-signature-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -37,6 +37,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const url = new URL(event.request.url);
+
   // Network-first for navigation / HTML requests, cache-fallback for offline
   if (event.request.mode === 'navigate') {
     event.respondWith(
@@ -47,7 +49,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Stale-while-revalidate for static assets
+  // Network-first for Vite bundled scripts and stylesheets (/assets/*.js, /assets/*.css)
+  // This prevents stale/broken chunk loading errors on mobile browsers
+  if (url.pathname.includes('/assets/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for static icons and brand images
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request).then((networkResponse) => {
