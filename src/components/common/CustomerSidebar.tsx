@@ -12,7 +12,6 @@ import {
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { ThemeToggle } from './ThemeToggle';
 
 export const customerNavItems = [
   { title: 'Dashboard', href: '/account', icon: LayoutDashboard, exact: true },
@@ -79,10 +78,6 @@ export const CustomerSidebar: React.FC = () => {
           );
         })}
 
-        <div className="hidden lg:flex items-center justify-between px-3.5 py-2.5 pt-4 border-t border-luxury-border/60 text-xs uppercase tracking-luxury text-luxury-cream">
-          <span>Theme</span>
-          <ThemeToggle showLabel />
-        </div>
 
         <button
           type="button"

@@ -461,7 +461,7 @@ export class CMSService {
   ];
 
   public static DEFAULT_APPEARANCE: CmsAppearanceConfig = {
-    default_theme: 'system',
+    default_theme: 'dark',
     primary_brand_color: '#A17836',
     secondary_brand_color: '#111827',
     accent_gold_color: '#C5A880',

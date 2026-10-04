@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
     refetchOnWindowFocus: true,
   });
   const [logoError, setLogoError] = useState(false);
-  const logoUrl = appearance.logo_light_url || appearance.logo_url;
+  const logoUrl = appearance.logo_dark_url || appearance.logo_url || appearance.logo_light_url;
 
   const footer = footerCms || CMSService.DEFAULT_FOOTER;
 

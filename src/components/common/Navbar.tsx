@@ -9,7 +9,6 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
-import { useTheme } from '@/providers/ThemeProvider';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -17,8 +16,6 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { ThemeToggle } from './ThemeToggle';
-
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopMenuOpen, setShopMenuOpen] = useState(false);
@@ -31,14 +28,13 @@ export const Navbar: React.FC = () => {
   const { user, profile, logout, canAccessAdmin } = useAuth();
   const { appearance } = useStoreAppearance();
   const { settings } = useStoreSettings();
-  const { theme } = useTheme();
   const navigate = useNavigate();
 
-  const isDarkChrome = theme !== 'light';
   const logoUrl =
-    (isDarkChrome ? appearance.logo_dark_url : appearance.logo_light_url) ||
+    appearance.logo_dark_url ||
     appearance.logo_url ||
-    (isDarkChrome ? '/brand/philz-logo-dark.png' : '/brand/philz-logo-light.png');
+    appearance.logo_light_url ||
+    '/brand/philz-logo-dark.png';
   const [logoLoadError, setLogoLoadError] = useState(false);
 
   // Smooth scroll listener
@@ -392,12 +388,6 @@ export const Navbar: React.FC = () => {
 
         {/* COLUMN 3 (RIGHT): HEADER ACTIONS ORDER: Search -> Account -> Wishlist -> Cart */}
         <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-3.5 shrink-0">
-          
-          {/* Subtle Theme Toggle */}
-          <div className="shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]">
-            <ThemeToggle />
-          </div>
-
           {/* ACTION 1: SEARCH */}
           <Link
             to="/shop"

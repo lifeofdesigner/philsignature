@@ -10,20 +10,9 @@
     <script>
       (function() {
         try {
-          var params = new URLSearchParams(window.location.search);
-          var qTheme = params.get('theme');
-          if (qTheme === 'light' || qTheme === 'dark') {
-            localStorage.setItem('ps-theme', qTheme);
-          }
-          var saved = localStorage.getItem('ps-theme');
-          var isLight = saved === 'light' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
-          if (isLight) {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.classList.add('light');
-          } else {
-            document.documentElement.classList.remove('light');
-            document.documentElement.classList.add('dark');
-          }
+          localStorage.setItem('ps-theme', 'dark');
+          document.documentElement.classList.remove('light');
+          document.documentElement.classList.add('dark');
         } catch (e) {}
       })();
     </script>

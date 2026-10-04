@@ -56,16 +56,13 @@ export const CmsAppearanceManager: React.FC<CmsAppearanceManagerProps> = ({
           <div className="space-y-1">
             <label className="text-xs font-medium text-slate-700">Default Store Theme Mode</label>
             <select
-              value={appearance.default_theme}
-              onChange={(e) =>
-                onChange({ ...appearance, default_theme: e.target.value as 'system' | 'light' | 'dark' })
-              }
-              className="w-full h-9 bg-white border border-slate-200 text-xs text-slate-800 px-3 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-600/20 focus:border-slate-600 shadow-2xs"
+              value="dark"
+              disabled
+              className="w-full h-9 bg-slate-100 border border-slate-200 text-xs text-slate-700 px-3 py-1 rounded-lg shadow-2xs cursor-not-allowed"
             >
-              <option value="system">Automatic System Preference (Light/Dark)</option>
-              <option value="light">Fixed Light Theme</option>
-              <option value="dark">Fixed Dark Theme</option>
+              <option value="dark">Permanent Dark Theme (Active)</option>
             </select>
+            <p className="text-[10px] text-slate-500">Storefront is permanently set to Dark Luxury Mode.</p>
           </div>
 
           <div className="space-y-1">

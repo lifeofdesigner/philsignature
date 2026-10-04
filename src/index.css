@@ -3,55 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  /* Permanent Dark Theme Base Tokens for Philz Signature Storefront */
   :root,
-  html.light,
-  html:not(.dark) {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 34 50% 40%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 210 20% 98%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 34 50% 40%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 72% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 34 50% 40%;
-
-    --radius: 0.125rem;
-
-    /* Luxury Tokens - White Light Theme */
-    --luxury-black: 255 255 255;       /* #FFFFFF Pure White main canvas */
-    --luxury-charcoal: 249 250 251;    /* #F9FAFB Clean subtle light gray surface */
-    --luxury-graphite: 243 244 246;    /* #F3F4F6 Light gray subtle hover */
-    --luxury-card: 255 255 255;        /* #FFFFFF Crisp Pure White Card */
-    --luxury-border: 229 231 235;      /* #E5E7EB Clean modern border */
-    --luxury-cream: 17 24 39;          /* #111827 Rich Dark typography */
-    --luxury-cream-soft: 31 41 55;     /* #1F2937 Soft text */
-    --luxury-cream-dim: 55 65 81;      /* #374151 Dim text */
-    --luxury-sand: 75 85 99;           /* #4B5563 Subtitle / secondary */
-    --luxury-muted: 107 114 128;       /* #6B7280 Muted text */
-    --luxury-gold: 161 120 54;         /* #A17836 High-contrast Gold */
-    --luxury-gold-light: 191 146 72;   /* #BF9248 */
-    --luxury-gold-dark: 130 94 38;      /* #825E26 */
-  }
-
+  html,
   html.dark,
   .dark {
     --background: 0 0% 5%;
@@ -82,7 +36,9 @@
     --input: 0 0% 16%;
     --ring: 34 38% 64%;
 
-    /* Luxury Tokens - Dark Mode (Obsidian & Champagne Gold) */
+    --radius: 0.125rem;
+
+    /* Luxury Tokens - Permanent Dark Mode (Obsidian & Champagne Gold) */
     --luxury-black: 13 13 13;          /* #0D0D0D Deep Obsidian canvas */
     --luxury-charcoal: 22 22 22;       /* #161616 Charcoal surface */
     --luxury-graphite: 34 34 34;       /* #222222 Graphite hover */
@@ -110,459 +66,284 @@
   }
 }
 
-/* Explicit White Light Theme Overrides */
-  html.light,
-  html:not(.dark) {
-    background-color: #FFFFFF !important;
-    color: #111827 !important;
-  }
+/* ===================================================================
+   ADMIN DESIGN SYSTEM — fully independent of the storefront.
+   The storefront stays the luxury Philz Signature experience; the
+   admin CMS is a plain, professional, white-first SaaS interface
+   (Shopify/Stripe/Supabase/Vercel-style), with zero dependence on
+   storefront colors, tokens, gradients, or theme mode. Everything
+   under .admin-scope is forced to this palette regardless of what
+   shared component or storefront token it was built from:
+     surfaces  -> #FFFFFF
+     primary   -> #111111
+     secondary -> #374151
+     muted     -> #6B7280
+     border    -> #E5E7EB
+     accent    -> black (never gold)
+   =================================================================== */
+.admin-scope,
+.admin-scope * {
+  color-scheme: light;
+}
 
-  html.light body,
-  html:not(.dark) body {
-    background-color: #FFFFFF !important;
-    color: #111827 !important;
-  }
+.admin-scope {
+  background-color: #FFFFFF !important;
+  color: #111111 !important;
+}
 
-  /* All headings become crisp dark text in white mode */
-  html.light h1,
-  html.light h2,
-  html.light h3,
-  html.light h4,
-  html.light h5,
-  html.light h6,
-  html:not(.dark) h1,
-  html:not(.dark) h2,
-  html:not(.dark) h3,
-  html:not(.dark) h4,
-  html:not(.dark) h5,
-  html:not(.dark) h6 {
-    color: #111827 !important;
-  }
+/* Base text: anything without its own explicit text-* utility (badges,
+   status pills, white-on-dark buttons keep their own intentional color).
+   Buttons and data-keep-white elements are strictly excluded so button text/spans
+   always maintain high contrast. */
+.admin-scope p:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope span:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope label:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope h1:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope h2:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope h3:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope h4:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope h5:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope h6:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope div:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope td:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope th:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope li:not([class*="text-"]):not(button *):not([data-keep-white] *),
+.admin-scope a:not([class*="text-"]):not(button *):not([data-keep-white] *) {
+  color: #111111 !important;
+}
 
-  /* text-white becomes dark text in white mode ONLY on storefront light surfaces.
-     Never apply to: admin scope, buttons, dark surfaces (bg-black, bg-slate, bg-red, etc.),
-     badges, dropdown menus, or explicit data-keep-white elements. */
-  html.light :not(.admin-scope):not(.admin-scope *) .text-white:not(.btn-gold *):not([data-keep-white]):not([data-keep-white] *):not(button):not(button *):not([role="menu"]):not([role="menu"] *):not([class*="bg-black"]):not([class*="bg-black"] *):not([class*="bg-slate-900"]):not([class*="bg-slate-900"] *):not([class*="bg-slate-800"]):not([class*="bg-slate-800"] *):not([class*="bg-[#111111]"]):not([class*="bg-[#111111]"] *):not([class*="bg-[#DC2626]"]):not([class*="bg-[#DC2626]"] *):not([class*="bg-[#16A34A]"]):not([class*="bg-[#16A34A]"] *):not([class*="bg-red-"]):not([class*="bg-red-"] *),
-  html:not(.dark) :not(.admin-scope):not(.admin-scope *) .text-white:not(.btn-gold *):not([data-keep-white]):not([data-keep-white] *):not(button):not(button *):not([role="menu"]):not([role="menu"] *):not([class*="bg-black"]):not([class*="bg-black"] *):not([class*="bg-slate-900"]):not([class*="bg-slate-900"] *):not([class*="bg-slate-800"]):not([class*="bg-slate-800"] *):not([class*="bg-[#111111]"]):not([class*="bg-[#111111]"] *):not([class*="bg-[#DC2626]"]):not([class*="bg-[#DC2626]"] *):not([class*="bg-[#16A34A]"]):not([class*="bg-[#16A34A]"] *):not([class*="bg-red-"]):not([class*="bg-red-"] *) {
-    color: #111827 !important;
-  }
+.admin-scope .text-black {
+  color: #111111 !important;
+}
 
-  /* bg-black becomes pure white in white mode (unless explicitly marked keep-black or in admin scope) */
-  html.light :not(.admin-scope):not(.admin-scope *) .bg-black:not([data-keep-black]),
-  html:not(.dark) :not(.admin-scope):not(.admin-scope *) .bg-black:not([data-keep-black]) {
-    background-color: #FFFFFF !important;
-  }
+/* Admin Buttons: ensure high-contrast text and child elements */
+.admin-scope button[data-admin-btn="primary"],
+.admin-scope button[data-admin-btn="primary"] *,
+.admin-scope button.bg-\[\#111111\],
+.admin-scope button.bg-\[\#111111\] *,
+.admin-scope button[data-admin-btn="danger"],
+.admin-scope button[data-admin-btn="danger"] *,
+.admin-scope button.bg-\[\#DC2626\],
+.admin-scope button.bg-\[\#DC2626\] *,
+.admin-scope button[data-admin-btn="success"],
+.admin-scope button[data-admin-btn="success"] *,
+.admin-scope button.bg-\[\#16A34A\],
+.admin-scope button.bg-\[\#16A34A\] *,
+.admin-scope button.bg-slate-900,
+.admin-scope button.bg-slate-900 *,
+.admin-scope .bg-slate-900.text-white,
+.admin-scope .bg-slate-900.text-white *,
+.admin-scope .bg-slate-800.text-white,
+.admin-scope .bg-slate-800.text-white *,
+.admin-scope [data-keep-white],
+.admin-scope [data-keep-white] *,
+.admin-scope .text-white {
+  color: #FFFFFF !important;
+}
 
-  /* Header in white mode */
-  html.light header,
-  html:not(.dark) header {
-    background-color: rgba(255, 255, 255, 0.98) !important;
-    border-bottom-color: #E5E7EB !important;
-  }
+.admin-scope button[data-admin-btn="secondary"],
+.admin-scope button[data-admin-btn="secondary"] * {
+  color: #111111 !important;
+}
 
-  html.light header a,
-  html.light header button,
-  html.light header span.font-serif,
-  html:not(.dark) header a,
-  html:not(.dark) header button,
-  html:not(.dark) header span.font-serif {
-    color: #111827 !important;
-  }
+.admin-scope button[data-admin-btn="ghost"],
+.admin-scope button[data-admin-btn="ghost"] * {
+  color: #374151 !important;
+}
 
-  html.light header a:hover,
-  html.light header button:hover,
-  html:not(.dark) header a:hover,
-  html:not(.dark) header button:hover {
-    color: #A17836 !important;
-  }
+/* Inputs, selects, textareas: white surface, black text, gray border */
+.admin-scope input,
+.admin-scope textarea,
+.admin-scope select {
+  color-scheme: light !important;
+  background-color: #FFFFFF !important;
+  color: #111111 !important;
+  border-color: #D1D5DB !important;
+  box-shadow: none !important;
+}
 
-  html.light header .text-luxury-gold,
-  html.light header span.text-luxury-gold,
-  html:not(.dark) header .text-luxury-gold,
-  html:not(.dark) header span.text-luxury-gold {
-    color: #A17836 !important;
-  }
+/* Admin select dropdown options: guaranteed crisp black text on white surface across OS/browsers */
+.admin-scope select option {
+  background-color: #FFFFFF !important;
+  color: #111111 !important;
+}
 
-  /* Radial vignette in white mode */
-  html.light .bg-radial-vignette,
-  html:not(.dark) .bg-radial-vignette {
-    background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 100%) !important;
-  }
+.admin-scope input::placeholder,
+.admin-scope textarea::placeholder {
+  color: #9CA3AF !important;
+  opacity: 1 !important;
+}
 
-  /* Footer in white mode */
-  html.light footer,
-  html:not(.dark) footer {
-    background-color: #F9FAFB !important;
-    border-top-color: #E5E7EB !important;
-  }
+.admin-scope input:focus,
+.admin-scope textarea:focus,
+.admin-scope select:focus {
+  outline: none !important;
+  border-color: #111111 !important;
+  box-shadow: 0 0 0 1px #111111 !important;
+}
 
-  /* Mobile bottom nav in white mode */
-  html.light nav[aria-label="Mobile Navigation"],
-  html:not(.dark) nav[aria-label="Mobile Navigation"] {
-    background-color: rgba(255, 255, 255, 0.96) !important;
-    border-top-color: #E5E7EB !important;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06) !important;
-  }
+/* Every surface (cards, panels, tables, dropdowns, modals) -> pure white */
+.admin-scope .bg-luxury-card,
+.admin-scope .bg-luxury-black,
+.admin-scope .bg-luxury-charcoal,
+.admin-scope .bg-luxury-graphite {
+  background-color: #FFFFFF !important;
+}
 
-  /* Sections and cards in white mode */
-  html.light .bg-luxury-black,
-  html:not(.dark) .bg-luxury-black {
-    background-color: #FFFFFF !important;
-  }
+.admin-scope .border-luxury-border {
+  border-color: #E5E7EB !important;
+}
 
-  html.light .bg-luxury-charcoal,
-  html:not(.dark) .bg-luxury-charcoal {
-    background-color: #F9FAFB !important;
-  }
+/* Secondary / muted text tokens map to plain SaaS grays, never gold/cream */
+.admin-scope .text-luxury-cream,
+.admin-scope .text-luxury-cream-soft,
+.admin-scope .text-luxury-cream-dim {
+  color: #111111 !important;
+}
 
-  html.light .bg-luxury-card,
-  html:not(.dark) .bg-luxury-card {
-    background-color: #FFFFFF !important;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
-  }
+.admin-scope .text-luxury-sand {
+  color: #374151 !important;
+}
 
-  html.light .border-luxury-border,
-  html:not(.dark) .border-luxury-border {
-    border-color: #E5E7EB !important;
-  }
+.admin-scope .text-luxury-muted {
+  color: #6B7280 !important;
+}
 
-  html.light .border-luxury-border\/60,
-  html:not(.dark) .border-luxury-border\/60,
-  html.light .border-luxury-border\/40,
-  html:not(.dark) .border-luxury-border\/40,
-  html.light .border-luxury-border\/50,
-  html:not(.dark) .border-luxury-border\/50,
-  html.light .border-luxury-border\/80,
-  html:not(.dark) .border-luxury-border\/80 {
-    border-color: #E5E7EB !important;
-  }
+/* Eliminate gold entirely in admin */
+.admin-scope .bg-luxury-gold,
+.admin-scope .bg-luxury-gold-light,
+.admin-scope .bg-luxury-gold-dark {
+  background-color: #111111 !important;
+  color: #FFFFFF !important;
+}
 
-  /* Complete Text Color System Guarantees in Light Theme */
-  html.light p:not([class*="text-"]),
-  html:not(.dark) p:not([class*="text-"]) {
-    color: #374151;
-  }
+.admin-scope .text-luxury-gold,
+.admin-scope .text-luxury-gold-light,
+.admin-scope .text-luxury-gold-dark {
+  color: #111111 !important;
+}
 
-  /* ===================================================================
-     ADMIN DESIGN SYSTEM — fully independent of the storefront.
-     The storefront stays the luxury Philz Signature experience; the
-     admin CMS is a plain, professional, white-first SaaS interface
-     (Shopify/Stripe/Supabase/Vercel-style), with zero dependence on
-     storefront colors, tokens, gradients, or theme mode. Everything
-     under .admin-scope is forced to this palette regardless of what
-     shared component or storefront token it was built from:
-       surfaces  -> #FFFFFF
-       primary   -> #111111
-       secondary -> #374151
-       muted     -> #6B7280
-       border    -> #E5E7EB
-       accent    -> black (never gold)
-     =================================================================== */
-  .admin-scope,
-  .admin-scope * {
-    color-scheme: light;
-  }
+.admin-scope .border-luxury-gold {
+  border-color: #111111 !important;
+}
 
-  /* Base text: anything without its own explicit text-* utility (badges,
-     status pills, white-on-dark buttons keep their own intentional color).
-     Buttons and data-keep-white elements are strictly excluded so button text/spans
-     always maintain high contrast. */
-  .admin-scope p:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope span:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope label:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope h1:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope h2:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope h3:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope h4:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope h5:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope h6:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope div:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope td:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope th:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope li:not([class*="text-"]):not(button *):not([data-keep-white] *),
-  .admin-scope a:not([class*="text-"]):not(button *):not([data-keep-white] *) {
-    color: #111111 !important;
-  }
+.admin-scope .ring-luxury-gold {
+  --tw-ring-color: #111111 !important;
+}
 
-  .admin-scope .text-black {
-    color: #111111 !important;
-  }
+.admin-scope .ring-offset-luxury-black {
+  --tw-ring-offset-color: #FFFFFF !important;
+}
 
-  /* Admin Buttons: ensure high-contrast text and child elements */
-  .admin-scope button[data-admin-btn="primary"],
-  .admin-scope button[data-admin-btn="primary"] *,
-  .admin-scope button.bg-\[\#111111\],
-  .admin-scope button.bg-\[\#111111\] *,
-  .admin-scope button[data-admin-btn="danger"],
-  .admin-scope button[data-admin-btn="danger"] *,
-  .admin-scope button.bg-\[\#DC2626\],
-  .admin-scope button.bg-\[\#DC2626\] *,
-  .admin-scope button[data-admin-btn="success"],
-  .admin-scope button[data-admin-btn="success"] *,
-  .admin-scope button.bg-\[\#16A34A\],
-  .admin-scope button.bg-\[\#16A34A\] *,
-  .admin-scope button.bg-slate-900,
-  .admin-scope button.bg-slate-900 *,
-  .admin-scope .bg-slate-900.text-white,
-  .admin-scope .bg-slate-900.text-white *,
-  .admin-scope .bg-slate-800.text-white,
-  .admin-scope .bg-slate-800.text-white *,
-  .admin-scope [data-keep-white],
-  .admin-scope [data-keep-white] *,
-  .admin-scope .text-white {
-    color: #FFFFFF !important;
-  }
+.admin-scope ::selection {
+  background-color: rgba(17, 17, 17, 0.15) !important;
+  color: #111111 !important;
+}
 
-  .admin-scope button[data-admin-btn="secondary"],
-  .admin-scope button[data-admin-btn="secondary"] * {
-    color: #111111 !important;
-  }
+/* Admin Table Headers & Cells */
+.admin-scope th {
+  color: #111111 !important;
+  background-color: #F9FAFB !important;
+  border-color: #E5E7EB !important;
+}
 
-  .admin-scope button[data-admin-btn="ghost"],
-  .admin-scope button[data-admin-btn="ghost"] * {
-    color: #374151 !important;
-  }
+.admin-scope td {
+  color: #1F2937 !important;
+  border-color: #E5E7EB !important;
+}
 
-  /* Inputs, selects, textareas: white surface, black text, gray border */
-  .admin-scope input,
-  .admin-scope textarea,
-  .admin-scope select {
-    color-scheme: light !important;
-    background-color: #FFFFFF !important;
-    color: #111111 !important;
-    border-color: #D1D5DB !important;
-    box-shadow: none !important;
-  }
+/* ===================================================================
+   STOREFRONT PERMANENT DARK THEME GUARANTEES
+   =================================================================== */
 
-  /* Admin select dropdown options: guaranteed crisp black text on white surface across OS/browsers */
-  .admin-scope select option {
-    background-color: #FFFFFF !important;
-    color: #111111 !important;
-  }
+:not(.admin-scope):not(.admin-scope *) p:not([class*="text-"]) {
+  color: #D5CCBF;
+}
 
-  .admin-scope input::placeholder,
-  .admin-scope textarea::placeholder {
-    color: #9CA3AF !important;
-    opacity: 1 !important;
-  }
+:not(.admin-scope):not(.admin-scope *) .text-luxury-cream {
+  color: #FAF8F5 !important;
+}
 
-  .admin-scope input:focus,
-  .admin-scope textarea:focus,
-  .admin-scope select:focus {
-    outline: none !important;
-    border-color: #111111 !important;
-    box-shadow: 0 0 0 1px #111111 !important;
-  }
+:not(.admin-scope):not(.admin-scope *) .text-luxury-sand {
+  color: #D5CCBF !important;
+}
 
-  /* Every surface (cards, panels, tables, dropdowns, modals) -> pure white */
-  .admin-scope .bg-luxury-card,
-  .admin-scope .bg-luxury-black,
-  .admin-scope .bg-luxury-charcoal,
-  .admin-scope .bg-luxury-graphite {
-    background-color: #FFFFFF !important;
-  }
+:not(.admin-scope):not(.admin-scope *) .text-luxury-muted {
+  color: #88847D !important;
+}
 
-  .admin-scope .border-luxury-border {
-    border-color: #E5E7EB !important;
-  }
+/* Form Inputs, Textareas, Selects in Storefront Dark Theme */
+:not(.admin-scope):not(.admin-scope *) input:not([type="checkbox"]):not([type="radio"]),
+:not(.admin-scope):not(.admin-scope *) textarea,
+:not(.admin-scope):not(.admin-scope *) select {
+  color-scheme: dark;
+  color: #FAF8F5 !important;
+  background-color: #181818 !important;
+  border-color: #2A2A2A !important;
+}
 
-  /* Secondary / muted text tokens map to plain SaaS grays, never gold/cream */
-  .admin-scope .text-luxury-cream,
-  .admin-scope .text-luxury-cream-soft,
-  .admin-scope .text-luxury-cream-dim {
-    color: #111111 !important;
-  }
+:not(.admin-scope):not(.admin-scope *) select option {
+  background-color: #181818 !important;
+  color: #FAF8F5 !important;
+}
 
-  .admin-scope .text-luxury-sand {
-    color: #374151 !important;
-  }
+/* Dropdown Menu & Popover high-contrast guarantees */
+[role="menu"].bg-black\/95,
+[role="menu"].bg-black\/95 * {
+  color-scheme: dark;
+}
+[role="menu"].bg-black\/95 .text-white,
+[role="menu"].bg-black\/95 .text-white\/90,
+[role="menu"].bg-black\/95 .text-white\/80 {
+  color: #FFFFFF !important;
+}
+[role="menu"].bg-black\/95 .text-luxury-gold {
+  color: #C5A880 !important;
+}
+[role="menu"].bg-black\/95 .text-red-400 {
+  color: #F87171 !important;
+}
+[role="menu"].bg-black\/95 p.font-mono {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
 
-  .admin-scope .text-luxury-muted {
-    color: #6B7280 !important;
-  }
+:not(.admin-scope):not(.admin-scope *) input::placeholder,
+:not(.admin-scope):not(.admin-scope *) textarea::placeholder {
+  color: #88847D !important;
+  opacity: 1 !important;
+}
 
-  /* Eliminate gold entirely: any gold background becomes a solid black
-     "primary" surface with white text (matches the Stripe/Shopify button
-     spec); any gold text/border becomes plain black. */
-  .admin-scope .bg-luxury-gold,
-  .admin-scope .bg-luxury-gold-light,
-  .admin-scope .bg-luxury-gold-dark {
-    background-color: #111111 !important;
-    color: #FFFFFF !important;
-  }
+:not(.admin-scope):not(.admin-scope *) label {
+  color: #D5CCBF !important;
+}
 
-  .admin-scope .text-luxury-gold,
-  .admin-scope .text-luxury-gold-light,
-  .admin-scope .text-luxury-gold-dark {
-    color: #111111 !important;
-  }
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgb(var(--luxury-black));
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--luxury-border));
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--luxury-gold));
+}
 
-  .admin-scope .border-luxury-gold {
-    border-color: #111111 !important;
-  }
-
-  .admin-scope .ring-luxury-gold {
-    --tw-ring-color: #111111 !important;
-  }
-
-  .admin-scope .ring-offset-luxury-black {
-    --tw-ring-offset-color: #FFFFFF !important;
-  }
-
-  .admin-scope ::selection {
-    background-color: rgba(17, 17, 17, 0.15) !important;
-    color: #111111 !important;
-  }
-
-  html.light .text-luxury-cream,
-  html:not(.dark) .text-luxury-cream {
-    color: #111827 !important;
-  }
-
-  html.light .text-luxury-sand,
-  html:not(.dark) .text-luxury-sand {
-    color: #374151 !important;
-  }
-
-  html.light .text-luxury-muted,
-  html:not(.dark) .text-luxury-muted {
-    color: #6B7280 !important;
-  }
-
-  /* Form Inputs, Textareas, Selects in Light Theme */
-  html.light input:not([type="checkbox"]):not([type="radio"]),
-  html.light textarea,
-  html.light select,
-  html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
-  html:not(.dark) textarea,
-  html:not(.dark) select {
-    color-scheme: light;
-    color: #111827 !important;
-    background-color: #FFFFFF !important;
-    border-color: #D1D5DB !important;
-  }
-
-  html.light select option,
-  html:not(.dark) select option {
-    background-color: #FFFFFF !important;
-    color: #111827 !important;
-  }
-
-  html.light input::placeholder,
-  html.light textarea::placeholder,
-  html:not(.dark) input::placeholder,
-  html:not(.dark) textarea::placeholder {
-    color: #6B7280 !important;
-    opacity: 1 !important;
-  }
-
-  html.light label,
-  html:not(.dark) label {
-    color: #374151 !important;
-  }
-
-  /* Table Headers & Cells in Light Theme */
-  html.light th,
-  html:not(.dark) th {
-    color: #111827 !important;
-    background-color: #F9FAFB !important;
-  }
-
-  html.light td,
-  html:not(.dark) td {
-    color: #1F2937 !important;
-    border-color: #E5E7EB !important;
-  }
-
-  /* Complete Text Color System Guarantees in Dark Theme */
-  html.dark p:not([class*="text-"]) {
-    color: #D5CCBF;
-  }
-
-  html.dark .text-luxury-cream {
-    color: #FAF8F5 !important;
-  }
-
-  html.dark .text-luxury-sand {
-    color: #D5CCBF !important;
-  }
-
-  html.dark .text-luxury-muted {
-    color: #88847D !important;
-  }
-
-  html.dark input:not([type="checkbox"]):not([type="radio"]),
-  html.dark textarea,
-  html.dark select {
-    color-scheme: dark;
-    color: #FAF8F5 !important;
-    background-color: #181818 !important;
-    border-color: #2A2A2A !important;
-  }
-
-  html.dark select option,
-  .dark select option {
-    background-color: #181818 !important;
-    color: #FAF8F5 !important;
-  }
-
-  /* Dropdown Menu & Popover high-contrast guarantees */
-  [role="menu"].bg-black\/95,
-  [role="menu"].bg-black\/95 * {
-    color-scheme: dark;
-  }
-  [role="menu"].bg-black\/95 .text-white,
-  [role="menu"].bg-black\/95 .text-white\/90,
-  [role="menu"].bg-black\/95 .text-white\/80 {
-    color: #FFFFFF !important;
-  }
-  [role="menu"].bg-black\/95 .text-luxury-gold {
-    color: #C5A880 !important;
-  }
-  [role="menu"].bg-black\/95 .text-red-400 {
-    color: #F87171 !important;
-  }
-  [role="menu"].bg-black\/95 p.font-mono {
-    color: rgba(255, 255, 255, 0.6) !important;
-  }
-
-  html.dark input::placeholder,
-  html.dark textarea::placeholder {
-    color: #88847D !important;
-    opacity: 1 !important;
-  }
-
-  html.dark label {
-    color: #D5CCBF !important;
-  }
-
-  /* Custom Luxury Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: rgb(var(--luxury-black));
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgb(var(--luxury-border));
-    border-radius: 2px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--luxury-gold));
-  }
-
-  /* Mobile App Viewport Stability & Touch Optimization */
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw;
-    width: 100%;
-    touch-action: pan-y;
-    -webkit-tap-highlight-color: transparent;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+/* Mobile App Viewport Stability & Touch Optimization */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+  width: 100%;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 @layer utilities {
   .font-editorial {
