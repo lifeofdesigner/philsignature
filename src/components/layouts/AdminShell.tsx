@@ -23,7 +23,6 @@ export const AdminShell: React.FC = () => {
     const resetTimer = () => {
       clearTimeout(timer);
       timer = setTimeout(async () => {
-        sessionStorage.removeItem('ps_admin_2fa_verified');
         await logout();
         window.location.href = '/login?reason=timeout';
       }, INACTIVITY_TIMEOUT_MS);
