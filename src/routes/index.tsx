@@ -31,6 +31,7 @@ const PolicyPage = lazy(() => import('@/features/cms/pages/PolicyPage').then((m)
 const CartPage = lazy(() => import('@/features/cart').then((m) => ({ default: m.CartPage })));
 const CheckoutPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.CheckoutPage })));
 const OrderConfirmationPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.OrderConfirmationPage })));
+const PaymentCallbackPage = lazy(() => import('@/features/checkout').then((m) => ({ default: m.PaymentCallbackPage })));
 const WishlistPage = lazy(() => import('@/features/wishlist').then((m) => ({ default: m.WishlistPage })));
 const TrackOrderPage = lazy(() => import('@/features/tracking').then((m) => ({ default: m.TrackOrderPage })));
 const CustomerLoginPage = lazy(() => import('@/features/auth').then((m) => ({ default: m.CustomerLoginPage })));
@@ -92,6 +93,7 @@ export const router = createBrowserRouter([
       { path: 'cart', element: withSuspense(CartPage) },
       { path: 'checkout', element: withSuspense(CheckoutPage) },
       { path: 'checkout/confirmation/:orderNumber', element: withSuspense(OrderConfirmationPage) },
+      { path: 'payment/callback', element: withSuspense(PaymentCallbackPage) },
       { path: 'wishlist', element: withSuspense(WishlistPage) },
       { path: 'track-order', element: withSuspense(TrackOrderPage) },
       {

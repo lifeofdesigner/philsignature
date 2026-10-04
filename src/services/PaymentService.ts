@@ -48,6 +48,7 @@ declare global {
         amount: number;
         ref: string;
         currency?: string;
+        callback_url?: string;
         metadata?: Record<string, unknown>;
         callback: (response: { reference: string; status: string }) => void;
         onClose: () => void;
@@ -203,13 +204,24 @@ export class PaymentService {
 
     if (gateway === 'paystack') {
       if (!window.PaystackPop) throw new ValidationError('Paystack checkout failed to initialize.');
+      const callbackUrl = `${window.location.origin}/payment/callback`;
       const handler = window.PaystackPop.setup({
         key: publicKey.key,
         email: options.email,
         amount: Math.round(options.amount * 100),
         ref: options.reference,
         currency: 'NGN',
-        metadata: options.metadata,
+        callback_url: callbackUrl,
+        metadata: {
+          ...options.metadata,
+          custom_fields: [
+            {
+              display_name: 'Order Number',
+              variable_name: 'order_number',
+              value: options.reference,
+            },
+          ],
+        },
         callback: (response) => options.onSuccess(response.reference),
         onClose: () => options.onCancel(),
       });

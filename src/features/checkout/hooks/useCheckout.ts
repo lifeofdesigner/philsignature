@@ -274,6 +274,16 @@ export function useCheckout() {
         metadata: { order_id: order.id },
         onSuccess: async (reference) => {
           try {
+            if (paymentMethod === 'paystack') {
+              // Production-grade Paystack: Webhook is the single source of truth.
+              // Client never marks the order as paid. Redirect to /payment/callback to observe verified status.
+              clearCart();
+              queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
+              setIsProcessingPayment(false);
+              navigate(`/payment/callback?reference=${encodeURIComponent(reference)}`);
+              return;
+            }
+
             const result = await paymentService.verifyPayment(paymentMethod, reference, order.id);
             if (!result.success) {
               setCheckoutError(

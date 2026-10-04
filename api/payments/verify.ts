@@ -79,6 +79,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
+  // The webhook is the single source of truth for Paystack payments.
+  // We do not mark the order paid here for Paystack to prevent race conditions or trusting client requests.
+  if (gateway === 'paystack') {
+    res.status(200).json({
+      success: true,
+      pendingWebhook: true,
+      amountNaira: result.amountNaira,
+      message: 'Paystack transaction verified. Order confirmation is handled by webhook.',
+    });
+    return;
+  }
+
   const outcome = await markOrderPaid({
     orderId,
     reference,

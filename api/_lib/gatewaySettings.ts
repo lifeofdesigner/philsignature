@@ -49,11 +49,23 @@ export async function getGatewayCredentials(gateway: GatewayName): Promise<{
     getSetting<SecretSettings>('payment_gateway_secrets'),
   ]);
 
-  const enabled = Boolean(publicSettings?.[`${gateway}_enabled` as keyof PublicSettings]);
-  const mode = (publicSettings?.[`${gateway}_mode` as keyof PublicSettings] as GatewayMode) || 'test';
+  const enabled = Boolean(publicSettings?.[`${gateway}_enabled` as keyof PublicSettings] ?? true);
+  const mode =
+    (publicSettings?.[`${gateway}_mode` as keyof PublicSettings] as GatewayMode) ||
+    ((process.env.PAYSTACK_MODE as GatewayMode) || 'test');
 
   const secretKeyField = `${gateway}_${mode}_secret_key` as keyof SecretSettings;
-  const secretKey = secretSettings?.[secretKeyField] || '';
+  let secretKey = secretSettings?.[secretKeyField] || '';
+
+  // Fallback to environment variables if not present in site_settings
+  if (!secretKey && gateway === 'paystack') {
+    secretKey =
+      (mode === 'live'
+        ? process.env.PAYSTACK_LIVE_SECRET_KEY
+        : process.env.PAYSTACK_TEST_SECRET_KEY) ||
+      process.env.PAYSTACK_SECRET_KEY ||
+      '';
+  }
 
   let webhookSecretHash: string | undefined;
   if (gateway === 'flutterwave') {
