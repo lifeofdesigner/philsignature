@@ -32,6 +32,8 @@ export interface OrderEmailData {
   subtotal: number;
   shipping_amount: number;
   discount_amount: number;
+  tax_amount?: number;
+  tax_rate?: number;
   total_amount: number;
   coupon_code?: string | null;
   shipping_address: Record<string, unknown>;
@@ -325,6 +327,8 @@ export async function sendOrderReceivedEmail(order: OrderEmailData, items: Order
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">${itemsRows}</table>
       <table class="info-table" style="margin-top: 16px;">
         <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        ${Number(order.tax_amount || 0) > 0 ? `<tr><td class="info-label">Estimated Tax${order.tax_rate ? ` (${order.tax_rate}%)` : ''}</td><td class="info-value">${formatNaira(order.tax_amount!)}</td></tr>` : ''}
+        ${Number(order.discount_amount || 0) > 0 ? `<tr><td class="info-label">Discount${order.coupon_code ? ` (${order.coupon_code})` : ''}</td><td class="info-value">-${formatNaira(order.discount_amount)}</td></tr>` : ''}
         <tr><td class="info-label">Delivery</td><td class="info-value">${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}</td></tr>
         <tr><td class="info-label" style="font-weight: 700; color: #fafaf9;">Total</td><td class="info-value" style="font-weight: 700; color: #d4af37; font-size: 16px;">${formatNaira(order.total_amount)}</td></tr>
       </table>
@@ -341,7 +345,7 @@ export async function sendOrderReceivedEmail(order: OrderEmailData, items: Order
       <a href="${orderUrl}" class="btn-gold">Track Consignment</a>
     </div>`
   );
-  const text = `Order Received: #${order.order_number}\nTotal: ${formatNaira(order.total_amount)}\nTrack: ${orderUrl}`;
+  const text = `Order Received: #${order.order_number}\nSubtotal: ${formatNaira(order.subtotal)}${Number(order.tax_amount || 0) > 0 ? `\nTax: ${formatNaira(order.tax_amount!)}` : ''}\nDelivery: ${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}\nTotal: ${formatNaira(order.total_amount)}\nTrack: ${orderUrl}`;
   await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_received', orderId: order.id });
 }
 
@@ -363,6 +367,9 @@ export async function sendPaymentConfirmationEmail(order: OrderEmailData, paymen
         <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
         <tr><td class="info-label">Payment Gateway</td><td class="info-value">${payment.gateway.toUpperCase()}</td></tr>
         <tr><td class="info-label">Payment Reference</td><td class="info-value" style="font-family: monospace; font-size: 12px;">${payment.reference}</td></tr>
+        <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        ${Number(order.tax_amount || 0) > 0 ? `<tr><td class="info-label">Tax${order.tax_rate ? ` (${order.tax_rate}%)` : ''}</td><td class="info-value">${formatNaira(order.tax_amount!)}</td></tr>` : ''}
+        <tr><td class="info-label">Delivery</td><td class="info-value">${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}</td></tr>
         <tr><td class="info-label">Amount Paid</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 15px;">${formatNaira(payment.amountNaira)}</td></tr>
         <tr><td class="info-label">Status</td><td class="info-value" style="color: #10b981;">Verified &bull; Paid</td></tr>
       </table>
@@ -371,7 +378,7 @@ export async function sendPaymentConfirmationEmail(order: OrderEmailData, paymen
       <a href="${orderUrl}" class="btn-gold">View Order Receipt</a>
     </div>`
   );
-  const text = `Payment Confirmed for #${order.order_number}. Reference: ${payment.reference}, Amount: ${formatNaira(payment.amountNaira)}. View: ${orderUrl}`;
+  const text = `Payment Confirmed for #${order.order_number}. Reference: ${payment.reference}, Amount: ${formatNaira(payment.amountNaira)}${Number(order.tax_amount || 0) > 0 ? `, Tax: ${formatNaira(order.tax_amount!)}` : ''}. View: ${orderUrl}`;
   await dispatchEmail({ to: order.email, subject, html, text, emailType: 'payment_confirmation', orderId: order.id });
 }
 
@@ -388,13 +395,20 @@ export async function sendOrderProcessingEmail(order: OrderEmailData): Promise<v
       <p class="paragraph">Our fragrance specialists are preparing and inspecting each item in consignment #${order.order_number} to ensure immaculate quality.</p>
     </div>
     <div class="card">
-      <p class="paragraph">Estimated dispatch within 24 to 48 business hours. You will receive dispatch tracking as soon as your courier departs.</p>
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #d4af37; margin-bottom: 12px; font-weight: 600;">Consignment Summary</div>
+      <table class="info-table">
+        <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        ${Number(order.tax_amount || 0) > 0 ? `<tr><td class="info-label">Tax${order.tax_rate ? ` (${order.tax_rate}%)` : ''}</td><td class="info-value">${formatNaira(order.tax_amount!)}</td></tr>` : ''}
+        <tr><td class="info-label">Delivery</td><td class="info-value">${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}</td></tr>
+        <tr><td class="info-label" style="font-weight: 700; color: #fafaf9;">Total</td><td class="info-value" style="font-weight: 700; color: #d4af37;">${formatNaira(order.total_amount)}</td></tr>
+      </table>
+      <p class="paragraph" style="margin-top: 14px; margin-bottom: 0;">Estimated dispatch within 24 to 48 business hours. You will receive dispatch tracking as soon as your courier departs.</p>
     </div>
     <div class="button-container">
       <a href="${trackingUrl}" class="btn-gold">Track Live Progress</a>
     </div>`
   );
-  const text = `Your order #${order.order_number} is being bottled and inspected. Track at: ${trackingUrl}`;
+  const text = `Your order #${order.order_number} is being bottled and inspected. Subtotal: ${formatNaira(order.subtotal)}${Number(order.tax_amount || 0) > 0 ? `, Tax: ${formatNaira(order.tax_amount!)}` : ''}, Total: ${formatNaira(order.total_amount)}. Track at: ${trackingUrl}`;
   await dispatchEmail({ to: order.email, subject, html, text, emailType: 'order_processing', orderId: order.id });
 }
 
@@ -495,6 +509,8 @@ export async function sendOrderCancelledEmail(order: OrderEmailData, reason: str
       <table class="info-table">
         <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
         <tr><td class="info-label">Reason</td><td class="info-value">${reason || 'Customer request / Inventory unavailable'}</td></tr>
+        <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        ${Number(order.tax_amount || 0) > 0 ? `<tr><td class="info-label">Tax${order.tax_rate ? ` (${order.tax_rate}%)` : ''}</td><td class="info-value">${formatNaira(order.tax_amount!)}</td></tr>` : ''}
         <tr><td class="info-label">Total Amount</td><td class="info-value">${formatNaira(order.total_amount)}</td></tr>
       </table>
     </div>
@@ -551,6 +567,9 @@ export async function sendAdminNewOrderEmail(order: OrderEmailData, adminEmail: 
       <table class="info-table">
         <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
         <tr><td class="info-label">Customer Email</td><td class="info-value">${order.email}</td></tr>
+        <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        ${Number(order.tax_amount || 0) > 0 ? `<tr><td class="info-label">Tax${order.tax_rate ? ` (${order.tax_rate}%)` : ''}</td><td class="info-value">${formatNaira(order.tax_amount!)}</td></tr>` : ''}
+        <tr><td class="info-label">Delivery</td><td class="info-value">${order.shipping_amount === 0 ? 'Complimentary' : formatNaira(order.shipping_amount)}</td></tr>
         <tr><td class="info-label">Order Total</td><td class="info-value" style="color: #d4af37; font-weight: 700;">${formatNaira(order.total_amount)}</td></tr>
         <tr><td class="info-label">Items Count</td><td class="info-value">${order.items?.length || 'Multiple'}</td></tr>
       </table>
@@ -583,6 +602,8 @@ export async function sendAdminHighValueOrderEmail(
       <table class="info-table">
         <tr><td class="info-label">Order Number</td><td class="info-value">${order.order_number}</td></tr>
         <tr><td class="info-label">Customer Email</td><td class="info-value">${order.email}</td></tr>
+        <tr><td class="info-label">Subtotal</td><td class="info-value">${formatNaira(order.subtotal)}</td></tr>
+        ${Number(order.tax_amount || 0) > 0 ? `<tr><td class="info-label">Tax${order.tax_rate ? ` (${order.tax_rate}%)` : ''}</td><td class="info-value">${formatNaira(order.tax_amount!)}</td></tr>` : ''}
         <tr><td class="info-label">Order Amount</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 16px;">${formatNaira(order.total_amount)}</td></tr>
       </table>
     </div>

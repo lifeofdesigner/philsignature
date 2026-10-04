@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck, Hash, Eye, EyeOff } from 'lucide-react';
+import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck, Hash, Eye, EyeOff, Percent } from 'lucide-react';
 import { AdminButton, AdminInput, AdminSwitch } from '@/components/admin-ui';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { useAdminSettings, type GeneralSettingsForm } from '../hooks/useAdminSettings';
 import { useAdminBrandTheme, type BrandImageField } from '../hooks/useAdminBrandTheme';
+import { useTaxSettings } from '@/hooks/useTaxSettings';
 import { BrandImageUploadField } from '../components/BrandImageUploadField';
 import { LogoSizeControl } from '../components/LogoSizeControl';
 import { FeatureFlagManager } from '../components/FeatureFlagManager';
@@ -16,7 +17,7 @@ import type { CmsAppearanceConfig } from '@/services/CMSService';
 import { auditLogService } from '@/services/AuditLogService';
 import { useAuth } from '@/hooks/useAuth';
 import { isSuperAdmin } from '@/lib/permissions';
-import type { UserRole } from '@/types/database';
+import type { UserRole, TaxSettings } from '@/types/database';
 
 const IMAGE_FIELDS: { field: BrandImageField; label: string; helpText: string }[] = [
   { field: 'logo_url', label: 'Main Logo', helpText: 'Shown at the top of storefront pages.' },
@@ -45,8 +46,17 @@ export const AdminSettingsPage: React.FC = () => {
   } = useAdminBrandTheme();
   const [themeForm, setThemeForm] = useState<CmsAppearanceConfig | null>(null);
 
+  const {
+    taxSettings,
+    isLoading: isTaxLoading,
+    saveTaxSettings,
+    isSaving: isSavingTax,
+  } = useTaxSettings();
+  const [taxForm, setTaxForm] = useState<TaxSettings | null>(null);
+
   useEffect(() => { setForm(values); }, [values]);
   useEffect(() => { if (appearance) setThemeForm(appearance); }, [appearance]);
+  useEffect(() => { if (taxSettings) setTaxForm(taxSettings); }, [taxSettings]);
 
   const SUPER_ADMIN_ONLY_TABS = ['flags', 'api', 'security'];
   useEffect(() => {
@@ -66,6 +76,17 @@ export const AdminSettingsPage: React.FC = () => {
     }
   };
 
+  const handleSaveTax = async () => {
+    if (!taxForm) return;
+    try {
+      await saveTaxSettings(taxForm);
+      await auditLogService.recordAction('SAVE_STORE_SETTINGS', 'settings', 'tax', { taxForm }, user?.id);
+      toast.success('Tax configuration saved to database.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to save tax settings.');
+    }
+  };
+
   const handleUploadImage = async (field: BrandImageField, file: File) => {
     try {
       await uploadImage({ field, file });
@@ -75,9 +96,132 @@ export const AdminSettingsPage: React.FC = () => {
     }
   };
 
-  if (isLoading || isAppearanceLoading || !form || !themeForm) {
+  if (isLoading || isAppearanceLoading || isTaxLoading || !form || !themeForm || !taxForm) {
     return <PageSkeleton />;
   }
+
+  const renderTaxCard = () => {
+    if (!taxForm) return null;
+    const sampleSubtotal = 100000;
+    const sampleRate = Number(taxForm.rate || 0);
+    const sampleTax = taxForm.enabled && sampleRate > 0
+      ? Math.round((sampleSubtotal * (sampleRate / 100)) * 100) / 100
+      : 0;
+    const sampleTotal = sampleSubtotal + sampleTax;
+
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base font-bold text-black flex items-center gap-2">
+            <Percent className="h-4 w-4 text-slate-700" />
+            Tax Configuration
+          </CardTitle>
+          <CardDescription className="text-black font-medium">
+            Configure boutique checkout taxation (e.g. VAT, GST, Sales Tax). When enabled, tax is automatically calculated at checkout and stored directly on order records.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Enable / Disable Tax Toggle */}
+          <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50/50 p-4 max-w-xl">
+            <div className="space-y-0.5">
+              <div className="text-xs font-bold text-black flex items-center gap-2">
+                <span>Enable Storefront Tax</span>
+                <span
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                    taxForm.enabled
+                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                      : 'bg-slate-200 text-slate-700 border border-slate-300'
+                  }`}
+                >
+                  {taxForm.enabled ? 'Active at Checkout' : 'Disabled'}
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-600">
+                {taxForm.enabled
+                  ? `Storefront checkout will automatically calculate ${taxForm.rate}% ${taxForm.name || 'tax'}.`
+                  : 'No tax will be charged or displayed at checkout.'}
+              </div>
+            </div>
+            <AdminSwitch
+              checked={taxForm.enabled}
+              onCheckedChange={(checked) => setTaxForm((p) => (p ? { ...p, enabled: checked } : p))}
+            />
+          </div>
+
+          {/* Form Fields Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+            <div>
+              <AdminInput
+                label="Tax Name"
+                placeholder="e.g. VAT, GST, Sales Tax"
+                value={taxForm.name}
+                onChange={(e) => setTaxForm((p) => (p ? { ...p, name: e.target.value } : p))}
+                className="text-xs"
+              />
+              <p className="text-[11px] text-slate-500 mt-1">Line item label shown at checkout, order confirmation, and order emails.</p>
+            </div>
+            <div>
+              <AdminInput
+                label="Tax Percentage (%)"
+                type="number"
+                step="0.1"
+                min="0"
+                max="100"
+                placeholder="e.g. 7.5"
+                value={String(taxForm.rate)}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  setTaxForm((p) => (p ? { ...p, rate: isNaN(val) ? 0 : val } : p));
+                }}
+                className="text-xs"
+              />
+              <p className="text-[11px] text-slate-500 mt-1">Percentage rate calculated on subtotal (e.g. 7.5 for 7.5% VAT).</p>
+            </div>
+          </div>
+
+          {/* Live Calculation Preview Banner */}
+          <div className="p-4 rounded-lg border border-slate-200 bg-white max-w-xl space-y-2">
+            <div className="text-[11px] font-bold text-black flex items-center justify-between">
+              <span>Live Checkout Breakdown Preview</span>
+              <span className="text-[10px] text-slate-500 font-normal">Based on ₦100,000 cart subtotal</span>
+            </div>
+            <div className="grid grid-cols-3 gap-2 text-xs pt-1 border-t border-slate-100">
+              <div>
+                <span className="text-[10px] text-slate-500 block">Subtotal</span>
+                <span className="font-semibold text-black">₦100,000</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-slate-500 block">
+                  {taxForm.enabled ? `${taxForm.name || 'Tax'} (${taxForm.rate}%)` : 'Tax (Disabled)'}
+                </span>
+                <span className={`font-semibold ${taxForm.enabled ? 'text-amber-800' : 'text-slate-400'}`}>
+                  {taxForm.enabled ? `+₦${sampleTax.toLocaleString()}` : '₦0'}
+                </span>
+              </div>
+              <div>
+                <span className="text-[10px] text-slate-500 block">Final Total</span>
+                <span className="font-bold text-black">₦{sampleTotal.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex justify-end pt-2 max-w-xl">
+            <AdminButton
+              variant="primary"
+              size="sm"
+              onClick={handleSaveTax}
+              disabled={isSavingTax}
+              className="gap-1.5 shadow-xs"
+            >
+              {isSavingTax ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+              <span>Save Tax Settings</span>
+            </AdminButton>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -97,6 +241,7 @@ export const AdminSettingsPage: React.FC = () => {
       <div className="flex items-center gap-2 border-b border-slate-200 text-xs font-semibold overflow-x-auto">
         {[
           { id: 'general', label: 'Store Information', icon: Store },
+          { id: 'tax', label: 'Tax Configuration', icon: Percent },
           { id: 'brand', label: 'Brand & Logos', icon: Palette },
           { id: 'flags', label: 'Feature Flags', icon: Flag, superAdminOnly: true },
           { id: 'forms', label: 'Forms Builder', icon: FileInput },
@@ -238,6 +383,16 @@ export const AdminSettingsPage: React.FC = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Tax Configuration Section */}
+          {renderTaxCard()}
+        </div>
+      )}
+
+      {/* Tab: Tax Configuration */}
+      {activeTab === 'tax' && (
+        <div className="space-y-6">
+          {renderTaxCard()}
         </div>
       )}
 
