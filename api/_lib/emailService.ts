@@ -56,7 +56,45 @@ function formatNaira(amount: number): string {
   return `₦${Number(amount).toLocaleString('en-NG', { maximumFractionDigits: 0 })}`;
 }
 
-function getEmailWrapper(title: string, contentHtml: string, isMarketing: boolean = false): string {
+let cachedLogoUrl: { url: string | null; cachedAt: number } | null = null;
+const LOGO_CACHE_TTL_MS = 5 * 60 * 1000;
+
+async function getEmailLogoUrl(): Promise<string | null> {
+  if (cachedLogoUrl && Date.now() - cachedLogoUrl.cachedAt < LOGO_CACHE_TTL_MS) {
+    return cachedLogoUrl.url;
+  }
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('cms_content')
+      .select('content')
+      .eq('key', 'store_appearance')
+      .maybeSingle();
+
+    if (error || !data) {
+      cachedLogoUrl = { url: null, cachedAt: Date.now() };
+      return null;
+    }
+
+    const content = data.content as { email_logo_url?: string; logo_url?: string } | null;
+    const url = content?.email_logo_url || content?.logo_url || null;
+    cachedLogoUrl = { url, cachedAt: Date.now() };
+    return url;
+  } catch (err) {
+    console.warn('[EmailService] Failed to fetch brand logo for email template:', err);
+    cachedLogoUrl = { url: null, cachedAt: Date.now() };
+    return null;
+  }
+}
+
+async function getEmailWrapper(title: string, contentHtml: string, isMarketing: boolean = false): Promise<string> {
+  const logoUrl = await getEmailLogoUrl();
+  const logoHtml = logoUrl
+    ? `<div style="text-align: center; margin-bottom: 12px;">
+        <img src="${logoUrl}" alt="Philz Signature" style="height: 70px; width: auto; display: inline-block;" />
+      </div>`
+    : '';
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,6 +126,7 @@ function getEmailWrapper(title: string, contentHtml: string, isMarketing: boolea
 <body>
   <div class="container">
     <div class="header">
+      ${logoHtml}
       <div class="brand-title">${BRAND_NAME}</div>
       <div class="brand-sub">${BRAND_TAGLINE}</div>
     </div>
@@ -188,7 +227,7 @@ async function resolveEmailTemplate(
 
   const finalHtml = populatedBody.includes('<!DOCTYPE') || populatedBody.includes('<html')
     ? populatedBody
-    : getEmailWrapper(populatedSubject, populatedBody);
+    : await getEmailWrapper(populatedSubject, populatedBody);
 
   return {
     subject: populatedSubject,
