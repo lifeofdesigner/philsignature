@@ -123,16 +123,20 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
 
           <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-gold font-medium block mb-1">
-            {isPaid ? 'Payment Confirmed' : isFailedOrPending ? 'Payment Not Completed' : 'Order Placed — Waiting for Payment'}
+            {isPaid ? 'Payment Successful 🎉' : isFailedOrPending ? 'Payment Failed' : 'Order Placed — Waiting for Payment'}
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-            {isFailedOrPending ? 'Your Payment Was Not Completed' : 'Thank You for Your Order!'}
+            {isPaid
+              ? 'Payment Successful 🎉'
+              : isFailedOrPending
+              ? 'Payment Failed'
+              : 'Thank You for Your Order!'}
           </h1>
           <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed">
             {isPaid
-              ? 'Your order has been confirmed and sent to our team. A confirmation email has been sent to you.'
+              ? 'Thank you for your order. Your payment has been received and your fragrance order is now being processed.'
               : isFailedOrPending
-              ? 'We saved your order, but your payment was cancelled or could not be verified. Your items are still in your cart — please retry payment to complete your purchase.'
+              ? "We couldn't complete your payment. No charge has been made to your account. Please try again or choose another payment method."
               : 'Your order has been saved. Please complete your bank transfer using your order number as the reference.'}
           </p>
 

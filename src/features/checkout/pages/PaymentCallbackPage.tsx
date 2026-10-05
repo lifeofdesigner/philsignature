@@ -55,7 +55,7 @@ export const PaymentCallbackPage: React.FC = () => {
   const [state, setState] = useState<VerificationState>('checking');
   const [order, setOrder] = useState<VerifiedOrderData | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>(
-    'Connecting with boutique servers to verify Paystack confirmation...'
+    "We're confirming your payment. Please wait a moment while we complete your order."
   );
 
   const pollTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -188,9 +188,7 @@ export const PaymentCallbackPage: React.FC = () => {
       }
 
       setStatusMessage(
-        currentPoll === 0
-          ? 'Verifying transaction status with Paystack webhook...'
-          : `Awaiting webhook finalization (attempt ${currentPoll + 1} of ${MAX_POLL_ATTEMPTS})...`
+        "We're confirming your payment. Please wait a moment while we complete your order."
       );
 
       const verifiedOrder = await checkVerifiedStatus(reference);
@@ -273,10 +271,10 @@ export const PaymentCallbackPage: React.FC = () => {
             </div>
 
             <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-gold font-medium block mb-2">
-              Paystack Live Verification
+              Order In Progress
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-3">
-              Verifying Payment Confirmation
+              Confirming Your Payment
             </h1>
             <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed mb-6">
               {statusMessage}
@@ -290,7 +288,7 @@ export const PaymentCallbackPage: React.FC = () => {
             </div>
 
             <p className="text-[11px] text-luxury-muted/70 mt-6 italic">
-              Please keep this page open while our single source of truth verifies your transaction.
+              Please keep this page open while we finalize your order.
             </p>
           </div>
         )}
@@ -304,18 +302,21 @@ export const PaymentCallbackPage: React.FC = () => {
               </div>
 
               <span className="text-[10px] uppercase tracking-luxury-widest text-emerald-400 font-semibold block mb-2">
-                Webhook Verified &bull; Single Source of Truth
+                Order Confirmed
               </span>
-              <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-                Payment Confirmed
+              <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-3">
+                Payment Successful 🎉
               </h1>
-              <p className="text-xs text-luxury-muted max-w-lg mx-auto leading-relaxed mb-6">
-                Your payment has been successfully confirmed and verified via Paystack. Your luxury fragrance allocation is secured, and transactional receipts have been sent to your email.
+              <p className="text-xs text-luxury-muted max-w-lg mx-auto leading-relaxed mb-4">
+                Thank you for your order. Your payment has been received and your fragrance order is now being processed.
+              </p>
+              <p className="text-xs text-luxury-gold/90 max-w-lg mx-auto leading-relaxed mb-6">
+                A confirmation email has been sent. We will keep you updated as your order moves forward.
               </p>
 
               <div className="inline-flex flex-wrap items-center justify-center gap-4 bg-luxury-black/70 border border-luxury-border px-6 py-3 rounded-sm text-xs">
                 <div>
-                  <span className="text-luxury-muted mr-2">Consignment Number:</span>
+                  <span className="text-luxury-muted mr-2">Order Number:</span>
                   <span className="text-luxury-gold font-mono font-bold tracking-wider">{order.orderNumber}</span>
                 </div>
                 <div className="border-l border-luxury-border/60 pl-4">
@@ -330,10 +331,10 @@ export const PaymentCallbackPage: React.FC = () => {
               <div className="flex items-center justify-between border-b border-luxury-border pb-4">
                 <h3 className="font-serif text-base text-luxury-cream font-normal flex items-center gap-2">
                   <PackageCheck className="h-4 w-4 text-luxury-gold" />
-                  <span>Verified Order Summary</span>
+                  <span>Order Summary</span>
                 </h3>
                 <span className="text-[10px] uppercase tracking-wider px-2.5 py-1 border rounded-sm font-medium text-emerald-400 border-emerald-800/40 bg-emerald-950/60">
-                  Paid via Paystack
+                  Payment Received
                 </span>
               </div>
 
@@ -370,7 +371,7 @@ export const PaymentCallbackPage: React.FC = () => {
 
               {/* Total Card */}
               <div className="border-t border-luxury-border pt-4 flex justify-between items-baseline">
-                <span className="font-serif text-sm text-luxury-cream">Total Verified Amount</span>
+                <span className="font-serif text-sm text-luxury-cream">Total Amount</span>
                 <span className="font-serif text-lg text-luxury-gold font-bold">
                   {formatCurrency(order.totalAmount)}
                 </span>
@@ -381,7 +382,7 @@ export const PaymentCallbackPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mb-8">
               <div className="bg-luxury-card border border-luxury-border rounded-sm p-5">
                 <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted block mb-1 font-medium">
-                  Dispatch Recipient
+                  Delivery Address
                 </span>
                 <p className="text-luxury-cream font-medium">
                   {order.shippingAddress?.first_name} {order.shippingAddress?.last_name}
@@ -393,13 +394,13 @@ export const PaymentCallbackPage: React.FC = () => {
 
               <div className="bg-luxury-card border border-luxury-border rounded-sm p-5">
                 <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-muted block mb-1 font-medium">
-                  Transaction Audit
+                  Payment Details
                 </span>
                 <p className="text-luxury-cream font-medium uppercase tracking-wider">{order.paymentMethod}</p>
                 <p className="text-luxury-muted text-[11px] font-mono mt-0.5">Ref: {reference}</p>
                 <div className="flex items-center gap-1.5 mt-3 text-[11px] text-luxury-gold">
                   <ShieldCheck className="h-3.5 w-3.5" />
-                  <span>Protected by Paystack Secure Banking</span>
+                  <span>Secure Encrypted Payment</span>
                 </div>
               </div>
             </div>
@@ -429,7 +430,7 @@ export const PaymentCallbackPage: React.FC = () => {
           </>
         )}
 
-        {/* PENDING STATE (Awaiting Webhook Finalization) */}
+        {/* PENDING STATE */}
         {state === 'pending' && (
           <div className="bg-luxury-card border border-amber-500/40 p-8 sm:p-10 text-center rounded relative overflow-hidden mb-8 shadow-2xl">
             <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400">
@@ -437,13 +438,13 @@ export const PaymentCallbackPage: React.FC = () => {
             </div>
 
             <span className="text-[10px] uppercase tracking-luxury-widest text-amber-400 font-medium block mb-2">
-              Payment Under Review
+              Payment In Progress
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-              Awaiting Gateway Finalization
+              Confirming Your Payment
             </h1>
             <p className="text-xs text-luxury-muted max-w-lg mx-auto leading-relaxed mb-6">
-              Your payment has been received by Paystack and is undergoing bank verification. As soon as the webhook completes, your order confirmation will automatically be transmitted to your email.
+              We're confirming your payment. Please wait a moment while we complete your order.
             </p>
 
             <div className="inline-flex items-center gap-3 bg-luxury-black/60 border border-luxury-border px-5 py-2.5 rounded-sm text-xs mb-8">
@@ -458,7 +459,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-black rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
                 <RefreshCw className="h-4 w-4" />
-                <span>Re-check Verification Status</span>
+                <span>Refresh Status</span>
               </button>
 
               <button
@@ -481,13 +482,13 @@ export const PaymentCallbackPage: React.FC = () => {
             </div>
 
             <span className="text-[10px] uppercase tracking-luxury-widest text-red-400 font-medium block mb-2">
-              Payment Not Successful
+              Payment Notice
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-              Transaction Was Not Completed
+              Payment Failed
             </h1>
             <p className="text-xs text-luxury-muted max-w-lg mx-auto leading-relaxed mb-6">
-              Your transaction was declined or canceled by the payment processor. No funds were debited for this acquisition. You may retry payment or select an alternate payment method.
+              We couldn't complete your payment. No charge has been made to your account.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -497,7 +498,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
                 <ShoppingBag className="h-4 w-4" />
-                <span>Return to Checkout</span>
+                <span>Try Again or Choose Another Payment Method</span>
               </button>
 
               <button
