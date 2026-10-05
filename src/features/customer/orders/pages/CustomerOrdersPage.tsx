@@ -89,7 +89,7 @@ export const CustomerOrdersPage: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate(ROUTES.SHOP)}
-          className="self-start sm:self-auto min-h-[40px] px-5 py-2 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-luxury-wide transition-colors rounded-sm cursor-pointer"
+          className="w-full sm:w-auto min-h-[44px] px-5 py-2 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-luxury-wide transition-colors rounded-sm cursor-pointer"
         >
           Shop More
         </button>
@@ -161,7 +161,7 @@ export const CustomerOrdersPage: React.FC = () => {
                 className="bg-luxury-card border border-luxury-border p-5 rounded space-y-4 hover:border-luxury-gold/40 transition-colors"
               >
                 {/* Header Row */}
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-luxury-border/60 pb-3 text-xs">
+                <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-3 border-b border-luxury-border/60 pb-3 text-xs">
                   <div>
                     <span className="text-[10px] text-luxury-muted uppercase tracking-wider block">Order Number</span>
                     <span className="font-mono font-bold text-luxury-gold">{order.order_number}</span>
@@ -210,24 +210,24 @@ export const CustomerOrdersPage: React.FC = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="pt-2 flex items-center justify-between border-t border-luxury-border/40 text-xs">
+                <div className="pt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-luxury-border/40 text-xs">
                   <div className="flex items-center gap-1.5 text-[11px] text-luxury-muted">
                     <PackageCheck className="h-3.5 w-3.5 text-luxury-gold" />
                     <span className="capitalize">Fulfillment: {order.fulfillment_status}</span>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="grid grid-cols-3 sm:flex sm:items-center gap-2 sm:gap-3">
                     <button
                       type="button"
                       onClick={() => setSelectedOrder(order)}
-                      className="text-luxury-muted hover:text-luxury-cream transition-colors cursor-pointer"
+                      className="min-h-[36px] px-2 py-1.5 sm:p-0 text-center sm:text-left text-luxury-muted hover:text-luxury-cream transition-colors cursor-pointer"
                     >
                       View Details
                     </button>
                     <button
                       type="button"
                       onClick={() => navigate(`/checkout/confirmation/${order.order_number}`)}
-                      className="text-luxury-muted hover:text-luxury-cream transition-colors cursor-pointer"
+                      className="min-h-[36px] px-2 py-1.5 sm:p-0 text-center sm:text-left text-luxury-muted hover:text-luxury-cream transition-colors cursor-pointer"
                     >
                       View Receipt
                     </button>
@@ -238,7 +238,7 @@ export const CustomerOrdersPage: React.FC = () => {
                           `/track-order?orderNumber=${order.order_number}&email=${encodeURIComponent(order.email)}`
                         )
                       }
-                      className="inline-flex items-center gap-1 text-luxury-gold hover:text-luxury-gold-light transition-colors cursor-pointer font-medium"
+                      className="min-h-[36px] inline-flex items-center justify-center sm:justify-start gap-1 px-2 py-1.5 sm:p-0 text-luxury-gold hover:text-luxury-gold-light transition-colors cursor-pointer font-medium"
                     >
                       <Truck className="h-3.5 w-3.5" />
                       <span>Track Order</span>
@@ -254,22 +254,22 @@ export const CustomerOrdersPage: React.FC = () => {
 
       {/* Order Details Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-luxury-card border border-luxury-border w-full max-w-2xl p-6 rounded space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-luxury-card border border-luxury-border w-full h-full sm:h-auto max-w-2xl p-4 sm:p-6 rounded-none sm:rounded space-y-6 shadow-2xl relative max-h-full sm:max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-luxury-border pb-4">
-              <div>
+            <div className="flex items-start justify-between gap-3 border-b border-luxury-border pb-4">
+              <div className="min-w-0">
                 <span className="text-[10px] uppercase tracking-wider text-luxury-gold font-medium">
                   Order Details
                 </span>
-                <h3 className="font-serif text-xl text-luxury-cream font-normal mt-0.5">
+                <h3 className="font-serif text-lg sm:text-xl text-luxury-cream font-normal mt-0.5 break-all">
                   Order {selectedOrder.order_number}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedOrder(null)}
-                className="text-luxury-muted hover:text-luxury-cream p-1 rounded-sm transition-colors cursor-pointer"
+                className="shrink-0 text-luxury-muted hover:text-luxury-cream p-1 rounded-sm transition-colors cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -302,8 +302,8 @@ export const CustomerOrdersPage: React.FC = () => {
               </h4>
               <div className="border border-luxury-border rounded-sm divide-y divide-luxury-border/60 overflow-hidden">
                 {selectedOrder.items?.map((item) => (
-                  <div key={item.id} className="p-3 bg-luxury-card flex items-center justify-between gap-4 text-xs">
-                    <div className="flex items-center gap-3">
+                  <div key={item.id} className="p-3 bg-luxury-card flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 sm:gap-4 text-xs">
+                    <div className="flex items-center gap-3 min-w-0">
                       {item.product_image_url && (
                         <img
                           src={item.product_image_url}
@@ -311,14 +311,14 @@ export const CustomerOrdersPage: React.FC = () => {
                           className="w-10 h-12 object-cover rounded-sm bg-luxury-card shrink-0 border border-luxury-border"
                         />
                       )}
-                      <div>
-                        <p className="font-serif text-sm text-luxury-cream">{item.product_name}</p>
+                      <div className="min-w-0">
+                        <p className="font-serif text-sm text-luxury-cream truncate">{item.product_name}</p>
                         <p className="text-[11px] text-luxury-muted">
                           Qty: {item.quantity} × {formatCurrency(item.price)}
                         </p>
                       </div>
                     </div>
-                    <div className="text-right font-serif text-sm text-luxury-cream font-medium">
+                    <div className="text-right font-serif text-sm text-luxury-cream font-medium shrink-0">
                       {formatCurrency(item.subtotal)}
                     </div>
                   </div>
@@ -403,20 +403,20 @@ export const CustomerOrdersPage: React.FC = () => {
             </div>
 
             {/* Modal Actions */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-luxury-border">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center sm:justify-between gap-3 pt-3 border-t border-luxury-border">
               <button
                 type="button"
                 onClick={() => setSelectedOrder(null)}
-                className="px-4 py-2 border border-luxury-border text-luxury-muted hover:text-luxury-cream text-xs uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
+                className="order-last sm:order-first w-full sm:w-auto min-h-[44px] px-4 py-2 border border-luxury-border text-luxury-muted hover:text-luxury-cream text-xs uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
               >
                 Close
               </button>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <button
                   type="button"
                   onClick={() => navigate(`/checkout/confirmation/${selectedOrder.order_number}`)}
-                  className="px-4 py-2 bg-luxury-charcoal hover:bg-luxury-border text-luxury-cream text-xs uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
+                  className="w-full sm:w-auto min-h-[44px] px-4 py-2 bg-luxury-charcoal hover:bg-luxury-border text-luxury-cream text-xs uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
                 >
                   Full Receipt
                 </button>
@@ -429,7 +429,7 @@ export const CustomerOrdersPage: React.FC = () => {
                       )}`
                     )
                   }
-                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
+                  className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-luxury-gold text-black hover:bg-luxury-gold-light text-xs font-semibold uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
                   <span>Track Order</span>
