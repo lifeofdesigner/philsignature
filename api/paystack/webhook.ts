@@ -124,6 +124,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!isValidSignature) {
       console.warn('[Paystack Webhook] Invalid HMAC signature rejected');
+      try {
+        await supabaseAdmin.from('activity_logs').insert({
+          action: 'paystack_webhook_signature_failed',
+          entity_type: 'payment',
+          entity_id: rawReference || 'unknown',
+          details: {
+            timestamp: new Date().toISOString(),
+            mode,
+            event_type: eventType,
+            reference: rawReference,
+          },
+        });
+      } catch (logErr) {
+        console.warn('[Paystack Webhook] Activity log insert error:', logErr);
+      }
       return res.status(401).json({ success: false, reason: 'Invalid signature' });
     }
 
@@ -157,6 +172,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const apiVerification = await verifyWithPaystackApi(reference, secretKey);
     if (!apiVerification.ok || !apiVerification.data) {
       console.error(`[Paystack Webhook DEBUG] Paystack API verification failed for ${reference}:`, apiVerification.error);
+      try {
+        await supabaseAdmin.from('activity_logs').insert({
+          action: 'paystack_webhook_verify_api_failed',
+          entity_type: 'payment',
+          entity_id: reference,
+          details: {
+            timestamp: new Date().toISOString(),
+            mode,
+            error: apiVerification.error,
+          },
+        });
+      } catch (logErr) {
+        console.warn('[Paystack Webhook] Activity log insert error:', logErr);
+      }
       return res.status(200).json({
         received: true,
         success: false,
@@ -211,6 +240,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!order) {
       console.warn(`[Paystack Webhook DEBUG] Database lookup: No order record found for reference: ${reference}`);
+      try {
+        await supabaseAdmin.from('activity_logs').insert({
+          action: 'paystack_webhook_order_not_found',
+          entity_type: 'payment',
+          entity_id: reference,
+          details: {
+            timestamp: new Date().toISOString(),
+            mode,
+            event_data_metadata: eventData.metadata,
+          },
+        });
+      } catch (logErr) {
+        console.warn('[Paystack Webhook] Activity log insert error:', logErr);
+      }
       return res.status(200).json({ received: true, reason: 'Order not found' });
     }
 
@@ -246,6 +289,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     console.log(`[Paystack Webhook DEBUG] Database update result for #${order.order_number}:`, updateOutcome.success ? 'SUCCESS (Marked Paid)' : `FAILED (${updateOutcome.reason})`);
+
+    // Log processing result to activity_logs
+    try {
+      await supabaseAdmin.from('activity_logs').insert({
+        action: 'paystack_webhook_processed',
+        entity_type: 'order',
+        entity_id: order.id,
+        details: {
+          timestamp: new Date().toISOString(),
+          reference,
+          order_number: order.order_number,
+          success: updateOutcome.success,
+          amount_naira: verifiedAmountNaira,
+          reason: updateOutcome.reason || null,
+        },
+      });
+    } catch (logErr) {
+      console.warn('[Paystack Webhook] Activity log insert error:', logErr);
+    }
 
     if (!updateOutcome.success) {
       console.error(`[Paystack Webhook] Order status update failed:`, updateOutcome.reason);
