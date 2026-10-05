@@ -72,6 +72,14 @@ export const OrderConfirmationPage: React.FC = () => {
         metadata: { order_id: order.id },
         onSuccess: async (reference) => {
           try {
+            if (order.payment_method === 'paystack') {
+              setIsRetrying(false);
+              navigate(
+                `/payment/callback?reference=${encodeURIComponent(reference)}&email=${encodeURIComponent(order.email)}`
+              );
+              return;
+            }
+
             const result = await paymentService.verifyPayment(
               order.payment_method as SupportedGateway,
               reference,

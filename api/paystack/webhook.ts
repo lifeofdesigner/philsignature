@@ -138,6 +138,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       .or(`order_number.eq.${reference},payment_reference.eq.${reference}`)
       .maybeSingle();
 
+    // Fallback A: Check payment_transactions table (supports retries where orders.payment_reference may differ)
+    if (!order) {
+      const { data: tx } = await supabaseAdmin
+        .from('payment_transactions')
+        .select('order_id')
+        .eq('reference', reference)
+        .maybeSingle();
+      if (tx?.order_id) {
+        const { data: byTxOrderId } = await supabaseAdmin
+          .from('orders')
+          .select('*, items:order_items(*)')
+          .eq('id', tx.order_id)
+          .maybeSingle();
+        if (byTxOrderId) order = byTxOrderId;
+      }
+    }
+
+    // Fallback B: Check event / verification metadata
     if (!order && (eventData.metadata?.order_id || verifiedData.metadata?.order_id)) {
       const orderId = eventData.metadata?.order_id || verifiedData.metadata?.order_id;
       const { data: byId } = await supabaseAdmin

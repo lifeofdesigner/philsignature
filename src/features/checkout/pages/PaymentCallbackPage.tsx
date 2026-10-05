@@ -90,7 +90,7 @@ export const PaymentCallbackPage: React.FC = () => {
 
     // 2. Direct read-only fallback via client Supabase
     try {
-      const { data, error } = await supabase
+      let { data, error } = await supabase
         .from('orders')
         .select(`
           id,
@@ -116,6 +116,46 @@ export const PaymentCallbackPage: React.FC = () => {
         `)
         .or(`order_number.eq.${ref},payment_reference.eq.${ref}`)
         .maybeSingle();
+
+      // Check payment_transactions table if not found by primary columns
+      if (!data && !error) {
+        const { data: tx } = await supabase
+          .from('payment_transactions')
+          .select('order_id')
+          .eq('reference', ref)
+          .maybeSingle();
+
+        if (tx?.order_id) {
+          const { data: byTxOrderId } = await supabase
+            .from('orders')
+            .select(`
+              id,
+              order_number,
+              financial_status,
+              fulfillment_status,
+              total_amount,
+              email,
+              phone,
+              payment_method,
+              payment_reference,
+              created_at,
+              shipping_address,
+              items:order_items (
+                id,
+                product_name,
+                sku,
+                quantity,
+                price,
+                subtotal,
+                product_image_url
+              )
+            `)
+            .eq('id', tx.order_id)
+            .maybeSingle();
+
+          if (byTxOrderId) data = byTxOrderId;
+        }
+      }
 
       if (!error && data) {
         return {

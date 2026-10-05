@@ -54,6 +54,20 @@ export async function markOrderPaid(params: MarkOrderPaidParams) {
 
   if (updateError) return { success: false, reason: 'Verified but failed to update order' };
 
+  // Update payment_transactions row status if exists
+  try {
+    await supabaseAdmin
+      .from('payment_transactions')
+      .update({
+        status: 'success',
+        updated_at: new Date().toISOString(),
+        gateway_response: paystackDetails || { status: 'success', reference },
+      })
+      .eq('reference', reference);
+  } catch (txErr) {
+    console.warn('payment_transactions status update skipped:', txErr);
+  }
+
   // 1. Order Timeline Milestone
   await supabaseAdmin.from('order_timeline').insert({
     order_id: order.id,

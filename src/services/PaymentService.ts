@@ -203,30 +203,83 @@ export class PaymentService {
     }
 
     if (gateway === 'paystack') {
-      if (!window.PaystackPop) throw new ValidationError('Paystack checkout failed to initialize.');
+      // 1. Call backend to securely generate unique Paystack reference and initialize transaction
+      const orderId = (options.metadata?.order_id as string) || options.reference;
       const callbackUrl = `${window.location.origin}/payment/callback`;
-      const handler = window.PaystackPop.setup({
-        key: publicKey.key,
-        email: options.email,
-        amount: Math.round(options.amount * 100),
-        ref: options.reference,
-        currency: 'NGN',
-        callback_url: callbackUrl,
-        metadata: {
-          ...options.metadata,
-          custom_fields: [
-            {
-              display_name: 'Order Number',
-              variable_name: 'order_number',
-              value: options.reference,
-            },
-          ],
-        },
-        callback: (response) => options.onSuccess(response.reference),
-        onClose: () => options.onCancel(),
-      });
-      handler.openIframe();
-      return;
+
+      let backendInit: {
+        success: boolean;
+        reference: string;
+        authorizationUrl?: string;
+        accessCode?: string;
+        error?: string;
+      } | null = null;
+
+      try {
+        const initRes = await fetch('/api/paystack/initialize', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store',
+          },
+          body: JSON.stringify({
+            orderId,
+            orderNumber: options.reference,
+            email: options.email,
+            amount: options.amount,
+            callbackUrl,
+            metadata: options.metadata,
+          }),
+        });
+        backendInit = await initRes.json();
+      } catch (initErr) {
+        console.warn('[PaymentService] Backend Paystack init network error, using client fallback:', initErr);
+      }
+
+      if (backendInit && !backendInit.success) {
+        throw new ValidationError(
+          backendInit.error || 'Failed to initialize Paystack transaction. Please try again.'
+        );
+      }
+
+      // Generate a fresh unique reference if backend was not reachable
+      const finalReference =
+        backendInit?.reference ||
+        `PS_${Date.now()}_${Math.random().toString(36).substring(2, 10)}_${options.reference.replace(/[^a-zA-Z0-9-_]/g, '')}`;
+
+      // If Paystack inline widget is loaded, use popup with the fresh reference/accessCode
+      if (window.PaystackPop) {
+        const handler = window.PaystackPop.setup({
+          key: publicKey.key,
+          email: options.email,
+          amount: Math.round(options.amount * 100),
+          ref: finalReference,
+          currency: 'NGN',
+          callback_url: `${callbackUrl}?reference=${encodeURIComponent(finalReference)}&email=${encodeURIComponent(options.email)}`,
+          metadata: {
+            ...options.metadata,
+            custom_fields: [
+              {
+                display_name: 'Order Number',
+                variable_name: 'order_number',
+                value: options.reference,
+              },
+            ],
+          },
+          callback: (response) => options.onSuccess(response.reference || finalReference),
+          onClose: () => options.onCancel(),
+        });
+        handler.openIframe();
+        return;
+      }
+
+      // Mobile/PWA fallback: redirect directly to Paystack authorizationUrl if inline widget unavailable
+      if (backendInit?.authorizationUrl) {
+        window.location.href = backendInit.authorizationUrl;
+        return;
+      }
+
+      throw new ValidationError('Paystack checkout failed to initialize.');
     }
 
     if (gateway === 'flutterwave') {

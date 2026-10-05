@@ -32,7 +32,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const reference = referenceParam.trim();
 
   try {
-    const { data: order, error } = await supabaseAdmin
+    let { data: order, error } = await supabaseAdmin
       .from('orders')
       .select(`
         id,
@@ -61,6 +61,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       `)
       .or(`order_number.eq.${reference},payment_reference.eq.${reference}`)
       .maybeSingle();
+
+    // Fallback: Check payment_transactions table if customer retried with a new reference
+    if (!order && !error) {
+      const { data: tx } = await supabaseAdmin
+        .from('payment_transactions')
+        .select('order_id')
+        .eq('reference', reference)
+        .maybeSingle();
+
+      if (tx?.order_id) {
+        const { data: orderById, error: orderByIdError } = await supabaseAdmin
+          .from('orders')
+          .select(`
+            id,
+            order_number,
+            financial_status,
+            fulfillment_status,
+            subtotal,
+            shipping_amount,
+            discount_amount,
+            total_amount,
+            email,
+            phone,
+            payment_method,
+            payment_reference,
+            created_at,
+            shipping_address,
+            items:order_items (
+              id,
+              product_name,
+              sku,
+              quantity,
+              price,
+              subtotal,
+              product_image_url
+            )
+          `)
+          .eq('id', tx.order_id)
+          .maybeSingle();
+
+        if (!orderByIdError && orderById) {
+          order = orderById;
+        }
+      }
+    }
 
     if (error) {
       console.error('[Paystack Status] Database error:', error);
