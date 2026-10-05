@@ -13,6 +13,7 @@ import { LogoSizeControl } from '../components/LogoSizeControl';
 import { FeatureFlagManager } from '../components/FeatureFlagManager';
 import { FormBuilderManager } from '../components/FormBuilderManager';
 import { EmailTemplatesManager } from '@/features/admin/emails/components/EmailTemplatesManager';
+import { SmtpSettingsManager } from '../components/SmtpSettingsManager';
 import { Can } from '@/components/common/Can';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 import { auditLogService } from '@/services/AuditLogService';
@@ -60,7 +61,7 @@ export const AdminSettingsPage: React.FC = () => {
   useEffect(() => { if (appearance) setThemeForm(appearance); }, [appearance]);
   useEffect(() => { if (taxSettings) setTaxForm(taxSettings); }, [taxSettings]);
 
-  const SUPER_ADMIN_ONLY_TABS = ['flags', 'api', 'security'];
+  const SUPER_ADMIN_ONLY_TABS = ['flags', 'api', 'security', 'smtp'];
   useEffect(() => {
     if (SUPER_ADMIN_ONLY_TABS.includes(activeTab) && !userIsSuperAdmin) {
       setSearchParams({ tab: 'general' });
@@ -245,6 +246,7 @@ export const AdminSettingsPage: React.FC = () => {
           { id: 'general', label: 'Store Information', icon: Store },
           { id: 'tax', label: 'Tax Configuration', icon: Percent },
           { id: 'emails', label: 'Email Templates', icon: Mail },
+          { id: 'smtp', label: 'SMTP / Email Settings', icon: Mail, superAdminOnly: true },
           { id: 'brand', label: 'Brand & Logos', icon: Palette },
           { id: 'flags', label: 'Feature Flags', icon: Flag, superAdminOnly: true },
           { id: 'forms', label: 'Forms Builder', icon: FileInput },
@@ -465,6 +467,15 @@ export const AdminSettingsPage: React.FC = () => {
         <div className="space-y-6">
           <EmailTemplatesManager />
         </div>
+      )}
+
+      {/* Tab: SMTP / Email Settings (Super Admin) */}
+      {activeTab === 'smtp' && (
+        <Can role="super_admin" fallback={<div className="p-8 text-center text-xs text-black">Super Admin permission required to manage SMTP settings.</div>}>
+          <div className="space-y-6">
+            <SmtpSettingsManager />
+          </div>
+        </Can>
       )}
 
       {/* Tab 2: Brand & Logos */}

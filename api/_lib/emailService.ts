@@ -1,4 +1,6 @@
+import nodemailer from 'nodemailer';
 import { supabaseAdmin } from './supabaseAdmin.js';
+import { decryptSecret } from './crypto.js';
 
 export interface EmailPayload {
   to: string;
@@ -191,39 +193,113 @@ async function resolveEmailTemplate(
   };
 }
 
+const CONFIG_ID = '00000000-0000-0000-0000-000000000001';
+
+interface SmtpDbConfig {
+  provider_name: string;
+  smtp_host: string | null;
+  smtp_port: number;
+  smtp_username: string | null;
+  smtp_password_encrypted: string | null;
+  smtp_from_name: string | null;
+  smtp_from_email: string | null;
+  smtp_secure: boolean;
+}
+
+interface CachedSmtpConfig {
+  config: SmtpDbConfig | null;
+  cachedAt: number;
+}
+
+let smtpConfigCache: CachedSmtpConfig | null = null;
+const SMTP_CACHE_TTL_MS = 60 * 1000;
+
+async function getSmtpDbConfig(): Promise<SmtpDbConfig | null> {
+  const now = Date.now();
+  if (smtpConfigCache && now - smtpConfigCache.cachedAt < SMTP_CACHE_TTL_MS) {
+    return smtpConfigCache.config;
+  }
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('smtp_settings')
+      .select('provider_name, smtp_host, smtp_port, smtp_username, smtp_password_encrypted, smtp_from_name, smtp_from_email, smtp_secure')
+      .eq('id', CONFIG_ID)
+      .maybeSingle();
+
+    const config = !error && data ? (data as SmtpDbConfig) : null;
+    smtpConfigCache = { config, cachedAt: now };
+    return config;
+  } catch (err) {
+    console.warn('[EmailService] Failed to load SMTP config from database:', err);
+    return null;
+  }
+}
+
+function resolveFromAddress(config: SmtpDbConfig | null): string {
+  if (config?.smtp_from_email) {
+    return config.smtp_from_name ? `${config.smtp_from_name} <${config.smtp_from_email}>` : config.smtp_from_email;
+  }
+  return process.env.EMAIL_FROM || 'Philz Signature <orders@philzsignature.com>';
+}
+
+async function sendViaNodemailer(config: SmtpDbConfig, payload: EmailPayload): Promise<boolean> {
+  const password = config.smtp_password_encrypted ? decryptSecret(config.smtp_password_encrypted) : null;
+  const transporter = nodemailer.createTransport({
+    host: config.smtp_host!,
+    port: config.smtp_port,
+    secure: config.smtp_secure,
+    auth: config.smtp_username ? { user: config.smtp_username, pass: password || '' } : undefined,
+  });
+
+  await transporter.sendMail({
+    from: resolveFromAddress(config),
+    to: payload.to,
+    subject: payload.subject,
+    html: payload.html,
+    text: payload.text,
+  });
+  return true;
+}
+
+async function sendViaResend(apiKey: string, config: SmtpDbConfig | null, payload: EmailPayload): Promise<boolean> {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: resolveFromAddress(config),
+      to: payload.to,
+      subject: payload.subject,
+      html: payload.html,
+      text: payload.text,
+    }),
+  });
+
+  if (res.ok) return true;
+  const errorText = await res.text();
+  console.warn(`[EmailService] Resend API responded with status ${res.status}:`, errorText);
+  return false;
+}
+
 export async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
   let sentViaApi = false;
+  const dbConfig = await getSmtpDbConfig();
+  const isCustomSmtp = Boolean(dbConfig?.smtp_host && dbConfig.provider_name?.toLowerCase() !== 'resend');
   const resendApiKey = process.env.RESEND_API_KEY;
 
-  if (resendApiKey) {
-    try {
-      const fromAddress = process.env.EMAIL_FROM || 'Philz Signature <orders@philzsignature.com>';
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: fromAddress,
-          to: payload.to,
-          subject: payload.subject,
-          html: payload.html,
-          text: payload.text,
-        }),
-      });
-
-      if (res.ok) {
-        sentViaApi = true;
-      } else {
-        const errorText = await res.text();
-        console.warn(`[EmailService] Resend API responded with status ${res.status}:`, errorText);
-      }
-    } catch (err) {
-      console.warn('[EmailService] API dispatch error:', err);
+  try {
+    if (isCustomSmtp && dbConfig) {
+      sentViaApi = await sendViaNodemailer(dbConfig, payload);
+    } else if (resendApiKey) {
+      sentViaApi = await sendViaResend(resendApiKey, dbConfig, payload);
+    } else {
+      console.info(`[EmailService Simulation] No SMTP config or API key available. Email "${payload.subject}" to ${payload.to}`);
     }
-  } else {
-    console.info(`[EmailService Simulation] Key missing. Email "${payload.subject}" to ${payload.to}`);
+  } catch (err) {
+    console.warn('[EmailService] Dispatch error:', err);
   }
 
   // Record dispatch in database activity logs
@@ -245,6 +321,39 @@ export async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
   }
 
   return true;
+}
+
+/**
+ * Sends a test email using the currently configured SMTP/Resend settings,
+ * without swallowing errors — used by the admin "Send Test Email" action so
+ * failures surface the exact underlying error to the admin for debugging.
+ */
+export async function sendTestEmail(to: string): Promise<void> {
+  smtpConfigCache = null; // always use the freshest settings for a test send
+  const dbConfig = await getSmtpDbConfig();
+  const isCustomSmtp = Boolean(dbConfig?.smtp_host && dbConfig.provider_name?.toLowerCase() !== 'resend');
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  const payload: EmailPayload = {
+    to,
+    subject: 'Philz Signature — SMTP Test Email',
+    html: `<p>This is a test email sent from the Philz Signature admin SMTP settings panel.</p><p>If you received this, your email configuration is working correctly.</p>`,
+    text: 'This is a test email sent from the Philz Signature admin SMTP settings panel. If you received this, your email configuration is working correctly.',
+    emailType: 'smtp_test',
+  };
+
+  if (isCustomSmtp && dbConfig) {
+    await sendViaNodemailer(dbConfig, payload);
+    return;
+  }
+
+  if (resendApiKey) {
+    const ok = await sendViaResend(resendApiKey, dbConfig, payload);
+    if (!ok) throw new Error('Resend API rejected the test email. Check RESEND_API_KEY and the from address.');
+    return;
+  }
+
+  throw new Error('No email provider is configured: set up SMTP settings in the admin panel or configure RESEND_API_KEY in the environment.');
 }
 
 // =============================================================================
