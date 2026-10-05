@@ -97,7 +97,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // 2. Fetch configured Paystack secret key
-    const { secretKey, mode } = await getGatewayCredentials('paystack');
+    const { secretKey, publicKey, mode } = await getGatewayCredentials('paystack');
     if (!secretKey) {
       console.error('[Paystack Init] Paystack secret key is missing');
       return res.status(500).json({
@@ -211,6 +211,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       reference: reference || freshReference,
       authorizationUrl: authorization_url,
       accessCode: access_code,
+      publicKey,
       mode,
     });
   } catch (err: unknown) {

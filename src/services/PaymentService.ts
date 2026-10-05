@@ -188,8 +188,10 @@ export class PaymentService {
       throw new ValidationError('Email and amount are required for a gateway transaction');
     }
 
-    const publicKey = await this.getPublicKey(gateway);
-    if (!publicKey) {
+    // Paystack's public key is resolved server-side (see below) since the
+    // client has no read access to the settings row holding gateway keys.
+    let publicKey = gateway === 'paystack' ? null : await this.getPublicKey(gateway);
+    if (gateway !== 'paystack' && !publicKey) {
       throw new ValidationError(
         `${gateway.charAt(0).toUpperCase() + gateway.slice(1)} is not configured. Please choose a different payment method.`
       );
@@ -212,6 +214,7 @@ export class PaymentService {
         reference: string;
         authorizationUrl?: string;
         accessCode?: string;
+        publicKey?: string;
         error?: string;
       } | null = null;
 
@@ -247,10 +250,10 @@ export class PaymentService {
         backendInit?.reference ||
         `PS_${Date.now()}_${Math.random().toString(36).substring(2, 10)}_${options.reference.replace(/[^a-zA-Z0-9-_]/g, '')}`;
 
-      // If Paystack inline widget is loaded, use popup with the fresh reference/accessCode
-      if (window.PaystackPop) {
+      // If Paystack inline widget is loaded and the server returned a public key, use the popup
+      if (window.PaystackPop && backendInit?.publicKey) {
         const handler = window.PaystackPop.setup({
-          key: publicKey.key,
+          key: backendInit.publicKey,
           email: options.email,
           amount: Math.round(options.amount * 100),
           ref: finalReference,
@@ -284,6 +287,7 @@ export class PaymentService {
 
     if (gateway === 'flutterwave') {
       if (!window.FlutterwaveCheckout) throw new ValidationError('Flutterwave checkout failed to initialize.');
+      if (!publicKey) throw new ValidationError('Flutterwave is not configured. Please choose a different payment method.');
       window.FlutterwaveCheckout({
         public_key: publicKey.key,
         tx_ref: options.reference,
@@ -307,6 +311,7 @@ export class PaymentService {
 
     if (gateway === 'korapay') {
       if (!window.Korapay) throw new ValidationError('Korapay checkout failed to initialize.');
+      if (!publicKey) throw new ValidationError('Korapay is not configured. Please choose a different payment method.');
       window.Korapay.initialize({
         key: publicKey.key,
         reference: options.reference,

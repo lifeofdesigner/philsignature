@@ -15,12 +15,18 @@ interface PublicSettings {
 interface SecretSettings {
   paystack_test_secret_key: string;
   paystack_live_secret_key: string;
+  paystack_test_public_key: string;
+  paystack_live_public_key: string;
   flutterwave_test_secret_key: string;
   flutterwave_live_secret_key: string;
   flutterwave_test_webhook_secret_hash: string;
   flutterwave_live_webhook_secret_hash: string;
+  flutterwave_test_public_key: string;
+  flutterwave_live_public_key: string;
   korapay_test_secret_key: string;
   korapay_live_secret_key: string;
+  korapay_test_public_key: string;
+  korapay_live_public_key: string;
 }
 
 async function getSetting<T>(key: string): Promise<T | null> {
@@ -42,6 +48,7 @@ export async function getGatewayCredentials(gateway: GatewayName): Promise<{
   enabled: boolean;
   mode: GatewayMode;
   secretKey: string;
+  publicKey: string;
   webhookSecretHash?: string;
 }> {
   const [publicSettings, secretSettings] = await Promise.all([
@@ -67,11 +74,14 @@ export async function getGatewayCredentials(gateway: GatewayName): Promise<{
       '';
   }
 
+  const publicKeyField = `${gateway}_${mode}_public_key` as keyof SecretSettings;
+  const publicKey = secretSettings?.[publicKeyField] || '';
+
   let webhookSecretHash: string | undefined;
   if (gateway === 'flutterwave') {
     const hashField = `flutterwave_${mode}_webhook_secret_hash` as keyof SecretSettings;
     webhookSecretHash = secretSettings?.[hashField] || '';
   }
 
-  return { enabled, mode, secretKey, webhookSecretHash };
+  return { enabled, mode, secretKey, publicKey, webhookSecretHash };
 }
