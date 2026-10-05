@@ -58,7 +58,11 @@ export const useSmtpSettings = () => {
   });
 
   const testMutation = useMutation({
-    mutationFn: () => callAdminApi<{ success: boolean; sentTo: string }>('/api/admin/email/test', { method: 'POST' }),
+    mutationFn: () =>
+      callAdminApi<{ success: boolean; sentTo: string }>('/api/admin/smtp-settings', {
+        method: 'POST',
+        body: { action: 'test' },
+      }),
   });
 
   const settings: SmtpSettingsForm = {

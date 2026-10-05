@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../_lib/supabaseAdmin.js';
 import { getCallerProfile, isSuperAdmin, logAdminAction } from '../_lib/requireAdmin.js';
 import { encryptSecret } from '../_lib/crypto.js';
+import { sendTestEmail } from '../_lib/emailService.js';
 
 const CONFIG_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -70,6 +71,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (req.method === 'POST') {
       const body = (req.body || {}) as Record<string, unknown>;
+
+      // Merged in from the former api/admin/email/test.ts to stay under Vercel's
+      // Hobby-plan serverless function cap: POST { action: 'test' } sends a test
+      // email instead of saving settings.
+      if (body.action === 'test') {
+        if (!caller.email) {
+          res.status(400).json({ error: 'Your admin account has no email address on file.' });
+          return;
+        }
+
+        try {
+          await sendTestEmail(caller.email);
+        } catch (err) {
+          res.status(500).json({ error: err instanceof Error ? err.message : 'Failed to send test email.' });
+          return;
+        }
+
+        await logAdminAction(caller, 'send_smtp_test_email', 'smtp_settings', CONFIG_ID, { to: caller.email }, req);
+        res.status(200).json({ success: true, sentTo: caller.email });
+        return;
+      }
 
       const updates: Record<string, unknown> = {
         provider_name: typeof body.provider_name === 'string' ? body.provider_name : 'Custom',
