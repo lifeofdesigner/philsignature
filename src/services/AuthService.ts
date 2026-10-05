@@ -71,7 +71,7 @@ export class AuthService {
                 resetUrl: `${window.location.origin}/reset-password?unlockToken=${failure.unlock_token || ''}&email=${encodeURIComponent(email)}`,
               },
             }),
-          }).catch(() => null);
+          }).catch((err) => console.error('[Email dispatch failed]', err));
         }
 
         throw new ValidationError(
@@ -143,7 +143,7 @@ export class AuthService {
             },
           },
         }),
-      }).catch(() => null);
+      }).catch((err) => console.error('[Email dispatch failed]', err));
     }
 
     return { user, session, profile };
@@ -180,7 +180,7 @@ export class AuthService {
               verificationUrl: `${window.location.origin}/verify-email?email=${encodeURIComponent(credentials.email)}`,
             },
           }),
-        }).catch(() => null);
+        }).catch((err) => console.error('[Email dispatch failed]', err));
 
         fetch('/api/email/dispatch', {
           method: 'POST',
@@ -195,7 +195,7 @@ export class AuthService {
               },
             },
           }),
-        }).catch(() => null);
+        }).catch((err) => console.error('[Email dispatch failed]', err));
       }
     }
 
@@ -248,7 +248,7 @@ export class AuthService {
             },
           },
         }),
-      }).catch(() => null);
+      }).catch((err) => console.error('[Email dispatch failed]', err));
     }
 
     return user;

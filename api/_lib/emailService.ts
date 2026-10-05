@@ -2,6 +2,10 @@ import nodemailer from 'nodemailer';
 import { supabaseAdmin } from './supabaseAdmin.js';
 import { decryptSecret } from './crypto.js';
 
+if (!process.env.RESEND_API_KEY) {
+  console.error('[EmailService] RESEND_API_KEY is not set — all emails will fail silently');
+}
+
 export interface EmailPayload {
   to: string;
   subject: string;
@@ -43,8 +47,8 @@ export interface OrderEmailData {
 }
 
 const BRAND_NAME = 'Philz Signature';
-const BRAND_TAGLINE = 'Haute Parfumerie & Pure Luxury';
-const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'concierge@philzsignature.com';
+const BRAND_TAGLINE = 'Your Scent. Your Signature.';
+const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'philzsignature1@gmail.com';
 const ADMIN_NOTIFICATION_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || 'orders@philzsignature.com';
 const APP_URL = process.env.VITE_APP_URL || 'https://philzsignature.com';
 
@@ -91,14 +95,14 @@ function getEmailWrapper(title: string, contentHtml: string, isMarketing: boolea
       ${contentHtml}
     </div>
     <div class="footer">
-      <p style="margin: 0 0 8px 0;">PHILZ SIGNATURE HAUTE PARFUMS &bull; LUXURY REDEFINED</p>
-      <p style="margin: 0 0 8px 0;">Need concierge assistance? Contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></p>
+      <p style="margin: 0 0 8px 0;">PHILZ SIGNATURE &mdash; Signature by nature, krafted for you.</p>
+      <p style="margin: 0 0 8px 0;">Need help? Contact us at <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a></p>
       ${
         isMarketing
           ? `<p style="margin: 0 0 8px 0;"><a href="${APP_URL}/unsubscribe" style="color: #78716c; text-decoration: underline;">Unsubscribe from marketing privileges</a></p>`
           : `<p style="margin: 0 0 8px 0; font-size: 10px; color: #57534e;">This is an essential account/order notification. Marketing unsubscribe is not applicable.</p>`
       }
-      <p style="margin: 0; font-size: 10px; color: #57534e;">&copy; ${new Date().getFullYear()} ${BRAND_NAME}. All rights reserved.</p>
+      <p style="margin: 0; font-size: 10px; color: #57534e;">&copy; 2026 PHILZ SIGNATURE. ALL RIGHTS RESERVED.</p>
     </div>
   </div>
 </body>
@@ -296,7 +300,7 @@ export async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
     } else if (resendApiKey) {
       sentViaApi = await sendViaResend(resendApiKey, dbConfig, payload);
     } else {
-      console.info(`[EmailService Simulation] No SMTP config or API key available. Email "${payload.subject}" to ${payload.to}`);
+      console.error(`[EmailService] No SMTP config or RESEND_API_KEY available. Email "${payload.subject}" to ${payload.to} was NOT sent.`);
     }
   } catch (err) {
     console.warn('[EmailService] Dispatch error:', err);
@@ -320,7 +324,7 @@ export async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
     // non-blocking
   }
 
-  return true;
+  return sentViaApi;
 }
 
 /**
