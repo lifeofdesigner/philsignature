@@ -11,8 +11,8 @@ interface UnauthorizedStateProps {
 }
 
 export const UnauthorizedState: React.FC<UnauthorizedStateProps> = ({
-  title = 'Access Restricted',
-  message = 'You do not have permission to access this page.',
+  title = 'Please sign in first.',
+  message = 'Please sign in to your account to view this page.',
   redirectTo = '/',
   redirectLabel = 'Return to Home',
 }) => {

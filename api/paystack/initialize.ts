@@ -56,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // 1. Verify order exists and is not already paid
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
-      .select('id, order_number, total_amount, financial_status, email, payment_attempts_count')
+      .select('id, customer_id, order_number, total_amount, financial_status, email, payment_attempts_count')
       .eq('id', orderId)
       .maybeSingle();
 
@@ -75,6 +75,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         error: 'Order has already been confirmed as paid. No new payment needed.',
         alreadyPaid: true,
       });
+    }
+
+    // 1b. Server-Side Security Gate: If order has no customer_id (guest order), verify guest checkout is enabled
+    if (!order.customer_id) {
+      const { data: guestSetting } = await supabaseAdmin
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'guest_checkout')
+        .maybeSingle();
+
+      const guestVal = String(guestSetting?.value ?? 'enabled').toLowerCase();
+      const isGuestAllowed = guestVal === 'enabled' || guestVal === '"enabled"' || guestVal === 'true' || guestVal === '1';
+
+      if (!isGuestAllowed) {
+        return res.status(403).json({
+          success: false,
+          error: 'Please sign in or create an account before completing your order.',
+        });
+      }
     }
 
     // 2. Fetch configured Paystack secret key

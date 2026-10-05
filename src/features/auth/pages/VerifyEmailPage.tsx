@@ -6,7 +6,9 @@ import { ROUTES } from '@/constants/routes';
 
 export const VerifyEmailPage: React.FC = () => {
   const location = useLocation();
-  const email = (location.state as { email?: string })?.email;
+  const state = location.state as { email?: string; from?: string } | undefined;
+  const email = state?.email;
+  const from = state?.from;
 
   return (
     <div className="container mx-auto px-4 py-24 max-w-md text-center">
@@ -40,7 +42,7 @@ export const VerifyEmailPage: React.FC = () => {
         </p>
 
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Link to={ROUTES.LOGIN}>
+          <Link to={ROUTES.LOGIN} state={from ? { from: { pathname: from } } : undefined}>
             <Button variant="outline" size="sm" className="gap-2">
               <span>Back to Sign In</span>
               <ArrowRight className="h-3.5 w-3.5" />

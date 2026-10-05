@@ -16,6 +16,7 @@ import {
   BarChart3,
   Shield,
   Settings,
+  Mail,
   Globe,
   Trash2,
   ExternalLink,
@@ -78,6 +79,7 @@ export const adminNavGroups: AdminSidebarGroup[] = [
     items: [
       { title: 'Users & Roles', href: '/admin/users', icon: Shield },
       { title: 'Settings', href: '/admin/settings', icon: Settings },
+      { title: 'Email Templates', href: '/admin/settings?tab=emails', icon: Mail },
       { title: 'Recycle Bin', href: '/admin/users?tab=trash', icon: Trash2 },
     ],
   },

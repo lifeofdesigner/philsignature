@@ -156,18 +156,20 @@ export const TrackOrderPage: React.FC = () => {
   const initialEmail = searchParams.get('email') || '';
 
   const [orderNumberInput, setOrderNumberInput] = useState(initialOrder);
+  const [emailInput, setEmailInput] = useState(initialEmail);
   const [submittedQuery, setSubmittedQuery] = useState({
     order: initialOrder.trim().toUpperCase(),
-    email: initialEmail.trim(),
+    email: initialEmail.trim().toLowerCase(),
   });
 
   // Sync state when URL query params change
   useEffect(() => {
-    if (initialOrder) {
+    if (initialOrder || initialEmail) {
       setOrderNumberInput(initialOrder);
+      setEmailInput(initialEmail);
       setSubmittedQuery({
         order: initialOrder.trim().toUpperCase(),
-        email: initialEmail.trim(),
+        email: initialEmail.trim().toLowerCase(),
       });
     }
   }, [initialOrder, initialEmail]);
@@ -182,10 +184,13 @@ export const TrackOrderPage: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const cleanNumber = orderNumberInput.trim().toUpperCase();
+    const cleanEmail = emailInput.trim().toLowerCase();
     if (!cleanNumber) return;
 
-    setSearchParams({ orderNumber: cleanNumber });
-    setSubmittedQuery({ order: cleanNumber, email: '' });
+    const params: Record<string, string> = { orderNumber: cleanNumber };
+    if (cleanEmail) params.email = cleanEmail;
+    setSearchParams(params);
+    setSubmittedQuery({ order: cleanNumber, email: cleanEmail });
   };
 
   const formatCurrency = (amount: number) => {
@@ -272,6 +277,23 @@ export const TrackOrderPage: React.FC = () => {
               <p className="text-[10px] text-luxury-muted/70 mt-1.5 font-light">
                 Example: <span className="font-mono text-luxury-gold">PS-5266-6151</span> • Provided in your order confirmation email or SMS.
               </p>
+            </div>
+
+            <div>
+              <label
+                htmlFor="emailInput"
+                className="block text-[11px] uppercase tracking-wider text-luxury-cream mb-2 font-medium"
+              >
+                Email Address <span className="text-luxury-muted text-[10px] lowercase">(optional for guest verification)</span>
+              </label>
+              <input
+                id="emailInput"
+                type="email"
+                placeholder="client@domain.com"
+                value={emailInput}
+                onChange={(e) => setEmailInput(e.target.value)}
+                className="w-full h-12 min-h-[48px] bg-black/60 border border-luxury-border p-3.5 text-sm text-luxury-cream placeholder:text-luxury-muted/60 font-sans tracking-wide focus:outline-none focus:border-luxury-gold focus-visible:ring-1 focus-visible:ring-luxury-gold transition-all rounded-sm"
+              />
             </div>
 
             <button

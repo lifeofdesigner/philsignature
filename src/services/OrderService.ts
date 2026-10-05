@@ -177,6 +177,11 @@ export class OrderService {
 
     return updated;
   }
+
+  async linkGuestOrders(userId: string, email: string): Promise<number> {
+    if (!userId || !email) return 0;
+    return this.repo.linkGuestOrders(userId, email);
+  }
 }
 
 export const orderService = new OrderService();

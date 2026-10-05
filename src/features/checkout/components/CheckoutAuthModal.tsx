@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogIn, UserPlus, ArrowRight, X } from 'lucide-react';
+import { LogIn, UserPlus, ArrowRight, X, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface CheckoutAuthModalProps {
@@ -44,7 +44,7 @@ export const CheckoutAuthModal: React.FC<CheckoutAuthModalProps> = ({
 
         {/* Header Monogram Icon */}
         <div className="w-14 h-14 mx-auto rounded-full bg-luxury-gold/10 border border-luxury-gold/40 flex items-center justify-center text-luxury-gold">
-          <LogIn className="h-6 w-6" />
+          {allowGuest ? <LogIn className="h-6 w-6" /> : <ShieldAlert className="h-6 w-6" />}
         </div>
 
         {/* Title and Message */}
@@ -53,45 +53,72 @@ export const CheckoutAuthModal: React.FC<CheckoutAuthModalProps> = ({
             Philz Signature
           </span>
           <h2 id="checkout-auth-title" className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal">
-            Sign in to continue
+            {allowGuest ? 'Continue to Checkout' : 'Sign in required'}
           </h2>
           <p className="text-xs text-luxury-muted leading-relaxed font-light max-w-xs mx-auto">
-            Please sign in to your account before completing your order.
+            {allowGuest
+              ? "Choose how you'd like to continue."
+              : 'Please sign in or create an account before completing your order.'}
           </p>
         </div>
 
         {/* Options */}
-        <div className="space-y-3 pt-2">
-          <Button
-            type="button"
-            variant="luxury"
-            size="lg"
-            onClick={onSignIn}
-            className="w-full justify-center gap-2 cursor-pointer text-xs uppercase tracking-wider"
-          >
-            <span>Sign In</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Button>
+        <div className="space-y-3 pt-2 text-left">
+          {/* Option 1: Sign In */}
+          <div className="rounded-sm border border-luxury-border/60 hover:border-luxury-gold/50 bg-luxury-charcoal/40 p-3.5 transition-colors">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs uppercase font-medium tracking-wider text-luxury-cream">
+                Sign In
+              </span>
+              <Button
+                type="button"
+                variant="luxury"
+                size="sm"
+                onClick={onSignIn}
+                className="gap-1 cursor-pointer text-[10px] uppercase tracking-wider py-1 px-3 h-8"
+              >
+                <span>Sign In</span>
+                <ArrowRight className="h-3 w-3" />
+              </Button>
+            </div>
+            <p className="text-[11px] text-luxury-muted leading-relaxed font-light">
+              View your orders, save your details, and enjoy a faster checkout next time.
+            </p>
+          </div>
 
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            onClick={onCreateAccount}
-            className="w-full justify-center gap-2 cursor-pointer text-xs uppercase tracking-wider border-luxury-border text-luxury-cream hover:border-luxury-gold hover:text-luxury-gold"
-          >
-            <UserPlus className="h-3.5 w-3.5" />
-            <span>Create Account</span>
-          </Button>
+          {/* Option 2: Create Account */}
+          <div className="rounded-sm border border-luxury-border/60 hover:border-luxury-gold/50 bg-luxury-charcoal/40 p-3.5 transition-colors">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs uppercase font-medium tracking-wider text-luxury-cream">
+                Create Account
+              </span>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onCreateAccount}
+                className="gap-1 cursor-pointer text-[10px] uppercase tracking-wider py-1 px-3 h-8 border-luxury-border text-luxury-cream hover:border-luxury-gold hover:text-luxury-gold"
+              >
+                <UserPlus className="h-3 w-3" />
+                <span>Register</span>
+              </Button>
+            </div>
+            <p className="text-[11px] text-luxury-muted leading-relaxed font-light">
+              New client? Create an account in seconds to earn fragrance privileges and track consignments.
+            </p>
+          </div>
 
+          {/* Option 3: Continue as Guest (Only visible when Guest Checkout is enabled) */}
           {allowGuest && onContinueAsGuest && (
-            <button
-              type="button"
-              onClick={onContinueAsGuest}
-              className="w-full pt-2 text-xs text-luxury-muted hover:text-luxury-cream transition-colors underline underline-offset-4 cursor-pointer"
-            >
-              Continue as Guest
-            </button>
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={onContinueAsGuest}
+                className="w-full py-2.5 px-4 text-xs font-medium text-luxury-gold hover:text-luxury-gold-light bg-black/40 hover:bg-black/60 border border-luxury-gold/30 rounded-sm transition-colors cursor-pointer uppercase tracking-wider"
+              >
+                Continue as Guest
+              </button>
+            </div>
           )}
         </div>
       </div>

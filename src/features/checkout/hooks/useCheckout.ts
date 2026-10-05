@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
+import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { shippingService } from '@/services/ShippingService';
 import { couponService } from '@/services/CouponService';
 import { addressService } from '@/services/AddressService';
 import { orderService } from '@/services/OrderService';
 import { paymentService } from '@/services/PaymentService';
 import { useTaxSettings } from '@/hooks/useTaxSettings';
+import { checkoutStateStorage } from '../utils/checkoutStateStorage';
 import type { CustomerAddress } from '@/types/database';
 
 export type CheckoutStep = 'address' | 'shipping' | 'payment';
@@ -30,12 +32,25 @@ export function useCheckout() {
   const queryClient = useQueryClient();
   const { items, subtotal, clearCart } = useCart();
   const { user, profile } = useAuth();
+  const { guestCheckoutEnabled } = useStoreSettings();
+
+  // Track if user explicitly opted to continue as guest in this checkout session
+  const [isGuestAccepted, setIsGuestAccepted] = useState<boolean>(() => {
+    return sessionStorage.getItem('philz_checkout_guest_mode') === 'true';
+  });
 
   // Current Step
-  const [currentStep, setCurrentStep] = useState<CheckoutStep>('address');
+  const [currentStep, setCurrentStep] = useState<CheckoutStep>(() => {
+    const preserved = checkoutStateStorage.load();
+    return preserved?.currentStep || 'address';
+  });
 
-  // Form State with draft persistence
+  // Form State with draft persistence & preserved checkout recovery
   const [addressForm, setAddressForm] = useState<CheckoutAddressForm>(() => {
+    const preserved = checkoutStateStorage.load();
+    if (preserved?.addressForm) {
+      return preserved.addressForm;
+    }
     try {
       const saved = sessionStorage.getItem('philz_checkout_address_draft');
       if (saved) {
@@ -68,7 +83,7 @@ export function useCheckout() {
     };
   });
 
-  // Sync profile details if addressForm fields are empty
+  // Sync profile details if addressForm fields are empty and user is logged in
   useEffect(() => {
     if (profile || user) {
       setAddressForm((prev) => ({
@@ -90,12 +105,38 @@ export function useCheckout() {
     }
   }, [addressForm]);
 
-  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
-  const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer'>(
-    'paystack'
-  );
-  const [orderNotes, setOrderNotes] = useState<string>('');
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(() => {
+    return checkoutStateStorage.load()?.selectedAddressId || null;
+  });
+
+  const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<string>(() => {
+    return checkoutStateStorage.load()?.selectedShippingMethodId || '';
+  });
+
+  const [paymentMethod, setPaymentMethod] = useState<'paystack' | 'flutterwave' | 'korapay' | 'bank_transfer'>(() => {
+    return checkoutStateStorage.load()?.paymentMethod || 'paystack';
+  });
+
+  const [orderNotes, setOrderNotes] = useState<string>(() => {
+    return checkoutStateStorage.load()?.orderNotes || '';
+  });
+
+  // Coupon State with preserved recovery
+  const [couponCode, setCouponCode] = useState<string>(() => {
+    return checkoutStateStorage.load()?.couponCode || '';
+  });
+
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number; message: string } | null>(() => {
+    return checkoutStateStorage.load()?.appliedCoupon || null;
+  });
+
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState<boolean>(false);
+
+  // General Error / Submission State
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [isProcessingPayment, setIsProcessingPayment] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const { data: bankDetails } = useQuery({
     queryKey: ['payment-bank-transfer-config'],
@@ -111,9 +152,7 @@ export function useCheckout() {
 
   const { taxSettings, calculateTax, isLoading: isLoadingTax } = useTaxSettings();
 
-  // If the current selection becomes disabled (or was never enabled to begin
-  // with), fall back to the first enabled method instead of leaving a
-  // disabled gateway silently selected.
+  // Gateway fallback if current selection becomes disabled
   useEffect(() => {
     if (!enabledPaymentMethods) return;
     if (enabledPaymentMethods[paymentMethod]) return;
@@ -123,16 +162,28 @@ export function useCheckout() {
     if (fallback) setPaymentMethod(fallback);
   }, [enabledPaymentMethods, paymentMethod]);
 
-  // Coupon State
-  const [couponCode, setCouponCode] = useState<string>('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discount: number; message: string } | null>(null);
-  const [couponError, setCouponError] = useState<string | null>(null);
-  const [isApplyingCoupon, setIsApplyingCoupon] = useState<boolean>(false);
-
-  // General Error / Submission State
-  const [checkoutError, setCheckoutError] = useState<string | null>(null);
-  const [isProcessingPayment, setIsProcessingPayment] = useState<boolean>(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  // Keep checkoutStateStorage synchronized so any mid-flow sign in or sign up keeps all data
+  useEffect(() => {
+    checkoutStateStorage.save({
+      addressForm,
+      selectedAddressId,
+      selectedShippingMethodId,
+      paymentMethod,
+      orderNotes,
+      couponCode,
+      appliedCoupon,
+      currentStep,
+    });
+  }, [
+    addressForm,
+    selectedAddressId,
+    selectedShippingMethodId,
+    paymentMethod,
+    orderNotes,
+    couponCode,
+    appliedCoupon,
+    currentStep,
+  ]);
 
   // 1. Fetch Shipping Methods
   const { data: shippingMethods = [], isLoading: isLoadingShipping } = useQuery({
@@ -141,8 +192,8 @@ export function useCheckout() {
     staleTime: 1000 * 60 * 30, // 30 minutes
   });
 
-  // Set default shipping method once loaded
-  useMemo(() => {
+  // Set default shipping method once loaded if not already selected
+  useEffect(() => {
     if (shippingMethods.length > 0 && !selectedShippingMethodId) {
       setSelectedShippingMethodId(shippingMethods[0].id);
     }
@@ -192,7 +243,6 @@ export function useCheckout() {
   const isTaxEnabled = taxCalculation.enabled;
 
   // 5. Totals Calculation
-  // subtotal + tax + shipping - discount
   const discountAmount = appliedCoupon ? appliedCoupon.discount : 0;
   const totalAmount = Math.max(0, subtotal + shippingCost - discountAmount + taxAmount);
 
@@ -230,19 +280,37 @@ export function useCheckout() {
     setCouponError(null);
   };
 
+  const acceptGuestCheckout = () => {
+    setIsGuestAccepted(true);
+    sessionStorage.setItem('philz_checkout_guest_mode', 'true');
+    setIsAuthModalOpen(false);
+  };
+
   // 6. Order Placement Mutation
   const placeOrderMutation = useMutation({
     mutationFn: async () => {
       setCheckoutError(null);
 
-      // Validate user authentication
+      // Security check: Customer must either be authenticated OR guest checkout must be explicitly enabled and accepted
       if (!user) {
-        throw new Error('Please sign in to continue.');
+        if (!guestCheckoutEnabled) {
+          throw new Error('Please sign in or create an account before completing your order.');
+        }
+        if (!isGuestAccepted) {
+          throw new Error('Please choose how you would like to continue with your checkout.');
+        }
       }
 
       // Validate required address fields
-      if (!addressForm.firstName || !addressForm.lastName || !addressForm.email || !addressForm.phone || !addressForm.streetAddress) {
-        throw new Error('Please fill in all required delivery details (name, email, phone, and address).');
+      if (
+        !addressForm.firstName.trim() ||
+        !addressForm.lastName.trim() ||
+        !addressForm.email.trim() ||
+        !addressForm.phone.trim() ||
+        !addressForm.streetAddress.trim() ||
+        !addressForm.city.trim()
+      ) {
+        throw new Error('Please fill in all delivery details (first name, last name, email, phone, and address).');
       }
 
       if (items.length === 0) {
@@ -269,26 +337,26 @@ export function useCheckout() {
       // Place Order in Supabase
       const createdOrder = await orderService.placeOrder({
         customer_id: user?.id || null,
-        email: addressForm.email,
-        phone: addressForm.phone,
+        email: addressForm.email.trim().toLowerCase(),
+        phone: addressForm.phone.trim(),
         payment_method: paymentMethod,
         shipping_method_id: selectedShippingMethodId || undefined,
         shipping_address: {
-          first_name: addressForm.firstName,
-          last_name: addressForm.lastName,
-          phone: addressForm.phone,
-          address_line1: addressForm.streetAddress,
-          city: addressForm.city,
+          first_name: addressForm.firstName.trim(),
+          last_name: addressForm.lastName.trim(),
+          phone: addressForm.phone.trim(),
+          address_line1: addressForm.streetAddress.trim(),
+          city: addressForm.city.trim(),
           state: addressForm.state,
           postal_code: addressForm.postalCode || undefined,
           country: addressForm.country,
         },
         billing_address: {
-          first_name: addressForm.firstName,
-          last_name: addressForm.lastName,
-          phone: addressForm.phone,
-          address_line1: addressForm.streetAddress,
-          city: addressForm.city,
+          first_name: addressForm.firstName.trim(),
+          last_name: addressForm.lastName.trim(),
+          phone: addressForm.phone.trim(),
+          address_line1: addressForm.streetAddress.trim(),
+          city: addressForm.city.trim(),
           state: addressForm.state,
           postal_code: addressForm.postalCode || undefined,
           country: addressForm.country,
@@ -308,9 +376,12 @@ export function useCheckout() {
 
   // 7. Complete Checkout and Trigger Payment Gateway
   const handleProceedToPayment = async () => {
+    // If not authenticated and either guest is not allowed or hasn't been selected yet, gate user
     if (!user) {
-      setIsAuthModalOpen(true);
-      return;
+      if (!guestCheckoutEnabled || !isGuestAccepted) {
+        setIsAuthModalOpen(true);
+        return;
+      }
     }
 
     try {
@@ -323,8 +394,11 @@ export function useCheckout() {
 
       if (paymentMethod === 'bank_transfer') {
         clearCart();
+        checkoutStateStorage.clear();
+        sessionStorage.removeItem('philz_checkout_guest_mode');
         queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
         setIsProcessingPayment(false);
+
         // Dispatch order received transactional email asynchronously
         fetch('/api/email/dispatch', {
           method: 'POST',
@@ -342,13 +416,12 @@ export function useCheckout() {
             },
           }),
         }).catch((err) => console.warn('Order received email dispatch error:', err));
+
         navigate(`/checkout/confirmation/${order.order_number}?method=bank_transfer&email=${encodedEmail}`);
         return;
       }
 
-      // Card/gateway payment: charge client-side with the public key, then
-      // verify server-side (using the secret key) before ever marking the
-      // order paid. The client can never confirm its own payment.
+      // Card/gateway payment: charge with initialized reference
       await paymentService.initializeCheckout(paymentMethod, {
         email: addressForm.email,
         phone: addressForm.phone,
@@ -359,9 +432,9 @@ export function useCheckout() {
         onSuccess: async (reference) => {
           try {
             if (paymentMethod === 'paystack') {
-              // Production-grade Paystack: Webhook is the single source of truth.
-              // Client never marks the order as paid. Redirect to /payment/callback to observe verified status.
               clearCart();
+              checkoutStateStorage.clear();
+              sessionStorage.removeItem('philz_checkout_guest_mode');
               queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
               setIsProcessingPayment(false);
               navigate(`/payment/callback?reference=${encodeURIComponent(reference)}&email=${encodedEmail}`);
@@ -377,6 +450,8 @@ export function useCheckout() {
               return;
             }
             clearCart();
+            checkoutStateStorage.clear();
+            sessionStorage.removeItem('philz_checkout_guest_mode');
             queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
             navigate(`/checkout/confirmation/${order.order_number}?email=${encodedEmail}`);
           } catch (confirmErr: unknown) {
@@ -439,6 +514,9 @@ export function useCheckout() {
     handleProceedToPayment,
     isAuthModalOpen,
     setIsAuthModalOpen,
+    guestCheckoutEnabled,
+    isGuestAccepted,
+    acceptGuestCheckout,
     bankDetails:
       bankDetails || {
         bankName: '',

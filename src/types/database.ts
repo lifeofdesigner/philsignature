@@ -390,3 +390,16 @@ export interface ActivityLog {
   created_at: string;
 }
 
+export interface EmailTemplate {
+  id: string;
+  template_key: string;
+  name: string;
+  subject: string;
+  html_body: string;
+  variables: string[];
+  is_active: boolean;
+  updated_at: string;
+  updated_by: string | null;
+}
+
+

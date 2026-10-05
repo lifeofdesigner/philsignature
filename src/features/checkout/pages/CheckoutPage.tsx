@@ -20,12 +20,14 @@ export const CheckoutPage: React.FC = () => {
   const checkout = useCheckout();
   const [showAuthGate, setShowAuthGate] = useState(false);
 
-  // If user is not signed in and auth has resolved, show the sign-in modal
+  // If user is not signed in and has not accepted guest checkout, show the gate modal
   useEffect(() => {
-    if (!isAuthLoading && !user) {
+    if (!isAuthLoading && !user && !checkout.isGuestAccepted) {
       setShowAuthGate(true);
+    } else if (user || checkout.isGuestAccepted) {
+      setShowAuthGate(false);
     }
-  }, [user, isAuthLoading]);
+  }, [user, isAuthLoading, checkout.isGuestAccepted]);
 
   const isAddressValid = Boolean(
     checkout.addressForm.firstName.trim() &&
@@ -163,17 +165,21 @@ export const CheckoutPage: React.FC = () => {
         {/* Authentication Gate Modal */}
         <CheckoutAuthModal
           isOpen={showAuthGate || checkout.isAuthModalOpen}
+          allowGuest={checkout.guestCheckoutEnabled}
           onClose={() => {
             setShowAuthGate(false);
             checkout.setIsAuthModalOpen(false);
-            // If the user dismissed the modal on checkout page while unauthenticated,
-            // guide them back to cart or sign in rather than allowing unauthenticated order placement
-            if (!user) {
+            // If user closed without signing in or selecting guest, and guest checkout is disabled, redirect to login
+            if (!user && !checkout.guestCheckoutEnabled) {
               navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } });
             }
           }}
           onSignIn={() => navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
           onCreateAccount={() => navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
+          onContinueAsGuest={() => {
+            checkout.acceptGuestCheckout();
+            setShowAuthGate(false);
+          }}
         />
       </div>
     </div>

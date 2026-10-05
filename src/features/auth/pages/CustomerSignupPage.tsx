@@ -32,7 +32,10 @@ export const CustomerSignupPage: React.FC = () => {
         lastName,
         phone,
       });
-      navigate('/verify-email', { state: { email } });
+      const searchParams = new URLSearchParams(location.search);
+      const redirectParam = searchParams.get('redirect');
+      const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || redirectParam;
+      navigate('/verify-email', { state: { email, from } });
     } catch (err) {
       setError(err instanceof Error ? err.message : "We couldn't create your account. Please check your information and try again.");
     } finally {

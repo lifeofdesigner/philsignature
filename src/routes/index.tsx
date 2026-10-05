@@ -171,6 +171,7 @@ export const router = createBrowserRouter([
       { path: 'analytics', element: withSuspense(AdminAnalyticsPage) },
       { path: 'users', element: withSuspense(AdminUsersPage) },
       { path: 'settings', element: withSuspense(AdminSettingsPage) },
+      { path: 'email-templates', element: <Navigate to="/admin/settings?tab=emails" replace /> },
       { path: 'seo', element: withSuspense(AdminSeoPage) },
     ],
   },

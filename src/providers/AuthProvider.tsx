@@ -6,6 +6,7 @@ import { authRepository, type SignInCredentials, type SignUpCredentials } from '
 import { permissionEngine } from '@/lib/permissionEngine';
 import { setDynamicRolePermissions, type Permission } from '@/lib/permissions';
 import { settingsService } from '@/services/SettingsService';
+import { orderService } from '@/services/OrderService';
 
 export interface AuthContextType {
   user: User | null;
@@ -135,6 +136,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(loggedInUser);
     setSession(newSession);
     setProfile(userProfile);
+
+    // Link any previous guest orders placed with this email address
+    if (loggedInUser?.id && loggedInUser?.email) {
+      orderService.linkGuestOrders(loggedInUser.id, loggedInUser.email).catch(() => null);
+    }
   }, []);
 
   const register = useCallback(async (credentials: SignUpCredentials) => {

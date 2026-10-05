@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck, Hash, Eye, EyeOff, Percent } from 'lucide-react';
+import { Save, Loader2, Palette, Store, Flag, FileInput, Key, ShieldCheck, Hash, Eye, EyeOff, Percent, Mail } from 'lucide-react';
 import { AdminButton, AdminInput, AdminSwitch } from '@/components/admin-ui';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
@@ -12,6 +12,7 @@ import { BrandImageUploadField } from '../components/BrandImageUploadField';
 import { LogoSizeControl } from '../components/LogoSizeControl';
 import { FeatureFlagManager } from '../components/FeatureFlagManager';
 import { FormBuilderManager } from '../components/FormBuilderManager';
+import { EmailTemplatesManager } from '@/features/admin/emails/components/EmailTemplatesManager';
 import { Can } from '@/components/common/Can';
 import type { CmsAppearanceConfig } from '@/services/CMSService';
 import { auditLogService } from '@/services/AuditLogService';
@@ -33,6 +34,7 @@ export const AdminSettingsPage: React.FC = () => {
   const { user, profile, role } = useAuth();
   const currentRole = (profile?.role || role || undefined) as UserRole | undefined;
   const userIsSuperAdmin = isSuperAdmin(currentRole);
+  const canManageGuestCheckout = userIsSuperAdmin || currentRole === 'admin' || currentRole === 'administrator';
 
   const { values, isLoading, save, isSaving } = useAdminSettings();
   const [form, setForm] = useState<GeneralSettingsForm | null>(null);
@@ -242,6 +244,7 @@ export const AdminSettingsPage: React.FC = () => {
         {[
           { id: 'general', label: 'Store Information', icon: Store },
           { id: 'tax', label: 'Tax Configuration', icon: Percent },
+          { id: 'emails', label: 'Email Templates', icon: Mail },
           { id: 'brand', label: 'Brand & Logos', icon: Palette },
           { id: 'flags', label: 'Feature Flags', icon: Flag, superAdminOnly: true },
           { id: 'forms', label: 'Forms Builder', icon: FileInput },
@@ -384,6 +387,67 @@ export const AdminSettingsPage: React.FC = () => {
             </CardContent>
           </Card>
 
+          {/* Guest Checkout Configuration */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base font-bold text-black flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-slate-700" />
+                Guest Checkout
+              </CardTitle>
+              <CardDescription className="text-black font-medium">
+                Allow customers to complete purchases without creating an account.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50/50 p-4 max-w-xl">
+                <div className="space-y-0.5">
+                  <div className="text-xs font-bold text-black flex items-center gap-2">
+                    <span>Guest Checkout</span>
+                    <span
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                        (form.guest_checkout || 'enabled') === 'enabled'
+                          ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                          : 'bg-slate-200 text-slate-700 border border-slate-300'
+                      }`}
+                    >
+                      {(form.guest_checkout || 'enabled') === 'enabled' ? 'ON' : 'OFF'}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-600">
+                    {(form.guest_checkout || 'enabled') === 'enabled'
+                      ? 'Customers can place orders as guests without signing in or registering.'
+                      : 'Customers must sign in or create an account before completing their order.'}
+                  </div>
+                </div>
+                {canManageGuestCheckout ? (
+                  <AdminSwitch
+                    checked={(form.guest_checkout || 'enabled') === 'enabled'}
+                    onCheckedChange={(checked) =>
+                      setForm((prev) => (prev ? { ...prev, guest_checkout: checked ? 'enabled' : 'disabled' } : prev))
+                    }
+                  />
+                ) : (
+                  <span className="text-[10px] text-slate-500 italic">Read-only</span>
+                )}
+              </div>
+
+              {canManageGuestCheckout && (
+                <div className="flex justify-end pt-1 max-w-xl">
+                  <AdminButton
+                    variant="primary"
+                    size="sm"
+                    disabled={isSaving}
+                    onClick={handleSaveGeneral}
+                    className="gap-1.5 shadow-xs"
+                  >
+                    {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
+                    <span>Save Guest Checkout Setting</span>
+                  </AdminButton>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           {/* Tax Configuration Section */}
           {renderTaxCard()}
         </div>
@@ -396,7 +460,12 @@ export const AdminSettingsPage: React.FC = () => {
         </div>
       )}
 
-
+      {/* Tab: Email Templates */}
+      {activeTab === 'emails' && (
+        <div className="space-y-6">
+          <EmailTemplatesManager />
+        </div>
+      )}
 
       {/* Tab 2: Brand & Logos */}
       {activeTab === 'brand' && (

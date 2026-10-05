@@ -316,7 +316,7 @@ export function canAccessAdminPath(role: UserRole | undefined | null, path: stri
     return hasPermission(role, 'users:read');
   }
   if (cleanPath.startsWith('/admin/settings')) {
-    return hasPermission(role, 'settings:manage');
+    return hasPermission(role, 'settings:manage') || role === 'admin' || role === 'administrator';
   }
   if (cleanPath.startsWith('/admin/seo')) {
     return hasPermission(role, 'cms:read');

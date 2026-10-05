@@ -23,7 +23,9 @@ export const CustomerLoginPage: React.FC = () => {
 
     try {
       await login({ email, password });
-      const from = (location.state as { from?: { pathname?: string } })?.from?.pathname;
+      const searchParams = new URLSearchParams(location.search);
+      const redirectParam = searchParams.get('redirect');
+      const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || redirectParam;
       if (from) {
         navigate(from, { replace: true });
       } else if (canAccessAdmin) {

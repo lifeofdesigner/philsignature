@@ -247,6 +247,24 @@ export class OrderRepository extends BaseRepository {
       console.warn('Order timeline insertion non-critical error:', err);
     }
   }
+
+  async linkGuestOrders(userId: string, email: string): Promise<number> {
+    try {
+      if (!userId || !email) return 0;
+      const { data, error } = await this.client.rpc('link_guest_orders', {
+        p_user_id: userId,
+        p_email: email.trim().toLowerCase(),
+      });
+      if (error) {
+        console.warn('[OrderRepository] link_guest_orders non-critical warning:', error);
+        return 0;
+      }
+      return typeof data === 'number' ? data : 0;
+    } catch (err) {
+      console.warn('[OrderRepository] Error linking guest orders:', err);
+      return 0;
+    }
+  }
 }
 
 export const orderRepository = new OrderRepository();
