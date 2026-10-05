@@ -266,6 +266,8 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
           <div className="absolute inset-y-0 left-0 w-full md:w-3/5 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none z-10" />
           {/* Bottom Ambient Fade */}
           <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10" />
+          {/* Mobile-Only Bottom Readability Shield for Bottom-Pinned Text */}
+          <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-10 md:hidden" />
         </motion.div>
       </AnimatePresence>
 
@@ -275,7 +277,7 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
       {/* =========================================================================
           2. MAIN EDITORIAL CONTENT & FLOATING PRODUCT SHOWCASE
          ========================================================================= */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex-1 flex flex-col md:flex-row items-start md:items-end justify-center md:justify-between gap-8 pb-20 sm:pb-24">
+      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 w-full flex-1 flex flex-col md:flex-row items-start md:items-end justify-end md:justify-between gap-8 pb-16 sm:pb-24">
         
         {/* Left-Aligned Editorial Headline & Narrative */}
         <AnimatePresence mode="wait" initial={false}>
