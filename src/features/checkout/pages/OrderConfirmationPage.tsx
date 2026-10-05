@@ -86,13 +86,13 @@ export const OrderConfirmationPage: React.FC = () => {
               order.id
             );
             if (!result.success) {
-              toast.error(result.reason || 'We could not verify your payment. Please try again or contact support.');
+              toast.error(result.reason || "We couldn't verify your payment. Please try again or contact customer care.");
               return;
             }
             toast.success('Payment confirmed!');
             await refetch();
           } catch (err) {
-            toast.error(err instanceof Error ? err.message : 'Error verifying payment');
+            toast.error(err instanceof Error ? err.message : 'Could not verify payment. Please try again.');
           } finally {
             setIsRetrying(false);
           }
@@ -123,21 +123,21 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
 
           <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-gold font-medium block mb-1">
-            {isPaid ? 'Payment Successful 🎉' : isFailedOrPending ? 'Payment Failed' : 'Order Placed — Waiting for Payment'}
+            {isPaid ? 'Payment Confirmed 🎉' : isFailedOrPending ? 'Payment Incomplete' : 'Waiting for Bank Transfer'}
           </span>
           <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
             {isPaid
-              ? 'Payment Successful 🎉'
+              ? 'Payment Confirmed 🎉'
               : isFailedOrPending
-              ? 'Payment Failed'
+              ? 'Payment Not Completed'
               : 'Thank You for Your Order!'}
           </h1>
           <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed">
             {isPaid
-              ? 'Thank you for your order. Your payment has been received and your fragrance order is now being processed.'
+              ? 'Thank you for your order. Your payment has been received and your perfumes are being prepared.'
               : isFailedOrPending
               ? "We couldn't complete your payment. No charge has been made to your account. Please try again or choose another payment method."
-              : 'Your order has been saved. Please complete your bank transfer using your order number as the reference.'}
+              : 'Your order has been received. Please complete your bank transfer using your order number as the reference.'}
           </p>
 
           <div className="mt-6 inline-flex items-center gap-3 bg-luxury-card border border-luxury-border px-5 py-2.5 rounded-sm text-xs">

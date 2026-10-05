@@ -14,8 +14,8 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({
   icon,
-  title = 'No creations found',
-  description = 'There are currently no items matching your criteria in the private reserve.',
+  title = 'No items found',
+  description = 'There are currently no items matching your selection.',
   actionLabel,
   onAction,
   className,

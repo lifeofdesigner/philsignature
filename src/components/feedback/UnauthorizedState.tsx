@@ -22,7 +22,7 @@ export const UnauthorizedState: React.FC<UnauthorizedStateProps> = ({
         <ShieldAlert className="h-8 w-8" />
       </div>
       <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold mb-2 font-medium">
-        403 Forbidden
+        Notice
       </span>
       <h1 className="font-serif text-3xl text-luxury-cream font-normal mb-3">{title}</h1>
       <p className="text-sm text-luxury-muted leading-relaxed mb-8 font-light max-w-sm">

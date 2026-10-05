@@ -7,7 +7,7 @@ export const NotFoundPage: React.FC = () => {
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center p-8 text-center max-w-lg mx-auto">
       <span className="text-[11px] uppercase tracking-luxury-wide text-luxury-gold mb-3 font-medium">
-        404 Error
+        Page Notice
       </span>
       <h1 className="font-serif text-4xl sm:text-5xl text-white font-normal mb-4">
         Page Not Found

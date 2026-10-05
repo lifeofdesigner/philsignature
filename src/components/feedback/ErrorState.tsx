@@ -11,8 +11,8 @@ interface ErrorStateProps {
 }
 
 export const ErrorState: React.FC<ErrorStateProps> = ({
-  title = 'An unexpected error occurred',
-  message = 'We were unable to fulfill this request. Please try refreshing or contact our concierge.',
+  title = 'Something went wrong',
+  message = 'We could not complete your request. Please try again.',
   onRetry,
   className,
 }) => {

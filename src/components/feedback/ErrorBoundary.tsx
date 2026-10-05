@@ -37,17 +37,17 @@ export class ErrorBoundary extends Component<Props, State> {
             <AlertCircle className="h-8 w-8" />
           </div>
           <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-medium mb-2">
-            Application Notice
+            Notice
           </span>
           <h1 className="font-serif text-3xl text-luxury-cream font-normal mb-3">
             Something went wrong
           </h1>
           <p className="text-sm text-luxury-muted max-w-md mx-auto leading-relaxed mb-6 font-light">
-            {this.state.error?.message || 'An unexpected error occurred while loading this page.'}
+            We encountered a temporary issue while loading this page. Please try refreshing.
           </p>
           <Button variant="luxury" size="default" onClick={this.handleReload} className="gap-2 text-xs">
             <RotateCcw className="h-4 w-4" />
-            <span>Reload Page</span>
+            <span>Try Again</span>
           </Button>
         </div>
       );

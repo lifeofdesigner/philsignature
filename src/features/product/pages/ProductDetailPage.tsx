@@ -14,7 +14,7 @@ import { EmptyState } from '@/components/feedback/EmptyState';
 
 export const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { product, relatedProducts, reviews, isLoading, isError, error, isNotFound, refetch } =
+  const { product, relatedProducts, reviews, isLoading, isError, isNotFound, refetch } =
     useProductDetail(slug);
 
   if (isLoading) {
@@ -39,7 +39,7 @@ export const ProductDetailPage: React.FC = () => {
       <div className="container mx-auto px-4 py-20">
         <ErrorState
           title="Could Not Load This Perfume"
-          message={error instanceof Error ? error.message : 'Something went wrong. Please try again.'}
+          message="We could not load this perfume right now. Please try again."
           onRetry={() => refetch()}
         />
       </div>

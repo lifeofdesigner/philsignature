@@ -278,7 +278,7 @@ export const ContactPage: React.FC = () => {
                     className="w-full sm:w-auto gap-2 cursor-pointer"
                   >
                     <Send className="h-4 w-4" />
-                    <span>{isSubmitting ? 'Transmitting...' : 'Transmit Message'}</span>
+                    <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                   </Button>
                 </form>
               )}

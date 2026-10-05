@@ -31,9 +31,9 @@ export const CustomerProfilePage: React.FC = () => {
   // Profile Update Mutation
   const updateProfileMutation = useMutation({
     mutationFn: async () => {
-      if (!user?.id) throw new Error('Authentication required');
+      if (!user?.id) throw new Error('Please sign in to update your profile');
       if (!firstName.trim() || !lastName.trim()) {
-        throw new Error('First and last name are required');
+        throw new Error('Please enter both your first and last name');
       }
       return userService.updateProfile(user.id, {
         first_name: firstName.trim(),
@@ -48,7 +48,7 @@ export const CustomerProfilePage: React.FC = () => {
       setTimeout(() => setProfileSuccess(null), 5000);
     },
     onError: (err: Error) => {
-      setProfileError(err.message || 'Failed to update profile');
+      setProfileError(err.message || 'Could not update your profile. Please try again.');
       setProfileSuccess(null);
     },
   });
@@ -72,7 +72,7 @@ export const CustomerProfilePage: React.FC = () => {
       setTimeout(() => setPasswordSuccess(null), 5000);
     },
     onError: (err: Error) => {
-      setPasswordError(err.message || 'Failed to update password');
+      setPasswordError(err.message || 'Could not update your password. Please try again.');
       setPasswordSuccess(null);
     },
   });

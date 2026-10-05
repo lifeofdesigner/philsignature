@@ -33,7 +33,7 @@ export const CustomerSignupPage: React.FC = () => {
       });
       navigate('/verify-email', { state: { email } });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed. Please check your information.');
+      setError(err instanceof Error ? err.message : "We couldn't create your account. Please check your information and try again.");
     } finally {
       setIsSubmitting(false);
     }

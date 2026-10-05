@@ -326,7 +326,7 @@ export function useCheckout() {
             queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
             navigate(`/checkout/confirmation/${order.order_number}?email=${encodedEmail}`);
           } catch (confirmErr: unknown) {
-            const msg = confirmErr instanceof Error ? confirmErr.message : 'Error verifying payment';
+            const msg = confirmErr instanceof Error ? confirmErr.message : 'Could not verify payment. Please try again.';
             setCheckoutError(msg);
           } finally {
             setIsProcessingPayment(false);
@@ -338,7 +338,7 @@ export function useCheckout() {
         },
       });
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Could not place your order. Please try again.';
+      const msg = err instanceof Error ? err.message : 'Could not complete your order. Please try again.';
       setCheckoutError(msg);
       setIsProcessingPayment(false);
     }

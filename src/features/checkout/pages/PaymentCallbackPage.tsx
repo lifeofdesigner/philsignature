@@ -415,7 +415,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-black rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
                 <Truck className="h-4 w-4" />
-                <span>Track Consignment</span>
+                <span>Track Order</span>
               </button>
 
               <button
@@ -423,7 +423,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 onClick={() => navigate(`/checkout/confirmation/${order.orderNumber}`)}
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
-                <span>View Full Receipt</span>
+                <span>View Order Details</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -444,11 +444,11 @@ export const PaymentCallbackPage: React.FC = () => {
               Confirming Your Payment
             </h1>
             <p className="text-xs text-luxury-muted max-w-lg mx-auto leading-relaxed mb-6">
-              We're confirming your payment. Please wait a moment while we complete your order.
+              We're confirming your payment with your bank. This usually takes just a few seconds.
             </p>
 
             <div className="inline-flex items-center gap-3 bg-luxury-black/60 border border-luxury-border px-5 py-2.5 rounded-sm text-xs mb-8">
-              <span className="text-luxury-muted">Reference:</span>
+              <span className="text-luxury-muted">Payment Reference:</span>
               <span className="text-luxury-gold font-mono font-bold tracking-wider">{reference}</span>
             </div>
 
@@ -459,7 +459,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-black rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
                 <RefreshCw className="h-4 w-4" />
-                <span>Refresh Status</span>
+                <span>Check Status</span>
               </button>
 
               <button
@@ -467,7 +467,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 onClick={() => navigate('/shop')}
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
-                <span>Return to Store</span>
+                <span>Continue Shopping</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -482,13 +482,13 @@ export const PaymentCallbackPage: React.FC = () => {
             </div>
 
             <span className="text-[10px] uppercase tracking-luxury-widest text-red-400 font-medium block mb-2">
-              Payment Notice
+              Payment Status
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-              Payment Failed
+              Payment Not Completed
             </h1>
             <p className="text-xs text-luxury-muted max-w-lg mx-auto leading-relaxed mb-6">
-              We couldn't complete your payment. No charge has been made to your account.
+              We couldn't complete your payment. Please try again or choose another payment method. No charge has been made to your account.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -506,7 +506,7 @@ export const PaymentCallbackPage: React.FC = () => {
                 onClick={() => navigate('/contact')}
                 className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 border border-luxury-border text-luxury-cream hover:bg-luxury-card rounded-sm text-xs font-medium uppercase tracking-luxury-wide transition-colors cursor-pointer"
               >
-                <span>Contact Boutique Concierge</span>
+                <span>Contact Customer Care</span>
               </button>
             </div>
           </div>
@@ -520,13 +520,13 @@ export const PaymentCallbackPage: React.FC = () => {
             </div>
 
             <span className="text-[10px] uppercase tracking-luxury-widest text-luxury-muted font-medium block mb-2">
-              Session Notice
+              Order Notice
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream font-normal mb-2">
-              Transaction Reference Not Found
+              Order Information Not Found
             </h1>
             <p className="text-xs text-luxury-muted max-w-md mx-auto leading-relaxed mb-6">
-              We could not find an active transaction reference for this session. Please check your order history or return to the storefront.
+              We couldn't locate this order right now. Please check your order history or return to the shop.
             </p>
 
             <button
@@ -534,7 +534,7 @@ export const PaymentCallbackPage: React.FC = () => {
               onClick={() => navigate('/shop')}
               className="min-h-[44px] inline-flex items-center justify-center gap-2 px-8 py-3 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
             >
-              <span>Explore Boutique</span>
+              <span>Explore Shop</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>

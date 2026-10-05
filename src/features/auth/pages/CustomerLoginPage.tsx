@@ -32,7 +32,7 @@ export const CustomerLoginPage: React.FC = () => {
         navigate(ROUTES.ACCOUNT.DASHBOARD, { replace: true });
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Invalid credentials. Please verify and retry.');
+      setError(err instanceof Error ? err.message : "We couldn't sign you in. Please check your details and try again.");
     } finally {
       setIsSubmitting(false);
     }

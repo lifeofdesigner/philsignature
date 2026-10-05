@@ -6,7 +6,7 @@ import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
 
 export const CollectionsPage: React.FC = () => {
-  const { collections, isLoading, isError, error, refetch } = useCollectionsData();
+  const { collections, isLoading, isError, refetch } = useCollectionsData();
 
   if (isLoading) {
     return <PageSkeleton />;
@@ -17,7 +17,7 @@ export const CollectionsPage: React.FC = () => {
       <div className="container mx-auto px-4 py-20">
         <ErrorState
           title="Could Not Load Collections"
-          message={error instanceof Error ? error.message : 'Unable to load collections right now. Please try again.'}
+          message="We could not load our collections right now. Please try again."
           onRetry={() => refetch()}
         />
       </div>

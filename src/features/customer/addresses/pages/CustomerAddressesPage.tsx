@@ -41,7 +41,7 @@ export const CustomerAddressesPage: React.FC = () => {
 
   const addAddressMutation = useMutation({
     mutationFn: async () => {
-      if (!user?.id) throw new Error('Authentication required');
+      if (!user?.id) throw new Error('Please sign in to save an address');
       if (!formData.first_name || !formData.last_name || !formData.phone || !formData.address_line1) {
         throw new Error('Please fill in all required fields');
       }

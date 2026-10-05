@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 import type { CmsHomepageSection } from '@/services/CMSService';
 
 export const HomePage: React.FC = () => {
-  const { data, isLoading: isHomeDataLoading, isError, error, refetch } = useHomeData();
+  const { data, isLoading: isHomeDataLoading, isError, refetch } = useHomeData();
   const { sections, isLoading: isLayoutLoading } = useModularHome();
 
   if (isHomeDataLoading || isLayoutLoading) {
@@ -27,8 +27,8 @@ export const HomePage: React.FC = () => {
     return (
       <div className="container mx-auto px-4 py-20">
         <ErrorState
-          title="Boutique Connection Interrupted"
-          message={error instanceof Error ? error.message : 'Unable to synchronize with the fragrance catalog.'}
+          title="Unable to Load Boutique"
+          message="We could not load our collection right now. Please try again in a moment."
           onRetry={() => refetch()}
         />
       </div>

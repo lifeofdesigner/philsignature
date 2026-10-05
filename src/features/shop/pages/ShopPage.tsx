@@ -20,7 +20,6 @@ export const ShopPage: React.FC = () => {
     collections,
     isLoading,
     isError,
-    error,
     family,
     collectionId,
     categoryId,
@@ -197,7 +196,7 @@ export const ShopPage: React.FC = () => {
             {isError ? (
               <ErrorState
                 title="Could Not Load Perfumes"
-                message={error instanceof Error ? error.message : 'Something went wrong. Please try again.'}
+                message="We could not load our perfumes right now. Please try again."
                 onRetry={() => refetch()}
               />
             ) : !isLoading && products.length === 0 ? (

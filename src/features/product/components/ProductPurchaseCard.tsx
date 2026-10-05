@@ -285,7 +285,7 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
                 <span>Added to Bag</span>
               </>
             ) : isOutOfStock ? (
-              <span>Out of Stock</span>
+              <span>Currently Unavailable</span>
             ) : (
               <>
                 <ShoppingBag className="h-4 w-4" />

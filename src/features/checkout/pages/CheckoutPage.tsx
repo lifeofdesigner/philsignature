@@ -70,7 +70,7 @@ export const CheckoutPage: React.FC = () => {
           <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-200 rounded-sm flex items-start gap-3 text-xs animate-fadeIn">
             <AlertCircle className="h-4 w-4 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
             <div>
-              <p className="font-medium text-red-900 dark:text-white mb-0.5">Transaction Unsuccessful</p>
+              <p className="font-medium text-red-900 dark:text-white mb-0.5">Please check your details and try again</p>
               <p>{checkout.checkoutError}</p>
             </div>
           </div>

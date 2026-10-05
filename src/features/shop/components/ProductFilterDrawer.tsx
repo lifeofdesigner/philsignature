@@ -232,7 +232,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
               onChange={(e) => onInStockChange(e.target.checked)}
               className="accent-luxury-gold h-4 w-4 rounded-none"
             />
-            <span>In-Stock Allocations Only</span>
+            <span>Available Now Only</span>
           </label>
         </div>
 

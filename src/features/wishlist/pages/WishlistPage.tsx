@@ -8,7 +8,7 @@ import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
 
 export const WishlistPage: React.FC = () => {
-  const { products, itemCount, isLoading, isError, error, moveToCart, removeFromWishlist, refetch } =
+  const { products, itemCount, isLoading, isError, moveToCart, removeFromWishlist, refetch } =
     useWishlistCatalog();
 
   if (isLoading) {
@@ -20,7 +20,7 @@ export const WishlistPage: React.FC = () => {
       <div className="container mx-auto px-4 py-20">
         <ErrorState
           title="Could Not Load Wishlist"
-          message={error instanceof Error ? error.message : 'Unable to load your saved perfumes right now.'}
+          message="We could not load your saved perfumes right now. Please try again."
           onRetry={() => refetch()}
         />
       </div>
