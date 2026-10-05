@@ -101,6 +101,7 @@ export const CustomerLoginPage: React.FC = () => {
           <span>Don't have an account? </span>
           <Link
             to={ROUTES.SIGNUP}
+            state={location.state}
             className="text-luxury-gold underline underline-offset-4 hover:text-luxury-gold-light font-medium"
           >
             Create an Account

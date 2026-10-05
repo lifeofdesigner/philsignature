@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/hooks/useAuth';
@@ -17,6 +17,7 @@ export const CustomerSignupPage: React.FC = () => {
 
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,6 +140,7 @@ export const CustomerSignupPage: React.FC = () => {
           <span>Already have an account? </span>
           <Link
             to={ROUTES.LOGIN}
+            state={location.state}
             className="text-luxury-gold underline underline-offset-4 hover:text-luxury-gold-light font-medium"
           >
             Sign In

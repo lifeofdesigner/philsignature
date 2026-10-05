@@ -17,6 +17,7 @@ export interface GeneralSettingsForm {
   currency_code: string;
   currency_symbol: string;
   company_registration_number: string;
+  guest_checkout: string;
 }
 
 export const DEFAULT_GENERAL_SETTINGS: GeneralSettingsForm = {
@@ -32,6 +33,7 @@ export const DEFAULT_GENERAL_SETTINGS: GeneralSettingsForm = {
   currency_code: '',
   currency_symbol: '',
   company_registration_number: '',
+  guest_checkout: 'enabled',
 };
 
 export const useAdminSettings = () => {

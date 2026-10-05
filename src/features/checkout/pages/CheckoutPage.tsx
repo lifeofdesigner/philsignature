@@ -159,6 +159,22 @@ export const CheckoutPage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Authentication Gate Modal */}
+        <CheckoutAuthModal
+          isOpen={showAuthGate || checkout.isAuthModalOpen}
+          onClose={() => {
+            setShowAuthGate(false);
+            checkout.setIsAuthModalOpen(false);
+            // If the user dismissed the modal on checkout page while unauthenticated,
+            // guide them back to cart or sign in rather than allowing unauthenticated order placement
+            if (!user) {
+              navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } });
+            }
+          }}
+          onSignIn={() => navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
+          onCreateAccount={() => navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
+        />
       </div>
     </div>
   );
