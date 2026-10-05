@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getGatewayCredentials, type GatewayName } from '../_lib/gatewaySettings';
-import { markOrderPaid } from '../_lib/confirmPayment';
+import { getGatewayCredentials, type GatewayName } from '../_lib/gatewaySettings.js';
+import { markOrderPaid } from '../_lib/confirmPayment.js';
 
 interface VerifyResult {
   ok: boolean;
@@ -49,11 +49,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Rate limiting: 60 req/min for general API
-  const { checkRateLimit, getClientIp } = await import('../_lib/rateLimit');
-  const clientIp = getClientIp(req);
-  const rateLimitResult = checkRateLimit(clientIp, 'general');
-  if (!rateLimitResult.allowed) {
-    return res.status(429).json({ success: false, reason: 'Too many requests. Please try again later.' });
+  const { checkRateLimit } = await import('../_lib/rateLimit.js');
+  if (!checkRateLimit(req, res, 60, 60000, 'verify_api')) {
+    return;
   }
 
   const { gateway, reference, orderId } = req.body || {};

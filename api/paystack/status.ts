@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../_lib/supabaseAdmin.js';
-import { checkRateLimit, getClientIp } from '../_lib/rateLimit.js';
+import { checkRateLimit } from '../_lib/rateLimit.js';
 
 /**
  * Read-Only Transaction / Order Status Query Endpoint
@@ -18,10 +18,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Rate limiting: 60 req/min
-  const clientIp = getClientIp(req);
-  const rateLimitResult = checkRateLimit(clientIp, 'general');
-  if (!rateLimitResult.allowed) {
-    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  if (!checkRateLimit(req, res, 60, 60000, 'paystack_status')) {
+    return;
   }
 
   const referenceParam = (req.query.reference as string) || (req.query.trxref as string);

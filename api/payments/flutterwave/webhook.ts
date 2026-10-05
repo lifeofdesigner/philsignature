@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getGatewayCredentials } from '../../_lib/gatewaySettings';
-import { markOrderPaid } from '../../_lib/confirmPayment';
+import { getGatewayCredentials } from '../../_lib/gatewaySettings.js';
+import { markOrderPaid } from '../../_lib/confirmPayment.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { checkRateLimit, getClientIp } from '../_lib/rateLimit';
-import { supabaseAdmin } from '../_lib/supabaseAdmin';
-import { sendWelcomeVerificationEmail } from '../_lib/emailService';
+import { checkRateLimit, getClientIp } from '../_lib/rateLimit.js';
+import { supabaseAdmin } from '../_lib/supabaseAdmin.js';
+import { sendWelcomeVerificationEmail } from '../_lib/emailService.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

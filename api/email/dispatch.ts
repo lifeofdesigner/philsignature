@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { checkRateLimit } from '../_lib/rateLimit';
+import { checkRateLimit } from '../_lib/rateLimit.js';
 import {
   sendWelcomeVerificationEmail,
   sendEmailVerifiedConfirmationEmail,
@@ -21,7 +21,7 @@ import {
   sendAdminRefundRequestedEmail,
   sendAdminNewCustomerRegisteredEmail,
   sendAdminLowInventoryAlertEmail,
-} from '../_lib/emailService';
+} from '../_lib/emailService.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
