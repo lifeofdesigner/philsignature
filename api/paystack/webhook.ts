@@ -79,6 +79,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log(`[Paystack Webhook DEBUG] Incoming event received. Mode: ${mode}, Event Type: ${eventType}, Reference: ${rawReference}`);
 
+    // Production-safe activity logging (never logs secret keys)
+    try {
+      await supabaseAdmin.from('activity_logs').insert({
+        action: 'paystack_webhook_received',
+        entity_type: 'payment',
+        entity_id: rawReference || 'unknown',
+        details: {
+          timestamp: new Date().toISOString(),
+          mode,
+          event_type: eventType,
+          reference: rawReference,
+          has_signature: Boolean(req.headers['x-paystack-signature']),
+        },
+      });
+    } catch (logErr) {
+      console.warn('[Paystack Webhook] Non-critical activity log error:', logErr);
+    }
+
     if (!secretKey) {
       console.error('[Paystack Webhook] Paystack secret key is not configured');
       return res.status(200).json({ success: false, reason: 'Paystack secret key is not configured' });
