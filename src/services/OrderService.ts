@@ -90,7 +90,46 @@ export class OrderService {
       `Delivery status updated: ${status}`,
       note || `Order status changed to "${status}".`
     );
+    this.dispatchStatusEmail(updated, note);
     return updated;
+  }
+
+  private dispatchStatusEmail(order: Order, note?: string): void {
+    let type: string;
+    let payload: Record<string, unknown>;
+
+    switch (order.fulfillment_status) {
+      case 'processing':
+        type = 'order_processing';
+        payload = { order };
+        break;
+      case 'shipped':
+        type = 'order_shipped';
+        payload = {
+          order,
+          shipping: {
+            courier: order.carrier_name || 'Our Logistics Partner',
+            trackingNumber: order.tracking_number || 'N/A',
+          },
+        };
+        break;
+      case 'delivered':
+        type = 'order_delivered';
+        payload = { order };
+        break;
+      case 'cancelled':
+        type = 'order_cancelled';
+        payload = { order, reason: note || 'Customer request / Inventory unavailable' };
+        break;
+      default:
+        return;
+    }
+
+    fetch('/api/email/dispatch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, payload }),
+    }).catch((err) => console.warn('Order status email dispatch failed:', err));
   }
 
   async placeOrder(params: PlaceOrderParams): Promise<Order> {
