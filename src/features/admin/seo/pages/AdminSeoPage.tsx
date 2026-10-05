@@ -282,7 +282,7 @@ export const AdminSeoPage: React.FC = () => {
               value={form.robots_txt || ''}
               onChange={(e) => setForm((p) => (p ? { ...p, robots_txt: e.target.value } : p))}
               placeholder="User-agent: *\nDisallow: /admin/"
-              className="w-full bg-slate-900 text-emerald-400 font-mono text-xs rounded-lg p-3 border border-slate-800"
+              className="w-full bg-[#F9FAFB] text-[#16A34A] font-mono text-xs rounded-lg p-3 border border-[#E5E7EB]"
             />
             <p className="text-[11px] text-black">Controls which paths Googlebot and web crawlers are permitted to index.</p>
           </div>
@@ -339,7 +339,7 @@ export const AdminSeoPage: React.FC = () => {
             <span className="text-xs font-bold uppercase tracking-wider text-black">
               Live Generated JSON-LD Preview
             </span>
-            <pre className="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono overflow-x-auto border border-slate-800">
+            <pre className="bg-[#F9FAFB] text-[#374151] p-4 rounded-xl text-xs font-mono overflow-x-auto border border-[#E5E7EB]">
 {JSON.stringify(
   {
     '@context': 'https://schema.org',

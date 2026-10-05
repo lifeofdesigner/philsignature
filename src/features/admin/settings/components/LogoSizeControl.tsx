@@ -155,7 +155,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
                 onClick={() => handleSelectPreset(preset)}
                 className={`flex flex-col items-center justify-center p-3 rounded-lg border text-center transition-all cursor-pointer ${
                   isSelected
-                    ? 'border-slate-900 bg-slate-900 text-white font-bold shadow-xs'
+                    ? 'border-[#DC2626] bg-[#DC2626] text-white font-bold shadow-xs'
                     : 'border-slate-200 bg-white text-black hover:border-slate-300 hover:bg-slate-100'
                 }`}
               >
@@ -210,7 +210,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
           </span>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl flex flex-col items-center justify-center overflow-hidden min-h-[160px] gap-2 transition-all">
+        <div className="bg-[#F5F5F5] border border-[#E5E7EB] p-6 rounded-xl flex flex-col items-center justify-center overflow-hidden min-h-[160px] gap-2 transition-all">
           {logoUrl ? (
             <img
               src={logoUrl}

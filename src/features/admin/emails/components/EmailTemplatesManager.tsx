@@ -241,7 +241,7 @@ export const EmailTemplatesManager: React.FC = () => {
                       </div>
 
                       {/* Title & Description */}
-                      <h4 className="text-sm font-bold text-black group-hover:text-amber-700 transition-colors">
+                      <h4 className="text-sm font-bold text-black group-hover:text-[#DC2626] transition-colors">
                         {template.name}
                       </h4>
                       <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
@@ -261,7 +261,7 @@ export const EmailTemplatesManager: React.FC = () => {
                       {/* Variables count & Last updated */}
                       <div className="mt-3 flex items-center justify-between text-[11px] text-slate-600">
                         <span className="flex items-center gap-1">
-                          <Sparkles className="h-3 w-3 text-amber-600" />
+                          <Sparkles className="h-3 w-3 text-[#DC2626]" />
                           <span>
                             {Array.isArray(template.variables) ? template.variables.length : 0} variables
                           </span>
@@ -291,9 +291,9 @@ export const EmailTemplatesManager: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setEditingTemplate(template)}
-                        className="px-3.5 py-1.5 text-xs rounded-lg bg-slate-900 hover:bg-black text-white font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+                        className="px-3.5 py-1.5 text-xs rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
                       >
-                        <Edit3 className="h-3.5 w-3.5 text-amber-400" />
+                        <Edit3 className="h-3.5 w-3.5 text-white" />
                         <span>Edit Template</span>
                       </button>
                     </div>

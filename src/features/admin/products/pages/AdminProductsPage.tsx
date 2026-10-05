@@ -896,7 +896,7 @@ export const AdminProductsPage: React.FC = () => {
                           className="h-16 w-16 object-cover rounded-lg border border-slate-300"
                         />
                         {index === 0 && (
-                          <span className="absolute -top-1.5 -left-1.5 text-[8px] font-bold uppercase bg-slate-900 text-white px-1.5 py-0.5 rounded-full">
+                          <span className="absolute -top-1.5 -left-1.5 text-[8px] font-bold uppercase bg-[#DC2626] text-white px-1.5 py-0.5 rounded-full">
                             Primary
                           </span>
                         )}

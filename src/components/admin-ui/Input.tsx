@@ -16,7 +16,7 @@ export const AdminInput = React.forwardRef<HTMLInputElement, AdminInputProps>(
         ref={ref}
         type={type}
         className={cn(
-          'w-full h-10 rounded-md border border-[#D1D5DB] bg-white px-3 text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+          'w-full h-10 rounded-md border border-[#D1D5DB] bg-white px-3 text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
           error && 'border-[#DC2626] focus:border-[#DC2626] focus:ring-[#DC2626]',
           className
         )}
@@ -43,7 +43,7 @@ export const AdminTextarea = React.forwardRef<HTMLTextAreaElement, AdminTextarea
       <textarea
         ref={ref}
         className={cn(
-          'w-full min-h-[100px] rounded-md border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#111111] focus:ring-1 focus:ring-[#111111] transition-colors disabled:opacity-50 disabled:cursor-not-allowed resize-y',
+          'w-full min-h-[100px] rounded-md border border-[#D1D5DB] bg-white px-3 py-2 text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] transition-colors disabled:opacity-50 disabled:cursor-not-allowed resize-y',
           error && 'border-[#DC2626] focus:border-[#DC2626] focus:ring-[#DC2626]',
           className
         )}

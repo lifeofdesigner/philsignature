@@ -13,12 +13,12 @@ const base =
   'inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-xs font-semibold rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer';
 
 const variants: Record<NonNullable<AdminButtonProps['variant']>, string> = {
-  primary: 'bg-[#111111] text-white hover:bg-black focus-visible:ring-[#111111]',
+  primary: 'bg-[#DC2626] text-white hover:bg-[#B91C1C] focus-visible:ring-[#DC2626]',
   secondary:
-    'bg-white text-[#111111] border border-[#D1D5DB] hover:bg-[#F9FAFB] focus-visible:ring-[#111111]',
+    'bg-white text-[#111111] border border-[#111111] hover:bg-[#F9FAFB] focus-visible:ring-[#DC2626]',
   danger: 'bg-[#DC2626] text-white hover:bg-[#B91C1C] focus-visible:ring-[#DC2626]',
   success: 'bg-[#16A34A] text-white hover:bg-[#15803D] focus-visible:ring-[#16A34A]',
-  ghost: 'bg-transparent text-[#374151] hover:bg-[#F9FAFB] focus-visible:ring-[#111111]',
+  ghost: 'bg-transparent text-[#374151] hover:bg-[#F9FAFB] focus-visible:ring-[#DC2626]',
 };
 
 const sizes: Record<NonNullable<AdminButtonProps['size']>, string> = {

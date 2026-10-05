@@ -172,7 +172,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                           cn(
                             'group flex items-center gap-2.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all',
                             isActive
-                              ? 'bg-slate-900 text-white shadow-xs'
+                              ? 'bg-[#DC2626] text-white shadow-xs'
                               : 'text-black hover:text-black hover:bg-slate-100'
                           )
                         }

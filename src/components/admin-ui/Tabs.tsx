@@ -26,7 +26,7 @@ export const AdminTabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      'inline-flex items-center justify-center whitespace-nowrap px-5 py-2.5 text-xs font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-b-2 data-[state=active]:border-[#111111] data-[state=active]:text-[#111111] data-[state=active]:font-semibold',
+      'inline-flex items-center justify-center whitespace-nowrap px-5 py-2.5 text-xs font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=active]:border-b-2 data-[state=active]:border-[#DC2626] data-[state=active]:text-[#DC2626] data-[state=active]:font-semibold',
       className
     )}
     {...props}

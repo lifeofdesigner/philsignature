@@ -322,7 +322,7 @@ export const AdminUsersPage: React.FC = () => {
 
         {userIsSuperAdmin && (
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white rounded-lg text-xs font-semibold shadow-xs">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#DC2626] text-white rounded-lg text-xs font-semibold shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-white" />
               <span>Super Admin Mode</span>
             </span>
@@ -555,7 +555,7 @@ export const AdminUsersPage: React.FC = () => {
                           <th
                             key={r}
                             className={`py-3 px-3 text-center border-r border-slate-200 min-w-[120px] transition-colors ${
-                              isFocused ? 'bg-slate-900 text-white' : 'text-black'
+                              isFocused ? 'bg-[#DC2626] text-white' : 'text-black'
                             }`}
                           >
                             <div className="font-bold">{ROLE_LABELS[r]}</div>
@@ -611,7 +611,7 @@ export const AdminUsersPage: React.FC = () => {
                                       onClick={() => handleTogglePermission(r, perm.key)}
                                       className={`inline-flex items-center justify-center h-6 w-6 rounded border transition-all cursor-pointer ${
                                         has
-                                          ? 'bg-slate-900 border-slate-900 text-white shadow-2xs'
+                                          ? 'bg-[#DC2626] border-[#DC2626] text-white shadow-2xs'
                                           : 'bg-white border-slate-300 text-transparent hover:border-slate-500'
                                       }`}
                                       title={`${has ? 'Revoke' : 'Grant'} ${perm.label} for ${ROLE_LABELS[r]}`}

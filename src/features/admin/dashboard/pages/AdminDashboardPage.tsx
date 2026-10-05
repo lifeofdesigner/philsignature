@@ -291,13 +291,13 @@ export const AdminDashboardPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-slate-900 text-white border-slate-900 shadow-xs">
-            <CardHeader className="pb-2 border-b border-slate-800">
-              <CardTitle className="text-sm font-bold text-slate-100 uppercase tracking-wider">
+          <Card className="bg-white border border-[#DC2626] shadow-xs">
+            <CardHeader className="pb-2 border-b border-[#E5E7EB]">
+              <CardTitle className="text-sm font-bold text-black uppercase tracking-wider">
                 Live Storefront Synchronization
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-xs text-slate-300 leading-relaxed font-normal pt-3">
+            <CardContent className="space-y-3 text-xs text-[#374151] leading-relaxed font-normal pt-3">
               <p>
                 All edits made across Products, Hero Sliders, Menus, FAQs, Policies, and Media in this portal are immediately saved to Supabase and propagate live to the storefront.
               </p>
@@ -305,7 +305,7 @@ export const AdminDashboardPage: React.FC = () => {
                 href="/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-xs font-semibold text-white hover:underline pt-1"
+                className="inline-flex items-center text-xs font-semibold text-[#DC2626] hover:underline pt-1"
               >
                 Inspect Live Website &rarr;
               </a>

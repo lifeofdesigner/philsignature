@@ -8,7 +8,7 @@ export const AdminSwitch = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SwitchPrimitives.Root
     className={cn(
-      'peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border border-[#D1D5DB] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#111111] disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[#111111] data-[state=unchecked]:bg-[#E5E7EB]',
+      'peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border border-[#D1D5DB] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#DC2626] disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[#DC2626] data-[state=unchecked]:bg-[#E5E7EB]',
       className
     )}
     {...props}
