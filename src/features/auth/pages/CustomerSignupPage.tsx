@@ -32,6 +32,13 @@ export const CustomerSignupPage: React.FC = () => {
         lastName,
         phone,
       });
+      const postAuthRedirect = sessionStorage.getItem('post_auth_redirect');
+      if (postAuthRedirect) {
+        sessionStorage.removeItem('post_auth_redirect');
+        navigate(postAuthRedirect, { replace: true });
+        return;
+      }
+
       const searchParams = new URLSearchParams(location.search);
       const redirectParam = searchParams.get('redirect');
       const from = (location.state as { from?: { pathname?: string } })?.from?.pathname || redirectParam;

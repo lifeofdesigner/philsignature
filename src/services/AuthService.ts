@@ -88,10 +88,14 @@ export class AuthService {
     const { user, session } = authResult;
 
     // 3. Email Verification Enforcement (must be confirmed within 24 hours)
+    // Skipped while the user is mid-checkout (sessionStorage 'post_auth_redirect' is set by
+    // the checkout auth gate) so an unverified customer can still complete their purchase.
     const isEmailVerified = Boolean(
       user.email_confirmed_at || (user as { confirmed_at?: string }).confirmed_at
     );
-    if (!isEmailVerified) {
+    const isInCheckoutSession =
+      typeof window !== 'undefined' && sessionStorage.getItem('post_auth_redirect') === '/checkout';
+    if (!isEmailVerified && !isInCheckoutSession) {
       const createdAt = new Date(user.created_at).getTime();
       const ageHours = (Date.now() - createdAt) / (1000 * 60 * 60);
       await this.repo.signOut();

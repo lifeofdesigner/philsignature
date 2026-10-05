@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { CheckCircle2, Clock, Loader2, PackageCheck, Truck, ArrowRight, ShieldCheck, XCircle } from 'lucide-react';
+import { CheckCircle2, Clock, Loader2, PackageCheck, Truck, ArrowRight, ShieldCheck, XCircle, MailWarning } from 'lucide-react';
 import { useOrderDetail } from '../hooks/useOrders';
 import { BankTransferDetails } from '../components/BankTransferDetails';
 import { paymentService, type SupportedGateway } from '@/services/PaymentService';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
+import { useAuth } from '@/hooks/useAuth';
 
 const RETRYABLE_GATEWAYS: SupportedGateway[] = ['paystack', 'flutterwave', 'korapay'];
 
@@ -18,6 +19,15 @@ export const OrderConfirmationPage: React.FC = () => {
   const methodParam = searchParams.get('method');
   const emailParam = searchParams.get('email') || undefined;
   const [isRetrying, setIsRetrying] = useState(false);
+  const { user } = useAuth();
+
+  // Checkout is complete — the active checkout session is over, so lift the
+  // email-verification exemption granted during the auth gate.
+  useEffect(() => {
+    sessionStorage.removeItem('post_auth_redirect');
+  }, []);
+
+  const isEmailUnverified = Boolean(user && !user.email_confirmed_at && !(user as { confirmed_at?: string }).confirmed_at);
 
   const { data: order, isLoading, error, refetch } = useOrderDetail(orderNumber, emailParam);
   const { data: bankConfig } = useQuery({
@@ -159,6 +169,14 @@ export const OrderConfirmationPage: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Soft Email Verification Reminder (non-blocking) */}
+        {isEmailUnverified && (
+          <div className="mb-8 p-4 bg-amber-50 border border-amber-200 text-amber-800 dark:bg-amber-950/40 dark:border-amber-800/60 dark:text-amber-200 rounded-sm flex items-start gap-3 text-xs">
+            <MailWarning className="h-4 w-4 text-amber-500 dark:text-amber-400 shrink-0 mt-0.5" />
+            <p>Please verify your email — check your inbox for the activation link.</p>
+          </div>
+        )}
 
         {/* Bank Transfer Instructions (if applicable) */}
         {isBankTransfer && !isPaid && bankConfig && (

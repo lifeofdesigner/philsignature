@@ -171,11 +171,18 @@ export const CheckoutPage: React.FC = () => {
             checkout.setIsAuthModalOpen(false);
             // If user closed without signing in or selecting guest, and guest checkout is disabled, redirect to login
             if (!user && !checkout.guestCheckoutEnabled) {
+              sessionStorage.setItem('post_auth_redirect', ROUTES.CHECKOUT);
               navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } });
             }
           }}
-          onSignIn={() => navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
-          onCreateAccount={() => navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
+          onSignIn={() => {
+            sessionStorage.setItem('post_auth_redirect', ROUTES.CHECKOUT);
+            navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } });
+          }}
+          onCreateAccount={() => {
+            sessionStorage.setItem('post_auth_redirect', ROUTES.CHECKOUT);
+            navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } });
+          }}
           onContinueAsGuest={() => {
             checkout.acceptGuestCheckout();
             setShowAuthGate(false);
