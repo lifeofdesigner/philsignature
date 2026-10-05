@@ -79,15 +79,13 @@ export class OrderRepository extends BaseRepository {
       }
 
       // If direct table read is restricted by RLS (e.g. guest order),
-      // securely invoke the track_guest_order RPC requiring matching email.
-      if (email && email.trim() !== '') {
-        const { data: rpcData, error: rpcError } = await this.client.rpc('track_guest_order', {
-          p_order_number: orderNumber.trim(),
-          p_email: email.trim(),
-        });
-        if (!rpcError && rpcData) {
-          return rpcData as Order;
-        }
+      // securely invoke the track_guest_order RPC (supports lookup by order number with optional email).
+      const { data: rpcData, error: rpcError } = await this.client.rpc('track_guest_order', {
+        p_order_number: orderNumber.trim(),
+        p_email: email && email.trim() !== '' ? email.trim() : null,
+      });
+      if (!rpcError && rpcData) {
+        return rpcData as Order;
       }
 
       return null;

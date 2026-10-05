@@ -167,6 +167,30 @@ export const OrderConfirmationPage: React.FC = () => {
           </div>
         )}
 
+        {/* Real-Time Order Tracking Quick Card */}
+        <div className="bg-luxury-card border border-luxury-gold/30 p-5 sm:p-6 rounded-sm mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase tracking-luxury-wide text-luxury-gold font-semibold flex items-center gap-1.5">
+              <Truck className="h-3.5 w-3.5" />
+              <span>Real-Time Consignment Tracking</span>
+            </span>
+            <h3 className="font-serif text-base text-luxury-cream font-medium">
+              Track Your Fragrance Journey
+            </h3>
+            <p className="text-xs text-luxury-muted font-light leading-relaxed">
+              Track your package status anytime using your order number <span className="font-mono text-luxury-gold font-medium">{order.order_number}</span>.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigate(`/track-order?orderNumber=${order.order_number}`)}
+            className="w-full sm:w-auto min-h-[44px] shrink-0 inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-luxury-gold text-black hover:bg-luxury-gold-light rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer shadow-md"
+          >
+            <Truck className="h-4 w-4" />
+            <span>Track Order</span>
+          </button>
+        </div>
+
         <div className="bg-luxury-card border border-luxury-border rounded-sm p-6 space-y-6 mb-8">
           <div className="flex items-center justify-between border-b border-luxury-border pb-4">
             <h3 className="font-serif text-base text-luxury-cream font-normal flex items-center gap-2">
@@ -276,7 +300,7 @@ export const OrderConfirmationPage: React.FC = () => {
             className="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 px-6 py-3 border border-luxury-gold text-luxury-gold hover:bg-luxury-gold hover:text-black rounded-sm text-xs font-semibold uppercase tracking-luxury-wide transition-colors cursor-pointer"
           >
             <Truck className="h-4 w-4" />
-            <span>Track My Order</span>
+            <span>Track Order</span>
           </button>
 
           <button

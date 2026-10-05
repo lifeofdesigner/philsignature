@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, ArrowRight, LogOut, Shield } from 'lucide-react';
+import { Search, ShoppingBag, Heart, User, Menu, X, ChevronDown, ArrowRight, LogOut, Shield, Truck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -388,6 +388,25 @@ export const Navbar: React.FC = () => {
 
         {/* COLUMN 3 (RIGHT): HEADER ACTIONS ORDER: Search -> Account -> Wishlist -> Cart */}
         <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-3.5 shrink-0">
+          {/* ACTION: TRACK ORDER (DESKTOP) */}
+          <Link
+            to="/track-order"
+            className="hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15 hover:border-luxury-gold/60 text-white/80 hover:text-luxury-gold text-[11px] uppercase tracking-wider font-medium transition-all bg-white/5 hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
+            title="Track Order"
+            aria-label="Track your order"
+          >
+            <Truck className="h-3.5 w-3.5 text-luxury-gold" />
+            <span>Track Order</span>
+          </Link>
+          <Link
+            to="/track-order"
+            className="hidden lg:flex xl:hidden h-8.5 w-8.5 rounded-full items-center justify-center text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0"
+            title="Track Order"
+            aria-label="Track your order"
+          >
+            <Truck className="h-4 w-4" />
+          </Link>
+
           {/* ACTION 1: SEARCH */}
           <Link
             to="/shop"
@@ -434,6 +453,12 @@ export const Navbar: React.FC = () => {
                   <Link to="/account/orders" className="flex items-center gap-2.5 w-full text-xs text-white/90 hover:text-white" data-keep-white>
                     <ShoppingBag className="h-3.5 w-3.5 text-luxury-gold" />
                     <span data-keep-white>My Orders</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild data-keep-white>
+                  <Link to="/track-order" className="flex items-center gap-2.5 w-full text-xs text-white/90 hover:text-white" data-keep-white>
+                    <Truck className="h-3.5 w-3.5 text-luxury-gold" />
+                    <span data-keep-white>Track Order</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild data-keep-white>
@@ -498,6 +523,16 @@ export const Navbar: React.FC = () => {
             <ShoppingBag className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
             <span className="text-[11px] uppercase tracking-wider font-semibold" data-keep-white>Cart</span>
             <span className="font-mono text-xs font-semibold" data-keep-white>({cartCount})</span>
+          </Link>
+
+          {/* Mobile Track Order Header Icon */}
+          <Link
+            to="/track-order"
+            className="lg:hidden h-8.5 w-8.5 flex items-center justify-center text-white/80 hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]"
+            title="Track Order"
+            aria-label="Track Order"
+          >
+            <Truck className="h-4 w-4" />
           </Link>
 
           {/* Mobile Menu Trigger */}
@@ -596,6 +631,20 @@ export const Navbar: React.FC = () => {
                 </Link>
 
                 <Link
+                  to="/track-order"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname === '/track-order' ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span className="flex items-center gap-2.5">
+                    <Truck className="h-4 w-4 text-luxury-gold" />
+                    <span>Track Order</span>
+                  </span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                <Link
                   to="/about"
                   className={cn(
                     'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
@@ -615,6 +664,17 @@ export const Navbar: React.FC = () => {
                 >
                   <span>Contact</span>
                   <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+              </div>
+
+              {/* Dedicated Track Order Mobile Banner */}
+              <div className="pt-1">
+                <Link
+                  to="/track-order"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-luxury-gold/10 hover:bg-luxury-gold/20 border border-luxury-gold/40 text-luxury-gold text-xs font-semibold uppercase tracking-wider transition-colors shadow-sm"
+                >
+                  <Truck className="h-4 w-4 text-luxury-gold" />
+                  <span>Track Your Order</span>
                 </Link>
               </div>
 

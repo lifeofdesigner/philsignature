@@ -71,6 +71,13 @@ export const Footer: React.FC = () => {
               <p className="text-[11px] text-white/60 mt-0.5 font-light">
                 Express dispatch across Nigeria
               </p>
+              <Link
+                to="/track-order"
+                className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-luxury-gold hover:text-luxury-gold-light mt-1 font-medium transition-colors"
+              >
+                <span>Track Your Order</span>
+                <ArrowRight className="h-2.5 w-2.5" />
+              </Link>
             </div>
           </div>
 
@@ -184,6 +191,15 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                to="/track-order"
+                className="hover:text-luxury-gold transition-colors inline-flex items-center gap-1.5 text-luxury-gold/90 font-medium"
+              >
+                <Truck className="h-3 w-3" />
+                <span>Track Order</span>
+              </Link>
+            </li>
           </ul>
         </div>
 

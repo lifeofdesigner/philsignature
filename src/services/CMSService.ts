@@ -496,6 +496,7 @@ export class CMSService {
       { label: 'Bold & Spicy', url: '/shop?collection=bold-and-spicy' },
     ],
     services_links: [
+      { label: 'Track Order', url: '/track-order' },
       { label: 'Private Label', url: '/contact?subject=private-label' },
       { label: 'Corporate Gifting', url: '/contact?subject=corporate-gifting' },
       { label: 'Bulk Orders', url: '/contact?subject=bulk-orders' },
