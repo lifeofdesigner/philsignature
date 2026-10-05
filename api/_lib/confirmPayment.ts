@@ -1,4 +1,4 @@
-import { supabaseAdmin } from './supabaseAdmin';
+import { supabaseAdmin } from './supabaseAdmin.js';
 
 export interface MarkOrderPaidParams {
   orderId?: string;
@@ -110,7 +110,7 @@ export async function markOrderPaid(params: MarkOrderPaidParams) {
 
   // 4. Dispatch transactional communications (customer + admin notifications)
   try {
-    const { sendAllTransactionalEmails } = await import('./emailService');
+    const { sendAllTransactionalEmails } = await import('./emailService.js');
     await sendAllTransactionalEmails(
       updated,
       updated.items || [],

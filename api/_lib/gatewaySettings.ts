@@ -1,4 +1,4 @@
-import { supabaseAdmin } from './supabaseAdmin';
+import { supabaseAdmin } from './supabaseAdmin.js';
 
 export type GatewayMode = 'test' | 'live';
 export type GatewayName = 'paystack' | 'flutterwave' | 'korapay';

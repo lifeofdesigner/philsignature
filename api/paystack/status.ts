@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from '../_lib/supabaseAdmin';
-import { checkRateLimit, getClientIp } from '../_lib/rateLimit';
+import { supabaseAdmin } from '../_lib/supabaseAdmin.js';
+import { checkRateLimit, getClientIp } from '../_lib/rateLimit.js';
 
 /**
  * Read-Only Transaction / Order Status Query Endpoint

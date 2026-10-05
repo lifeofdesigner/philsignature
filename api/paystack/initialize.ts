@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
-import { getGatewayCredentials } from '../_lib/gatewaySettings';
-import { supabaseAdmin } from '../_lib/supabaseAdmin';
-import { checkRateLimit } from '../_lib/rateLimit';
+import { getGatewayCredentials } from '../_lib/gatewaySettings.js';
+import { supabaseAdmin } from '../_lib/supabaseAdmin.js';
+import { checkRateLimit } from '../_lib/rateLimit.js';
 
 export interface InitializePaystackBody {
   orderId: string;
