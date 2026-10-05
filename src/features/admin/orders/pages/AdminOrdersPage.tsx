@@ -13,6 +13,9 @@ import {
   Phone,
   Package,
   Loader2,
+  Archive,
+  ArchiveRestore,
+  Trash2,
 } from 'lucide-react';
 import { AdminButton, AdminInput } from '@/components/admin-ui';
 import { EmptyState } from '@/components/feedback/EmptyState';
@@ -39,22 +42,71 @@ const formatDate = (isoString: string) =>
   new Date(isoString).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
 export const AdminOrdersPage: React.FC = () => {
-  const { user } = useAuth();
-  const { orders, isLoading, isError, updateFulfillmentStatus, confirmPayment, isConfirmingPayment } =
-    useAdminOrders();
+  const { user, role } = useAuth();
+  const isSuperAdmin = role === 'super_admin';
+  const {
+    orders,
+    isLoading,
+    isError,
+    updateFulfillmentStatus,
+    confirmPayment,
+    isConfirmingPayment,
+    archiveOrder,
+    unarchiveOrder,
+    bulkArchiveOrders,
+    deleteOrder,
+    bulkDeleteOrders,
+  } = useAdminOrders();
   const [financialFilter, setFinancialFilter] = useState<'all' | 'paid' | 'pending'>('all');
   const [fulfillmentFilter, setFulfillmentFilter] = useState<string>('all');
+  const [viewTab, setViewTab] = useState<'active' | 'archived'>('active');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [trackingNumberInput, setTrackingNumberInput] = useState<string>('');
 
   const filteredOrders = useMemo(() => {
     return orders.filter((o) => {
+      if (viewTab === 'active' && o.archived) return false;
+      if (viewTab === 'archived' && !o.archived) return false;
       if (financialFilter !== 'all' && o.financial_status !== financialFilter) return false;
       if (fulfillmentFilter !== 'all' && o.fulfillment_status !== fulfillmentFilter) return false;
       return true;
     });
-  }, [orders, financialFilter, fulfillmentFilter]);
+  }, [orders, viewTab, financialFilter, fulfillmentFilter]);
+
+  const activeCount = useMemo(() => orders.filter((o) => !o.archived).length, [orders]);
+  const archivedCount = useMemo(() => orders.filter((o) => o.archived).length, [orders]);
+
+  const handleArchiveOrder = async (order: Order) => {
+    try {
+      await archiveOrder(order.id);
+      toast.success(`Order #${order.order_number} archived.`);
+      setSelectedOrder(null);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to archive order.');
+    }
+  };
+
+  const handleUnarchiveOrder = async (order: Order) => {
+    try {
+      await unarchiveOrder(order.id);
+      toast.success(`Order #${order.order_number} restored.`);
+      setSelectedOrder(null);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to restore order.');
+    }
+  };
+
+  const handleDeleteOrder = async (order: Order) => {
+    if (!confirm(`Permanently delete Order #${order.order_number}? This cannot be undone.`)) return;
+    try {
+      await deleteOrder(order.id);
+      toast.success(`Order #${order.order_number} permanently deleted.`);
+      setSelectedOrder(null);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete order.');
+    }
+  };
 
   const handleStatusChange = async (order: Order, status: OrderFulfillmentStatus) => {
     if (status === order.fulfillment_status) return;
@@ -111,6 +163,53 @@ export const AdminOrdersPage: React.FC = () => {
   };
 
   const bulkActions: BulkAction<Order>[] = [
+    ...(viewTab === 'archived'
+      ? [
+          {
+            label: 'Restore Selected',
+            icon: ArchiveRestore,
+            action: async (items: Order[]) => {
+              try {
+                await bulkArchiveOrders({ orderIds: items.map((i) => i.id), archived: false });
+                toast.success(`Restored ${items.length} order(s).`);
+              } catch (err) {
+                toast.error(err instanceof Error ? err.message : 'Failed to restore orders.');
+              }
+            },
+          },
+        ]
+      : [
+          {
+            label: 'Archive Selected',
+            icon: Archive,
+            action: async (items: Order[]) => {
+              try {
+                await bulkArchiveOrders({ orderIds: items.map((i) => i.id), archived: true });
+                toast.success(`Archived ${items.length} order(s).`);
+              } catch (err) {
+                toast.error(err instanceof Error ? err.message : 'Failed to archive orders.');
+              }
+            },
+          },
+        ]),
+    ...(isSuperAdmin
+      ? [
+          {
+            label: 'Delete Selected',
+            icon: Trash2,
+            variant: 'destructive' as const,
+            action: async (items: Order[]) => {
+              if (!confirm(`Permanently delete ${items.length} order(s)? This cannot be undone.`)) return;
+              try {
+                await bulkDeleteOrders(items.map((i) => i.id));
+                toast.success(`Deleted ${items.length} order(s).`);
+              } catch (err) {
+                toast.error(err instanceof Error ? err.message : 'Failed to delete orders.');
+              }
+            },
+          },
+        ]
+      : []),
     {
       label: 'Mark Processing',
       icon: Clock,
@@ -232,15 +331,49 @@ export const AdminOrdersPage: React.FC = () => {
       header: 'Actions',
       sortable: false,
       accessor: (o) => (
-        <AdminButton
-          size="sm"
-          variant="secondary"
-          onClick={() => handleOpenInspect(o)}
-          className="text-xs h-7 px-2.5 gap-1"
-        >
-          <Eye className="h-3 w-3" />
-          <span>Inspect</span>
-        </AdminButton>
+        <div className="flex items-center gap-1.5">
+          <AdminButton
+            size="sm"
+            variant="secondary"
+            onClick={() => handleOpenInspect(o)}
+            className="text-xs h-7 px-2.5 gap-1"
+          >
+            <Eye className="h-3 w-3" />
+            <span>Inspect</span>
+          </AdminButton>
+          {o.archived ? (
+            <AdminButton
+              size="sm"
+              variant="secondary"
+              onClick={() => handleUnarchiveOrder(o)}
+              className="text-xs h-7 px-2.5 gap-1"
+            >
+              <ArchiveRestore className="h-3 w-3" />
+              <span>Restore</span>
+            </AdminButton>
+          ) : (
+            <AdminButton
+              size="sm"
+              variant="secondary"
+              onClick={() => handleArchiveOrder(o)}
+              className="text-xs h-7 px-2.5 gap-1"
+            >
+              <Archive className="h-3 w-3" />
+              <span>Archive</span>
+            </AdminButton>
+          )}
+          {isSuperAdmin && (
+            <AdminButton
+              size="sm"
+              variant="danger"
+              onClick={() => handleDeleteOrder(o)}
+              className="text-xs h-7 px-2.5 gap-1"
+            >
+              <Trash2 className="h-3 w-3" />
+              <span>Delete</span>
+            </AdminButton>
+          )}
+        </div>
       ),
     },
   ];
@@ -279,6 +412,29 @@ export const AdminOrdersPage: React.FC = () => {
             Track customer checkouts, update parcel dispatch status, and inspect transaction manifests.
           </p>
         </div>
+      </div>
+
+      {/* View Tabs */}
+      <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 w-fit text-xs">
+        <button
+          type="button"
+          onClick={() => setViewTab('active')}
+          className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer ${
+            viewTab === 'active' ? 'bg-white text-black shadow-2xs' : 'text-black hover:text-black'
+          }`}
+        >
+          Active ({activeCount})
+        </button>
+        <button
+          type="button"
+          onClick={() => setViewTab('archived')}
+          className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer flex items-center gap-1 ${
+            viewTab === 'archived' ? 'bg-white text-black shadow-2xs' : 'text-black hover:text-black'
+          }`}
+        >
+          <Archive className="h-3 w-3" />
+          Archived ({archivedCount})
+        </button>
       </div>
 
       {/* Filter Bar */}
@@ -532,7 +688,26 @@ export const AdminOrdersPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-end pt-2 border-t border-slate-100">
+            <div className="flex justify-between items-center pt-2 border-t border-slate-100">
+              <div className="flex items-center gap-2">
+                {selectedOrder.archived ? (
+                  <AdminButton variant="secondary" onClick={() => handleUnarchiveOrder(selectedOrder)} className="gap-1.5">
+                    <ArchiveRestore className="h-3.5 w-3.5" />
+                    <span>Restore Order</span>
+                  </AdminButton>
+                ) : (
+                  <AdminButton variant="secondary" onClick={() => handleArchiveOrder(selectedOrder)} className="gap-1.5">
+                    <Archive className="h-3.5 w-3.5" />
+                    <span>Archive Order</span>
+                  </AdminButton>
+                )}
+                {isSuperAdmin && (
+                  <AdminButton variant="danger" onClick={() => handleDeleteOrder(selectedOrder)} className="gap-1.5">
+                    <Trash2 className="h-3.5 w-3.5" />
+                    <span>Delete Permanently</span>
+                  </AdminButton>
+                )}
+              </div>
               <AdminButton
                 variant="secondary"
                 onClick={() => setSelectedOrder(null)}

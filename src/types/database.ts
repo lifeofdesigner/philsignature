@@ -313,6 +313,7 @@ export interface Order {
   billing_address?: Partial<CustomerAddress>;
   items?: OrderItem[];
   timeline?: OrderTimeline[];
+  archived: boolean;
   created_at: string;
   updated_at: string;
 }

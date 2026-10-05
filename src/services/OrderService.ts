@@ -182,6 +182,31 @@ export class OrderService {
     if (!userId || !email) return 0;
     return this.repo.linkGuestOrders(userId, email);
   }
+
+  async archiveOrder(orderId: string): Promise<void> {
+    if (!orderId) throw new ValidationError('Order ID is required');
+    return this.repo.archiveOrder(orderId);
+  }
+
+  async unarchiveOrder(orderId: string): Promise<void> {
+    if (!orderId) throw new ValidationError('Order ID is required');
+    return this.repo.unarchiveOrder(orderId);
+  }
+
+  async bulkArchiveOrders(orderIds: string[], archived = true): Promise<void> {
+    if (!orderIds.length) return;
+    return this.repo.bulkArchiveOrders(orderIds, archived);
+  }
+
+  async deleteOrder(orderId: string): Promise<void> {
+    if (!orderId) throw new ValidationError('Order ID is required');
+    return this.repo.deleteOrder(orderId);
+  }
+
+  async bulkDeleteOrders(orderIds: string[]): Promise<void> {
+    if (!orderIds.length) return;
+    return this.repo.bulkDeleteOrders(orderIds);
+  }
 }
 
 export const orderService = new OrderService();

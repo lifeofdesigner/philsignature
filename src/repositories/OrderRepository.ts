@@ -1,4 +1,5 @@
 import { BaseRepository } from './BaseRepository';
+import { callAdminApi } from '@/lib/adminApiClient';
 import type { Order } from '@/types/database';
 import type { CreateOrderInput } from '@/schemas/order.schema';
 
@@ -246,6 +247,28 @@ export class OrderRepository extends BaseRepository {
     } catch (err) {
       console.warn('Order timeline insertion non-critical error:', err);
     }
+  }
+
+  async archiveOrder(orderId: string): Promise<void> {
+    await callAdminApi('/api/admin/orders?action=archive', { body: { orderId, action: 'archive' } });
+  }
+
+  async unarchiveOrder(orderId: string): Promise<void> {
+    await callAdminApi('/api/admin/orders?action=unarchive', { body: { orderId, action: 'unarchive' } });
+  }
+
+  async bulkArchiveOrders(orderIds: string[], archived = true): Promise<void> {
+    await callAdminApi('/api/admin/orders?action=bulk-archive', {
+      body: { orderIds, archived, action: 'bulk-archive' },
+    });
+  }
+
+  async deleteOrder(orderId: string): Promise<void> {
+    await callAdminApi('/api/admin/orders?action=delete', { body: { orderId, action: 'delete' } });
+  }
+
+  async bulkDeleteOrders(orderIds: string[]): Promise<void> {
+    await callAdminApi('/api/admin/orders?action=bulk-delete', { body: { orderIds, action: 'bulk-delete' } });
   }
 
   async linkGuestOrders(userId: string, email: string): Promise<number> {
