@@ -318,6 +318,9 @@ export function canAccessAdminPath(role: UserRole | undefined | null, path: stri
   if (cleanPath.startsWith('/admin/settings')) {
     return hasPermission(role, 'settings:manage') || role === 'admin' || role === 'administrator';
   }
+  if (cleanPath.startsWith('/admin/email-templates')) {
+    return role === 'admin' || role === 'administrator';
+  }
   if (cleanPath.startsWith('/admin/seo')) {
     return hasPermission(role, 'cms:read');
   }

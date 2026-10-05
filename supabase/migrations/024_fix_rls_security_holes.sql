@@ -54,7 +54,7 @@ CREATE POLICY "Customers view own order timeline"
 -- ------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.track_guest_order(
     p_order_number TEXT,
-    p_email TEXT
+    p_email TEXT DEFAULT NULL
 )
 RETURNS JSONB
 LANGUAGE plpgsql
@@ -117,6 +117,7 @@ DROP POLICY IF EXISTS "Allow authenticated insert notifications" ON public.notif
 
 -- Customers can only read notifications intended for them (user_id = auth.uid()).
 -- Admins can view broadcast/system notifications (user_id IS NULL) and all alerts.
+DROP POLICY IF EXISTS "Users view own or admin notifications" ON public.notifications;
 CREATE POLICY "Users view own or admin notifications"
     ON public.notifications FOR SELECT
     TO authenticated
@@ -127,6 +128,7 @@ CREATE POLICY "Users view own or admin notifications"
     );
 
 -- Users can only mark their own notifications as read; admins can manage admin ones.
+DROP POLICY IF EXISTS "Users update own or admin notifications" ON public.notifications;
 CREATE POLICY "Users update own or admin notifications"
     ON public.notifications FOR UPDATE
     TO authenticated
@@ -143,6 +145,7 @@ CREATE POLICY "Users update own or admin notifications"
 
 -- Insert policy: authenticated users can only create notifications for themselves;
 -- admins and service_role can notify any user.
+DROP POLICY IF EXISTS "Users and system create notifications" ON public.notifications;
 CREATE POLICY "Users and system create notifications"
     ON public.notifications FOR INSERT
     TO authenticated
@@ -176,6 +179,7 @@ ON CONFLICT (id) DO UPDATE SET public = false;
 DROP POLICY IF EXISTS "Public can view avatar assets" ON storage.objects;
 
 -- Only account owner or admin can read avatars
+DROP POLICY IF EXISTS "Users view own avatar" ON storage.objects;
 CREATE POLICY "Users view own avatar"
     ON storage.objects FOR SELECT
     USING (

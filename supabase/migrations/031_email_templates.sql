@@ -39,9 +39,13 @@ ALTER TABLE public.email_templates ENABLE ROW LEVEL SECURITY;
 -- Drop previous policies if any exist
 DROP POLICY IF EXISTS "Allow admin and super_admin read access to email_templates" ON public.email_templates;
 DROP POLICY IF EXISTS "Allow admin and super_admin write access to email_templates" ON public.email_templates;
+DROP POLICY IF EXISTS "Allow admin and super_admin select on email_templates" ON public.email_templates;
+DROP POLICY IF EXISTS "Allow admin and super_admin update on email_templates" ON public.email_templates;
+DROP POLICY IF EXISTS "Allow super_admin insert on email_templates" ON public.email_templates;
+DROP POLICY IF EXISTS "Allow super_admin delete on email_templates" ON public.email_templates;
 
--- Read policy: only super_admin and admin (and administrator)
-CREATE POLICY "Allow admin and super_admin read access to email_templates"
+-- SELECT: super_admin and admin (and administrator)
+CREATE POLICY "Allow admin and super_admin select on email_templates"
 ON public.email_templates
 FOR SELECT
 TO authenticated
@@ -54,10 +58,10 @@ USING (
     )
 );
 
--- Write policy: only super_admin and admin (and administrator)
-CREATE POLICY "Allow admin and super_admin write access to email_templates"
+-- UPDATE: super_admin and admin (and administrator)
+CREATE POLICY "Allow admin and super_admin update on email_templates"
 ON public.email_templates
-FOR ALL
+FOR UPDATE
 TO authenticated
 USING (
     EXISTS (
@@ -72,6 +76,34 @@ WITH CHECK (
         SELECT 1 FROM public.profiles
         WHERE id = auth.uid()
         AND role IN ('super_admin', 'admin', 'administrator')
+        AND is_active = true
+    )
+);
+
+-- INSERT: super_admin only
+CREATE POLICY "Allow super_admin insert on email_templates"
+ON public.email_templates
+FOR INSERT
+TO authenticated
+WITH CHECK (
+    EXISTS (
+        SELECT 1 FROM public.profiles
+        WHERE id = auth.uid()
+        AND role = 'super_admin'
+        AND is_active = true
+    )
+);
+
+-- DELETE: super_admin only
+CREATE POLICY "Allow super_admin delete on email_templates"
+ON public.email_templates
+FOR DELETE
+TO authenticated
+USING (
+    EXISTS (
+        SELECT 1 FROM public.profiles
+        WHERE id = auth.uid()
+        AND role = 'super_admin'
         AND is_active = true
     )
 );
