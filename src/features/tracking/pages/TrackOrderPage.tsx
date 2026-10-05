@@ -644,7 +644,7 @@ export const TrackOrderPage: React.FC = () => {
             <div className="pt-4 flex items-center justify-center gap-2 text-xs text-luxury-muted">
               <span>Looking to explore new scent creations?</span>
               <Link to="/shop" className="text-luxury-gold hover:underline font-medium">
-                Visit Haute Parfumerie Boutique →
+                Visit Philz Signature →
               </Link>
             </div>
           </motion.div>

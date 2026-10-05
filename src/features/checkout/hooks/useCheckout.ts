@@ -34,18 +34,61 @@ export function useCheckout() {
   // Current Step
   const [currentStep, setCurrentStep] = useState<CheckoutStep>('address');
 
-  // Form State
-  const [addressForm, setAddressForm] = useState<CheckoutAddressForm>({
-    firstName: profile?.first_name || '',
-    lastName: profile?.last_name || '',
-    email: user?.email || '',
-    phone: user?.phone || profile?.phone || '',
-    streetAddress: '',
-    city: '',
-    state: 'Lagos',
-    postalCode: '',
-    country: 'Nigeria',
+  // Form State with draft persistence
+  const [addressForm, setAddressForm] = useState<CheckoutAddressForm>(() => {
+    try {
+      const saved = sessionStorage.getItem('philz_checkout_address_draft');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          firstName: parsed.firstName || profile?.first_name || '',
+          lastName: parsed.lastName || profile?.last_name || '',
+          email: parsed.email || user?.email || '',
+          phone: parsed.phone || user?.phone || profile?.phone || '',
+          streetAddress: parsed.streetAddress || '',
+          city: parsed.city || '',
+          state: parsed.state || 'Lagos',
+          postalCode: parsed.postalCode || '',
+          country: parsed.country || 'Nigeria',
+        };
+      }
+    } catch {
+      // ignore JSON parse error
+    }
+    return {
+      firstName: profile?.first_name || '',
+      lastName: profile?.last_name || '',
+      email: user?.email || '',
+      phone: user?.phone || profile?.phone || '',
+      streetAddress: '',
+      city: '',
+      state: 'Lagos',
+      postalCode: '',
+      country: 'Nigeria',
+    };
   });
+
+  // Sync profile details if addressForm fields are empty
+  useEffect(() => {
+    if (profile || user) {
+      setAddressForm((prev) => ({
+        ...prev,
+        firstName: prev.firstName || profile?.first_name || '',
+        lastName: prev.lastName || profile?.last_name || '',
+        email: prev.email || user?.email || '',
+        phone: prev.phone || user?.phone || profile?.phone || '',
+      }));
+    }
+  }, [profile, user]);
+
+  // Save address draft to sessionStorage on change
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('philz_checkout_address_draft', JSON.stringify(addressForm));
+    } catch {
+      // ignore storage quota error
+    }
+  }, [addressForm]);
 
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<string>('');
@@ -89,6 +132,7 @@ export function useCheckout() {
   // General Error / Submission State
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState<boolean>(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   // 1. Fetch Shipping Methods
   const { data: shippingMethods = [], isLoading: isLoadingShipping } = useQuery({
@@ -191,6 +235,11 @@ export function useCheckout() {
     mutationFn: async () => {
       setCheckoutError(null);
 
+      // Validate user authentication
+      if (!user) {
+        throw new Error('Please sign in to continue.');
+      }
+
       // Validate required address fields
       if (!addressForm.firstName || !addressForm.lastName || !addressForm.email || !addressForm.phone || !addressForm.streetAddress) {
         throw new Error('Please fill in all required delivery details (name, email, phone, and address).');
@@ -259,6 +308,11 @@ export function useCheckout() {
 
   // 7. Complete Checkout and Trigger Payment Gateway
   const handleProceedToPayment = async () => {
+    if (!user) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
     try {
       setIsProcessingPayment(true);
       setCheckoutError(null);
@@ -383,6 +437,8 @@ export function useCheckout() {
     checkoutError,
     isSubmitting: placeOrderMutation.isPending || isProcessingPayment,
     handleProceedToPayment,
+    isAuthModalOpen,
+    setIsAuthModalOpen,
     bankDetails:
       bankDetails || {
         bankName: '',

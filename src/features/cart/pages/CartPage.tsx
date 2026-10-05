@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
 import { useCart } from '@/hooks/useCart';
+import { useAuth } from '@/hooks/useAuth';
+import { CheckoutAuthModal } from '@/features/checkout/components';
 
 export const CartPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const handleProceedToCheckout = () => {
+    if (!user) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+    navigate(ROUTES.CHECKOUT);
+  };
 
   const formattedSubtotal = new Intl.NumberFormat('en-NG', {
     style: 'currency',
@@ -154,16 +166,29 @@ export const CartPage: React.FC = () => {
                     Continue Shopping
                   </Button>
                 </Link>
-                <Link to={ROUTES.CHECKOUT} className="flex-1">
-                  <Button variant="luxury" size="lg" className="w-full gap-2 text-xs">
+                <div className="flex-1">
+                  <Button
+                    variant="luxury"
+                    size="lg"
+                    onClick={handleProceedToCheckout}
+                    className="w-full gap-2 text-xs cursor-pointer"
+                  >
                     <span>Proceed to Checkout</span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </Button>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
         )}
+
+        {/* Sign in gate modal */}
+        <CheckoutAuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          onSignIn={() => navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
+          onCreateAccount={() => navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
+        />
       </div>
     </div>
   );

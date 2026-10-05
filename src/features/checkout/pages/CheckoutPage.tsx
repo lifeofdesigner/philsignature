@@ -1,19 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, AlertCircle, ShoppingBag } from 'lucide-react';
 import { useCheckout } from '../hooks/useCheckout';
+import { useAuth } from '@/hooks/useAuth';
+import { ROUTES } from '@/constants/routes';
 import {
   CheckoutSteps,
   AddressStep,
   ShippingStep,
   PaymentStep,
   OrderSummaryCard,
+  CheckoutAuthModal,
 } from '../components';
 import { EmptyState } from '@/components/feedback/EmptyState';
 
 export const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user, isLoading: isAuthLoading } = useAuth();
   const checkout = useCheckout();
+  const [showAuthGate, setShowAuthGate] = useState(false);
+
+  // If user is not signed in and auth has resolved, show the sign-in modal
+  useEffect(() => {
+    if (!isAuthLoading && !user) {
+      setShowAuthGate(true);
+    }
+  }, [user, isAuthLoading]);
 
   const isAddressValid = Boolean(
     checkout.addressForm.firstName.trim() &&
