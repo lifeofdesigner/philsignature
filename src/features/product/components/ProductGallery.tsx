@@ -25,7 +25,7 @@ export const ProductGallery: React.FC<ProductGalleryProps> = ({
       <div className="relative aspect-[3/4] bg-luxury-charcoal border border-luxury-border overflow-hidden group">
         <img
           src={activeImage}
-          alt={`${productName} view ${selectedIndex + 1}`}
+          alt={`${productName} Luxury Parfum by Philz Signature - View ${selectedIndex + 1}`}
           className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
           loading="eager"
         />

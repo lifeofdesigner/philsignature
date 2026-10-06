@@ -403,4 +403,25 @@ export interface EmailTemplate {
   updated_by: string | null;
 }
 
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  cover_image_url: string | null;
+  author_name: string;
+  category: string;
+  tags: string[];
+  published: boolean;
+  featured: boolean;
+  views: number;
+  seo_title: string | null;
+  seo_description: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+
 

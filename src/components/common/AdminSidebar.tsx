@@ -18,6 +18,7 @@ import {
   Settings,
   Mail,
   Globe,
+  BookOpen,
   Trash2,
   ExternalLink,
   LogOut,
@@ -62,6 +63,7 @@ export const adminNavGroups: AdminSidebarGroup[] = [
     category: 'Content & Brand',
     items: [
       { title: 'CMS Content', href: '/admin/cms', icon: FileText },
+      { title: 'Blog Posts', href: '/admin/blog', icon: BookOpen },
       { title: 'Media Library', href: '/admin/media', icon: ImageIcon },
       { title: 'SEO Engine', href: '/admin/seo', icon: Globe },
     ],

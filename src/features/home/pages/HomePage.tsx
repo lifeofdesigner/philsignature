@@ -10,8 +10,10 @@ import { BrandStorySection } from '../components/BrandStorySection';
 import { ClientTestimonials } from '../components/ClientTestimonials';
 import { NewsletterSection } from '../components/NewsletterSection';
 import { InstagramFeedSection } from '../components/InstagramFeedSection';
+import { BlogSnippetSection } from '../components/BlogSnippetSection';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
+import { SEO } from '@/components/common/SEO';
 import { cn } from '@/lib/utils';
 import type { CmsHomepageSection } from '@/services/CMSService';
 
@@ -112,7 +114,14 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black">
+      <SEO
+        title="Philz Signature | Luxury Perfumes & Artisanal Fragrances Nigeria"
+        description="Discover Philz Signature — Nigeria's premier luxury fragrance house. Shop artisanal parfums, signature scents, and bespoke fragrances. Free delivery available."
+        canonical="/"
+        ogType="website"
+      />
       {sections.map((section) => renderSection(section))}
+      <BlogSnippetSection />
     </div>
   );
 };

@@ -103,6 +103,7 @@ export const Navbar: React.FC = () => {
     { name: 'Collections', href: '/collections' },
     { name: 'Candles', href: '/shop?category=candles' },
     { name: 'About', href: '/about' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -652,6 +653,17 @@ export const Navbar: React.FC = () => {
                   )}
                 >
                   <span>About</span>
+                  <ArrowRight className="h-3.5 w-3.5 opacity-60" />
+                </Link>
+
+                <Link
+                  to="/blog"
+                  className={cn(
+                    'flex items-center justify-between py-2.5 text-sm uppercase tracking-luxury font-medium border-b border-white/10 transition-colors',
+                    location.pathname.startsWith('/blog') ? 'text-luxury-gold font-semibold' : 'text-white/80 hover:text-white'
+                  )}
+                >
+                  <span>Blog</span>
                   <ArrowRight className="h-3.5 w-3.5 opacity-60" />
                 </Link>
 

@@ -8,6 +8,7 @@ import { ProductGrid } from '../components/ProductGrid';
 import { CatalogPagination } from '../components/CatalogPagination';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
+import { SEO } from '@/components/common/SEO';
 
 import type { FragranceFamily } from '@/types/database';
 
@@ -57,6 +58,12 @@ export const ShopPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black text-luxury-cream py-12 sm:py-20">
+      <SEO
+        title="Shop Luxury Fragrances | Philz Signature"
+        description="Explore the complete Philz Signature fragrance portfolio. Discover artisanal extraits de parfum, luxury candles, and room sprays crafted for distinct presence."
+        canonical="/shop"
+        ogType="website"
+      />
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 space-y-10 sm:space-y-12">
         {/* Header Title */}
         <div className="text-center max-w-3xl mx-auto space-y-4">

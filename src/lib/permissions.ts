@@ -297,6 +297,9 @@ export function canAccessAdminPath(role: UserRole | undefined | null, path: stri
   if (cleanPath.startsWith('/admin/cms')) {
     return hasPermission(role, 'cms:read');
   }
+  if (cleanPath.startsWith('/admin/blog')) {
+    return hasPermission(role, 'cms:read') || role === 'admin' || role === 'administrator';
+  }
   if (cleanPath.startsWith('/admin/media')) {
     return hasPermission(role, 'media:manage');
   }

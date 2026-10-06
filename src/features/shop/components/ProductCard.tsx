@@ -73,7 +73,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <img
             src={isHovered && hoverImage ? hoverImage : primaryImage || (isCandle ? '/candles/vanilla-treat.jpg' : '/products/philz-signature-official-bottle.jpg')}
-            alt={product.name}
+            alt={`${product.name} Luxury Parfum by Philz Signature`}
             className="w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
             loading={priority ? 'eager' : 'lazy'}
           />

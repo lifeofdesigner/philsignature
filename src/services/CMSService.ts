@@ -505,6 +505,7 @@ export class CMSService {
     company_links: [
       { label: 'About Us', url: '/about' },
       { label: 'Our Story', url: '/about#our-story' },
+      { label: 'Blog & Editorial', url: '/blog' },
       { label: 'Contact', url: '/contact' },
       { label: 'FAQs', url: '/faq' },
     ],

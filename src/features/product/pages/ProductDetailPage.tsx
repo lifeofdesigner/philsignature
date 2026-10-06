@@ -11,6 +11,7 @@ import { ProductReviewsSection } from '../components/ProductReviewsSection';
 import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
+import { SEO } from '@/components/common/SEO';
 
 export const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -69,8 +70,44 @@ export const ProductDetailPage: React.FC = () => {
     ? "Back to Room Sprays"
     : "Back to Shop";
 
+  const primaryImage =
+    typeof product.images?.[0] === 'string'
+      ? product.images[0]
+      : (product.images?.[0] as any)?.image_url || 'https://www.philzsignature.com/brand/philz-favicon.png';
+
+  const cleanDescription = (product.description || product.short_description || `Discover ${product.name} by Philz Signature. Handcrafted luxury fragrance.`)
+    .replace(/<[^>]*>/g, '')
+    .slice(0, 155);
+
+  const isInStock = (product.stock_quantity ?? 0) > 0;
+
   return (
     <div className="min-h-screen bg-luxury-black text-luxury-cream py-10 sm:py-16">
+      <SEO
+        title={`${product.name} | Philz Signature Parfums`}
+        description={cleanDescription}
+        canonical={`/product/${product.slug}`}
+        ogType="product"
+        ogImage={primaryImage}
+        structuredData={{
+          "@context": "https://schema.org/",
+          "@type": "Product",
+          "name": product.name,
+          "image": [primaryImage],
+          "description": cleanDescription,
+          "brand": {
+            "@type": "Brand",
+            "name": "Philz Signature"
+          },
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "NGN",
+            "price": product.price,
+            "availability": isInStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "url": `https://www.philzsignature.com/product/${product.slug}`
+          }
+        }}
+      />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Navigation Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-muted">

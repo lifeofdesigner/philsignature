@@ -26,6 +26,8 @@ const CollectionsPage = lazy(() => import('@/features/collections').then((m) => 
 const ProductDetailPage = lazy(() => import('@/features/product').then((m) => ({ default: m.ProductDetailPage })));
 const AboutPage = lazy(() => import('@/features/about').then((m) => ({ default: m.AboutPage })));
 const ContactPage = lazy(() => import('@/features/contact').then((m) => ({ default: m.ContactPage })));
+const BlogListPage = lazy(() => import('@/features/blog').then((m) => ({ default: m.BlogListPage })));
+const BlogPostPage = lazy(() => import('@/features/blog').then((m) => ({ default: m.BlogPostPage })));
 const FaqPage = lazy(() => import('@/features/faq').then((m) => ({ default: m.FaqPage })));
 const PolicyPage = lazy(() => import('@/features/cms/pages/PolicyPage').then((m) => ({ default: m.PolicyPage })));
 const CartPage = lazy(() => import('@/features/cart').then((m) => ({ default: m.CartPage })));
@@ -61,6 +63,7 @@ const AdminSeoPage = lazy(() => import('@/features/admin').then((m) => ({ defaul
 
 // Independent Admin Modules (Lazy Loaded)
 const AdminCmsPage = lazy(() => import('@/features/cms').then((m) => ({ default: m.AdminCmsPage })));
+const AdminBlogPage = lazy(() => import('@/features/admin/blog/pages/AdminBlogPage').then((m) => ({ default: m.AdminBlogPage })));
 const AdminMediaPage = lazy(() => import('@/features/media').then((m) => ({ default: m.AdminMediaPage })));
 const AdminPaymentsPage = lazy(() => import('@/features/payments').then((m) => ({ default: m.AdminPaymentsPage })));
 const AdminShippingPage = lazy(() => import('@/features/shipping').then((m) => ({ default: m.AdminShippingPage })));
@@ -84,6 +87,8 @@ export const router = createBrowserRouter([
       { path: 'product/:slug', element: withSuspense(ProductDetailPage) },
       { path: 'about', element: withSuspense(AboutPage) },
       { path: 'contact', element: withSuspense(ContactPage) },
+      { path: 'blog', element: withSuspense(BlogListPage) },
+      { path: 'blog/:slug', element: withSuspense(BlogPostPage) },
       { path: 'faq', element: withSuspense(FaqPage) },
       { path: 'policy/:slug', element: withSuspense(PolicyPage) },
       { path: 'privacy', element: withSuspense(PolicyPage) },
@@ -163,6 +168,7 @@ export const router = createBrowserRouter([
       { path: 'orders', element: withSuspense(AdminOrdersPage) },
       { path: 'customers', element: withSuspense(AdminCustomersPage) },
       { path: 'cms', element: withSuspense(AdminCmsPage) },
+      { path: 'blog', element: withSuspense(AdminBlogPage) },
       { path: 'media', element: withSuspense(AdminMediaPage) },
       { path: 'coupons', element: withSuspense(AdminCouponsPage) },
       { path: 'reviews', element: withSuspense(AdminReviewsPage) },
