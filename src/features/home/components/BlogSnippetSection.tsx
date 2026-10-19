@@ -1,18 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, Calendar, Clock } from 'lucide-react';
-import { useFeaturedBlogPosts } from '@/features/blog/hooks/useBlogPosts';
+import { ArrowRight, Sparkles, Calendar, Play } from 'lucide-react';
+import { useBlogPosts } from '@/features/blog/hooks/useBlogPosts';
 
 export const BlogSnippetSection: React.FC = () => {
-  const { data: featuredPosts = [], isLoading } = useFeaturedBlogPosts(3);
+  const { data, isLoading } = useBlogPosts({ publishedOnly: true, limit: 3 });
+  const posts = data?.posts || [];
 
-  if (isLoading || featuredPosts.length === 0) {
+  if (isLoading || posts.length === 0) {
     return null;
   }
 
   return (
     <section className="py-20 sm:py-28 bg-black text-luxury-cream border-t border-luxury-border/40 relative overflow-hidden">
-      {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-luxury-gold/5 blur-[120px] pointer-events-none rounded-full" />
 
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 relative z-10 space-y-12">
@@ -24,10 +24,10 @@ export const BlogSnippetSection: React.FC = () => {
               <span>Editorial Journal</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-luxury-cream tracking-tight">
-              Insights & Stories
+              Journal — Stories & Reactions
             </h2>
             <p className="text-sm sm:text-base text-luxury-sand/80 max-w-xl font-light">
-              Explore the artistry of fragrance creation, notes breakdowns, and luxury scent lifestyles.
+              Explore the artistry of fragrance creation, notes breakdowns, luxury scent lifestyles, and our Fragrance Reaction videos.
             </p>
           </div>
 
@@ -40,22 +40,14 @@ export const BlogSnippetSection: React.FC = () => {
           </Link>
         </div>
 
-        {/* 3 Most Recent Featured Posts as Horizontal Cards */}
+        {/* Latest 3 Posts */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-          {featuredPosts.map((post) => {
-            const wordCount = (post.content || '').replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
-            const readTime = Math.max(1, Math.ceil(wordCount / 200));
+          {posts.map((post) => {
+            const isVideo = post.content_type === 'video';
+            const thumbnail = post.video_thumbnail_url || post.cover_image_url || '/products/philz-signature-official-bottle.jpg';
             const formattedDate = post.published_at
-              ? new Date(post.published_at).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                })
-              : new Date(post.created_at).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                });
+              ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+              : new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
             return (
               <Link
@@ -63,17 +55,24 @@ export const BlogSnippetSection: React.FC = () => {
                 to={`/blog/${post.slug}`}
                 className="group flex flex-col sm:flex-row lg:flex-col overflow-hidden rounded-xs border border-luxury-border/60 bg-luxury-card hover:border-luxury-gold/60 transition-all duration-400 shadow-xl hover:-translate-y-1"
               >
-                {/* Image on left for sm/tablet, stacked on mobile & desktop columns */}
-                <div className="sm:w-2/5 lg:w-full aspect-[16/10] sm:aspect-auto lg:aspect-[16/10] overflow-hidden bg-luxury-charcoal shrink-0">
+                {/* Thumbnail */}
+                <div className="sm:w-2/5 lg:w-full aspect-[16/10] sm:aspect-auto lg:aspect-[16/10] overflow-hidden bg-luxury-charcoal shrink-0 relative">
                   <img
-                    src={post.cover_image_url || '/products/philz-signature-official-bottle.jpg'}
+                    src={thumbnail}
                     alt={`${post.title} - Philz Signature`}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-106"
                     loading="lazy"
                   />
+                  {isVideo && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-11 h-11 rounded-full bg-black/60 border-2 border-white/80 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform">
+                        <Play className="w-4 h-4 text-white fill-white ml-0.5" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Content on right */}
+                {/* Content */}
                 <div className="p-6 flex flex-col justify-between flex-1 space-y-4">
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between gap-2">
@@ -96,12 +95,15 @@ export const BlogSnippetSection: React.FC = () => {
                   </div>
 
                   <div className="pt-3 border-t border-luxury-border/40 flex items-center justify-between text-xs text-luxury-muted">
-                    <span className="flex items-center gap-1 font-light">
-                      <Clock className="w-3 h-3" />
-                      {readTime} min read
-                    </span>
+                    {isVideo ? (
+                      <span className="flex items-center gap-1 text-purple-400 font-medium">
+                        <Play className="w-3 h-3 fill-purple-400" /> Watch Video
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 font-light">Read Article</span>
+                    )}
                     <span className="text-luxury-gold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1 font-medium">
-                      Read <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-3 h-3" />
                     </span>
                   </div>
                 </div>

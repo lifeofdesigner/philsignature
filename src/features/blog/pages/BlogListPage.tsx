@@ -8,6 +8,7 @@ import { Sparkles, BookOpen } from 'lucide-react';
 
 const CATEGORIES = [
   'All',
+  'Fragrance Reactions',
   'Fragrance Guide',
   'Luxury Living',
   'Behind the Scent',
@@ -49,8 +50,8 @@ export const BlogListPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-black text-luxury-cream py-14 sm:py-20">
       <SEO
-        title="Insights & Stories | Philz Signature Blog"
-        description="Explore luxury fragrance guides, artisanal scent notes, behind-the-scenes creations, and style journals from Nigeria's premier perfume house."
+        title="Journal — Stories & Reactions | Philz Signature"
+        description="Explore luxury fragrance guides, Fragrance Reaction videos, artisanal scent notes, and style journals from Nigeria's premier perfume house."
         canonical="/blog"
         ogType="website"
       />
@@ -63,7 +64,7 @@ export const BlogListPage: React.FC = () => {
             <span>The Philz Signature Journal</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-luxury-cream tracking-tight">
-            Insights & Stories
+            Journal — Stories & Reactions
           </h1>
           <p className="text-sm sm:text-base text-luxury-sand/80 max-w-2xl mx-auto font-light leading-relaxed">
             Immerse yourself in the art of olfactory excellence, artisanal craftsmanship,

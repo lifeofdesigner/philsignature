@@ -195,6 +195,21 @@ export const AdminDashboardPage: React.FC = () => {
         </Card>
       </div>
 
+      {/* Quick Action Buttons */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {[
+          { label: 'Add New Product', href: '/admin/products', color: 'bg-[#DC2626] hover:bg-red-700 text-white' },
+          { label: 'Write Blog Post', href: '/admin/blog', color: 'bg-white hover:bg-slate-50 text-black border border-slate-300' },
+          { label: 'Create Discount Code', href: '/admin/coupons', color: 'bg-white hover:bg-slate-50 text-black border border-slate-300' },
+          { label: 'View All Orders', href: '/admin/orders', color: 'bg-white hover:bg-slate-50 text-black border border-slate-300' },
+        ].map((action) => (
+          <Link key={action.href} to={action.href}
+            className={`flex items-center justify-center px-4 py-3 rounded-lg text-xs font-bold tracking-wide transition-colors shadow-xs text-center ${action.color}`}>
+            {action.label}
+          </Link>
+        ))}
+      </div>
+
       {/* Main SaaS Section Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Orders Overview Table */}

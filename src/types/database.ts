@@ -421,6 +421,10 @@ export interface BlogPost {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  content_type: 'article' | 'video';
+  video_embed_url: string | null;
+  video_thumbnail_url: string | null;
+  featured_products: string[] | null;
 }
 
 

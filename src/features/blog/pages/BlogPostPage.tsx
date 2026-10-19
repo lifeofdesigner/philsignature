@@ -7,6 +7,7 @@ import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { blogService } from '@/services/BlogService';
+import { convertToEmbedUrl } from '@/lib/videoEmbed';
 import { Calendar, Clock, User, Eye, ChevronLeft, ArrowLeft, Share2 } from 'lucide-react';
 
 export const BlogPostPage: React.FC = () => {
@@ -52,6 +53,8 @@ export const BlogPostPage: React.FC = () => {
     );
   }
 
+  const isVideo = post.content_type === 'video';
+  const embedUrl = isVideo ? (convertToEmbedUrl(post.video_embed_url || '') || post.video_embed_url) : null;
   const wordCount = (post.content || '').replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
@@ -178,6 +181,22 @@ export const BlogPostPage: React.FC = () => {
       {/* Main Content Area */}
       <main className="container mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
         <div className="max-w-3xl mx-auto space-y-10">
+
+          {/* Video Embed Player */}
+          {isVideo && embedUrl && (
+            <div className="space-y-4">
+              <div className="relative w-full max-w-[800px] mx-auto aspect-video rounded-xs overflow-hidden bg-black border border-luxury-border/60 shadow-2xl">
+                <iframe
+                  src={embedUrl}
+                  title={post.title}
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          )}
+
           {/* Excerpt Lead */}
           {post.excerpt && (
             <p className="font-serif text-lg sm:text-xl text-luxury-sand font-normal leading-relaxed italic border-l-2 border-luxury-gold pl-5 py-1">
@@ -185,9 +204,10 @@ export const BlogPostPage: React.FC = () => {
             </p>
           )}
 
-          {/* Rich Body Content */}
+          {/* Rich Body Content (articles only) */}
+          {!isVideo && post.content && (
           <div
-            className="blog-content prose prose-invert prose-gold max-w-none 
+            className="blog-content prose prose-invert prose-gold max-w-none
               prose-headings:font-serif prose-headings:text-luxury-cream prose-headings:font-normal
               prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:text-luxury-gold
               prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
@@ -196,6 +216,7 @@ export const BlogPostPage: React.FC = () => {
               prose-strong:text-luxury-cream prose-strong:font-semibold"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+          )}
 
           {/* Tags & Share */}
           <div className="pt-8 border-t border-luxury-border/60 flex flex-wrap items-center justify-between gap-4">
