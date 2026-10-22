@@ -42,19 +42,19 @@ export const Footer: React.FC = () => {
     : CMSService.DEFAULT_FOOTER.company_links || [];
 
   return (
-    <footer className="bg-black border-t border-white/10 text-white mt-auto">
+    <footer className="bg-footer-bg border-t border-theme text-text-primary mt-auto">
       {/* Brand Value Pillars */}
-      <div className="border-b border-white/10 py-10">
+      <div className="border-b border-theme py-10">
         <div className="container mx-auto px-4 sm:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="flex items-center space-x-4">
             <div className="h-10 w-10 border border-luxury-gold/30 rounded-xs flex items-center justify-center shrink-0 text-luxury-gold bg-luxury-gold/5">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-text-primary">
                 Authentic High-Concentration
               </h4>
-              <p className="text-[11px] text-white/60 mt-0.5 font-light">
+              <p className="text-[11px] text-text-muted-theme mt-0.5 font-light">
                 Long-lasting perfume oils & extraits
               </p>
             </div>
@@ -65,10 +65,10 @@ export const Footer: React.FC = () => {
               <Truck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-text-primary">
                 Nationwide Delivery
               </h4>
-              <p className="text-[11px] text-white/60 mt-0.5 font-light">
+              <p className="text-[11px] text-text-muted-theme mt-0.5 font-light">
                 Express dispatch across Nigeria
               </p>
               <Link
@@ -86,10 +86,10 @@ export const Footer: React.FC = () => {
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-text-primary">
                 Private Label & Bespoke
               </h4>
-              <p className="text-[11px] text-white/60 mt-0.5 font-light">
+              <p className="text-[11px] text-text-muted-theme mt-0.5 font-light">
                 Custom fragrance creation
               </p>
             </div>
@@ -100,10 +100,10 @@ export const Footer: React.FC = () => {
               <Gift className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs uppercase tracking-luxury font-medium text-white">
+              <h4 className="text-xs uppercase tracking-luxury font-medium text-text-primary">
                 Corporate Gifting
               </h4>
-              <p className="text-[11px] text-white/60 mt-0.5 font-light">
+              <p className="text-[11px] text-text-muted-theme mt-0.5 font-light">
                 Branded hampers & bespoke boxes
               </p>
             </div>
@@ -124,7 +124,7 @@ export const Footer: React.FC = () => {
                 className="h-10 sm:h-12 w-auto max-w-[200px] object-contain group-hover:opacity-90 transition-opacity"
               />
             ) : (
-              <span className="font-serif text-2xl tracking-[0.25em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors">
+              <span className="font-serif text-2xl tracking-[0.25em] text-text-primary uppercase font-normal group-hover:text-luxury-gold transition-colors">
                 {brandName}
               </span>
             )}
@@ -134,7 +134,7 @@ export const Footer: React.FC = () => {
             {tagline}
           </div>
 
-          <p className="text-xs text-white/70 leading-relaxed max-w-sm font-light">
+          <p className="text-xs text-text-secondary leading-relaxed max-w-sm font-light">
             {brandDescription}
           </p>
 
@@ -154,7 +154,7 @@ export const Footer: React.FC = () => {
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center text-xs text-white/70 hover:text-white gap-2 font-light"
+              className="inline-flex items-center text-xs text-text-secondary hover:text-text-primary gap-2 font-light"
             >
               <Instagram className="h-3.5 w-3.5 text-luxury-gold" />
               <span>Instagram: {instagramHandle}</span>
@@ -164,10 +164,10 @@ export const Footer: React.FC = () => {
 
         {/* SHOP LINKS Column */}
         <div>
-          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-white mb-4">
+          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-text-primary mb-4">
             Shop
           </h4>
-          <ul className="space-y-2.5 text-xs text-white/70 font-light">
+          <ul className="space-y-2.5 text-xs text-text-secondary font-light">
             {shopLinks.map((link, idx) => (
               <li key={idx}>
                 <Link to={link.url} className="hover:text-luxury-gold transition-colors">
@@ -180,10 +180,10 @@ export const Footer: React.FC = () => {
 
         {/* SERVICES Column */}
         <div>
-          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-white mb-4">
+          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-text-primary mb-4">
             Services
           </h4>
-          <ul className="space-y-2.5 text-xs text-white/70 font-light">
+          <ul className="space-y-2.5 text-xs text-text-secondary font-light">
             {servicesLinks.map((link, idx) => (
               <li key={idx}>
                 <Link to={link.url} className="hover:text-luxury-gold transition-colors">
@@ -205,10 +205,10 @@ export const Footer: React.FC = () => {
 
         {/* COMPANY Column */}
         <div>
-          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-white mb-4">
+          <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-text-primary mb-4">
             Company
           </h4>
-          <ul className="space-y-2.5 text-xs text-white/70 font-light">
+          <ul className="space-y-2.5 text-xs text-text-secondary font-light">
             {companyLinks.map((link, idx) => (
               <li key={idx}>
                 <Link to={link.url} className="hover:text-luxury-gold transition-colors">
@@ -221,19 +221,19 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Footer Closing Line */}
-      <div className="border-t border-white/10 py-6 text-center">
+      <div className="border-t border-theme py-6 text-center">
         <p className="font-serif text-xs sm:text-sm text-luxury-gold/90 tracking-wide font-light">
           {closingLine}
         </p>
       </div>
 
       {/* Bottom Copyright & Legal Links */}
-      <div className="border-t border-white/10 pt-6 pb-20 lg:pb-6 bg-black/60">
-        <div className="container mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/50 space-y-2 sm:space-y-0 font-light">
+      <div className="border-t border-theme pt-6 pb-20 lg:pb-6 bg-surface/60">
+        <div className="container mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-text-muted-theme space-y-2 sm:space-y-0 font-light">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <p>{copyrightText}</p>
             {appearance.show_company_registration_number !== false && settings.company_registration_number && (
-              <span className="text-[10px] tracking-wider text-luxury-gold/90 font-mono border-l border-white/20 pl-2">
+              <span className="text-[10px] tracking-wider text-luxury-gold/90 font-mono border-l border-theme pl-2">
                 {settings.company_registration_number}
               </span>
             )}
@@ -257,19 +257,19 @@ export const Footer: React.FC = () => {
 
       {/* Site Credit (super admin managed) */}
       {footer.credit_text && (
-        <div className="border-t border-white/10 py-4 bg-black/80">
+        <div className="border-t border-theme py-4 bg-surface">
           <div className="container mx-auto px-4 sm:px-8 text-center">
             {footer.credit_url ? (
               <a
                 href={footer.credit_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] text-white/40 hover:text-luxury-gold transition-colors font-light"
+                className="text-[11px] text-text-muted-theme hover:text-luxury-gold transition-colors font-light"
               >
                 {footer.credit_text}
               </a>
             ) : (
-              <p className="text-[11px] text-white/40 font-light">{footer.credit_text}</p>
+              <p className="text-[11px] text-text-muted-theme font-light">{footer.credit_text}</p>
             )}
           </div>
         </div>

@@ -106,7 +106,7 @@ export const BlogPostPage: React.FC = () => {
   };
 
   return (
-    <article className="min-h-screen bg-black text-luxury-cream">
+    <article className="min-h-screen bg-luxury-black text-luxury-cream">
       <SEO
         title={pageTitle}
         description={pageDescription}
@@ -175,7 +175,7 @@ export const BlogPostPage: React.FC = () => {
           </h1>
 
           {/* Meta details */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-luxury-sand/80 pt-2 border-t border-white/10">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-luxury-sand/80 pt-2 border-t border-luxury-border">
             <span className="flex items-center gap-1.5">
               <User className="w-3.5 h-3.5 text-luxury-gold" />
               {post.author_name || 'Philz Signature'}
@@ -203,7 +203,7 @@ export const BlogPostPage: React.FC = () => {
           {/* Video Embed Player — click-to-play with thumbnail */}
           {isVideo && embedUrl && (
             <div className="space-y-4">
-              <div className="relative w-full max-w-[800px] mx-auto aspect-video rounded-sm overflow-hidden bg-black border border-luxury-border/60 shadow-2xl">
+              <div className="relative w-full max-w-[800px] mx-auto aspect-video rounded-sm overflow-hidden bg-luxury-black border border-luxury-border/60 shadow-2xl">
                 {!playing && thumbnail ? (
                   <button
                     type="button"

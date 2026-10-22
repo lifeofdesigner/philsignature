@@ -69,7 +69,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
           <span className="text-xs uppercase tracking-luxury text-luxury-gold font-medium">
             Filters
           </span>
-          <button onClick={onClose} className="p-1 text-luxury-muted hover:text-white" aria-label="Close filters">
+          <button onClick={onClose} className="p-1 text-luxury-muted hover:text-luxury-cream" aria-label="Close filters">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -113,7 +113,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                       (cat.value === 'room-spray' && categoryId === 'room-sprays') ||
                       (cat.value === 'candles' && categoryId === 'candle'))
                       ? 'bg-luxury-gold text-black font-semibold'
-                      : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
+                      : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-charcoal'
                   }`}
                 >
                   <span>{cat.label}</span>
@@ -143,7 +143,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                   className={`text-xs py-2 px-3 rounded-xs transition-colors text-center ${
                     gender === g.value
                       ? 'bg-luxury-gold text-black font-semibold'
-                      : 'text-luxury-sand hover:text-white bg-white/5 border border-white/10 hover:border-luxury-gold/40'
+                      : 'text-luxury-sand hover:text-white bg-luxury-charcoal/30 border border-luxury-border hover:border-luxury-gold/40'
                   }`}
                 >
                   <span>{g.label}</span>
@@ -165,7 +165,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
               className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between rounded-xs ${
                 family === 'all'
                   ? 'bg-luxury-gold text-black font-semibold'
-                  : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
+                  : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-charcoal'
               }`}
             >
               <span>All Fragrance Families</span>
@@ -178,7 +178,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                 className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors flex items-center justify-between rounded-xs ${
                   family === fam
                     ? 'bg-luxury-gold text-black font-semibold'
-                    : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
+                    : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-charcoal'
                 }`}
               >
                 <span>{fam}</span>
@@ -200,7 +200,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                 className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors ${
                   collectionId === 'all'
                     ? 'bg-luxury-gold text-black font-semibold'
-                    : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
+                    : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-charcoal'
                 }`}
               >
                 <span>All Collections</span>
@@ -213,7 +213,7 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
                   className={`w-full text-left text-xs py-1.5 px-2.5 transition-colors truncate ${
                     collectionId === col.id
                       ? 'bg-luxury-gold text-black font-semibold'
-                      : 'text-luxury-sand hover:text-white hover:bg-luxury-charcoal'
+                      : 'text-luxury-sand hover:text-luxury-cream hover:bg-luxury-charcoal'
                   }`}
                 >
                   <span className="truncate">{col.name}</span>

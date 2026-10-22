@@ -26,7 +26,7 @@ export const BrandStorySection: React.FC<BrandStorySectionProps> = ({ story }) =
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.9, ease: LUXURY_EASE }}
-            className="relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] overflow-hidden bg-luxury-charcoal border border-white/10 rounded-sm shadow-2xl group"
+            className="relative aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5] overflow-hidden bg-luxury-charcoal border border-luxury-border rounded-sm shadow-2xl group"
           >
             <img
               src={story.image1_url || '/media/banners/banner-4.jpg'}
@@ -152,7 +152,7 @@ export const BrandStorySection: React.FC<BrandStorySectionProps> = ({ story }) =
 
               <Link
                 to="/contact?subject=Private Label Fragrance Project"
-                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold group-hover:text-white font-medium transition-colors pt-2"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold group-hover:text-luxury-cream font-medium transition-colors pt-2"
               >
                 <span>Start A Project</span>
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
@@ -181,7 +181,7 @@ export const BrandStorySection: React.FC<BrandStorySectionProps> = ({ story }) =
 
               <Link
                 to="/contact?subject=Corporate Fragrance Gifting"
-                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold group-hover:text-white font-medium transition-colors pt-2"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold group-hover:text-luxury-cream font-medium transition-colors pt-2"
               >
                 <span>Request A Quote</span>
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />

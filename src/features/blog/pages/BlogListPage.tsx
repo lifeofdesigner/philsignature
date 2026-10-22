@@ -48,7 +48,7 @@ export const BlogListPage: React.FC = () => {
   const hasMore = posts.length > displayCount;
 
   return (
-    <div className="min-h-screen bg-black text-luxury-cream py-14 sm:py-20">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-14 sm:py-20">
       <SEO
         title="Journal — Stories & Reactions | Philz Signature"
         description="Explore luxury fragrance guides, Fragrance Reaction videos, artisanal scent notes, and style journals from Nigeria's premier perfume house."

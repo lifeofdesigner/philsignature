@@ -9,7 +9,7 @@ export const NotFoundPage: React.FC = () => {
       <span className="text-[11px] uppercase tracking-luxury-wide text-luxury-gold mb-3 font-medium">
         Page Notice
       </span>
-      <h1 className="font-serif text-4xl sm:text-5xl text-white font-normal mb-4">
+      <h1 className="font-serif text-4xl sm:text-5xl text-luxury-cream font-normal mb-4">
         Page Not Found
       </h1>
       <p className="text-xs sm:text-sm text-luxury-muted leading-relaxed mb-8 font-light max-w-sm">

@@ -39,7 +39,7 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
             <StaggerItem key={col.id}>
               <Link
                 to={`/shop?collection=${col.id}`}
-                className="group relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-neutral-900 border border-white/10 hover:border-luxury-gold/50 flex flex-col justify-end p-6 sm:p-8 transition-all duration-500 rounded-sm shadow-2xl block"
+                className="group relative aspect-[3/4] sm:aspect-[4/5] overflow-hidden bg-luxury-charcoal border border-luxury-border hover:border-luxury-gold/50 flex flex-col justify-end p-6 sm:p-8 transition-all duration-500 rounded-sm shadow-2xl block"
               >
                 <div className="absolute inset-0 z-0 overflow-hidden">
                   <img

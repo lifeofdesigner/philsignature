@@ -68,7 +68,7 @@ export const InstagramFeedSection: React.FC<InstagramFeedSectionProps> = ({ cust
               rel="noopener noreferrer"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-luxury-gold hover:text-black transition-all border border-white/20 hover:border-luxury-gold text-xs uppercase tracking-wider font-semibold text-white shadow-lg backdrop-blur-md cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-luxury-charcoal/60 hover:bg-luxury-gold hover:text-black transition-all border border-luxury-border hover:border-luxury-gold text-xs uppercase tracking-wider font-semibold text-luxury-cream shadow-lg backdrop-blur-md cursor-pointer"
             >
               <Instagram className="h-4 w-4" />
               <span>{config.handle || '@philztheperfumer'}</span>
@@ -81,7 +81,7 @@ export const InstagramFeedSection: React.FC<InstagramFeedSectionProps> = ({ cust
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="h-9 w-9 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:border-luxury-gold hover:bg-white/10 transition-all cursor-pointer"
+                  className="h-9 w-9 rounded-full border border-luxury-border flex items-center justify-center text-luxury-muted hover:text-luxury-cream hover:border-luxury-gold hover:bg-luxury-charcoal/50 transition-all cursor-pointer"
                   aria-label="Previous posts"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -89,7 +89,7 @@ export const InstagramFeedSection: React.FC<InstagramFeedSectionProps> = ({ cust
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="h-9 w-9 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-white hover:border-luxury-gold hover:bg-white/10 transition-all cursor-pointer"
+                  className="h-9 w-9 rounded-full border border-luxury-border flex items-center justify-center text-luxury-muted hover:text-luxury-cream hover:border-luxury-gold hover:bg-luxury-charcoal/50 transition-all cursor-pointer"
                   aria-label="Next posts"
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -112,7 +112,7 @@ export const InstagramFeedSection: React.FC<InstagramFeedSectionProps> = ({ cust
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.08, ease: LUXURY_EASE }}
               whileHover={{ y: -4 }}
-              className="group relative aspect-square overflow-hidden bg-neutral-950 border border-white/10 rounded-sm block"
+              className="group relative aspect-square overflow-hidden bg-luxury-charcoal border border-luxury-border rounded-sm block"
             >
               <img
                 src={post.image_url}

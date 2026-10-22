@@ -124,7 +124,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
           <span className="text-[8px] sm:text-[9px] uppercase tracking-luxury text-luxury-muted block truncate">
             {productSubtitle}
           </span>
-          <h3 className="font-serif text-sm sm:text-base lg:text-lg text-white font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
+          <h3 className="font-serif text-sm sm:text-base lg:text-lg text-luxury-cream font-normal group-hover:text-luxury-gold transition-colors line-clamp-1">
             <Link to={`/product/${product.slug}`}>{product.name}</Link>
           </h3>
           {product.tagline && (

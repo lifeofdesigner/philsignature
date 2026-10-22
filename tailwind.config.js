@@ -54,6 +54,19 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        // Semantic theme-aware aliases — always use these instead of hardcoded dark colors
+        surface: 'var(--color-surface)',
+        'surface-alt': 'var(--color-surface-alt)',
+        'surface-card': 'var(--color-surface-card)',
+        'surface-elevated': 'var(--color-surface-elevated)',
+        'text-primary': 'var(--color-text-primary)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'text-muted-theme': 'var(--color-text-muted)',
+        'border-theme': 'var(--color-border)',
+        'border-strong': 'var(--color-border-strong)',
+        'nav-bg': 'var(--color-nav-bg)',
+        'footer-bg': 'var(--color-footer-bg)',
+        'skeleton-theme': 'var(--color-skeleton)',
         // Luxury Philz Signature palette tokens with dynamic theme switching
         luxury: {
           black: 'rgb(var(--luxury-black) / <alpha-value>)',

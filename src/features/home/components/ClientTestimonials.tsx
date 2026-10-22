@@ -49,7 +49,7 @@ export const ClientTestimonials: React.FC = () => {
                       ))}
                     </div>
                     {r.title && (
-                      <h4 className="text-xs font-semibold text-white uppercase tracking-wider">
+                      <h4 className="text-xs font-semibold text-luxury-cream uppercase tracking-wider">
                         {r.title}
                       </h4>
                     )}

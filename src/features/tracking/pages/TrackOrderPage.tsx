@@ -220,7 +220,7 @@ export const TrackOrderPage: React.FC = () => {
     : null;
 
   return (
-    <div className="min-h-screen bg-luxury-black pb-28 pt-10 text-white selection:bg-luxury-gold selection:text-black">
+    <div className="min-h-screen bg-luxury-black pb-28 pt-10 text-luxury-cream selection:bg-luxury-gold selection:text-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
         
         {/* Header Billboard */}
@@ -355,7 +355,7 @@ export const TrackOrderPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => refetch()}
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-sm text-xs uppercase tracking-wider font-medium transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 bg-luxury-charcoal/60 hover:bg-luxury-charcoal text-luxury-cream rounded-sm text-xs uppercase tracking-wider font-medium transition-colors cursor-pointer"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
                 <span>Try Again</span>
@@ -372,7 +372,7 @@ export const TrackOrderPage: React.FC = () => {
               exit={{ opacity: 0, y: -8 }}
               className="bg-luxury-card border border-luxury-border p-8 text-center rounded-sm shadow-xl space-y-3"
             >
-              <div className="h-12 w-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center mx-auto text-luxury-muted">
+              <div className="h-12 w-12 rounded-full border border-luxury-border bg-white/5 flex items-center justify-center mx-auto text-luxury-muted">
                 <AlertCircle className="h-6 w-6" />
               </div>
               <div className="space-y-1.5">
@@ -400,7 +400,7 @@ export const TrackOrderPage: React.FC = () => {
               <div className="bg-luxury-card border border-luxury-gold/40 rounded-sm shadow-2xl p-6 sm:p-8 relative overflow-hidden">
                 <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-luxury-gold/5 rounded-full blur-2xl pointer-events-none" />
 
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-luxury-border pb-6 mb-6">
                   <div>
                     <span className="text-[10px] text-luxury-muted uppercase tracking-luxury font-medium block">
                       Order Reference
@@ -421,7 +421,7 @@ export const TrackOrderPage: React.FC = () => {
                 </div>
 
                 {/* Status Highlight Banner */}
-                <div className="bg-black/50 border border-white/10 rounded-sm p-4 sm:p-5 flex items-start gap-3.5 mb-6">
+                <div className="bg-luxury-charcoal/80 border border-luxury-border rounded-sm p-4 sm:p-5 flex items-start gap-3.5 mb-6">
                   <div className="h-9 w-9 rounded-full bg-luxury-gold/10 border border-luxury-gold/30 flex items-center justify-center shrink-0 text-luxury-gold mt-0.5">
                     <Sparkles className="h-4 w-4" />
                   </div>
@@ -468,7 +468,7 @@ export const TrackOrderPage: React.FC = () => {
 
               {/* PROGRESS STEPPER (6 Customer Milestones) */}
               <div className="bg-luxury-card border border-luxury-border/80 rounded-sm shadow-xl p-6 sm:p-8">
-                <div className="flex items-center justify-between mb-6 pb-3 border-b border-white/10">
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-luxury-border">
                   <h3 className="font-serif text-base text-luxury-cream font-medium flex items-center gap-2">
                     <Truck className="h-4 w-4 text-luxury-gold" />
                     <span>Fulfillment Journey</span>
@@ -492,7 +492,7 @@ export const TrackOrderPage: React.FC = () => {
                           className={`absolute -left-6 sm:-left-8 top-0.5 h-6 w-6 rounded-full flex items-center justify-center transition-all ${
                             isCompleted
                               ? 'bg-luxury-gold text-black shadow-[0_0_12px_rgba(212,175,55,0.6)]'
-                              : 'bg-luxury-card border border-white/20 text-white/40'
+                              : 'bg-luxury-card border border-luxury-border text-luxury-muted'
                           }`}
                         >
                           {isCompleted ? (
@@ -511,7 +511,7 @@ export const TrackOrderPage: React.FC = () => {
                                   ? 'text-luxury-gold font-semibold'
                                   : isCompleted
                                   ? 'text-luxury-cream'
-                                  : 'text-white/50'
+                                  : 'text-luxury-muted'
                               }`}
                             >
                               {step.title}
@@ -528,7 +528,7 @@ export const TrackOrderPage: React.FC = () => {
                                 ? 'text-luxury-cream'
                                 : isCompleted
                                 ? 'text-luxury-muted'
-                                : 'text-white/40'
+                                : 'text-luxury-muted'
                             }`}
                           >
                             {step.description}
@@ -547,7 +547,7 @@ export const TrackOrderPage: React.FC = () => {
               {/* ORDER ITEMS LIST */}
               {order.items && order.items.length > 0 && (
                 <div className="bg-luxury-card border border-luxury-border/80 rounded-sm shadow-xl p-6 sm:p-8 space-y-4">
-                  <h3 className="font-serif text-base text-luxury-cream font-medium flex items-center gap-2 border-b border-white/10 pb-3">
+                  <h3 className="font-serif text-base text-luxury-cream font-medium flex items-center gap-2 border-b border-luxury-border pb-3">
                     <ShoppingBag className="h-4 w-4 text-luxury-gold" />
                     <span>Creations in this Consignment</span>
                   </h3>
@@ -560,10 +560,10 @@ export const TrackOrderPage: React.FC = () => {
                             <img
                               src={item.product_image_url}
                               alt={item.product_name}
-                              className="h-12 w-10 object-cover rounded-xs border border-white/10 bg-black shrink-0"
+                              className="h-12 w-10 object-cover rounded-xs border border-luxury-border bg-luxury-charcoal shrink-0"
                             />
                           ) : (
-                            <div className="h-12 w-10 rounded-xs border border-white/10 bg-white/5 flex items-center justify-center shrink-0 text-luxury-gold">
+                            <div className="h-12 w-10 rounded-xs border border-luxury-border bg-white/5 flex items-center justify-center shrink-0 text-luxury-gold">
                               <Sparkles className="h-4 w-4" />
                             </div>
                           )}
@@ -585,7 +585,7 @@ export const TrackOrderPage: React.FC = () => {
                   </div>
 
                   {/* Financial Summary */}
-                  <div className="border-t border-white/10 pt-4 space-y-2 text-xs">
+                  <div className="border-t border-luxury-border pt-4 space-y-2 text-xs">
                     <div className="flex justify-between text-luxury-muted">
                       <span>Subtotal</span>
                       <span className="font-mono text-luxury-cream">{formatCurrency(order.subtotal)}</span>
@@ -602,7 +602,7 @@ export const TrackOrderPage: React.FC = () => {
                         <span className="font-mono">-{formatCurrency(order.discount_amount)}</span>
                       </div>
                     )}
-                    <div className="border-t border-white/10 pt-3 flex justify-between items-baseline">
+                    <div className="border-t border-luxury-border pt-3 flex justify-between items-baseline">
                       <span className="font-serif text-sm text-luxury-cream">Total</span>
                       <span className="font-mono text-base font-bold text-luxury-gold">
                         {formatCurrency(order.total_amount)}
@@ -613,7 +613,7 @@ export const TrackOrderPage: React.FC = () => {
               )}
 
               {/* CLIENT CONCIERGE HELP CARD */}
-              <div className="bg-luxury-card/60 border border-white/10 rounded-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="bg-luxury-card/60 border border-luxury-border rounded-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-center sm:text-left space-y-1">
                   <span className="text-[10px] uppercase tracking-wider text-luxury-gold font-medium block">
                     Questions Regarding Your Delivery?
@@ -643,19 +643,19 @@ export const TrackOrderPage: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mt-8 border border-white/10 rounded-sm p-6 sm:p-8 bg-luxury-card/40 text-center space-y-4"
+            className="mt-8 border border-luxury-border rounded-sm p-6 sm:p-8 bg-luxury-card/40 text-center space-y-4"
           >
             <span className="text-[10px] uppercase tracking-luxury text-luxury-gold font-medium block">
               Frequently Asked Questions
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left text-xs">
-              <div className="bg-black/40 border border-white/5 p-4 rounded-xs space-y-1">
+              <div className="bg-luxury-charcoal/60 border border-luxury-border/40 p-4 rounded-xs space-y-1">
                 <h4 className="text-luxury-cream font-medium">Where do I find my order number?</h4>
                 <p className="text-luxury-muted font-light leading-relaxed">
                   Your order number starts with <span className="font-mono text-luxury-gold">PS-</span> and is included in your confirmation email, receipt, and SMS notification.
                 </p>
               </div>
-              <div className="bg-black/40 border border-white/5 p-4 rounded-xs space-y-1">
+              <div className="bg-luxury-charcoal/60 border border-luxury-border/40 p-4 rounded-xs space-y-1">
                 <h4 className="text-luxury-cream font-medium">Do I need an account to track?</h4>
                 <p className="text-luxury-muted font-light leading-relaxed">
                   No account is required. Both guest patrons and registered clients can track consignments using their order number.

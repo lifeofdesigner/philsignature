@@ -2,6 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===================================================================
+   SEMANTIC COLOR VARIABLES — drive bg-surface, text-primary, etc.
+   These are the single source of truth for every theme-aware color.
+   DO NOT add hardcoded Tailwind color classes (bg-black, text-white)
+   to storefront components — use these semantic aliases instead.
+   =================================================================== */
+:root,
+[data-theme="dark"] {
+  --color-surface: #0D0D0D;
+  --color-surface-alt: #161616;
+  --color-surface-card: #1A1A1A;
+  --color-surface-elevated: #222222;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.15);
+  --color-text-primary: #FAF8F5;
+  --color-text-secondary: #D5CCBF;
+  --color-text-muted: #88847D;
+  --color-overlay: rgba(0, 0, 0, 0.75);
+  --color-input-bg: #1A1A1A;
+  --color-input-border: rgba(255, 255, 255, 0.12);
+  --color-nav-bg: rgba(13, 13, 13, 0.95);
+  --color-footer-bg: #0D0D0D;
+  --color-skeleton: #2A2A2A;
+  --color-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] {
+  --color-surface: #FAF7F4;
+  --color-surface-alt: #F2EDE8;
+  --color-surface-card: #FFFFFF;
+  --color-surface-elevated: #FFFFFF;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.15);
+  --color-text-primary: #1A1209;
+  --color-text-secondary: #4A3A2A;
+  --color-text-muted: #8A7565;
+  --color-overlay: rgba(0, 0, 0, 0.4);
+  --color-input-bg: #FFFFFF;
+  --color-input-border: rgba(0, 0, 0, 0.15);
+  --color-nav-bg: rgba(250, 247, 244, 0.95);
+  --color-footer-bg: #F2EDE8;
+  --color-skeleton: #E8E0D8;
+  --color-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Gold is theme-invariant */
+:root {
+  --color-gold: #C5A880;
+  --color-gold-hover: #DEC5A2;
+  --color-gold-muted: rgba(197, 168, 128, 0.15);
+}
+
 @layer base {
   /* Permanent Dark Theme Base Tokens for Philz Signature Storefront */
   :root,
@@ -401,28 +453,15 @@ img, video, svg, canvas, .no-theme-transition,
   color: #4A3D2A !important;
 }
 
-/* Footer — hardcoded bg-black needs explicit light override */
-[data-theme="light"] footer {
-  background-color: #F2EDE6 !important;
-  border-color: rgba(0,0,0,0.08) !important;
-  color: #1A1209 !important;
-}
-[data-theme="light"] footer h4,
-[data-theme="light"] footer p,
-[data-theme="light"] footer span,
-[data-theme="light"] footer a:not([class*="text-luxury-gold"]):not([class*="text-gold"]) {
-  color: #4A3D2A !important;
-}
-[data-theme="light"] footer .border-white\/10 {
-  border-color: rgba(0,0,0,0.08) !important;
-}
-[data-theme="light"] footer .bg-luxury-gold\/5 {
-  background-color: rgba(197, 168, 128, 0.1) !important;
+/* Hero text stays white in both themes — it sits on a dark video background */
+[data-theme="light"] .hero-always-white,
+[data-theme="light"] .hero-always-white * {
+  color: #FFFFFF !important;
 }
 
-/* Announcement bar text in light mode */
-[data-theme="light"] :not(.admin-scope) .text-white:not([data-keep-white]):not(button) {
-  color: inherit;
+/* Collection cards: text on dark image overlays stays white */
+[data-theme="light"] .image-overlay-text {
+  color: #FFFFFF !important;
 }
 
 /* ===================================================================
