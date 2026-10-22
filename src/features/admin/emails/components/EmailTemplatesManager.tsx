@@ -291,9 +291,9 @@ export const EmailTemplatesManager: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setEditingTemplate(template)}
-                        className="px-3.5 py-1.5 text-xs rounded-lg bg-[#DC2626] hover:bg-[#B91C1C] text-white font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+                        className="px-3.5 py-1.5 text-xs rounded-lg bg-[#C5A880] hover:bg-[#B89A6E] text-[#111111] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
                       >
-                        <Edit3 className="h-3.5 w-3.5 text-white" />
+                        <Edit3 className="h-3.5 w-3.5" />
                         <span>Edit Template</span>
                       </button>
                     </div>

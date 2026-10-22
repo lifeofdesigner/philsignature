@@ -56,7 +56,7 @@ const ToolbarButton: React.FC<{
     onClick={onClick}
     title={title}
     className={`h-7 w-7 flex items-center justify-center rounded-md transition-colors cursor-pointer ${
-      active ? 'bg-[#DC2626] text-white' : 'text-[#374151] hover:bg-[#F5F5F5]'
+      active ? 'bg-[#C5A880] text-[#111111]' : 'text-[#374151] hover:bg-[#F5F5F5]'
     }`}
   >
     {children}
@@ -268,8 +268,8 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
                       onClick={() => handleInsertVariable(v)}
                       className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono transition-all cursor-pointer border ${
                         isCopied
-                          ? 'bg-[#DC2626] text-white border-[#DC2626] font-bold'
-                          : 'bg-white text-[#374151] border-[#D1D5DB] hover:border-[#DC2626] hover:text-[#DC2626]'
+                          ? 'bg-[#C5A880] text-[#111111] border-[#C5A880] font-bold'
+                          : 'bg-white text-[#374151] border-[#D1D5DB] hover:border-[#C5A880] hover:text-[#111111]'
                       }`}
                       title="Click to copy"
                     >

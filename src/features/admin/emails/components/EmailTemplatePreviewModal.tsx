@@ -78,7 +78,7 @@ export const EmailTemplatePreviewModal: React.FC<EmailTemplatePreviewModalProps>
                 onClick={() => setDeviceView('desktop')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md transition-colors cursor-pointer ${
                   deviceView === 'desktop'
-                    ? 'bg-[#DC2626] text-white font-medium'
+                    ? 'bg-[#C5A880] text-[#111111] font-medium'
                     : 'text-[#6B7280] hover:text-black'
                 }`}
                 title="Desktop View"
@@ -91,7 +91,7 @@ export const EmailTemplatePreviewModal: React.FC<EmailTemplatePreviewModalProps>
                 onClick={() => setDeviceView('mobile')}
                 className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md transition-colors cursor-pointer ${
                   deviceView === 'mobile'
-                    ? 'bg-[#DC2626] text-white font-medium'
+                    ? 'bg-[#C5A880] text-[#111111] font-medium'
                     : 'text-[#6B7280] hover:text-black'
                 }`}
                 title="Mobile View"

@@ -149,10 +149,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, onClose }) =
                         onClick={onClose}
                         className={({ isActive }) =>
                           cn(
-                            'group flex items-start gap-2.5 px-3 py-2 rounded-lg transition-all',
+                            'group flex items-start gap-2.5 px-3 py-2 rounded-lg transition-all border-l-2',
                             isActive
-                              ? 'bg-[#DC2626] text-white shadow-xs'
-                              : 'text-slate-700 hover:text-black hover:bg-slate-100'
+                              ? 'bg-[#FFF8E7] border-l-[#C5A880]'
+                              : 'border-l-transparent text-slate-700 hover:text-black hover:bg-slate-100'
                           )
                         }
                       >
@@ -161,14 +161,14 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ isOpen, onClose }) =
                             <Icon
                               className={cn(
                                 'h-4 w-4 shrink-0 mt-0.5 transition-colors',
-                                isActive ? 'text-white' : 'text-slate-500 group-hover:text-black'
+                                isActive ? 'text-[#C5A880]' : 'text-slate-500 group-hover:text-black'
                               )}
                             />
                             <div className="min-w-0">
-                              <div className={cn('text-xs font-semibold leading-tight', isActive ? 'text-white' : 'text-black')}>
+                              <div className={cn('text-xs font-semibold leading-tight', isActive ? 'text-[#111111]' : 'text-black')}>
                                 {item.title}
                               </div>
-                              <div className={cn('text-[10px] leading-tight mt-0.5 truncate', isActive ? 'text-white/80' : 'text-slate-400')}>
+                              <div className={cn('text-[10px] leading-tight mt-0.5 truncate', isActive ? 'text-[#6B7280]' : 'text-slate-400')}>
                                 {item.description}
                               </div>
                             </div>

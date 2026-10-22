@@ -198,7 +198,7 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Quick Action Buttons */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Add New Product', href: '/admin/products', color: 'bg-[#DC2626] hover:bg-red-700 text-white' },
+          { label: 'Add New Product', href: '/admin/products', color: 'bg-[#C5A880] hover:bg-[#B89A6E] text-[#111111]' },
           { label: 'Write Blog Post', href: '/admin/blog', color: 'bg-white hover:bg-slate-50 text-black border border-slate-300' },
           { label: 'Create Discount Code', href: '/admin/coupons', color: 'bg-white hover:bg-slate-50 text-black border border-slate-300' },
           { label: 'View All Orders', href: '/admin/orders', color: 'bg-white hover:bg-slate-50 text-black border border-slate-300' },

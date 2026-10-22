@@ -155,7 +155,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
                 onClick={() => handleSelectPreset(preset)}
                 className={`flex flex-col items-center justify-center p-3 rounded-lg border text-center transition-all cursor-pointer ${
                   isSelected
-                    ? 'border-[#DC2626] bg-[#DC2626] text-white font-bold shadow-xs'
+                    ? 'border-[#C5A880] bg-[#FFF8E7] text-[#111111] font-bold shadow-xs'
                     : 'border-slate-200 bg-white text-black hover:border-slate-300 hover:bg-slate-100'
                 }`}
               >
@@ -163,9 +163,9 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
                   <span className="text-xs uppercase tracking-wider font-semibold">
                     {preset.label}
                   </span>
-                  {isSelected && <Check className="h-3.5 w-3.5 text-white font-bold" />}
+                  {isSelected && <Check className="h-3.5 w-3.5 text-[#C5A880] font-bold" />}
                 </div>
-                <span className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-slate-300' : 'text-black'}`}>
+                <span className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-[#6B7280]' : 'text-black'}`}>
                   {preset.height}px
                 </span>
               </button>
@@ -222,7 +222,7 @@ export const LogoSizeControl: React.FC<LogoSizeControlProps> = ({
 
           {showBusinessName && (
             <div className="flex flex-col items-center select-none text-center leading-none mt-1">
-              <span className="font-serif text-sm sm:text-base tracking-[0.2em] text-white uppercase font-normal">
+              <span className="font-serif text-sm sm:text-base tracking-[0.2em] text-[#111111] uppercase font-normal">
                 PHILZ SIGNATURE
               </span>
               <span className="text-[8px] tracking-[0.28em] text-amber-400 font-medium uppercase mt-0.5">

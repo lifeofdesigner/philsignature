@@ -18,15 +18,15 @@ export const adminColors = {
   textMuted: '#6B7280',
   textOnDark: '#FFFFFF',
 
-  primary: '#DC2626',
-  primaryHover: '#B91C1C',
+  primary: '#C5A880',
+  primaryHover: '#B89A6E',
   danger: '#DC2626',
   dangerHover: '#B91C1C',
   success: '#16A34A',
   successHover: '#15803D',
   warning: '#D97706',
 
-  focusRing: '#DC2626',
+  focusRing: '#C5A880',
 } as const;
 
 export const adminRadius = {

@@ -105,7 +105,6 @@ export const AdminBlogPage: React.FC = () => {
   const [articleForm, setArticleForm] = useState<ArticleFormData>(defaultArticle);
   const [videoForm, setVideoForm] = useState<VideoFormData>(defaultVideo);
 
-  // Live embed preview for video form
   const embedPreview = convertToEmbedUrl(videoForm.video_url_input);
 
   const { data, isLoading } = useQuery({
@@ -253,20 +252,15 @@ export const AdminBlogPage: React.FC = () => {
 
   const closeEditor = () => { setEditorMode(null); setEditingPost(null); };
 
-  const fieldClass = 'w-full px-3.5 py-2.5 bg-black/50 border border-luxury-border rounded-xs text-sm text-luxury-cream focus:border-luxury-gold focus:outline-none';
+  const fieldClass = 'w-full px-3.5 py-2.5 bg-white border border-[#D1D5DB] rounded-md text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#C5A880] focus:outline-none focus:ring-1 focus:ring-[#C5A880]';
 
   return (
-    <div className="space-y-8 p-6 lg:p-10 max-w-7xl mx-auto">
-      {/* Breadcrumb */}
-      <div className="text-xs text-luxury-muted">
-        Admin <span className="mx-1">›</span> <span className="text-luxury-cream">Blog & Journal</span>
-      </div>
-
+    <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-luxury-border/60 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl text-luxury-cream">Blog & Journal</h1>
-          <p className="text-sm text-luxury-sand/80 font-light mt-1">
+          <h1 className="text-2xl font-bold text-[#111111] tracking-tight">Blog & Journal</h1>
+          <p className="text-sm text-[#6B7280] mt-1">
             Publish stories, fragrance guides, and Fragrance Reaction videos.
           </p>
         </div>
@@ -274,7 +268,7 @@ export const AdminBlogPage: React.FC = () => {
           <button
             type="button"
             onClick={openCreateArticle}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-luxury-charcoal border border-luxury-gold/60 text-luxury-gold font-semibold text-xs uppercase tracking-luxury rounded-xs hover:bg-luxury-gold hover:text-black transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-[#D1D5DB] text-[#111111] font-semibold text-xs rounded-md hover:bg-[#F9FAFB] transition-colors"
           >
             <FileText className="w-4 h-4" />
             <span>New Article</span>
@@ -282,7 +276,7 @@ export const AdminBlogPage: React.FC = () => {
           <button
             type="button"
             onClick={openCreateVideo}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-luxury-gold text-black font-semibold text-xs uppercase tracking-luxury rounded-xs hover:bg-luxury-gold-light transition-colors shadow-md"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#C5A880] text-[#111111] font-semibold text-xs rounded-md hover:bg-[#B89A6E] transition-colors shadow-xs"
           >
             <Video className="w-4 h-4" />
             <span>New Fragrance Reaction</span>
@@ -293,13 +287,13 @@ export const AdminBlogPage: React.FC = () => {
       {/* Filter / Search */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-luxury-muted" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF]" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by title or keyword..."
-            className="w-full pl-10 pr-4 py-2 bg-luxury-card border border-luxury-border/80 rounded-xs text-sm text-luxury-cream placeholder:text-luxury-muted focus:border-luxury-gold focus:outline-none"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-[#D1D5DB] rounded-md text-sm text-[#111111] placeholder:text-[#9CA3AF] focus:border-[#C5A880] focus:outline-none focus:ring-1 focus:ring-[#C5A880]"
           />
         </div>
         <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
@@ -308,10 +302,10 @@ export const AdminBlogPage: React.FC = () => {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 text-xs uppercase tracking-wider rounded-xs whitespace-nowrap transition-colors ${
+              className={`px-3 py-1.5 text-xs rounded-md whitespace-nowrap font-medium transition-colors ${
                 selectedCategory === cat
-                  ? 'bg-luxury-gold text-black font-semibold'
-                  : 'bg-luxury-card border border-luxury-border/60 text-luxury-sand/80 hover:text-white'
+                  ? 'bg-[#C5A880] text-[#111111] font-semibold'
+                  : 'bg-white border border-[#E5E7EB] text-[#374151] hover:text-[#111111] hover:bg-[#F9FAFB]'
               }`}
             >
               {cat}
@@ -321,16 +315,16 @@ export const AdminBlogPage: React.FC = () => {
       </div>
 
       {/* Posts Table */}
-      <div className="bg-luxury-card border border-luxury-border/60 rounded-xs overflow-hidden shadow-lg">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden shadow-xs">
         {isLoading ? (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-luxury-sand">
-            <Loader2 className="w-6 h-6 animate-spin text-luxury-gold" />
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-[#6B7280]">
+            <Loader2 className="w-6 h-6 animate-spin text-[#C5A880]" />
             <p className="text-sm">Loading posts...</p>
           </div>
         ) : posts.length === 0 ? (
           <div className="py-20 text-center space-y-3">
-            <p className="font-serif text-lg text-luxury-cream">No posts found</p>
-            <p className="text-sm text-luxury-muted">
+            <p className="text-lg font-semibold text-[#111111]">No posts found</p>
+            <p className="text-sm text-[#6B7280]">
               {searchQuery ? 'Try a different keyword.' : 'Create your first post above.'}
             </p>
           </div>
@@ -338,7 +332,7 @@ export const AdminBlogPage: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-luxury-border/60 bg-black/40 text-[11px] uppercase tracking-luxury text-luxury-muted">
+                <tr className="border-b border-[#E5E7EB] bg-[#F5F5F5] text-[11px] uppercase tracking-wider text-[#6B7280] font-semibold">
                   <th className="py-3.5 px-4">Title</th>
                   <th className="py-3.5 px-4">Category</th>
                   <th className="py-3.5 px-4 text-center">Type</th>
@@ -348,25 +342,25 @@ export const AdminBlogPage: React.FC = () => {
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-luxury-border/40 text-sm">
+              <tbody className="divide-y divide-[#F5F5F5] text-sm">
                 {posts.map((post) => (
-                  <tr key={post.id} className="hover:bg-white/[0.02] transition-colors">
+                  <tr key={post.id} className="hover:bg-[#FAFAFA] transition-colors">
                     <td className="py-3.5 px-4 max-w-sm">
-                      <div className="font-serif text-luxury-cream font-medium truncate">{post.title}</div>
-                      <div className="text-xs text-luxury-muted font-mono truncate mt-0.5">/blog/{post.slug}</div>
+                      <div className="font-semibold text-[#111111] truncate">{post.title}</div>
+                      <div className="text-xs text-[#6B7280] font-mono truncate mt-0.5">/blog/{post.slug}</div>
                     </td>
                     <td className="py-3.5 px-4 whitespace-nowrap">
-                      <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider bg-black/60 border border-luxury-border/80 text-luxury-gold rounded-xs">
+                      <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider bg-[#FFF8E7] border border-[#E5D5B0] text-[#92400E] rounded-md font-medium">
                         {post.category}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       {post.content_type === 'video' ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-xs uppercase tracking-wider">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] bg-purple-50 border border-purple-200 text-purple-700 rounded-md uppercase tracking-wider font-medium">
                           <Play className="w-2.5 h-2.5" /> Video
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] bg-sky-500/10 border border-sky-500/30 text-sky-400 rounded-xs uppercase tracking-wider">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] bg-sky-50 border border-sky-200 text-sky-700 rounded-md uppercase tracking-wider font-medium">
                           <FileText className="w-2.5 h-2.5" /> Article
                         </span>
                       )}
@@ -377,8 +371,8 @@ export const AdminBlogPage: React.FC = () => {
                         onClick={() => togglePublishMutation.mutate({ id: post.id, published: !post.published })}
                         className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-full font-medium transition-colors ${
                           post.published
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20'
-                            : 'bg-zinc-800 text-zinc-400 border border-zinc-700 hover:bg-zinc-700'
+                            ? 'bg-green-50 text-green-700 border border-green-200 hover:bg-green-100'
+                            : 'bg-[#F5F5F5] text-[#6B7280] border border-[#E5E7EB] hover:bg-[#EBEBEB]'
                         }`}
                       >
                         {post.published ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
@@ -389,14 +383,14 @@ export const AdminBlogPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => toggleFeaturedMutation.mutate({ id: post.id, featured: !post.featured })}
-                        className={`p-1.5 rounded-xs transition-colors ${
-                          post.featured ? 'text-luxury-gold bg-luxury-gold/10 hover:bg-luxury-gold/20' : 'text-zinc-600 hover:text-luxury-sand'
+                        className={`p-1.5 rounded-md transition-colors ${
+                          post.featured ? 'text-[#C5A880] bg-[#FFF8E7] hover:bg-[#FEF3C7]' : 'text-[#9CA3AF] hover:text-[#6B7280]'
                         }`}
                       >
-                        <Star className={`w-4 h-4 ${post.featured ? 'fill-luxury-gold' : ''}`} />
+                        <Star className={`w-4 h-4 ${post.featured ? 'fill-[#C5A880]' : ''}`} />
                       </button>
                     </td>
-                    <td className="py-3.5 px-4 text-xs text-luxury-muted whitespace-nowrap">
+                    <td className="py-3.5 px-4 text-xs text-[#6B7280] whitespace-nowrap">
                       {post.published_at
                         ? new Date(post.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
                         : 'Unscheduled'}
@@ -405,16 +399,16 @@ export const AdminBlogPage: React.FC = () => {
                       <div className="inline-flex items-center gap-2">
                         {post.published && (
                           <a href={`/blog/${post.slug}`} target="_blank" rel="noopener noreferrer"
-                            className="p-1.5 text-luxury-muted hover:text-luxury-gold transition-colors">
+                            className="p-1.5 text-[#6B7280] hover:text-[#C5A880] transition-colors">
                             <ExternalLink className="w-4 h-4" />
                           </a>
                         )}
                         <button type="button" onClick={() => openEditForm(post)}
-                          className="p-1.5 text-luxury-muted hover:text-luxury-gold transition-colors">
+                          className="p-1.5 text-[#6B7280] hover:text-[#111111] transition-colors">
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button type="button" onClick={() => setDeleteTarget(post)}
-                          className="p-1.5 text-luxury-muted hover:text-rose-400 transition-colors">
+                          className="p-1.5 text-[#6B7280] hover:text-red-600 transition-colors">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -429,27 +423,27 @@ export const AdminBlogPage: React.FC = () => {
 
       {/* ===== ARTICLE EDITOR MODAL ===== */}
       {editorMode === 'article' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
-          <div className="relative w-full max-w-4xl bg-luxury-card border border-luxury-border rounded-xs shadow-2xl p-6 sm:p-8 space-y-6 my-8 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-luxury-border/60 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div className="relative w-full max-w-4xl bg-white border border-[#E5E7EB] rounded-xl shadow-2xl p-6 sm:p-8 space-y-6 my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-4">
               <div>
-                <h2 className="font-serif text-xl sm:text-2xl text-luxury-cream">
+                <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">
                   {editingPost ? 'Edit Article' : 'New Article'}
                 </h2>
-                <p className="text-xs text-luxury-muted mt-0.5">Write and publish content to the Philz Signature journal.</p>
+                <p className="text-xs text-[#6B7280] mt-0.5">Write and publish content to the Philz Signature journal.</p>
               </div>
-              <button type="button" onClick={closeEditor} className="p-2 text-luxury-muted hover:text-white">
+              <button type="button" onClick={closeEditor} className="p-2 text-[#6B7280] hover:text-[#111111] rounded-lg hover:bg-[#F5F5F5] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-luxury-muted">Fields marked <span className="text-rose-400">*</span> are required.</p>
+            <p className="text-xs text-[#6B7280]">Fields marked <span className="text-[#DC2626]">*</span> are required.</p>
 
             <div className="space-y-5">
               {/* Title + Slug */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Article Title <span className="text-rose-400">*</span></label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Article Title <span className="text-[#DC2626]">*</span></label>
                   <input type="text" value={articleForm.title} placeholder="e.g. The Art of the Signature Scent"
                     onChange={(e) => {
                       const t = e.target.value;
@@ -457,40 +451,42 @@ export const AdminBlogPage: React.FC = () => {
                     }}
                     className={fieldClass} />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">URL Slug <span className="text-rose-400">*</span></label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">URL Slug <span className="text-[#DC2626]">*</span></label>
                   <input type="text" value={articleForm.slug} placeholder="the-art-of-the-signature-scent"
                     onChange={(e) => setArticleForm((p) => ({ ...p, slug: e.target.value }))}
-                    className={`${fieldClass} font-mono text-luxury-gold`} />
-                  <p className="text-[11px] text-luxury-muted">Auto-generated from title. You can edit it.</p>
+                    className={`${fieldClass} font-mono text-[#C5A880]`} />
+                  <p className="text-[11px] text-[#6B7280]">Auto-generated from title. You can edit it.</p>
                 </div>
               </div>
 
               {/* Category + Cover Image */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Category <span className="text-rose-400">*</span></label>
-                  <select value={articleForm.category} onChange={(e) => setArticleForm((p) => ({ ...p, category: e.target.value }))} className={fieldClass}>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Category <span className="text-[#DC2626]">*</span></label>
+                  <select value={articleForm.category} onChange={(e) => setArticleForm((p) => ({ ...p, category: e.target.value }))}
+                    style={{ colorScheme: 'light' }}
+                    className={fieldClass}>
                     {ARTICLE_CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat} className="bg-luxury-card">{cat}</option>
+                      <option key={cat} value={cat}>{cat}</option>
                     ))}
                   </select>
-                  <p className="text-[11px] text-luxury-muted">Choose the collection this belongs to.</p>
+                  <p className="text-[11px] text-[#6B7280]">Choose the collection this belongs to.</p>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Cover Image URL</label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Cover Image URL</label>
                   <input type="url" value={articleForm.cover_image_url} placeholder="https://images.unsplash.com/..."
                     onChange={(e) => setArticleForm((p) => ({ ...p, cover_image_url: e.target.value }))}
                     className={fieldClass} />
-                  <p className="text-[11px] text-luxury-muted">Square or 16:9 image for best results.</p>
+                  <p className="text-[11px] text-[#6B7280]">Square or 16:9 image for best results.</p>
                 </div>
               </div>
 
               {/* Excerpt */}
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Short Excerpt <span className="text-rose-400">*</span></label>
-                  <span className={`text-[11px] ${articleForm.excerpt.length > 200 ? 'text-rose-400 font-semibold' : 'text-luxury-muted'}`}>{articleForm.excerpt.length}/200</span>
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Short Excerpt <span className="text-[#DC2626]">*</span></label>
+                  <span className={`text-[11px] ${articleForm.excerpt.length > 200 ? 'text-[#DC2626] font-semibold' : 'text-[#6B7280]'}`}>{articleForm.excerpt.length}/200</span>
                 </div>
                 <textarea rows={2} value={articleForm.excerpt} placeholder="2-3 sentences shown on blog cards. Keep it compelling."
                   onChange={(e) => setArticleForm((p) => ({ ...p, excerpt: e.target.value }))}
@@ -498,31 +494,31 @@ export const AdminBlogPage: React.FC = () => {
               </div>
 
               {/* Content */}
-              <div className="space-y-1">
-                <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Full Article Body (HTML) <span className="text-rose-400">*</span></label>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Full Article Body (HTML) <span className="text-[#DC2626]">*</span></label>
                 <textarea rows={10} value={articleForm.content} placeholder="<p>Write your article here. Use <h2>, <p>, <ul> tags.</p>"
                   onChange={(e) => setArticleForm((p) => ({ ...p, content: e.target.value }))}
                   className={`${fieldClass} font-mono leading-relaxed`} />
-                <p className="text-[11px] text-luxury-muted">Full HTML content for the article page.</p>
+                <p className="text-[11px] text-[#6B7280]">Full HTML content for the article page.</p>
               </div>
 
               {/* SEO */}
-              <div className="border border-luxury-border/60 bg-black/30 p-4 rounded-xs space-y-4">
-                <span className="text-xs uppercase tracking-luxury text-luxury-gold font-semibold block">SEO & Search Engine Discoverability</span>
+              <div className="border border-[#E5E7EB] bg-[#F9FAFB] p-4 rounded-lg space-y-4">
+                <span className="text-xs uppercase tracking-wider text-[#C5A880] font-semibold block">SEO & Search Engine Discoverability</span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs text-luxury-muted">SEO Title</label>
-                      <span className={`text-[11px] ${articleForm.seo_title.length > 60 ? 'text-amber-400' : 'text-luxury-muted'}`}>{articleForm.seo_title.length}/60</span>
+                      <label className="text-xs font-medium text-[#374151]">SEO Title</label>
+                      <span className={`text-[11px] ${articleForm.seo_title.length > 60 ? 'text-amber-600 font-semibold' : 'text-[#6B7280]'}`}>{articleForm.seo_title.length}/60</span>
                     </div>
                     <input type="text" value={articleForm.seo_title} placeholder="Appears in Google search. Ideal: 50-60 chars"
                       onChange={(e) => setArticleForm((p) => ({ ...p, seo_title: e.target.value }))}
                       className={fieldClass} />
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs text-luxury-muted">SEO Description</label>
-                      <span className={`text-[11px] ${articleForm.seo_description.length > 160 ? 'text-rose-400 font-semibold' : 'text-luxury-muted'}`}>{articleForm.seo_description.length}/160</span>
+                      <label className="text-xs font-medium text-[#374151]">SEO Description</label>
+                      <span className={`text-[11px] ${articleForm.seo_description.length > 160 ? 'text-[#DC2626] font-semibold' : 'text-[#6B7280]'}`}>{articleForm.seo_description.length}/160</span>
                     </div>
                     <input type="text" value={articleForm.seo_description} placeholder="150-160 char meta description"
                       onChange={(e) => setArticleForm((p) => ({ ...p, seo_description: e.target.value }))}
@@ -533,14 +529,14 @@ export const AdminBlogPage: React.FC = () => {
 
               {/* Tags + Date */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Tags (Comma Separated)</label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Tags (Comma Separated)</label>
                   <input type="text" value={articleForm.tags} placeholder="Signature Scents, Layering, Nigeria"
                     onChange={(e) => setArticleForm((p) => ({ ...p, tags: e.target.value }))}
                     className={fieldClass} />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Publication Date</label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Publication Date</label>
                   <input type="date" value={articleForm.published_at}
                     onChange={(e) => setArticleForm((p) => ({ ...p, published_at: e.target.value }))}
                     className={fieldClass} />
@@ -552,28 +548,31 @@ export const AdminBlogPage: React.FC = () => {
                 <label className="flex items-center gap-2.5 cursor-pointer">
                   <input type="checkbox" checked={articleForm.published}
                     onChange={(e) => setArticleForm((p) => ({ ...p, published: e.target.checked }))}
-                    className="w-4 h-4 accent-luxury-gold" />
-                  <span className="text-xs uppercase tracking-wider text-luxury-cream font-medium">Published (Live on site)</span>
+                    className="w-4 h-4 accent-[#C5A880]" />
+                  <span className="text-xs text-[#111111] font-medium">Published (Live on site)</span>
                 </label>
                 <label className="flex items-center gap-2.5 cursor-pointer">
                   <input type="checkbox" checked={articleForm.featured}
                     onChange={(e) => setArticleForm((p) => ({ ...p, featured: e.target.checked }))}
-                    className="w-4 h-4 accent-luxury-gold" />
-                  <span className="text-xs uppercase tracking-wider text-luxury-cream font-medium">Featured on Homepage</span>
+                    className="w-4 h-4 accent-[#C5A880]" />
+                  <span className="text-xs text-[#111111] font-medium">Featured on Homepage</span>
                 </label>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-luxury-border/60">
-              <button type="button" onClick={closeEditor} className="px-4 py-2.5 bg-transparent border border-luxury-border/80 text-luxury-sand text-xs uppercase tracking-luxury rounded-xs hover:text-white">Cancel</button>
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E5E7EB]">
+              <button type="button" onClick={closeEditor}
+                className="px-4 py-2 bg-white border border-[#D1D5DB] text-[#111111] text-xs font-semibold rounded-md hover:bg-[#F9FAFB] transition-colors">
+                Cancel
+              </button>
               <button type="button" disabled={saveArticleMutation.isPending || !articleForm.title.trim() || !articleForm.slug.trim()}
                 onClick={() => saveArticleMutation.mutate(false)}
-                className="px-5 py-2.5 bg-luxury-charcoal border border-luxury-gold/50 text-luxury-gold text-xs uppercase tracking-luxury rounded-xs hover:bg-black disabled:opacity-50">
+                className="px-5 py-2 bg-white border border-[#C5A880] text-[#C5A880] text-xs font-semibold rounded-md hover:bg-[#FFF8E7] disabled:opacity-50 transition-colors">
                 {saveArticleMutation.isPending ? 'Saving...' : 'Save as Draft'}
               </button>
               <button type="button" disabled={saveArticleMutation.isPending || !articleForm.title.trim() || !articleForm.slug.trim()}
                 onClick={() => saveArticleMutation.mutate(true)}
-                className="px-6 py-2.5 bg-luxury-gold text-black font-semibold text-xs uppercase tracking-luxury rounded-xs hover:bg-luxury-gold-light shadow-md disabled:opacity-50">
+                className="px-6 py-2 bg-[#C5A880] text-[#111111] font-semibold text-xs rounded-md hover:bg-[#B89A6E] shadow-xs disabled:opacity-50 transition-colors">
                 {saveArticleMutation.isPending ? 'Publishing...' : 'Save & Publish'}
               </button>
             </div>
@@ -583,32 +582,32 @@ export const AdminBlogPage: React.FC = () => {
 
       {/* ===== VIDEO REACTION EDITOR MODAL ===== */}
       {editorMode === 'video' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto">
-          <div className="relative w-full max-w-3xl bg-luxury-card border border-luxury-border rounded-xs shadow-2xl p-6 sm:p-8 space-y-6 my-8 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-luxury-border/60 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto">
+          <div className="relative w-full max-w-3xl bg-white border border-[#E5E7EB] rounded-xl shadow-2xl p-6 sm:p-8 space-y-6 my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/10 rounded-xs">
-                  <Video className="w-5 h-5 text-purple-400" />
+                <div className="p-2 bg-purple-50 rounded-lg">
+                  <Video className="w-5 h-5 text-purple-700" />
                 </div>
                 <div>
-                  <h2 className="font-serif text-xl sm:text-2xl text-luxury-cream">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">
                     {editingPost ? 'Edit Fragrance Reaction' : 'New Fragrance Reaction'}
                   </h2>
-                  <p className="text-xs text-luxury-muted mt-0.5">Paste a YouTube or Instagram link to embed your video.</p>
+                  <p className="text-xs text-[#6B7280] mt-0.5">Paste a YouTube or Instagram link to embed your video.</p>
                 </div>
               </div>
-              <button type="button" onClick={closeEditor} className="p-2 text-luxury-muted hover:text-white">
+              <button type="button" onClick={closeEditor} className="p-2 text-[#6B7280] hover:text-[#111111] rounded-lg hover:bg-[#F5F5F5] transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <p className="text-xs text-luxury-muted">Fields marked <span className="text-rose-400">*</span> are required.</p>
+            <p className="text-xs text-[#6B7280]">Fields marked <span className="text-[#DC2626]">*</span> are required.</p>
 
             <div className="space-y-5">
               {/* Title + Slug */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Title <span className="text-rose-400">*</span></label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Title <span className="text-[#DC2626]">*</span></label>
                   <input type="text" value={videoForm.title} placeholder="e.g. Fragrance Reaction #3"
                     onChange={(e) => {
                       const t = e.target.value;
@@ -616,31 +615,31 @@ export const AdminBlogPage: React.FC = () => {
                     }}
                     className={fieldClass} />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">URL Slug <span className="text-rose-400">*</span></label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">URL Slug <span className="text-[#DC2626]">*</span></label>
                   <input type="text" value={videoForm.slug}
                     onChange={(e) => setVideoForm((p) => ({ ...p, slug: e.target.value }))}
-                    className={`${fieldClass} font-mono text-luxury-gold`} />
+                    className={`${fieldClass} font-mono text-[#C5A880]`} />
                 </div>
               </div>
 
               {/* Caption/Description */}
-              <div className="space-y-1">
-                <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Caption / Description <span className="text-rose-400">*</span></label>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Caption / Description <span className="text-[#DC2626]">*</span></label>
                 <textarea rows={3} value={videoForm.excerpt} placeholder="Describe what happens in this video. Phil and his wife react to..."
                   onChange={(e) => setVideoForm((p) => ({ ...p, excerpt: e.target.value }))}
                   className={`${fieldClass} resize-none`} />
-                <p className="text-[11px] text-luxury-muted">Shown below the video on the post page.</p>
+                <p className="text-[11px] text-[#6B7280]">Shown below the video on the post page.</p>
               </div>
 
               {/* Video URL */}
-              <div className="space-y-1">
-                <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">YouTube or Instagram Link <span className="text-rose-400">*</span></label>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">YouTube or Instagram Link <span className="text-[#DC2626]">*</span></label>
                 <input type="url" value={videoForm.video_url_input}
                   placeholder="https://www.youtube.com/watch?v=... or https://www.instagram.com/reel/..."
                   onChange={(e) => setVideoForm((p) => ({ ...p, video_url_input: e.target.value }))}
                   className={fieldClass} />
-                <p className="text-[11px] text-luxury-muted">
+                <p className="text-[11px] text-[#6B7280]">
                   Paste your YouTube or Instagram Reel link here. It will be automatically converted to an embed.
                 </p>
               </div>
@@ -648,10 +647,10 @@ export const AdminBlogPage: React.FC = () => {
               {/* Live Video Preview */}
               {embedPreview ? (
                 <div className="space-y-2">
-                  <span className="text-xs uppercase tracking-luxury text-emerald-400 font-medium flex items-center gap-1.5">
+                  <span className="text-xs text-green-700 font-semibold flex items-center gap-1.5">
                     <Play className="w-3 h-3" /> Live Preview
                   </span>
-                  <div className="relative w-full aspect-video bg-black rounded-xs overflow-hidden border border-luxury-border/60">
+                  <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-[#E5E7EB]">
                     <iframe
                       src={embedPreview}
                       title="Video Preview"
@@ -662,24 +661,24 @@ export const AdminBlogPage: React.FC = () => {
                   </div>
                 </div>
               ) : videoForm.video_url_input.trim() ? (
-                <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xs text-xs text-amber-400">
+                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-700 font-medium">
                   ⚠ URL not recognized. Supported: YouTube (youtube.com/watch?v=... or youtu.be/...) and Instagram (instagram.com/reel/...).
                 </div>
               ) : null}
 
               {/* Thumbnail */}
-              <div className="space-y-1">
-                <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Thumbnail Image URL (Optional)</label>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Thumbnail Image URL (Optional)</label>
                 <input type="url" value={videoForm.video_thumbnail_url}
                   placeholder="https://... (leave blank to use video default)"
                   onChange={(e) => setVideoForm((p) => ({ ...p, video_thumbnail_url: e.target.value }))}
                   className={fieldClass} />
-                <p className="text-[11px] text-luxury-muted">Leave blank to use the video's default thumbnail.</p>
+                <p className="text-[11px] text-[#6B7280]">Leave blank to use the video's default thumbnail.</p>
               </div>
 
               {/* Date */}
-              <div className="space-y-1">
-                <label className="text-xs uppercase tracking-luxury text-luxury-muted font-medium">Publish Date</label>
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-[#374151] uppercase tracking-wider">Publish Date</label>
                 <input type="date" value={videoForm.published_at}
                   onChange={(e) => setVideoForm((p) => ({ ...p, published_at: e.target.value }))}
                   className={fieldClass} />
@@ -690,30 +689,33 @@ export const AdminBlogPage: React.FC = () => {
                 <label className="flex items-center gap-2.5 cursor-pointer">
                   <input type="checkbox" checked={videoForm.published}
                     onChange={(e) => setVideoForm((p) => ({ ...p, published: e.target.checked }))}
-                    className="w-4 h-4 accent-luxury-gold" />
-                  <span className="text-xs uppercase tracking-wider text-luxury-cream font-medium">Published (Live on site)</span>
+                    className="w-4 h-4 accent-[#C5A880]" />
+                  <span className="text-xs text-[#111111] font-medium">Published (Live on site)</span>
                 </label>
                 <label className="flex items-center gap-2.5 cursor-pointer">
                   <input type="checkbox" checked={videoForm.featured}
                     onChange={(e) => setVideoForm((p) => ({ ...p, featured: e.target.checked }))}
-                    className="w-4 h-4 accent-luxury-gold" />
-                  <span className="text-xs uppercase tracking-wider text-luxury-cream font-medium">Featured on Homepage</span>
+                    className="w-4 h-4 accent-[#C5A880]" />
+                  <span className="text-xs text-[#111111] font-medium">Featured on Homepage</span>
                 </label>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-luxury-border/60">
-              <button type="button" onClick={closeEditor} className="px-4 py-2.5 bg-transparent border border-luxury-border/80 text-luxury-sand text-xs uppercase tracking-luxury rounded-xs hover:text-white">Cancel</button>
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E5E7EB]">
+              <button type="button" onClick={closeEditor}
+                className="px-4 py-2 bg-white border border-[#D1D5DB] text-[#111111] text-xs font-semibold rounded-md hover:bg-[#F9FAFB] transition-colors">
+                Cancel
+              </button>
               <button type="button"
                 disabled={saveVideoMutation.isPending || !videoForm.title.trim() || !videoForm.slug.trim()}
                 onClick={() => saveVideoMutation.mutate(false)}
-                className="px-5 py-2.5 bg-luxury-charcoal border border-luxury-gold/50 text-luxury-gold text-xs uppercase tracking-luxury rounded-xs hover:bg-black disabled:opacity-50">
+                className="px-5 py-2 bg-white border border-[#C5A880] text-[#C5A880] text-xs font-semibold rounded-md hover:bg-[#FFF8E7] disabled:opacity-50 transition-colors">
                 {saveVideoMutation.isPending ? 'Saving...' : 'Save as Draft'}
               </button>
               <button type="button"
                 disabled={saveVideoMutation.isPending || !videoForm.title.trim() || !videoForm.slug.trim()}
                 onClick={() => saveVideoMutation.mutate(true)}
-                className="px-6 py-2.5 bg-luxury-gold text-black font-semibold text-xs uppercase tracking-luxury rounded-xs hover:bg-luxury-gold-light shadow-md disabled:opacity-50">
+                className="px-6 py-2 bg-[#C5A880] text-[#111111] font-semibold text-xs rounded-md hover:bg-[#B89A6E] shadow-xs disabled:opacity-50 transition-colors">
                 {saveVideoMutation.isPending ? 'Publishing...' : 'Save & Publish'}
               </button>
             </div>
@@ -723,28 +725,28 @@ export const AdminBlogPage: React.FC = () => {
 
       {/* Delete Confirmation */}
       {deleteTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-luxury-card border border-rose-500/40 rounded-xs shadow-2xl p-6 space-y-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-white border border-red-200 rounded-xl shadow-2xl p-6 space-y-5">
             <div className="flex items-start gap-4">
-              <div className="p-2.5 bg-rose-500/10 text-rose-400 rounded-xs shrink-0">
+              <div className="p-2.5 bg-red-50 text-red-600 rounded-lg shrink-0">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-serif text-lg text-luxury-cream">Delete Post</h3>
-                <p className="text-xs text-luxury-muted mt-1 leading-relaxed">
+                <h3 className="text-lg font-bold text-[#111111]">Delete Post</h3>
+                <p className="text-sm text-[#6B7280] mt-1 leading-relaxed">
                   Are you sure you want to permanently delete{' '}
-                  <span className="text-luxury-sand font-medium">"{deleteTarget.title}"</span>?
+                  <span className="text-[#111111] font-semibold">"{deleteTarget.title}"</span>?
                   This action cannot be undone.
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-luxury-border/60">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#E5E7EB]">
               <button type="button" onClick={() => setDeleteTarget(null)}
-                className="px-4 py-2 bg-transparent border border-luxury-border text-luxury-sand text-xs uppercase tracking-wider rounded-xs hover:text-white">
+                className="px-4 py-2 bg-white border border-[#D1D5DB] text-[#111111] text-xs font-semibold rounded-md hover:bg-[#F9FAFB] transition-colors">
                 Cancel
               </button>
               <button type="button" disabled={deleteMutation.isPending} onClick={() => deleteMutation.mutate(deleteTarget)}
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs uppercase tracking-wider rounded-xs disabled:opacity-50">
+                className="px-4 py-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-semibold text-xs rounded-md disabled:opacity-50 transition-colors">
                 {deleteMutation.isPending ? 'Deleting...' : 'Confirm Delete'}
               </button>
             </div>

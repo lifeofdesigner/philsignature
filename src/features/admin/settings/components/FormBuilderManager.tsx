@@ -95,7 +95,7 @@ export const FormBuilderManager: React.FC = () => {
               onClick={() => setSelectedFormId(f.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 selectedFormId === f.id
-                  ? 'bg-[#DC2626] text-white border border-[#DC2626]'
+                  ? 'bg-[#C5A880] text-[#111111] border border-[#C5A880]'
                   : 'bg-white text-black hover:bg-slate-100'
               }`}
             >

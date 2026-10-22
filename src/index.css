@@ -153,11 +153,12 @@ img, video, svg, canvas, .no-theme-transition,
   color: #111111 !important;
 }
 
-/* Admin Buttons: ensure high-contrast text and child elements */
+/* Admin Buttons: primary (gold bg) uses dark text; danger/success use white text */
 .admin-scope button[data-admin-btn="primary"],
-.admin-scope button[data-admin-btn="primary"] *,
-.admin-scope button.bg-\[\#111111\],
-.admin-scope button.bg-\[\#111111\] *,
+.admin-scope button[data-admin-btn="primary"] * {
+  color: #111111 !important;
+}
+
 .admin-scope button[data-admin-btn="danger"],
 .admin-scope button[data-admin-btn="danger"] *,
 .admin-scope button.bg-\[\#DC2626\],
@@ -423,6 +424,25 @@ img, video, svg, canvas, .no-theme-transition,
 [data-theme="light"] :not(.admin-scope) .text-white:not([data-keep-white]):not(button) {
   color: inherit;
 }
+
+/* ===================================================================
+   LIGHT THEME: HARDCODED DARK UTILITY CLASS OVERRIDES
+   Handles any remaining bg-black / bg-neutral-* / bg-zinc-* usages
+   that weren't converted to luxury tokens in component files.
+   Opacity-suffixed variants (bg-black/60 etc.) are different CSS
+   classes and are unaffected — overlay elements stay dark.
+   =================================================================== */
+[data-theme="light"] .bg-black { background-color: #FFFFFF !important; }
+[data-theme="light"] .bg-neutral-950 { background-color: #F9F6F1 !important; }
+[data-theme="light"] .bg-neutral-900 { background-color: #F2EDE6 !important; }
+[data-theme="light"] .bg-zinc-900 { background-color: #F2EDE6 !important; }
+[data-theme="light"] .bg-neutral-950\/80 { background-color: rgba(249,246,241,0.8) !important; }
+[data-theme="light"] .bg-neutral-950\/60 { background-color: rgba(249,246,241,0.6) !important; }
+
+/* Grey borders that become invisible on white */
+[data-theme="light"] .border-white\/10 { border-color: rgba(0,0,0,0.08) !important; }
+[data-theme="light"] .border-white\/15 { border-color: rgba(0,0,0,0.10) !important; }
+[data-theme="light"] .border-white\/20 { border-color: rgba(0,0,0,0.12) !important; }
 
 /* Light mode scrollbar */
 [data-theme="light"] ::-webkit-scrollbar-track {

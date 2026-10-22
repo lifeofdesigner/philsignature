@@ -13,7 +13,7 @@ const base =
   'inline-flex items-center justify-center gap-1.5 whitespace-nowrap text-xs font-semibold rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer';
 
 const variants: Record<NonNullable<AdminButtonProps['variant']>, string> = {
-  primary: 'bg-[#DC2626] text-white hover:bg-[#B91C1C] focus-visible:ring-[#DC2626]',
+  primary: 'bg-[#C5A880] text-[#111111] hover:bg-[#B89A6E] focus-visible:ring-[#C5A880]',
   secondary:
     'bg-white text-[#111111] border border-[#111111] hover:bg-[#F9FAFB] focus-visible:ring-[#DC2626]',
   danger: 'bg-[#DC2626] text-white hover:bg-[#B91C1C] focus-visible:ring-[#DC2626]',
@@ -30,7 +30,7 @@ const sizes: Record<NonNullable<AdminButtonProps['size']>, string> = {
 
 export const AdminButton = React.forwardRef<HTMLButtonElement, AdminButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading, disabled, children, style, ...props }, ref) => {
-    const isDarkVariant = variant === 'primary' || variant === 'danger' || variant === 'success';
+    const isDarkVariant = variant === 'danger' || variant === 'success';
     return (
       <button
         ref={ref}
@@ -44,7 +44,7 @@ export const AdminButton = React.forwardRef<HTMLButtonElement, AdminButtonProps>
         disabled={disabled || loading}
         {...props}
       >
-        {loading && <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0 text-white" />}
+        {loading && <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" />}
         {children}
       </button>
     );
