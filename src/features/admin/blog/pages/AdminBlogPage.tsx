@@ -18,7 +18,7 @@ import {
 import { toast } from 'sonner';
 import { blogService } from '@/services/BlogService';
 import { useAuth } from '@/hooks/useAuth';
-import { convertToEmbedUrl } from '@/lib/videoEmbed';
+import { getEmbedUrl, getVideoThumbnail, detectPlatform } from '@/lib/videoEmbed';
 import type { BlogPost } from '@/types/database';
 
 const ARTICLE_CATEGORIES = [
@@ -105,7 +105,17 @@ export const AdminBlogPage: React.FC = () => {
   const [articleForm, setArticleForm] = useState<ArticleFormData>(defaultArticle);
   const [videoForm, setVideoForm] = useState<VideoFormData>(defaultVideo);
 
-  const embedPreview = convertToEmbedUrl(videoForm.video_url_input);
+  const embedPreview = getEmbedUrl(videoForm.video_url_input);
+  const videoThumbnail = getVideoThumbnail(videoForm.video_url_input);
+  const videoPlatform = detectPlatform(videoForm.video_url_input);
+
+  const platformBadge: Record<string, { label: string; className: string }> = {
+    youtube:   { label: 'YouTube',   className: 'bg-red-100 text-red-700 border border-red-200' },
+    instagram: { label: 'Instagram', className: 'bg-purple-100 text-purple-700 border border-purple-200' },
+    vimeo:     { label: 'Vimeo',     className: 'bg-blue-100 text-blue-700 border border-blue-200' },
+    tiktok:    { label: 'TikTok',    className: 'bg-[#111111] text-white border border-[#333]' },
+    unknown:   { label: 'Invalid URL', className: 'bg-yellow-100 text-yellow-700 border border-yellow-200' },
+  };
 
   const { data, isLoading } = useQuery({
     queryKey: ['admin_blog_posts', searchQuery, selectedCategory],
@@ -178,7 +188,7 @@ export const AdminBlogPage: React.FC = () => {
   const saveVideoMutation = useMutation({
     mutationFn: async (publishOverride?: boolean) => {
       const isPublish = typeof publishOverride === 'boolean' ? publishOverride : videoForm.published;
-      const embedUrl = convertToEmbedUrl(videoForm.video_url_input) || videoForm.video_url_input;
+      const embedUrl = getEmbedUrl(videoForm.video_url_input) || videoForm.video_url_input;
       const payload = {
         title: videoForm.title.trim(),
         slug: videoForm.slug.trim(),
@@ -647,22 +657,36 @@ export const AdminBlogPage: React.FC = () => {
               {/* Live Video Preview */}
               {embedPreview ? (
                 <div className="space-y-2">
-                  <span className="text-xs text-green-700 font-semibold flex items-center gap-1.5">
-                    <Play className="w-3 h-3" /> Live Preview
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-green-700 font-semibold flex items-center gap-1.5">
+                      <Play className="w-3 h-3" /> Live Preview
+                    </span>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${platformBadge[videoPlatform].className}`}>
+                      {platformBadge[videoPlatform].label}
+                    </span>
+                  </div>
                   <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden border border-[#E5E7EB]">
                     <iframe
                       src={embedPreview}
                       title="Video Preview"
                       className="absolute inset-0 w-full h-full"
+                      frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      loading="lazy"
                     />
                   </div>
+                  {videoThumbnail && (
+                    <p className="text-[11px] text-[#6B7280]">Thumbnail auto-detected — leave the thumbnail field below blank to use it.</p>
+                  )}
                 </div>
               ) : videoForm.video_url_input.trim() ? (
-                <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-700 font-medium">
-                  ⚠ URL not recognized. Supported: YouTube (youtube.com/watch?v=... or youtu.be/...) and Instagram (instagram.com/reel/...).
+                <div className="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${platformBadge['unknown'].className}`}>
+                    Invalid URL
+                  </span>
+                  <span className="text-xs text-yellow-700">Supported: YouTube, Instagram Reels, Vimeo, TikTok.</span>
                 </div>
               ) : null}
 

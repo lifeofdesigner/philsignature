@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useBlogPost, useRelatedBlogPosts } from '../hooks/useBlogPosts';
 import { BlogCard } from '../components/BlogCard';
@@ -7,14 +7,17 @@ import { PageSkeleton } from '@/components/feedback/SkeletonLoaders';
 import { ErrorState } from '@/components/feedback/ErrorState';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { blogService } from '@/services/BlogService';
-import { convertToEmbedUrl } from '@/lib/videoEmbed';
-import { Calendar, Clock, User, Eye, ChevronLeft, ArrowLeft, Share2 } from 'lucide-react';
+import { getEmbedUrl, getVideoThumbnail, detectPlatform } from '@/lib/videoEmbed';
+import { Calendar, Clock, User, Eye, ChevronLeft, ArrowLeft, Share2, Play } from 'lucide-react';
 
 export const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: post, isLoading, isError, refetch } = useBlogPost(slug);
   const { data: relatedPosts = [] } = useRelatedBlogPosts(post?.category, slug, 3);
   const hasRecordedView = useRef<string | null>(null);
+  const [playing, setPlaying] = useState(false);
+  // Derive platform early so it's available to the effect below
+  const platform = detectPlatform(post?.video_embed_url || '');
 
   // Increment views once per mount for this post
   useEffect(() => {
@@ -23,6 +26,20 @@ export const BlogPostPage: React.FC = () => {
       blogService.recordView(post.id).catch(() => {});
     }
   }, [post?.id]);
+
+  // Load Instagram embed script when playing an Instagram video
+  useEffect(() => {
+    if (platform !== 'instagram' || !playing) return;
+    const w = window as any;
+    if (w.instgrm) {
+      w.instgrm.Embeds.process();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://www.instagram.com/embed.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, [platform, playing]);
 
   if (isLoading) {
     return <PageSkeleton />;
@@ -54,7 +71,8 @@ export const BlogPostPage: React.FC = () => {
   }
 
   const isVideo = post.content_type === 'video';
-  const embedUrl = isVideo ? (convertToEmbedUrl(post.video_embed_url || '') || post.video_embed_url) : null;
+  const embedUrl = isVideo ? (getEmbedUrl(post.video_embed_url || '') || post.video_embed_url) : null;
+  const thumbnail = isVideo ? (post.video_thumbnail_url || getVideoThumbnail(post.video_embed_url || '') || post.cover_image_url) : null;
   const wordCount = (post.content || '').replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
@@ -182,17 +200,41 @@ export const BlogPostPage: React.FC = () => {
       <main className="container mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
         <div className="max-w-3xl mx-auto space-y-10">
 
-          {/* Video Embed Player */}
+          {/* Video Embed Player — click-to-play with thumbnail */}
           {isVideo && embedUrl && (
             <div className="space-y-4">
-              <div className="relative w-full max-w-[800px] mx-auto aspect-video rounded-xs overflow-hidden bg-black border border-luxury-border/60 shadow-2xl">
-                <iframe
-                  src={embedUrl}
-                  title={post.title}
-                  className="absolute inset-0 w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <div className="relative w-full max-w-[800px] mx-auto aspect-video rounded-sm overflow-hidden bg-black border border-luxury-border/60 shadow-2xl">
+                {!playing && thumbnail ? (
+                  <button
+                    type="button"
+                    onClick={() => setPlaying(true)}
+                    className="absolute inset-0 w-full h-full group focus:outline-none"
+                    aria-label="Play video"
+                  >
+                    <img
+                      src={thumbnail}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+                      <div className="h-16 w-16 rounded-full bg-luxury-gold/90 group-hover:bg-luxury-gold flex items-center justify-center shadow-2xl transition-all group-hover:scale-105">
+                        <Play className="h-7 w-7 text-black fill-black ml-1" />
+                      </div>
+                    </div>
+                  </button>
+                ) : (
+                  <iframe
+                    src={playing ? `${embedUrl}${embedUrl.includes('?') ? '&' : '?'}autoplay=1` : embedUrl}
+                    title={post.title}
+                    className="absolute inset-0 w-full h-full"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    loading="lazy"
+                  />
+                )}
               </div>
             </div>
           )}
