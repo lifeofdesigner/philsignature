@@ -46,7 +46,7 @@ export const HomePage: React.FC = () => {
 
     const bgClasses = {
       default: '',
-      black: 'bg-black',
+      black: 'bg-luxury-black',
       charcoal: 'bg-luxury-charcoal',
       card: 'bg-luxury-card',
       radial_luxury: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-luxury-charcoal via-black to-black',
@@ -113,7 +113,7 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-luxury-black">
       <SEO
         title="Philz Signature | Luxury Perfumes & Artisanal Fragrances Nigeria"
         description="Discover Philz Signature — Nigeria's premier luxury fragrance house. Shop artisanal parfums, signature scents, and bespoke fragrances. Free delivery available."

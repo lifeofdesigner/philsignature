@@ -29,7 +29,7 @@ export const FeaturedProductsGrid: React.FC<FeaturedProductsGridProps> = ({ prod
   if (!displayProducts || displayProducts.length === 0) return null;
 
   return (
-    <section className="py-24 sm:py-32 bg-black border-b border-white/10">
+    <section className="py-24 sm:py-32 bg-luxury-black border-b border-luxury-border">
       <div className="container mx-auto px-6 sm:px-12 lg:px-16">
         <FadeIn direction="up" distance={16}>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 sm:mb-12 gap-6">
@@ -38,13 +38,13 @@ export const FeaturedProductsGrid: React.FC<FeaturedProductsGridProps> = ({ prod
                 <Sparkles className="h-3 w-3" />
                 <span>HAUTE PARFUMERIE & CANDLE CATALOG</span>
               </span>
-              <h2 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
+              <h2 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
                 Signature Creations
               </h2>
             </div>
 
             {/* Merchandising Tabs */}
-            <div className="flex items-center gap-2 p-1 bg-white/5 border border-white/10 rounded-full">
+            <div className="flex items-center gap-2 p-1 bg-luxury-charcoal/50 border border-luxury-border rounded-full">
               {[
                 { id: 'featured', label: 'Featured' },
                 { id: 'bestsellers', label: 'Best Sellers' },
@@ -57,7 +57,7 @@ export const FeaturedProductsGrid: React.FC<FeaturedProductsGridProps> = ({ prod
                   className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                     activeTab === tab.id
                       ? 'bg-luxury-gold text-black font-semibold shadow-md'
-                      : 'text-white/70 hover:text-white'
+                      : 'text-luxury-muted hover:text-luxury-cream'
                   }`}
                 >
                   {tab.label}
@@ -78,7 +78,7 @@ export const FeaturedProductsGrid: React.FC<FeaturedProductsGridProps> = ({ prod
         <div className="pt-12 text-center">
           <Link
             to="/shop"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-white/20 hover:border-luxury-gold bg-white/5 hover:bg-luxury-gold hover:text-black text-white text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-md group"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full border border-luxury-border hover:border-luxury-gold bg-luxury-charcoal/30 hover:bg-luxury-gold hover:text-black text-luxury-cream text-xs uppercase tracking-[0.2em] font-semibold transition-all duration-300 shadow-md group"
           >
             <span>Explore All {allProducts.length > 0 ? `${allProducts.length} Creations` : 'Creations'}</span>
             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />

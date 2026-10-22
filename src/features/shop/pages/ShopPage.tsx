@@ -57,7 +57,7 @@ export const ShopPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-black text-luxury-cream py-12 sm:py-20">
+    <div className="min-h-screen bg-luxury-black text-luxury-cream py-12 sm:py-20">
       <SEO
         title="Shop Luxury Fragrances | Philz Signature"
         description="Explore the complete Philz Signature fragrance portfolio. Discover artisanal extraits de parfum, luxury candles, and room sprays crafted for distinct presence."
@@ -78,7 +78,7 @@ export const ShopPage: React.FC = () => {
               ? '✦ The Haute Parfumerie Collection'
               : '✦ The Philz Signature Boutique'}
           </span>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl text-luxury-cream font-normal tracking-tight">
             {selectedCollection
               ? selectedCollection.name
               : categoryId === 'candles'
@@ -89,7 +89,7 @@ export const ShopPage: React.FC = () => {
               ? 'All Perfumes & Extraits'
               : 'All Olfactory Creations'}
           </h1>
-          <p className="text-xs sm:text-sm lg:text-base text-white/70 font-light leading-relaxed max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm lg:text-base text-luxury-muted font-light leading-relaxed max-w-xl mx-auto">
             {selectedCollection
               ? selectedCollection.description
               : categoryId === 'candles'
@@ -124,7 +124,7 @@ export const ShopPage: React.FC = () => {
                   className={`px-3.5 py-1.5 rounded-full text-[11px] uppercase tracking-luxury font-medium transition-all duration-200 cursor-pointer ${
                     isSelected
                       ? 'bg-luxury-gold text-black font-semibold shadow-md'
-                      : 'text-luxury-sand/80 hover:text-white bg-white/5 border border-white/10 hover:border-luxury-gold/40'
+                      : 'text-luxury-sand/80 hover:text-luxury-cream bg-luxury-charcoal/50 border border-luxury-border hover:border-luxury-gold/40'
                   }`}
                 >
                   {cat.label}
@@ -144,8 +144,8 @@ export const ShopPage: React.FC = () => {
                   onClick={() => setFamily(f.value as FragranceFamily)}
                   className={`px-3 py-1 rounded-full text-[11px] tracking-wider uppercase transition-all duration-300 cursor-pointer ${
                     isSelected
-                      ? 'bg-white/20 text-white font-medium border border-luxury-gold shadow-xs'
-                      : 'bg-white/5 border border-white/10 text-white/70 hover:text-white hover:border-white/30'
+                      ? 'bg-luxury-charcoal text-luxury-cream font-medium border border-luxury-gold shadow-xs'
+                      : 'bg-luxury-charcoal/50 border border-luxury-border text-luxury-muted hover:text-luxury-cream hover:border-luxury-border'
                   }`}
                 >
                   {f.label}
@@ -156,7 +156,7 @@ export const ShopPage: React.FC = () => {
         </div>
 
         {/* Top Controls: Search, Filter Toggle, Sort */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-neutral-950/80 border border-white/10 rounded-xs shadow-xl backdrop-blur-md">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-luxury-charcoal border border-luxury-border rounded-xs shadow-xl backdrop-blur-md">
           <CatalogSearchBar
             value={searchQuery}
             onChange={setSearchQuery}
@@ -167,7 +167,7 @@ export const ShopPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsFilterOpen(true)}
-              className="lg:hidden min-h-[42px] flex items-center gap-2 text-xs py-2 px-4 border border-white/20 bg-white/5 text-white hover:text-luxury-gold rounded-xs cursor-pointer"
+              className="lg:hidden min-h-[42px] flex items-center gap-2 text-xs py-2 px-4 border border-luxury-border bg-luxury-graphite text-luxury-cream hover:text-luxury-gold rounded-xs cursor-pointer"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-luxury-gold" />
               <span>Filters</span>
@@ -215,7 +215,7 @@ export const ShopPage: React.FC = () => {
               />
             ) : (
               <>
-                <div className="text-[11px] uppercase tracking-wider text-white/50 flex items-center justify-between font-mono">
+                <div className="text-[11px] uppercase tracking-wider text-luxury-muted flex items-center justify-between font-mono">
                   <span>
                     Showing {products.length} of {allFilteredCount} Flacons
                   </span>

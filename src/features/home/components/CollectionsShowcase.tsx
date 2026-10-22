@@ -12,7 +12,7 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
   if (!collections || collections.length === 0) return null;
 
   return (
-    <section className="py-24 sm:py-32 bg-black border-b border-white/10">
+    <section className="py-24 sm:py-32 bg-luxury-black border-b border-luxury-border">
       <div className="container mx-auto px-6 sm:px-12 lg:px-16">
         <FadeIn direction="up" distance={16}>
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12 sm:mb-16 gap-4">
@@ -20,13 +20,13 @@ export const CollectionsShowcase: React.FC<CollectionsShowcaseProps> = ({ collec
               <span className="text-[10px] sm:text-xs uppercase tracking-luxury-wide text-luxury-gold font-medium block">
                 ✦ Philz Signature Collection '26
               </span>
-              <h2 className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight">
+              <h2 className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight">
                 Discover Scents
               </h2>
             </div>
             <Link
               to="/collections"
-              className="text-xs uppercase tracking-luxury text-luxury-gold hover:text-white flex items-center gap-1.5 transition-colors font-medium group"
+              className="text-xs uppercase tracking-luxury text-luxury-gold hover:text-luxury-cream flex items-center gap-1.5 transition-colors font-medium group"
             >
               <span>View All Collections</span>
               <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />

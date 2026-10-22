@@ -12,7 +12,7 @@ export const BlogSnippetSection: React.FC = () => {
   }
 
   return (
-    <section className="py-20 sm:py-28 bg-black text-luxury-cream border-t border-luxury-border/40 relative overflow-hidden">
+    <section className="py-20 sm:py-28 bg-luxury-black text-luxury-cream border-t border-luxury-border/40 relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-luxury-gold/5 blur-[120px] pointer-events-none rounded-full" />
 
       <div className="container mx-auto px-4 sm:px-8 lg:px-12 relative z-10 space-y-12">

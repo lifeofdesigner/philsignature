@@ -43,7 +43,7 @@ export const ScentsFormulaSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 sm:py-32 bg-black border-b border-white/10 relative overflow-hidden">
+    <section className="py-24 sm:py-32 bg-luxury-black border-b border-luxury-border relative overflow-hidden">
       <div className="container mx-auto px-6 sm:px-12 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Headline & Narrative */}
@@ -63,7 +63,7 @@ export const ScentsFormulaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="font-serif text-3xl sm:text-5xl text-white font-normal leading-[1.15] tracking-tight"
+              className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal leading-[1.15] tracking-tight"
             >
               A signature is something that belongs to you.
             </motion.h2>
@@ -73,7 +73,7 @@ export const ScentsFormulaSection: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-xs sm:text-sm text-white/70 font-light leading-relaxed max-w-md"
+              className="text-xs sm:text-sm text-luxury-muted font-light leading-relaxed max-w-md"
             >
               {story.body_paragraphs?.[1] ||
                 'What began with a focus on personal fragrance has evolved into a broader scent lifestyle brand offering perfumes, perfume oils, home fragrances, gifting solutions and private-label services.'}
@@ -88,7 +88,7 @@ export const ScentsFormulaSection: React.FC = () => {
             >
               <Link
                 to="/about"
-                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold hover:text-white transition-colors group font-medium"
+                className="inline-flex items-center gap-2 text-xs uppercase tracking-luxury text-luxury-gold hover:text-luxury-cream transition-colors group font-medium"
               >
                 <span>Read Meet Philz The Perfumer</span>
                 <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
@@ -105,7 +105,7 @@ export const ScentsFormulaSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="p-6 sm:p-8 bg-neutral-950/80 border border-white/10 hover:border-luxury-gold/50 rounded-sm transition-all duration-300 space-y-4 shadow-lg group"
+                className="p-6 sm:p-8 bg-luxury-charcoal border border-luxury-border hover:border-luxury-gold/50 rounded-sm transition-all duration-300 space-y-4 shadow-lg group"
               >
                 <div className="flex items-center justify-between">
                   <span className="font-serif text-2xl sm:text-3xl text-luxury-gold/60 group-hover:text-luxury-gold font-light transition-colors">
@@ -114,11 +114,11 @@ export const ScentsFormulaSection: React.FC = () => {
                   <div className="h-[1px] w-12 bg-white/10 group-hover:bg-luxury-gold/40 transition-colors" />
                 </div>
 
-                <h3 className="font-serif text-lg sm:text-xl text-white font-normal group-hover:text-luxury-gold transition-colors">
+                <h3 className="font-serif text-lg sm:text-xl text-luxury-cream font-normal group-hover:text-luxury-gold transition-colors">
                   {pillar.title}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-white/70 font-light leading-relaxed">
+                <p className="text-xs sm:text-sm text-luxury-muted font-light leading-relaxed">
                   {pillar.description}
                 </p>
               </motion.div>

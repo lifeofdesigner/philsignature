@@ -52,9 +52,9 @@ export const AboutPage: React.FC = () => {
       ];
 
   return (
-    <PageTransition className="bg-black text-white min-h-screen">
+    <PageTransition className="bg-luxury-black text-luxury-cream min-h-screen">
       {/* 1. Hero Section: ABOUT PHILZ SIGNATURE */}
-      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 border-b border-white/10 overflow-hidden">
+      <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 border-b border-luxury-border overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-luxury-gold/5 blur-[160px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 sm:px-8 max-w-4xl text-center relative z-10 space-y-6">
@@ -71,7 +71,7 @@ export const AboutPage: React.FC = () => {
           <WordReveal
             as="h1"
             text={story.title || 'ABOUT PHILZ SIGNATURE'}
-            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-luxury-cream font-normal tracking-tight"
           />
 
           <motion.p
@@ -84,7 +84,7 @@ export const AboutPage: React.FC = () => {
           </motion.p>
 
           <FadeIn delay={0.3} distance={16}>
-            <div className="space-y-4 pt-4 text-xs sm:text-sm text-white/80 font-light leading-relaxed max-w-2xl mx-auto">
+            <div className="space-y-4 pt-4 text-xs sm:text-sm text-luxury-sand font-light leading-relaxed max-w-2xl mx-auto">
               {bodyParagraphs.map((para: string, idx: number) => (
                 <p key={idx}>{para}</p>
               ))}
@@ -93,7 +93,7 @@ export const AboutPage: React.FC = () => {
 
           {/* Philosophy Pillars */}
           <div className="pt-8">
-            <div className="text-[10px] uppercase tracking-[0.25em] text-white/50 mb-4 font-medium">
+            <div className="text-[10px] uppercase tracking-[0.25em] text-luxury-muted mb-4 font-medium">
               {story.philosophy_title || 'Our Philosophy'}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
@@ -104,10 +104,10 @@ export const AboutPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: idx * 0.1, ease: LUXURY_EASE }}
-                  className="p-5 bg-neutral-950/80 border border-white/10 hover:border-luxury-gold/50 rounded-sm space-y-2 transition-all duration-300"
+                  className="p-5 bg-luxury-charcoal border border-luxury-border hover:border-luxury-gold/50 rounded-sm space-y-2 transition-all duration-300"
                 >
                   <div className="text-luxury-gold font-serif text-sm">✦ 0{idx + 1}</div>
-                  <div className="font-serif text-base text-white font-normal">{point}</div>
+                  <div className="font-serif text-base text-luxury-cream font-normal">{point}</div>
                 </motion.div>
               ))}
             </div>
@@ -116,7 +116,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* 2. Story Section: OUR STORY */}
-      <section id="our-story" className="py-20 sm:py-28 border-b border-white/10 relative overflow-hidden">
+      <section id="our-story" className="py-20 sm:py-28 border-b border-luxury-border relative overflow-hidden">
         <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Image */}
@@ -125,7 +125,7 @@ export const AboutPage: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: LUXURY_EASE }}
-              className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-neutral-900 border border-white/10 rounded-sm shadow-2xl group"
+              className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-luxury-charcoal border border-luxury-border rounded-sm shadow-2xl group"
             >
               <img
                 src={story.image1_url || '/media/banners/banner-4.jpg'}
@@ -144,9 +144,9 @@ export const AboutPage: React.FC = () => {
               <WordReveal
                 as="h2"
                 text={story.story_title || 'OUR STORY'}
-                className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight"
+                className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight"
               />
-              <div className="space-y-4 text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+              <div className="space-y-4 text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
                 {storyBody.map((para: string, idx: number) => (
                   <p key={idx}>{para}</p>
                 ))}
@@ -162,7 +162,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* 3. Founder Section: MEET PHILZ THE PERFUMER */}
-      <section id="perfumer" className="py-20 sm:py-28 border-b border-white/10 relative overflow-hidden bg-neutral-950">
+      <section id="perfumer" className="py-20 sm:py-28 border-b border-luxury-border relative overflow-hidden bg-luxury-charcoal">
         <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Narrative */}
@@ -173,20 +173,20 @@ export const AboutPage: React.FC = () => {
               <WordReveal
                 as="h2"
                 text={story.perfumer_title || 'MEET PHILZ THE PERFUMER'}
-                className="font-serif text-3xl sm:text-5xl text-white font-normal tracking-tight"
+                className="font-serif text-3xl sm:text-5xl text-luxury-cream font-normal tracking-tight"
               />
               <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-luxury-gold font-medium">
                 {story.perfumer_subtitle || 'BEHIND EVERY SIGNATURE IS A STORY.'}
               </p>
-              <div className="space-y-4 text-xs sm:text-sm text-white/80 font-light leading-relaxed">
+              <div className="space-y-4 text-xs sm:text-sm text-luxury-sand font-light leading-relaxed">
                 {perfumerBody.map((para: string, idx: number) => (
                   <p key={idx}>{para}</p>
                 ))}
               </div>
 
               {/* Brand Signoff */}
-              <div className="pt-6 border-t border-white/10 space-y-1">
-                <div className="font-serif text-base text-white tracking-[0.2em] uppercase">
+              <div className="pt-6 border-t border-luxury-border space-y-1">
+                <div className="font-serif text-base text-luxury-cream tracking-[0.2em] uppercase">
                   {story.closing_brand || 'PHILZ SIGNATURE'}
                 </div>
                 <div className="text-xs text-luxury-gold font-light italic">
@@ -211,7 +211,7 @@ export const AboutPage: React.FC = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: LUXURY_EASE }}
-              className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-neutral-900 border border-white/10 rounded-sm shadow-2xl order-1 lg:order-2 group"
+              className="lg:col-span-5 relative aspect-[4/5] overflow-hidden bg-luxury-charcoal border border-luxury-border rounded-sm shadow-2xl order-1 lg:order-2 group"
             >
               <img
                 src={story.image2_url || '/media/lifestyle/lifestyle-1.jpg'}

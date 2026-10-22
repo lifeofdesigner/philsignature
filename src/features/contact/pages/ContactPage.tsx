@@ -68,9 +68,9 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <PageTransition className="bg-black text-white min-h-screen">
+    <PageTransition className="bg-luxury-black text-luxury-cream min-h-screen">
       {/* Hero Header */}
-      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-white/10 overflow-hidden text-center">
+      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-luxury-border overflow-hidden text-center">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-luxury-gold/5 blur-[140px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 sm:px-8 max-w-3xl relative z-10 space-y-4">
@@ -86,14 +86,14 @@ export const ContactPage: React.FC = () => {
           <WordReveal
             as="h1"
             text={contact.title || "LET'S CREATE YOUR SIGNATURE"}
-            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-luxury-cream font-normal tracking-tight"
           />
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7, ease: LUXURY_EASE }}
-            className="text-xs sm:text-sm text-white/80 font-light leading-relaxed max-w-xl mx-auto"
+            className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed max-w-xl mx-auto"
           >
             {contact.subtitle || "Whether you're looking for your next fragrance, planning a corporate gift project or interested in creating your own fragrance brand, we'd love to hear from you."}
           </motion.p>
@@ -101,7 +101,7 @@ export const ContactPage: React.FC = () => {
       </section>
 
       {/* 3 Inquiry Pillars */}
-      <section className="py-16 sm:py-20 border-b border-white/10 bg-neutral-950/60">
+      <section className="py-16 sm:py-20 border-b border-luxury-border bg-luxury-charcoal">
         <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {pillars.map((pillar, idx) => (
@@ -111,16 +111,16 @@ export const ContactPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: idx * 0.12, ease: LUXURY_EASE }}
-                className="bg-black border border-white/10 rounded-sm p-6 sm:p-8 flex flex-col justify-between hover:border-luxury-gold/50 transition-all group shadow-xl"
+                className="bg-luxury-black border border-luxury-border rounded-sm p-6 sm:p-8 flex flex-col justify-between hover:border-luxury-gold/50 transition-all group shadow-xl"
               >
                 <div className="space-y-3">
                   <div className="h-9 w-9 rounded-full bg-luxury-gold/10 border border-luxury-gold/30 flex items-center justify-center text-luxury-gold group-hover:scale-105 transition-transform">
                     <Sparkles className="h-4 w-4" />
                   </div>
-                  <h3 className="font-serif text-lg sm:text-xl text-white font-normal group-hover:text-luxury-gold transition-colors">
+                  <h3 className="font-serif text-lg sm:text-xl text-luxury-cream font-normal group-hover:text-luxury-gold transition-colors">
                     {pillar.title}
                   </h3>
-                  <p className="text-xs text-white/70 font-light leading-relaxed">
+                  <p className="text-xs text-luxury-muted font-light leading-relaxed">
                     {pillar.description}
                   </p>
                 </div>
@@ -129,7 +129,7 @@ export const ContactPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => handlePillarClick(pillar)}
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-white/10 group-hover:bg-luxury-gold group-hover:text-black text-white text-xs uppercase tracking-wider font-semibold transition-all border border-white/15 group-hover:border-luxury-gold cursor-pointer"
+                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-luxury-charcoal/60 group-hover:bg-luxury-gold group-hover:text-black text-luxury-cream text-xs uppercase tracking-wider font-semibold transition-all border border-luxury-border group-hover:border-luxury-gold cursor-pointer"
                   >
                     <span>{pillar.button_text}</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
@@ -146,12 +146,12 @@ export const ContactPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-8 max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* General Enquiries Column */}
-            <FadeIn direction="up" distance={20} className="space-y-8 bg-neutral-950/80 border border-white/10 rounded-sm p-8 shadow-xl">
+            <FadeIn direction="up" distance={20} className="space-y-8 bg-luxury-charcoal border border-luxury-border rounded-sm p-8 shadow-xl">
               <div>
                 <span className="text-[10px] uppercase tracking-widest text-luxury-gold font-medium block mb-1">
                   DIRECT CONTACT
                 </span>
-                <h3 className="font-serif text-2xl text-white font-normal">
+                <h3 className="font-serif text-2xl text-luxury-cream font-normal">
                   General Enquiries
                 </h3>
               </div>
@@ -160,10 +160,10 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <Mail className="h-4 w-4 text-luxury-gold shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="uppercase tracking-wider font-medium text-white/60 text-[10px]">Email</h4>
+                    <h4 className="uppercase tracking-wider font-medium text-luxury-muted text-[10px]">Email</h4>
                     <a
                       href={`mailto:${contact.email || 'Philzsignature1@gmail.com'}`}
-                      className="text-white hover:text-luxury-gold transition-colors block mt-0.5"
+                      className="text-luxury-cream hover:text-luxury-gold transition-colors block mt-0.5"
                     >
                       {contact.email || 'Philzsignature1@gmail.com'}
                     </a>
@@ -173,10 +173,10 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <Phone className="h-4 w-4 text-luxury-gold shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="uppercase tracking-wider font-medium text-white/60 text-[10px]">Phone</h4>
+                    <h4 className="uppercase tracking-wider font-medium text-luxury-muted text-[10px]">Phone</h4>
                     <a
                       href={`tel:${contact.phone || '+2347038399764'}`}
-                      className="text-white hover:text-luxury-gold transition-colors block mt-0.5"
+                      className="text-luxury-cream hover:text-luxury-gold transition-colors block mt-0.5"
                     >
                       {contact.phone || '+2347038399764'}
                     </a>
@@ -186,7 +186,7 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <MessageSquare className="h-4 w-4 text-luxury-gold shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="uppercase tracking-wider font-medium text-white/60 text-[10px]">WhatsApp</h4>
+                    <h4 className="uppercase tracking-wider font-medium text-luxury-muted text-[10px]">WhatsApp</h4>
                     <a
                       href={contact.whatsapp || 'https://wa.me/message/OJXETPKJE7L4M1'}
                       target="_blank"
@@ -202,8 +202,8 @@ export const ContactPage: React.FC = () => {
                   <div className="flex items-start space-x-3.5">
                     <MapPin className="h-4 w-4 text-luxury-gold shrink-0 mt-0.5" />
                     <div>
-                      <h4 className="uppercase tracking-wider font-medium text-white/60 text-[10px]">Location</h4>
-                      <p className="text-white/80 mt-0.5">{contact.address || settings.store_address}</p>
+                      <h4 className="uppercase tracking-wider font-medium text-luxury-muted text-[10px]">Location</h4>
+                      <p className="text-luxury-sand mt-0.5">{contact.address || settings.store_address}</p>
                     </div>
                   </div>
                 )}
@@ -211,16 +211,16 @@ export const ContactPage: React.FC = () => {
             </FadeIn>
 
             {/* Direct Message Form */}
-            <FadeIn direction="up" distance={20} delay={0.15} className="lg:col-span-2 bg-neutral-950/60 border border-white/10 rounded-sm p-8 shadow-xl">
-              <h3 className="font-serif text-2xl text-white mb-6 font-normal">
+            <FadeIn direction="up" distance={20} delay={0.15} className="lg:col-span-2 bg-luxury-charcoal border border-luxury-border rounded-sm p-8 shadow-xl">
+              <h3 className="font-serif text-2xl text-luxury-cream mb-6 font-normal">
                 Send a Message
               </h3>
 
               {isSent ? (
-                <div className="p-8 text-center space-y-4 bg-white/5 border border-luxury-gold/40 rounded-sm">
+                <div className="p-8 text-center space-y-4 bg-luxury-graphite/50 border border-luxury-gold/40 rounded-sm">
                   <CheckCircle2 className="h-10 w-10 text-luxury-gold mx-auto" />
-                  <h4 className="font-serif text-xl text-white">Inquiry Received</h4>
-                  <p className="text-xs text-white/70 font-light max-w-sm mx-auto">
+                  <h4 className="font-serif text-xl text-luxury-cream">Inquiry Received</h4>
+                  <p className="text-xs text-luxury-muted font-light max-w-sm mx-auto">
                     Thank you for reaching out to Philz Signature. Our fragrance concierge will review your message and reply promptly.
                   </p>
                   <Button
@@ -232,7 +232,7 @@ export const ContactPage: React.FC = () => {
                       setEmail('');
                       setMessage('');
                     }}
-                    className="text-xs text-white"
+                    className="text-xs text-luxury-cream"
                   >
                     Send Another Message
                   </Button>

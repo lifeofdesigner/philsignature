@@ -37,7 +37,7 @@ export const InstagramFeedSection: React.FC<InstagramFeedSectionProps> = ({ cust
   };
 
   return (
-    <section className="py-24 sm:py-32 bg-black border-t border-white/10 relative overflow-hidden select-none">
+    <section className="py-24 sm:py-32 bg-luxury-black border-t border-luxury-border relative overflow-hidden select-none">
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-luxury-gold/5 blur-[140px] pointer-events-none rounded-full" />
 
@@ -51,10 +51,10 @@ export const InstagramFeedSection: React.FC<InstagramFeedSectionProps> = ({ cust
             <WordReveal
               as="h2"
               text={config.title || 'Follow Our Olfactory Journey'}
-              className="font-serif text-2xl sm:text-4xl text-white font-normal tracking-tight"
+              className="font-serif text-2xl sm:text-4xl text-luxury-cream font-normal tracking-tight"
             />
             {config.subtitle && (
-              <p className="text-xs sm:text-sm text-white/70 font-light max-w-lg">
+              <p className="text-xs sm:text-sm text-luxury-muted font-light max-w-lg">
                 {config.subtitle}
               </p>
             )}

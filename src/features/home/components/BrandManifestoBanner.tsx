@@ -14,7 +14,7 @@ export const BrandManifestoBanner: React.FC = () => {
   const story = storyData || CMSService.DEFAULT_STORY;
 
   return (
-    <section className="py-20 sm:py-28 bg-black border-b border-white/10 relative overflow-hidden">
+    <section className="py-20 sm:py-28 bg-luxury-black border-b border-luxury-border relative overflow-hidden">
       {/* Subtle Golden Glow Gradient in Center */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-luxury-gold/5 blur-[120px] pointer-events-none rounded-full" />
 
@@ -34,7 +34,7 @@ export const BrandManifestoBanner: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.15 }}
-          className="font-serif italic text-2xl sm:text-4xl lg:text-5xl text-white font-light leading-[1.25] tracking-tight drop-shadow-sm"
+          className="font-serif italic text-2xl sm:text-4xl lg:text-5xl text-luxury-cream font-light leading-[1.25] tracking-tight drop-shadow-sm"
         >
           &ldquo;{story.subtitle || 'A SIGNATURE IS SOMETHING THAT BELONGS TO YOU.'}&rdquo;
         </motion.h2>
@@ -44,7 +44,7 @@ export const BrandManifestoBanner: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.25 }}
-          className="text-xs sm:text-sm text-white/80 font-light max-w-2xl mx-auto leading-relaxed"
+          className="text-xs sm:text-sm text-luxury-sand font-light max-w-2xl mx-auto leading-relaxed"
         >
           {story.body_paragraphs?.[0] || 'Founded in 2018, Philz Signature was created from a passion for fragrance and the belief that scent is one of the most powerful ways to express individuality.'}
         </motion.p>

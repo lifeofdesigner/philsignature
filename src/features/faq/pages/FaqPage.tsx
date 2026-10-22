@@ -33,9 +33,9 @@ export const FaqPage: React.FC = () => {
   );
 
   return (
-    <PageTransition className="bg-black text-white min-h-screen">
+    <PageTransition className="bg-luxury-black text-luxury-cream min-h-screen">
       {/* Header */}
-      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-white/10 overflow-hidden text-center">
+      <section className="relative pt-32 pb-16 sm:pt-40 sm:pb-24 border-b border-luxury-border overflow-hidden text-center">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-luxury-gold/5 blur-[140px] pointer-events-none rounded-full" />
         
         <div className="container mx-auto px-4 sm:px-8 max-w-3xl relative z-10 space-y-4">
@@ -52,14 +52,14 @@ export const FaqPage: React.FC = () => {
           <WordReveal
             as="h1"
             text={faq.title || 'FREQUENTLY ASKED QUESTIONS'}
-            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-white font-normal tracking-tight"
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl text-luxury-cream font-normal tracking-tight"
           />
 
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7, ease: LUXURY_EASE }}
-            className="text-xs sm:text-sm text-white/80 font-light leading-relaxed max-w-lg mx-auto"
+            className="text-xs sm:text-sm text-luxury-sand font-light leading-relaxed max-w-lg mx-auto"
           >
             {faq.subtitle || 'Everything you need to know about our fragrance collections, bespoke solutions, orders and delivery.'}
           </motion.p>
@@ -67,13 +67,13 @@ export const FaqPage: React.FC = () => {
           {/* Search Box */}
           <div className="pt-6 max-w-md mx-auto">
             <div className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-luxury-muted" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search questions (e.g. private label, delivery, longevity)..."
-                className="w-full bg-neutral-900 border border-white/15 focus:border-luxury-gold rounded-full pl-10 pr-4 py-2.5 text-xs text-white placeholder-white/40 focus:outline-none transition-colors"
+                className="w-full bg-luxury-charcoal border border-luxury-border focus:border-luxury-gold rounded-full pl-10 pr-4 py-2.5 text-xs text-luxury-cream placeholder:text-luxury-muted focus:outline-none transition-colors"
               />
             </div>
           </div>
@@ -84,7 +84,7 @@ export const FaqPage: React.FC = () => {
       <section className="py-16 sm:py-24">
         <div className="container mx-auto px-4 sm:px-8 max-w-3xl space-y-4">
           {filteredItems.length === 0 ? (
-            <div className="p-12 text-center text-white/60 space-y-2">
+            <div className="p-12 text-center text-luxury-muted space-y-2">
               <HelpCircle className="h-8 w-8 text-luxury-gold/50 mx-auto" />
               <p className="text-sm">No matching questions found.</p>
               <button
@@ -105,7 +105,7 @@ export const FaqPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.04, ease: LUXURY_EASE }}
-                  className="border border-white/10 rounded-sm bg-neutral-950/60 overflow-hidden hover:border-luxury-gold/40 transition-colors"
+                  className="border border-luxury-border rounded-sm bg-luxury-charcoal overflow-hidden hover:border-luxury-gold/40 transition-colors"
                 >
                   <button
                     type="button"
@@ -113,7 +113,7 @@ export const FaqPage: React.FC = () => {
                     className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer"
                     aria-expanded={isOpen}
                   >
-                    <span className="font-serif text-base sm:text-lg text-white font-normal pr-2">
+                    <span className="font-serif text-base sm:text-lg text-luxury-cream font-normal pr-2">
                       {item.question}
                     </span>
                     <motion.div
@@ -134,7 +134,7 @@ export const FaqPage: React.FC = () => {
                         transition={{ duration: 0.35, ease: LUXURY_EASE }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-white/75 font-light leading-relaxed border-t border-white/5">
+                        <div className="px-5 sm:px-6 pb-6 pt-1 text-xs sm:text-sm text-luxury-sand font-light leading-relaxed border-t border-luxury-border/40">
                           {item.answer}
                         </div>
                       </motion.div>
