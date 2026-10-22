@@ -76,10 +76,13 @@
     <script>
       (function() {
         try {
-          localStorage.setItem('ps-theme', 'dark');
+          var theme = localStorage.getItem('philz-theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
           document.documentElement.classList.remove('light');
           document.documentElement.classList.add('dark');
-        } catch (e) {}
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
       })();
     </script>
 

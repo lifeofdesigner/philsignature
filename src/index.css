@@ -55,6 +55,26 @@
   }
 }
 
+/* ===================================================================
+   LIGHT THEME — luxury token RGB overrides
+   Switching data-theme="light" on <html> remaps every luxury-* token.
+   bg-luxury-black → white, text-luxury-cream → dark, etc.
+   Gold stays the same — works on both themes.
+   =================================================================== */
+:root[data-theme="light"] {
+  --luxury-black: 255 255 255;        /* #FFFFFF  page canvas */
+  --luxury-charcoal: 249 246 241;     /* #F9F6F1  card / section surface */
+  --luxury-graphite: 242 237 230;     /* #F2EDE6  subtle secondary surface */
+  --luxury-card: 255 255 255;         /* #FFFFFF  card background */
+  --luxury-border: 220 213 204;       /* #DCD5CC  borders */
+  --luxury-cream: 26 18 9;            /* #1A1209  primary text */
+  --luxury-cream-soft: 74 61 42;      /* #4A3D2A  secondary text */
+  --luxury-cream-dim: 138 122 101;    /* #8A7A65  muted text */
+  --luxury-sand: 74 61 42;            /* #4A3D2A  sand → secondary text */
+  --luxury-muted: 138 122 101;        /* #8A7A65  muted text */
+  /* --luxury-gold, --luxury-gold-light, --luxury-gold-dark: unchanged */
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -64,6 +84,23 @@
     @apply bg-luxury-black text-luxury-cream antialiased font-sans selection:bg-luxury-gold/30 selection:text-white;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+/* ===================================================================
+   GLOBAL THEME TRANSITION — smooth color switch on toggle
+   Excludes media and canvas elements where transition causes artifacts.
+   =================================================================== */
+*,
+*::before,
+*::after {
+  transition-property: background-color, color, border-color, box-shadow;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+img, video, svg, canvas, .no-theme-transition,
+.no-theme-transition * {
+  transition: none !important;
 }
 
 /* ===================================================================
@@ -253,41 +290,51 @@
 }
 
 /* ===================================================================
-   STOREFRONT PERMANENT DARK THEME GUARANTEES
+   STOREFRONT DARK THEME GUARANTEES  (scoped to data-theme="dark")
    =================================================================== */
 
-:not(.admin-scope):not(.admin-scope *) p:not([class*="text-"]) {
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) p:not([class*="text-"]) {
   color: #D5CCBF;
 }
 
-:not(.admin-scope):not(.admin-scope *) .text-luxury-cream {
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) .text-luxury-cream {
   color: #FAF8F5 !important;
 }
 
-:not(.admin-scope):not(.admin-scope *) .text-luxury-sand {
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) .text-luxury-sand {
   color: #D5CCBF !important;
 }
 
-:not(.admin-scope):not(.admin-scope *) .text-luxury-muted {
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) .text-luxury-muted {
   color: #88847D !important;
 }
 
-/* Form Inputs, Textareas, Selects in Storefront Dark Theme */
-:not(.admin-scope):not(.admin-scope *) input:not([type="checkbox"]):not([type="radio"]),
-:not(.admin-scope):not(.admin-scope *) textarea,
-:not(.admin-scope):not(.admin-scope *) select {
+/* Form Inputs, Textareas, Selects — Dark Theme */
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) textarea,
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) select {
   color-scheme: dark;
   color: #FAF8F5 !important;
   background-color: #181818 !important;
   border-color: #2A2A2A !important;
 }
 
-:not(.admin-scope):not(.admin-scope *) select option {
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) select option {
   background-color: #181818 !important;
   color: #FAF8F5 !important;
 }
 
-/* Dropdown Menu & Popover high-contrast guarantees */
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) input::placeholder,
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) textarea::placeholder {
+  color: #88847D !important;
+  opacity: 1 !important;
+}
+
+[data-theme="dark"] :not(.admin-scope):not(.admin-scope *) label {
+  color: #D5CCBF !important;
+}
+
+/* Dropdown Menu & Popover — always dark overlays in both themes */
 [role="menu"].bg-black\/95,
 [role="menu"].bg-black\/95 * {
   color-scheme: dark;
@@ -307,14 +354,85 @@
   color: rgba(255, 255, 255, 0.6) !important;
 }
 
-:not(.admin-scope):not(.admin-scope *) input::placeholder,
-:not(.admin-scope):not(.admin-scope *) textarea::placeholder {
-  color: #88847D !important;
+/* ===================================================================
+   STOREFRONT LIGHT THEME OVERRIDES
+   =================================================================== */
+
+/* Paragraph text */
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) p:not([class*="text-"]) {
+  color: #4A3D2A;
+}
+
+/* luxury-* token classes (these update automatically via CSS vars,
+   but explicit overrides ensure !important rules are countered) */
+[data-theme="light"] :not(.admin-scope) .text-luxury-cream {
+  color: #1A1209 !important;
+}
+[data-theme="light"] :not(.admin-scope) .text-luxury-sand {
+  color: #4A3D2A !important;
+}
+[data-theme="light"] :not(.admin-scope) .text-luxury-muted {
+  color: #8A7A65 !important;
+}
+
+/* Form inputs — Light Theme */
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) textarea,
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) select {
+  color-scheme: light;
+  color: #1A1209 !important;
+  background-color: #FFFFFF !important;
+  border-color: #DCD5CC !important;
+}
+
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) select option {
+  background-color: #FFFFFF !important;
+  color: #1A1209 !important;
+}
+
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) input::placeholder,
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) textarea::placeholder {
+  color: #8A7A65 !important;
   opacity: 1 !important;
 }
 
-:not(.admin-scope):not(.admin-scope *) label {
-  color: #D5CCBF !important;
+[data-theme="light"] :not(.admin-scope):not(.admin-scope *) label {
+  color: #4A3D2A !important;
+}
+
+/* Footer — hardcoded bg-black needs explicit light override */
+[data-theme="light"] footer {
+  background-color: #F2EDE6 !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  color: #1A1209 !important;
+}
+[data-theme="light"] footer h4,
+[data-theme="light"] footer p,
+[data-theme="light"] footer span,
+[data-theme="light"] footer a:not([class*="text-luxury-gold"]):not([class*="text-gold"]) {
+  color: #4A3D2A !important;
+}
+[data-theme="light"] footer .border-white\/10 {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+[data-theme="light"] footer .bg-luxury-gold\/5 {
+  background-color: rgba(197, 168, 128, 0.1) !important;
+}
+
+/* Announcement bar text in light mode */
+[data-theme="light"] :not(.admin-scope) .text-white:not([data-keep-white]):not(button) {
+  color: inherit;
+}
+
+/* Light mode scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #F5F2EE;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #C8B89A;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--luxury-gold));
 }
 
 /* Custom Luxury Scrollbar */
