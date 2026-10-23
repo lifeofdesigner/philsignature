@@ -194,7 +194,7 @@ export const Navbar: React.FC = () => {
 
         {/* COLUMN 2 (CENTER): REFINED 5-ITEM DESKTOP NAVIGATION WITH SHOP MEGA MENU */}
         <nav
-          className="hidden lg:flex items-center justify-center gap-4 xl:gap-6 2xl:gap-8 min-w-0"
+          className="hidden lg:flex items-center justify-center gap-5 min-w-0"
           onMouseLeave={() => {
             setHoveredNav(null);
             setShopMenuOpen(false);
@@ -223,7 +223,7 @@ export const Navbar: React.FC = () => {
                   <Link
                     to={link.href}
                     className={cn(
-                      'relative py-1 inline-flex items-center gap-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.12em] xl:tracking-[0.16em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                      'relative py-1 inline-flex items-center gap-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.04em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
                       isActive
                         ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]'
                         : isScrolled && isLight
@@ -385,7 +385,7 @@ export const Navbar: React.FC = () => {
                   setShopMenuOpen(false);
                 }}
                 className={cn(
-                  'relative py-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.12em] xl:tracking-[0.16em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                  'relative py-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.04em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
                   isActive
                     ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]'
                     : isScrolled && isLight
@@ -577,7 +577,7 @@ export const Navbar: React.FC = () => {
             to="/cart"
             data-keep-white
             className={cn(
-              'px-3.5 py-1.5 rounded-full border transition-all text-xs font-medium flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group hover:bg-luxury-gold hover:text-black hover:border-luxury-gold',
+              'px-3.5 py-1.5 rounded-full border transition-all text-xs font-medium flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group hover:bg-luxury-gold hover:text-black hover:border-luxury-gold ml-1',
               isScrolled && isLight
                 ? 'bg-transparent text-[#1A1209] border-[#1A1209] hover:bg-luxury-gold hover:text-black hover:border-luxury-gold'
                 : 'bg-white/10 text-white border-white/20'

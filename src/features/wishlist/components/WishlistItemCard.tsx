@@ -39,7 +39,7 @@ export const WishlistItemCard: React.FC<WishlistItemCardProps> = ({
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 p-4 sm:p-6 bg-luxury-card border border-luxury-border hover:border-luxury-gold/50 transition-colors rounded-sm">
       <div className="flex items-center gap-4">
         {/* Product Image */}
-        <Link to={`/product/${product.slug}`} className="relative aspect-[3/4] w-20 sm:w-28 shrink-0 overflow-hidden bg-black rounded-sm">
+        <Link to={`/product/${product.slug}`} className="relative aspect-[3/4] w-20 sm:w-28 shrink-0 overflow-hidden bg-luxury-card rounded-sm">
           <img
             src={primaryImage}
             alt={product.name}

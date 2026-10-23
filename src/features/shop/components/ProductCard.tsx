@@ -69,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Flacon Imagery & Quick Badges */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-luxury-charcoal/50">
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-luxury-card">
         <Link to={`/product/${product.slug}`} className="block w-full h-full">
           <img
             src={isHovered && hoverImage ? hoverImage : primaryImage || (isCandle ? '/candles/vanilla-treat.jpg' : '/products/philz-signature-official-bottle.jpg')}

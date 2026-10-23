@@ -13,7 +13,7 @@ export const StoreShell: React.FC = () => {
   const isHomePage = location.pathname === '/';
 
   return (
-    <div className="min-h-screen flex flex-col bg-black text-luxury-cream relative selection:bg-luxury-gold selection:text-black">
+    <div className="min-h-screen flex flex-col bg-luxury-black text-luxury-cream relative selection:bg-luxury-gold selection:text-black">
       {/* Floating Header Overlay (Sits directly inside the Hero on Homepage) */}
       <header className="fixed top-0 left-0 right-0 z-40 w-full pointer-events-none">
         <div className="pointer-events-auto">
