@@ -119,7 +119,7 @@ export const Navbar: React.FC = () => {
         'w-full transition-all duration-400 select-none pointer-events-auto z-40',
         isScrolled
           ? isLight
-            ? 'bg-white/92 backdrop-blur-2xl border-b border-black/10 py-3 sm:py-3.5 shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
+            ? 'bg-white backdrop-blur-2xl border-b border-black/10 py-3 sm:py-3.5 shadow-[0_1px_12px_rgba(0,0,0,0.08)]'
             : 'bg-black/85 backdrop-blur-2xl border-b border-white/10 py-3 sm:py-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
           : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
@@ -142,7 +142,12 @@ export const Navbar: React.FC = () => {
                   src={logoUrl}
                   alt={settings.store_name || 'Philz Signature'}
                   onError={() => setLogoLoadError(true)}
-                  className="brand-navbar-logo w-auto object-contain transition-all duration-300 drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)]"
+                  className={cn(
+                    'brand-navbar-logo w-auto object-contain transition-all duration-300',
+                    isScrolled && isLight
+                      ? 'drop-shadow-none brightness-0'
+                      : 'drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)]'
+                  )}
                 />
                 <style>{`
                   .brand-navbar-logo {
@@ -161,7 +166,10 @@ export const Navbar: React.FC = () => {
 
             {(appearance.show_business_name !== false || !logoUrl || logoLoadError) && (
               <div className="flex flex-col items-start select-none text-left leading-tight">
-                <span className="font-serif text-base sm:text-lg lg:text-[18px] tracking-[0.22em] sm:tracking-[0.26em] text-white uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+                <span className={cn(
+                  'font-serif text-base sm:text-lg lg:text-[18px] tracking-[0.22em] sm:tracking-[0.26em] uppercase font-normal group-hover:text-luxury-gold transition-colors duration-200 whitespace-nowrap',
+                  isScrolled && isLight ? 'text-[#1A1209] drop-shadow-none' : 'text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]'
+                )}>
                   {settings.store_name || 'PHILZ SIGNATURE'}
                 </span>
                 <span className="hidden xl:block text-[7.5px] sm:text-[8.5px] tracking-[0.32em] text-luxury-gold font-medium uppercase mt-0.5 whitespace-nowrap drop-shadow-[0_1.5px_4px_rgba(0,0,0,0.9)] opacity-95">
@@ -172,7 +180,12 @@ export const Navbar: React.FC = () => {
 
             {/* Company registration number — visible on both mobile and desktop */}
             {appearance.show_company_registration_number !== false && settings.company_registration_number && (
-              <span className="text-[8.5px] sm:text-[9px] tracking-[0.16em] sm:tracking-[0.18em] text-white/70 font-medium uppercase whitespace-nowrap drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] self-center px-1.5 py-0.5 rounded-xs bg-white/5 border border-white/10 sm:border-transparent sm:bg-transparent">
+              <span className={cn(
+                'text-[8.5px] sm:text-[9px] tracking-[0.16em] sm:tracking-[0.18em] font-medium uppercase whitespace-nowrap self-center px-1.5 py-0.5 rounded-xs',
+                isScrolled && isLight
+                  ? 'text-[#1A1209]/60 border border-black/10 bg-black/5 sm:border-black/10 sm:bg-black/5 drop-shadow-none'
+                  : 'text-white/70 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10 sm:border-transparent sm:bg-transparent'
+              )}>
                 {settings.company_registration_number}
               </span>
             )}
@@ -181,7 +194,7 @@ export const Navbar: React.FC = () => {
 
         {/* COLUMN 2 (CENTER): REFINED 5-ITEM DESKTOP NAVIGATION WITH SHOP MEGA MENU */}
         <nav
-          className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 2xl:gap-10 min-w-0"
+          className="hidden lg:flex items-center justify-center gap-4 xl:gap-6 2xl:gap-8 min-w-0"
           onMouseLeave={() => {
             setHoveredNav(null);
             setShopMenuOpen(false);
@@ -210,11 +223,11 @@ export const Navbar: React.FC = () => {
                   <Link
                     to={link.href}
                     className={cn(
-                      'relative py-1 inline-flex items-center gap-1 text-[11.5px] xl:text-[12px] uppercase tracking-[0.22em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                      'relative py-1 inline-flex items-center gap-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.12em] xl:tracking-[0.16em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
                       isActive
                         ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]'
                         : isScrolled && isLight
-                          ? 'text-stone-800/80 hover:text-stone-900 drop-shadow-none'
+                          ? 'text-[#1A1209] hover:text-luxury-gold drop-shadow-none'
                           : 'text-white/80 hover:text-white'
                     )}
                   >
@@ -372,11 +385,11 @@ export const Navbar: React.FC = () => {
                   setShopMenuOpen(false);
                 }}
                 className={cn(
-                  'relative py-1 text-[11.5px] xl:text-[12px] uppercase tracking-[0.22em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+                  'relative py-1 text-[11px] xl:text-[11.5px] uppercase tracking-[0.12em] xl:tracking-[0.16em] font-medium transition-colors duration-300 select-none shrink-0 whitespace-nowrap drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
                   isActive
                     ? 'text-luxury-gold font-semibold drop-shadow-[0_0_8px_rgba(212,175,55,0.7)]'
                     : isScrolled && isLight
-                      ? 'text-stone-800/80 hover:text-stone-900 drop-shadow-none'
+                      ? 'text-[#1A1209] hover:text-luxury-gold drop-shadow-none'
                       : 'text-white/80 hover:text-white'
                 )}
               >
@@ -406,10 +419,10 @@ export const Navbar: React.FC = () => {
           <Link
             to="/track-order"
             className={cn(
-              'hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[11px] uppercase tracking-wider font-medium transition-all bg-white/5 hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
+              'hidden xl:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-[10.5px] uppercase tracking-[0.1em] font-medium transition-all shrink-0 ml-2',
               isScrolled && isLight
-                ? 'border-black/15 hover:border-luxury-gold/60 text-stone-800/80 hover:text-luxury-gold drop-shadow-none'
-                : 'border-white/15 hover:border-luxury-gold/60 text-white/80 hover:text-luxury-gold'
+                ? 'border-[#1A1209] text-[#1A1209] bg-transparent hover:bg-luxury-gold hover:border-luxury-gold hover:text-black drop-shadow-none'
+                : 'border-white/15 bg-white/5 hover:bg-white/10 text-white/80 hover:text-luxury-gold hover:border-luxury-gold/60 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]'
             )}
             title="Track Order"
             aria-label="Track your order"
@@ -420,8 +433,10 @@ export const Navbar: React.FC = () => {
           <Link
             to="/track-order"
             className={cn(
-              'hidden lg:flex xl:hidden h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0',
-              isScrolled && isLight ? 'text-stone-800/80 drop-shadow-none' : 'text-white/80'
+              'hidden lg:flex xl:hidden h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold border transition-all shrink-0 ml-1',
+              isScrolled && isLight
+                ? 'text-[#1A1209] border-[#1A1209]/30 hover:border-luxury-gold hover:bg-luxury-gold/10 drop-shadow-none'
+                : 'text-white/80 border-transparent hover:bg-white/10 hover:border-white/15 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]'
             )}
             title="Track Order"
             aria-label="Track your order"
@@ -433,8 +448,10 @@ export const Navbar: React.FC = () => {
           <Link
             to="/shop"
             className={cn(
-              'h-8.5 w-8.5 rounded-full flex items-center justify-center hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0',
-              isScrolled && isLight ? 'text-stone-800/80 drop-shadow-none' : 'text-white/80'
+              'h-8.5 w-8.5 rounded-full flex items-center justify-center hover:text-luxury-gold border border-transparent transition-all shrink-0',
+              isScrolled && isLight
+                ? 'text-[#1A1209] hover:bg-black/5 hover:border-black/10 drop-shadow-none'
+                : 'text-white/80 hover:bg-white/10 hover:border-white/15 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]'
             )}
             title="Search Collection"
             aria-label="Search collection"
@@ -449,8 +466,10 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   className={cn(
-                    'hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative cursor-pointer shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
-                    isScrolled && isLight ? 'text-stone-800/80 drop-shadow-none' : 'text-white/80'
+                    'hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold border border-transparent transition-all relative cursor-pointer shrink-0',
+                    isScrolled && isLight
+                      ? 'text-[#1A1209] hover:bg-black/5 hover:border-black/10 drop-shadow-none'
+                      : 'text-white/80 hover:bg-white/10 hover:border-white/15 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]'
                   )}
                   title="My Account"
                   aria-label="Customer account portal"
@@ -518,8 +537,10 @@ export const Navbar: React.FC = () => {
             <Link
               to="/login"
               className={cn(
-                'hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0',
-                isScrolled && isLight ? 'text-stone-800/80 drop-shadow-none' : 'text-white/80'
+                'hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold border border-transparent transition-all shrink-0',
+                isScrolled && isLight
+                  ? 'text-[#1A1209] hover:bg-black/5 hover:border-black/10 drop-shadow-none'
+                  : 'text-white/80 hover:bg-white/10 hover:border-white/15 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]'
               )}
               title="Account / Sign In"
               aria-label="Sign in to your account"
@@ -535,8 +556,10 @@ export const Navbar: React.FC = () => {
           <Link
             to="/wishlist"
             className={cn(
-              'hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15 transition-all relative drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] shrink-0',
-              isScrolled && isLight ? 'text-stone-800/80 drop-shadow-none' : 'text-white/80'
+              'hidden sm:flex h-8.5 w-8.5 rounded-full items-center justify-center hover:text-luxury-gold border border-transparent transition-all relative shrink-0',
+              isScrolled && isLight
+                ? 'text-[#1A1209] hover:bg-black/5 hover:border-black/10 drop-shadow-none'
+                : 'text-white/80 hover:bg-white/10 hover:border-white/15 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]'
             )}
             title="My Wishlist"
             aria-label="View saved perfumes"
@@ -556,7 +579,7 @@ export const Navbar: React.FC = () => {
             className={cn(
               'px-3.5 py-1.5 rounded-full border transition-all text-xs font-medium flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group hover:bg-luxury-gold hover:text-black hover:border-luxury-gold',
               isScrolled && isLight
-                ? 'bg-black/8 text-stone-900 border-black/20'
+                ? 'bg-transparent text-[#1A1209] border-[#1A1209] hover:bg-luxury-gold hover:text-black hover:border-luxury-gold'
                 : 'bg-white/10 text-white border-white/20'
             )}
             title="Shopping Cart"
@@ -572,7 +595,7 @@ export const Navbar: React.FC = () => {
             to="/track-order"
             className={cn(
               'lg:hidden h-8.5 w-8.5 flex items-center justify-center hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
-              isScrolled && isLight ? 'text-stone-800/80 drop-shadow-none' : 'text-white/80'
+              isScrolled && isLight ? 'text-[#1A1209] drop-shadow-none' : 'text-white/80'
             )}
             title="Track Order"
             aria-label="Track Order"
@@ -586,7 +609,7 @@ export const Navbar: React.FC = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={cn(
               'lg:hidden h-8.5 w-8.5 flex items-center justify-center hover:text-luxury-gold transition-colors cursor-pointer rounded-full hover:bg-white/10 shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] ml-0.5',
-              isScrolled && isLight ? 'text-stone-900 drop-shadow-none' : 'text-white'
+              isScrolled && isLight ? 'text-[#1A1209] drop-shadow-none' : 'text-white'
             )}
             aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
           >

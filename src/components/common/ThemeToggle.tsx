@@ -19,7 +19,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className, dark }) => 
       className={cn(
         'h-8.5 w-8.5 rounded-full flex items-center justify-center transition-all shrink-0 drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)]',
         dark
-          ? 'text-stone-700 hover:text-luxury-gold hover:bg-black/10 border border-transparent hover:border-black/15 drop-shadow-none'
+          ? 'text-[#1A1209] hover:text-luxury-gold hover:bg-black/5 border border-transparent hover:border-black/15 drop-shadow-none'
           : 'text-white/80 hover:text-luxury-gold hover:bg-white/10 border border-transparent hover:border-white/15',
         className
       )}
