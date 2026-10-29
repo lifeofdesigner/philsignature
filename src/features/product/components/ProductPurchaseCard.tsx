@@ -187,9 +187,6 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
             {formattedOriginalPrice}
           </span>
         )}
-        <span className="text-xs text-luxury-muted font-light">
-          (Inclusive of all taxes)
-        </span>
       </div>
 
       {/* Size Variant Selector */}
