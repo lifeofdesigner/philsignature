@@ -178,10 +178,10 @@ export const Navbar: React.FC = () => {
               </div>
             )}
 
-            {/* Company registration number — visible on both mobile and desktop */}
+            {/* Company registration number — visible on desktop/tablet; on mobile it is cleanly surfaced in the mobile drawer and footer */}
             {appearance.show_company_registration_number !== false && settings.company_registration_number && (
               <span className={cn(
-                'text-[8.5px] sm:text-[9px] tracking-[0.16em] sm:tracking-[0.18em] font-medium uppercase whitespace-nowrap self-center px-1.5 py-0.5 rounded-xs',
+                'hidden sm:inline-block text-[8.5px] sm:text-[9px] tracking-[0.16em] sm:tracking-[0.18em] font-medium uppercase whitespace-nowrap self-center px-1.5 py-0.5 rounded-xs',
                 isScrolled && isLight
                   ? 'text-[#1A1209]/60 border border-black/10 bg-black/5 sm:border-black/10 sm:bg-black/5 drop-shadow-none'
                   : 'text-white/70 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)] bg-white/5 border border-white/10 sm:border-transparent sm:bg-transparent'
@@ -414,7 +414,7 @@ export const Navbar: React.FC = () => {
         </nav>
 
         {/* COLUMN 3 (RIGHT): HEADER ACTIONS ORDER: Search -> Account -> Wishlist -> Cart */}
-        <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-3.5 shrink-0">
+        <div className="flex items-center justify-end gap-1.5 sm:gap-3 lg:gap-3.5 shrink-0">
           {/* ACTION: TRACK ORDER (DESKTOP) */}
           <Link
             to="/track-order"
@@ -577,7 +577,7 @@ export const Navbar: React.FC = () => {
             to="/cart"
             data-keep-white
             className={cn(
-              'px-3.5 py-1.5 rounded-full border transition-all text-xs font-medium flex items-center gap-2 shadow-lg backdrop-blur-md shrink-0 group hover:bg-luxury-gold hover:text-black hover:border-luxury-gold ml-1',
+              'px-2.5 sm:px-3.5 py-1.5 rounded-full border transition-all text-xs font-medium flex items-center gap-1.5 sm:gap-2 shadow-lg backdrop-blur-md shrink-0 group hover:bg-luxury-gold hover:text-black hover:border-luxury-gold ml-0.5 sm:ml-1',
               isScrolled && isLight
                 ? 'bg-transparent text-[#1A1209] border-[#1A1209] hover:bg-luxury-gold hover:text-black hover:border-luxury-gold'
                 : 'bg-white/10 text-white border-white/20'
