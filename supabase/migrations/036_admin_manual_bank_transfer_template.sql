@@ -33,3 +33,4 @@ ON CONFLICT (template_key) DO UPDATE SET
     name = EXCLUDED.name,
     subject = EXCLUDED.subject,
     variables = EXCLUDED.variables;
+

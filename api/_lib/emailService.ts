@@ -53,39 +53,48 @@ const ADMIN_NOTIFICATION_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || 'orders
 const APP_URL = process.env.VITE_APP_URL || 'https://philzsignature.com';
 
 export async function getAdminNotificationEmails(): Promise<string[]> {
-  const envVal = process.env.ADMIN_NOTIFICATION_EMAIL;
-  if (envVal) {
-    const list = envVal
-      .split(',')
-      .map((e) => e.trim())
-      .filter((e) => e.length > 0 && e.includes('@'));
-    if (list.length > 0) return list;
-  }
+  const recipients = new Set<string>();
 
+  // 1. Existing Concierge email & admin notification emails configured in site_settings
   try {
     const { data, error } = await supabaseAdmin
       .from('site_settings')
       .select('key, value')
-      .in('key', ['admin_notification_emails', 'admin_notification_email', 'concierge_email']);
+      .in('key', ['concierge_email', 'admin_notification_emails', 'admin_notification_email']);
 
     if (!error && data && data.length > 0) {
-      for (const key of ['admin_notification_emails', 'admin_notification_email', 'concierge_email']) {
-        const row = data.find((r) => r.key === key);
+      for (const row of data) {
         if (row && row.value) {
           const clean = typeof row.value === 'string' ? row.value.replace(/^["']|["']$/g, '') : String(row.value);
           const list = clean
             .split(',')
-            .map((e) => e.trim())
+            .map((e) => e.trim().toLowerCase())
             .filter((e) => e.length > 0 && e.includes('@'));
-          if (list.length > 0) return list;
+          list.forEach((e) => recipients.add(e));
         }
       }
     }
   } catch (err) {
-    console.warn('[EmailService] Failed to fetch admin emails from site_settings:', err);
+    console.warn('[EmailService] Failed to fetch concierge / admin emails from site_settings:', err);
   }
 
-  return [ADMIN_NOTIFICATION_EMAIL];
+  // 2. Environment variable ADMIN_NOTIFICATION_EMAIL if configured
+  const envVal = process.env.ADMIN_NOTIFICATION_EMAIL;
+  if (envVal) {
+    envVal
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .filter((e) => e.length > 0 && e.includes('@'))
+      .forEach((e) => recipients.add(e));
+  }
+
+  // 3. Fallback to default SUPPORT_EMAIL or ADMIN_NOTIFICATION_EMAIL if no email resolved
+  if (recipients.size === 0) {
+    if (SUPPORT_EMAIL && SUPPORT_EMAIL.includes('@')) recipients.add(SUPPORT_EMAIL.trim().toLowerCase());
+    if (ADMIN_NOTIFICATION_EMAIL && ADMIN_NOTIFICATION_EMAIL.includes('@')) recipients.add(ADMIN_NOTIFICATION_EMAIL.trim().toLowerCase());
+  }
+
+  return Array.from(recipients);
 }
 
 function formatNaira(amount: number): string {
@@ -1356,6 +1365,14 @@ export async function sendAdminManualTransferEmail(
   order: OrderEmailData,
   adminEmail?: string | string[]
 ): Promise<void> {
+  // Strict guard: Admin manual transfer alerts must ONLY trigger for manual bank transfer orders
+  if (order.payment_method && order.payment_method !== 'bank_transfer') {
+    console.info(
+      `[EmailService] Skipping admin_manual_order: order #${order.order_number} payment method is "${order.payment_method}", not manual bank transfer.`
+    );
+    return;
+  }
+
   const adminUrl = `${APP_URL}/admin/orders?order=${encodeURIComponent(order.order_number)}`;
   const shipping = (order.shipping_address || {}) as Record<string, string>;
   const customerName =
