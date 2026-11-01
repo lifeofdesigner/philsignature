@@ -399,7 +399,7 @@ export function useCheckout() {
         queryClient.invalidateQueries({ queryKey: ['customer-orders'] });
         setIsProcessingPayment(false);
 
-        // Dispatch order received transactional email asynchronously
+        // 1. Dispatch order received transactional email to customer asynchronously
         fetch('/api/email/dispatch', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -416,6 +416,18 @@ export function useCheckout() {
             },
           }),
         }).catch((err) => console.warn('Order received email dispatch error:', err));
+
+        // 2. Immediately send email notification to configured admin email(s) that a new Manual Transfer is awaiting payment verification
+        fetch('/api/email/dispatch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'admin_manual_order',
+            payload: {
+              order,
+            },
+          }),
+        }).catch((err) => console.warn('Admin manual transfer notification dispatch error:', err));
 
         navigate(`/checkout/confirmation/${order.order_number}?method=bank_transfer&email=${encodedEmail}`);
         return;

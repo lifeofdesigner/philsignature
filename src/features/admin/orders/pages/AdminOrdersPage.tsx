@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
   ShoppingBag,
@@ -63,6 +64,27 @@ export const AdminOrdersPage: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [trackingNumberInput, setTrackingNumberInput] = useState<string>('');
+
+  const [searchParams] = useSearchParams();
+  const directOrderParam = searchParams.get('order') || searchParams.get('orderId');
+
+  // Deep-link support: Automatically open inspect modal when order number/ID is in query parameters
+  useEffect(() => {
+    if (directOrderParam && orders.length > 0 && !selectedOrder) {
+      const target = orders.find(
+        (o) =>
+          o.order_number?.toLowerCase() === directOrderParam.toLowerCase() ||
+          o.id === directOrderParam
+      );
+      if (target) {
+        setSelectedOrder(target);
+        setTrackingNumberInput(target.tracking_number || '');
+        if (target.archived) {
+          setViewTab('archived');
+        }
+      }
+    }
+  }, [directOrderParam, orders, selectedOrder]);
 
   const filteredOrders = useMemo(() => {
     return orders.filter((o) => {
@@ -133,8 +155,16 @@ export const AdminOrdersPage: React.FC = () => {
       const reference = `MANUAL-${user?.email || 'admin'}-${Date.now()}`;
       await confirmPayment({ orderId: order.id, reference, paymentMethod: 'bank_transfer' });
       await auditLogService.recordAction('CONFIRM_BANK_TRANSFER', 'order', order.id, { reference }, user?.id);
-      setSelectedOrder((prev) => (prev && prev.id === order.id ? { ...prev, financial_status: 'paid' } : prev));
-      toast.success(`Order #${order.order_number} marked as paid.`);
+      setSelectedOrder((prev) =>
+        prev && prev.id === order.id
+          ? {
+              ...prev,
+              financial_status: 'paid',
+              fulfillment_status: prev.fulfillment_status === 'pending' ? 'processing' : prev.fulfillment_status,
+            }
+          : prev
+      );
+      toast.success(`Order #${order.order_number} marked as paid. Payment confirmation email dispatched to customer.`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to confirm payment.');
     }

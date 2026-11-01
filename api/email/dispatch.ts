@@ -21,6 +21,7 @@ import {
   sendAdminRefundRequestedEmail,
   sendAdminNewCustomerRegisteredEmail,
   sendAdminLowInventoryAlertEmail,
+  sendAdminManualTransferEmail,
 } from '../_lib/emailService.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -101,6 +102,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         break;
       case 'admin_low_inventory':
         await sendAdminLowInventoryAlertEmail(payload.details);
+        break;
+      case 'admin_manual_order':
+        await sendAdminManualTransferEmail(payload.order, payload.adminEmail);
         break;
       default:
         return res.status(400).json({ error: `Unknown email type: ${type}` });

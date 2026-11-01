@@ -21,6 +21,75 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const action = (req.query.action || req.body?.action) as string | undefined;
 
+  // CONFIRM PAYMENT (staff + admin + super_admin)
+  if (action === 'confirm-payment') {
+    const { orderId, reference } = req.body || {};
+    if (!orderId) {
+      res.status(400).json({ error: 'orderId is required' });
+      return;
+    }
+
+    const { data: order, error: orderErr } = await supabaseAdmin
+      .from('orders')
+      .select('*, items:order_items(*)')
+      .eq('id', orderId)
+      .maybeSingle();
+
+    if (orderErr || !order) {
+      res.status(404).json({ error: 'Order not found' });
+      return;
+    }
+
+    if (order.financial_status === 'paid') {
+      res.status(200).json({ success: true, order, alreadyConfirmed: true });
+      return;
+    }
+
+    const ref = reference || `MANUAL-${caller.email || 'admin'}-${Date.now()}`;
+    const nextFulfillment = order.fulfillment_status === 'pending' ? 'processing' : order.fulfillment_status;
+
+    const { data: updated, error: updateErr } = await supabaseAdmin
+      .from('orders')
+      .update({
+        financial_status: 'paid',
+        fulfillment_status: nextFulfillment,
+        payment_reference: ref,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', orderId)
+      .select('*, items:order_items(*)')
+      .single();
+
+    if (updateErr) {
+      res.status(500).json({ error: updateErr.message });
+      return;
+    }
+
+    await supabaseAdmin.from('order_timeline').insert({
+      order_id: orderId,
+      status: 'paid',
+      title: 'Payment Confirmed',
+      description: `Payment confirmed successfully via MANUAL BANK TRANSFER (Ref: ${ref}). Order verified and now being processed.`,
+    });
+
+    await logAdminAction(caller, 'CONFIRM_BANK_TRANSFER', 'order', orderId, { reference: ref }, req);
+
+    try {
+      const { sendPaymentConfirmationEmail } = await import('../_lib/emailService.js');
+      await sendPaymentConfirmationEmail(updated, {
+        reference: ref,
+        amountNaira: Number(updated.total_amount),
+        gateway: 'Manual Bank Transfer',
+        paidAt: new Date().toISOString(),
+      });
+    } catch (emailErr) {
+      console.warn('Payment confirmed email dispatch error:', emailErr);
+    }
+
+    res.status(200).json({ success: true, order: updated });
+    return;
+  }
+
   // ARCHIVE (admin + super_admin)
   if (action === 'archive') {
     const { orderId } = req.body || {};

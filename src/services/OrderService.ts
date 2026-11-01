@@ -206,13 +206,44 @@ export class OrderService {
       throw new ValidationError('Order ID and transaction reference required for confirmation');
     }
 
-    const updated = await this.repo.updatePayment(orderId, reference, 'paid');
+    const existing = await this.repo.findById(orderId);
+    if (!existing) {
+      throw new ValidationError('Order not found');
+    }
+
+    // Idempotency: If already verified and paid, return early to prevent duplicate notifications
+    if (existing.financial_status === 'paid') {
+      return existing;
+    }
+
+    const nextFulfillment = existing.fulfillment_status === 'pending' ? 'processing' : undefined;
+    const updated = await this.repo.updatePayment(orderId, reference, 'paid', nextFulfillment);
+
+    const gatewayDisplay = paymentMethod === 'bank_transfer' ? 'MANUAL BANK TRANSFER' : paymentMethod.toUpperCase();
     await this.repo.addTimeline(
       orderId,
       'paid',
       'Payment Confirmed',
-      `Payment confirmed successfully via ${paymentMethod.toUpperCase()} (Ref: ${reference}). Your order is being prepared.`
+      `Payment confirmed successfully via ${gatewayDisplay} (Ref: ${reference}). Your payment has been verified and your order is now being processed.`
     );
+
+    // Reuse existing transactional email infrastructure: automatically dispatch Payment Confirmed email to customer
+    fetch('/api/email/dispatch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'payment_confirmed',
+        payload: {
+          order: updated,
+          payment: {
+            reference,
+            amountNaira: Number(updated.total_amount),
+            gateway: paymentMethod === 'bank_transfer' ? 'Manual Bank Transfer' : paymentMethod,
+            paidAt: new Date().toISOString(),
+          },
+        },
+      }),
+    }).catch((err) => console.warn('[OrderService] Payment confirmed email dispatch failed:', err));
 
     return updated;
   }

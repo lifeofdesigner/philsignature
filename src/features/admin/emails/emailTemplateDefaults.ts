@@ -641,6 +641,49 @@ export const DEFAULT_EMAIL_TEMPLATES: DefaultTemplateConfig[] = [
   <a href="{{admin_products_url}}" class="btn-gold">Update Stock in Admin</a>
 </div>`,
   },
+  {
+    template_key: 'admin_manual_order',
+    name: '[Admin Alert] Manual Transfer Awaiting Verification',
+    category: 'admin',
+    description: 'Priority alert sent to administrators when a customer places an order via Manual Bank Transfer.',
+    subject: '[Action Required] New Manual Transfer Order #{{order_number}} Awaiting Verification',
+    variables: [
+      'order_number',
+      'customer_name',
+      'customer_email',
+      'payment_method',
+      'date_time',
+      'total_amount',
+      'admin_order_url',
+    ],
+    sampleData: {
+      order_number: 'PS-92841',
+      customer_name: 'Lady Genevieve Sterling',
+      customer_email: 'genevieve.sterling@luxury.com',
+      payment_method: 'Manual Bank Transfer',
+      date_time: '01 Nov 2026, 09:30 AM',
+      total_amount: '₦145,000',
+      admin_order_url: 'https://philzsignature.com/admin/orders?order=PS-92841',
+    },
+    html_body: `<div style="text-align: center; margin-bottom: 24px;">
+  <span class="gold-pill">Awaiting Payment Verification</span>
+  <h1 class="heading">New Manual Transfer Order</h1>
+  <p class="paragraph">A customer has placed an order via Manual Bank Transfer. Please confirm that the funds have cleared into the boutique bank account before marking this consignment as paid.</p>
+</div>
+<div class="card">
+  <table class="info-table">
+    <tr><td class="info-label">Order Number</td><td class="info-value">#{{order_number}}</td></tr>
+    <tr><td class="info-label">Customer Name</td><td class="info-value">{{customer_name}}</td></tr>
+    <tr><td class="info-label">Customer Email</td><td class="info-value">{{customer_email}}</td></tr>
+    <tr><td class="info-label">Payment Method</td><td class="info-value">{{payment_method}}</td></tr>
+    <tr><td class="info-label">Date & Time</td><td class="info-value">{{date_time}}</td></tr>
+    <tr><td class="info-label">Order Total</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 15px;">{{total_amount}}</td></tr>
+  </table>
+</div>
+<div class="button-container">
+  <a href="{{admin_order_url}}" class="btn-gold">Review & Verify in Admin CMS</a>
+</div>`,
+  },
 ];
 
 export const BRAND_NAME = 'Philz Signature';

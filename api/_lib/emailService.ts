@@ -52,6 +52,42 @@ const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || 'philzsignature1@gmail.com';
 const ADMIN_NOTIFICATION_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL || 'orders@philzsignature.com';
 const APP_URL = process.env.VITE_APP_URL || 'https://philzsignature.com';
 
+export async function getAdminNotificationEmails(): Promise<string[]> {
+  const envVal = process.env.ADMIN_NOTIFICATION_EMAIL;
+  if (envVal) {
+    const list = envVal
+      .split(',')
+      .map((e) => e.trim())
+      .filter((e) => e.length > 0 && e.includes('@'));
+    if (list.length > 0) return list;
+  }
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('site_settings')
+      .select('key, value')
+      .in('key', ['admin_notification_emails', 'admin_notification_email', 'concierge_email']);
+
+    if (!error && data && data.length > 0) {
+      for (const key of ['admin_notification_emails', 'admin_notification_email', 'concierge_email']) {
+        const row = data.find((r) => r.key === key);
+        if (row && row.value) {
+          const clean = typeof row.value === 'string' ? row.value.replace(/^["']|["']$/g, '') : String(row.value);
+          const list = clean
+            .split(',')
+            .map((e) => e.trim())
+            .filter((e) => e.length > 0 && e.includes('@'));
+          if (list.length > 0) return list;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('[EmailService] Failed to fetch admin emails from site_settings:', err);
+  }
+
+  return [ADMIN_NOTIFICATION_EMAIL];
+}
+
 function formatNaira(amount: number): string {
   return `₦${Number(amount).toLocaleString('en-NG', { maximumFractionDigits: 0 })}`;
 }
@@ -328,6 +364,40 @@ async function sendViaResend(apiKey: string, config: SmtpDbConfig | null, payloa
 }
 
 export async function dispatchEmail(payload: EmailPayload): Promise<boolean> {
+  // Idempotency Safeguard: Deduplicate critical order notifications (prevent double dispatch)
+  if (
+    payload.orderId &&
+    ['payment_confirmation', 'admin_manual_order', 'order_received'].includes(payload.emailType)
+  ) {
+    try {
+      const { data: existing } = await supabaseAdmin
+        .from('activity_logs')
+        .select('id, details')
+        .eq('action', 'transactional_email_dispatched')
+        .eq('entity_type', 'order')
+        .eq('entity_id', payload.orderId);
+
+      if (existing && existing.length > 0) {
+        const alreadyDispatched = existing.some((log) => {
+          const d = log.details as Record<string, unknown> | null;
+          return (
+            d?.type === payload.emailType &&
+            String(d?.recipient || '').trim().toLowerCase() === payload.to.trim().toLowerCase()
+          );
+        });
+
+        if (alreadyDispatched) {
+          console.info(
+            `[EmailService] Idempotency: Email "${payload.emailType}" already sent for order ${payload.orderId} to ${payload.to}. Dispatch skipped.`
+          );
+          return true;
+        }
+      }
+    } catch (dedupErr) {
+      console.warn('[EmailService] Dedup check non-critical warning:', dedupErr);
+    }
+  }
+
   let sentViaApi = false;
   const dbConfig = await getSmtpDbConfig();
   const isCustomSmtp = Boolean(dbConfig?.smtp_host && dbConfig.provider_name?.toLowerCase() !== 'resend');
@@ -1279,6 +1349,108 @@ export async function sendAdminLowInventoryAlertEmail(
 
   const text = `[LOW INVENTORY] ${details.productName} (SKU: ${details.sku}) has only ${details.currentStock} units remaining (Threshold: ${details.minThreshold}). Manage at ${adminUrl}`;
   await dispatchEmail({ to: adminEmail, subject: resolved.subject, html: resolved.html, text, emailType: 'admin_low_inventory' });
+}
+
+/** 7. New Manual Bank Transfer Order Awaiting Payment Verification Alert */
+export async function sendAdminManualTransferEmail(
+  order: OrderEmailData,
+  adminEmail?: string | string[]
+): Promise<void> {
+  const adminUrl = `${APP_URL}/admin/orders?order=${encodeURIComponent(order.order_number)}`;
+  const shipping = (order.shipping_address || {}) as Record<string, string>;
+  const customerName =
+    [shipping.first_name || shipping.firstName, shipping.last_name || shipping.lastName]
+      .filter(Boolean)
+      .join(' ')
+      .trim() || 'Valued Patron';
+
+  const orderDate = order.created_at ? new Date(order.created_at) : new Date();
+  const dateTimeStr = orderDate.toLocaleString('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  const fallback = {
+    subject: `[Action Required] New Manual Transfer Order #${order.order_number} Awaiting Verification`,
+    htmlBody: `
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span class="gold-pill">Awaiting Payment Verification</span>
+      <h1 class="heading">New Manual Transfer Order</h1>
+      <p class="paragraph">A customer has placed an order via Manual Bank Transfer. Please confirm that the funds have cleared into the boutique bank account before marking this consignment as paid.</p>
+    </div>
+    <div class="card">
+      <table class="info-table">
+        <tr><td class="info-label">Order Number</td><td class="info-value">#{{order_number}}</td></tr>
+        <tr><td class="info-label">Customer Name</td><td class="info-value">{{customer_name}}</td></tr>
+        <tr><td class="info-label">Customer Email</td><td class="info-value">{{customer_email}}</td></tr>
+        <tr><td class="info-label">Order Total</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 15px;">{{total_amount}}</td></tr>
+        <tr><td class="info-label">Payment Method</td><td class="info-value">{{payment_method}}</td></tr>
+        <tr><td class="info-label">Date & Time</td><td class="info-value">{{date_time}}</td></tr>
+      </table>
+    </div>
+    <div class="button-container">
+      <a href="{{admin_order_url}}" class="btn-gold">Review & Verify in Admin CMS</a>
+    </div>`,
+  };
+
+  const variables = {
+    order_number: order.order_number,
+    customer_name: customerName,
+    customer_email: order.email,
+    payment_method: 'Manual Bank Transfer',
+    date_time: dateTimeStr,
+    total_amount: formatNaira(order.total_amount),
+    admin_order_url: adminUrl,
+    brand_name: BRAND_NAME,
+    brand_tagline: BRAND_TAGLINE,
+    support_email: SUPPORT_EMAIL,
+    app_url: APP_URL,
+  };
+
+  const resolved = await resolveEmailTemplate('admin_manual_order', variables, fallback);
+  if (!resolved.shouldSend) return;
+
+  let recipients: string[] = [];
+  if (adminEmail) {
+    recipients = Array.isArray(adminEmail)
+      ? adminEmail.filter(Boolean)
+      : adminEmail.split(',').map((s) => s.trim()).filter((s) => s.includes('@'));
+  }
+  if (recipients.length === 0) {
+    recipients = await getAdminNotificationEmails();
+  }
+
+  const text = `[Action Required] New Manual Transfer Order #${order.order_number} awaiting payment verification.\nCustomer: ${customerName} (${order.email})\nAmount: ${formatNaira(order.total_amount)}\nPayment Method: Manual Bank Transfer\nDate & Time: ${dateTimeStr}\nDirect CMS Link: ${adminUrl}`;
+
+  await Promise.allSettled(
+    recipients.map((to) =>
+      dispatchEmail({
+        to,
+        subject: resolved.subject,
+        html: resolved.html,
+        text,
+        emailType: 'admin_manual_order',
+        orderId: order.id,
+      })
+    )
+  );
+
+  // In-app admin notification
+  try {
+    await supabaseAdmin.from('notifications').insert({
+      type: 'manual_transfer_pending',
+      title: `Manual Transfer Awaiting Verification: #${order.order_number}`,
+      message: `Order #${order.order_number} (${formatNaira(order.total_amount)}) by ${customerName} placed via Manual Bank Transfer is awaiting payment verification.`,
+      link: `/admin/orders?order=${encodeURIComponent(order.order_number)}`,
+      is_read: false,
+    });
+  } catch (notifErr) {
+    console.warn('[EmailService] In-app notification insert skipped:', notifErr);
+  }
 }
 
 /** Aggregator for payment confirmations (backward compatibility) */

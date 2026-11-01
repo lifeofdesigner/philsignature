@@ -214,17 +214,27 @@ export class OrderRepository extends BaseRepository {
     }
   }
 
-  async updatePayment(orderId: string, reference: string, financialStatus: 'paid' | 'pending' | 'failed'): Promise<Order> {
+  async updatePayment(
+    orderId: string,
+    reference: string,
+    financialStatus: 'paid' | 'pending' | 'failed',
+    fulfillmentStatus?: Order['fulfillment_status']
+  ): Promise<Order> {
     try {
+      const payload: Record<string, unknown> = {
+        payment_reference: reference,
+        financial_status: financialStatus,
+        updated_at: new Date().toISOString(),
+      };
+      if (fulfillmentStatus) {
+        payload.fulfillment_status = fulfillmentStatus;
+      }
+
       const { data, error } = await this.client
         .from('orders')
-        .update({
-          payment_reference: reference,
-          financial_status: financialStatus,
-          updated_at: new Date().toISOString(),
-        })
+        .update(payload)
         .eq('id', orderId)
-        .select()
+        .select('*, items:order_items(*), timeline:order_timeline(*)')
         .single();
 
       if (error) this.handleError(error, `Failed to update payment status for order ${orderId}`);
