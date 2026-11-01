@@ -13,7 +13,34 @@ export class EmailTemplateRepository {
       throw error;
     }
 
-    return (data || []) as EmailTemplate[];
+    const dbTemplates = (data || []) as EmailTemplate[];
+    const dbKeys = new Set(dbTemplates.map((t) => t.template_key));
+
+    // Resilience safeguard: If any default template is missing from database, seed it automatically
+    const missing = DEFAULT_EMAIL_TEMPLATES.filter((t) => !dbKeys.has(t.template_key));
+    if (missing.length > 0) {
+      try {
+        const rowsToInsert = missing.map((t) => ({
+          template_key: t.template_key,
+          name: t.name,
+          subject: t.subject,
+          html_body: t.html_body,
+          variables: t.variables,
+          is_active: true,
+        }));
+        const { data: inserted } = await supabase
+          .from('email_templates')
+          .insert(rowsToInsert)
+          .select();
+        if (inserted && inserted.length > 0) {
+          dbTemplates.push(...(inserted as EmailTemplate[]));
+        }
+      } catch (seedErr) {
+        console.warn('[EmailTemplateRepository] Auto-seed non-critical error:', seedErr);
+      }
+    }
+
+    return dbTemplates;
   }
 
   async getByKey(templateKey: string): Promise<EmailTemplate | null> {

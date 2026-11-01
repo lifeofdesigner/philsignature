@@ -227,7 +227,7 @@ function replacePlaceholders(templateStr: string, variables: Record<string, stri
 async function resolveEmailTemplate(
   templateKey: string,
   variables: Record<string, string | number | undefined | null>,
-  fallback: { subject: string; htmlBody: string }
+  fallback?: { subject: string; htmlBody: string }
 ): Promise<TemplateResolution> {
   let dbTemplate: { subject: string; html_body: string; is_active: boolean } | null = null;
   const now = Date.now();
@@ -264,8 +264,8 @@ async function resolveEmailTemplate(
     return { subject: '', html: '', shouldSend: false };
   }
 
-  const rawSubject = dbTemplate?.subject || fallback.subject;
-  const rawBody = dbTemplate?.html_body || fallback.htmlBody;
+  const rawSubject = dbTemplate?.subject || fallback?.subject || `Philz Signature: ${templateKey}`;
+  const rawBody = dbTemplate?.html_body || fallback?.htmlBody || `<p>Notification for order {{order_number}}</p>`;
 
   const populatedSubject = replacePlaceholders(rawSubject, variables);
   const populatedBody = replacePlaceholders(rawBody, variables);
@@ -1391,29 +1391,6 @@ export async function sendAdminManualTransferEmail(
     hour12: true,
   });
 
-  const fallback = {
-    subject: `[Action Required] New Manual Transfer Order #${order.order_number} Awaiting Verification`,
-    htmlBody: `
-    <div style="text-align: center; margin-bottom: 24px;">
-      <span class="gold-pill">Awaiting Payment Verification</span>
-      <h1 class="heading">New Manual Transfer Order</h1>
-      <p class="paragraph">A customer has placed an order via Manual Bank Transfer. Please confirm that the funds have cleared into the boutique bank account before marking this consignment as paid.</p>
-    </div>
-    <div class="card">
-      <table class="info-table">
-        <tr><td class="info-label">Order Number</td><td class="info-value">#{{order_number}}</td></tr>
-        <tr><td class="info-label">Customer Name</td><td class="info-value">{{customer_name}}</td></tr>
-        <tr><td class="info-label">Customer Email</td><td class="info-value">{{customer_email}}</td></tr>
-        <tr><td class="info-label">Order Total</td><td class="info-value" style="color: #d4af37; font-weight: 700; font-size: 15px;">{{total_amount}}</td></tr>
-        <tr><td class="info-label">Payment Method</td><td class="info-value">{{payment_method}}</td></tr>
-        <tr><td class="info-label">Date & Time</td><td class="info-value">{{date_time}}</td></tr>
-      </table>
-    </div>
-    <div class="button-container">
-      <a href="{{admin_order_url}}" class="btn-gold">Review & Verify in Admin CMS</a>
-    </div>`,
-  };
-
   const variables = {
     order_number: order.order_number,
     customer_name: customerName,
@@ -1428,7 +1405,8 @@ export async function sendAdminManualTransferEmail(
     app_url: APP_URL,
   };
 
-  const resolved = await resolveEmailTemplate('admin_manual_order', variables, fallback);
+  // Pure CMS-driven: Content and wording are loaded directly from the database email_templates table
+  const resolved = await resolveEmailTemplate('admin_manual_order', variables);
   if (!resolved.shouldSend) return;
 
   let recipients: string[] = [];
