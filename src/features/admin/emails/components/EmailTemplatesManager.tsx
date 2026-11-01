@@ -10,6 +10,7 @@ import {
   RefreshCw,
   Sparkles,
   Calendar,
+  Plus,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { AdminSwitch } from '@/components/admin-ui';
@@ -26,6 +27,8 @@ export const EmailTemplatesManager: React.FC = () => {
     isLoading,
     isError,
     refetch,
+    createTemplate,
+    isCreating: isCreatingTemplate,
     updateTemplate,
     isUpdating,
     resetTemplate,
@@ -37,6 +40,7 @@ export const EmailTemplatesManager: React.FC = () => {
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'customer' | 'admin'>('all');
   const [editingTemplate, setEditingTemplate] = useState<EmailTemplate | null>(null);
   const [previewingTemplate, setPreviewingTemplate] = useState<EmailTemplate | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   // Group and merge with defaults to ensure complete list and metadata
   const enrichedTemplates = useMemo(() => {
@@ -89,6 +93,17 @@ export const EmailTemplatesManager: React.FC = () => {
     await updateTemplate({ id, updates });
   };
 
+  const handleCreateTemplate = async (newTemplate: {
+    template_key: string;
+    name: string;
+    subject: string;
+    html_body: string;
+    variables: string[];
+    is_active: boolean;
+  }) => {
+    await createTemplate(newTemplate);
+  };
+
   const handleResetTemplate = async (id: string, templateKey: string) => {
     await resetTemplate({ id, templateKey });
   };
@@ -112,6 +127,15 @@ export const EmailTemplatesManager: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsCreating(true)}
+                className="px-3.5 py-1.5 text-xs rounded-lg bg-[#C5A880] hover:bg-[#B89A6E] text-[#111111] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                <span>Create Template</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => refetch()}
@@ -311,7 +335,7 @@ export const EmailTemplatesManager: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Editor Modal */}
+      {/* Editor Modal (Edit Mode) */}
       {editingTemplate && (
         <EmailTemplateEditorModal
           isOpen={Boolean(editingTemplate)}
@@ -324,6 +348,21 @@ export const EmailTemplatesManager: React.FC = () => {
         />
       )}
 
+      {/* Editor Modal (Create Mode) */}
+      {isCreating && (
+        <EmailTemplateEditorModal
+          isOpen={isCreating}
+          onClose={() => setIsCreating(false)}
+          template={null}
+          isCreateMode={true}
+          onCreate={handleCreateTemplate}
+          onSave={handleSaveTemplate}
+          onReset={handleResetTemplate}
+          isSaving={isCreatingTemplate}
+          isResetting={false}
+        />
+      )}
+
       {/* Standalone Preview Modal */}
       {previewingTemplate && (
         <EmailTemplatePreviewModal
@@ -333,6 +372,7 @@ export const EmailTemplatesManager: React.FC = () => {
           templateName={previewingTemplate.name}
           subject={previewingTemplate.subject}
           htmlBody={previewingTemplate.html_body}
+          availableVariables={previewingTemplate.variables}
         />
       )}
     </div>

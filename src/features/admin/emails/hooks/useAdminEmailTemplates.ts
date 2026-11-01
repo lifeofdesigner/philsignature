@@ -16,6 +16,20 @@ export const useAdminEmailTemplates = () => {
     staleTime: 1000 * 30,
   });
 
+  const createMutation = useMutation({
+    mutationFn: (newTemplate: {
+      template_key: string;
+      name: string;
+      subject: string;
+      html_body: string;
+      variables: string[];
+      is_active?: boolean;
+    }) => emailTemplateService.createTemplate(newTemplate, userContext),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ADMIN_EMAIL_TEMPLATES_KEY });
+    },
+  });
+
   const updateMutation = useMutation({
     mutationFn: ({
       id,
@@ -55,6 +69,8 @@ export const useAdminEmailTemplates = () => {
     isLoading: templatesQuery.isLoading,
     isError: templatesQuery.isError,
     refetch: templatesQuery.refetch,
+    createTemplate: createMutation.mutateAsync,
+    isCreating: createMutation.isPending,
     updateTemplate: updateMutation.mutateAsync,
     isUpdating: updateMutation.isPending,
     resetTemplate: resetMutation.mutateAsync,

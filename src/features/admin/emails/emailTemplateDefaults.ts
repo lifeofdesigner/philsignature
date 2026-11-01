@@ -764,6 +764,11 @@ export function renderEmailPreview(
     renderedBody = renderedBody.replace(regex, val);
   });
 
+  // Intelligent fallback for any residual placeholders in custom/new templates
+  const residualRegex = /{{\s*([a-zA-Z0-9_]+)\s*}}/g;
+  renderedSubject = renderedSubject.replace(residualRegex, (_match, token) => `[${token.replace(/_/g, ' ')}]`);
+  renderedBody = renderedBody.replace(residualRegex, (_match, token) => `[${token.replace(/_/g, ' ')}]`);
+
   return {
     renderedSubject,
     renderedHtml: wrapInLuxuryEmailTemplate(renderedSubject, renderedBody),

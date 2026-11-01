@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Smartphone, Monitor, Mail, Copy, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { renderEmailPreview, DEFAULT_EMAIL_TEMPLATES } from '../emailTemplateDefaults';
+import { getRealisticSampleData } from '../placeholderValidation';
 
 export interface EmailTemplatePreviewModalProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ export interface EmailTemplatePreviewModalProps {
   templateName: string;
   subject: string;
   htmlBody: string;
+  availableVariables?: string[];
 }
 
 export const EmailTemplatePreviewModal: React.FC<EmailTemplatePreviewModalProps> = ({
@@ -19,6 +21,7 @@ export const EmailTemplatePreviewModal: React.FC<EmailTemplatePreviewModalProps>
   templateName,
   subject,
   htmlBody,
+  availableVariables = [],
 }) => {
   const [deviceView, setDeviceView] = useState<'desktop' | 'mobile'>('desktop');
   const [copied, setCopied] = useState(false);
@@ -26,14 +29,11 @@ export const EmailTemplatePreviewModal: React.FC<EmailTemplatePreviewModalProps>
   if (!isOpen) return null;
 
   const defaultConfig = DEFAULT_EMAIL_TEMPLATES.find((t) => t.template_key === templateKey);
-  const sampleData = defaultConfig?.sampleData || {
-    customer_name: 'Lord Alexander Vance',
-    order_number: 'PS-88492',
-    total_amount: '₦185,000',
-    date: 'October 5, 2026',
-    time: '02:45 AM',
-    support_email: 'concierge@philzsignature.com',
-  };
+  const sampleData = getRealisticSampleData(
+    templateKey,
+    availableVariables.length > 0 ? availableVariables : defaultConfig?.variables || [],
+    defaultConfig?.sampleData
+  );
 
   const { renderedSubject, renderedHtml } = renderEmailPreview(htmlBody, subject, sampleData);
 

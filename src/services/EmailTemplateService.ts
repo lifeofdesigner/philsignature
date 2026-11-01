@@ -11,6 +11,39 @@ export class EmailTemplateService {
     return emailTemplateRepository.getByKey(templateKey);
   }
 
+  async createTemplate(
+    template: {
+      template_key: string;
+      name: string;
+      subject: string;
+      html_body: string;
+      variables: string[];
+      is_active?: boolean;
+    },
+    userContext?: { id?: string; email?: string }
+  ): Promise<EmailTemplate> {
+    const created = await emailTemplateRepository.create({
+      ...template,
+      updated_by: userContext?.id || null,
+    });
+
+    await auditLogService.recordAction(
+      'CREATE_EMAIL_TEMPLATE',
+      'email_template',
+      created.id,
+      {
+        template_key: created.template_key,
+        name: created.name,
+        subject: created.subject,
+        created_by: userContext?.email || userContext?.id || 'admin',
+        timestamp: new Date().toISOString(),
+      },
+      userContext?.id
+    );
+
+    return created;
+  }
+
   async updateTemplate(
     id: string,
     updates: {

@@ -57,6 +57,37 @@ export class EmailTemplateRepository {
     return (data as EmailTemplate) || null;
   }
 
+  async create(template: {
+    template_key: string;
+    name: string;
+    subject: string;
+    html_body: string;
+    variables: string[];
+    is_active?: boolean;
+    updated_by?: string | null;
+  }): Promise<EmailTemplate> {
+    const { data, error } = await supabase
+      .from('email_templates')
+      .insert({
+        template_key: template.template_key.trim().toLowerCase(),
+        name: template.name.trim(),
+        subject: template.subject.trim(),
+        html_body: template.html_body.trim(),
+        variables: template.variables || [],
+        is_active: template.is_active ?? true,
+        updated_by: template.updated_by || null,
+        updated_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return data as EmailTemplate;
+  }
+
   async update(
     id: string,
     updates: {

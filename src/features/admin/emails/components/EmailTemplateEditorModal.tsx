@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   X,
   Save,
@@ -18,6 +18,8 @@ import {
   ListOrdered,
   Link2,
   Heading2,
+  Plus,
+  ShieldCheck,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -29,15 +31,29 @@ import { AdminButton, AdminSwitch } from '@/components/admin-ui';
 import type { EmailTemplate } from '@/types/database';
 import { DEFAULT_EMAIL_TEMPLATES } from '../emailTemplateDefaults';
 import { EmailTemplatePreviewModal } from './EmailTemplatePreviewModal';
+import {
+  validateTemplatePlaceholders,
+  getRequiredVariables,
+  UNIVERSAL_SYSTEM_VARIABLES,
+} from '../placeholderValidation';
 
 export interface EmailTemplateEditorModalProps {
   isOpen: boolean;
   onClose: () => void;
   template: EmailTemplate | null;
+  isCreateMode?: boolean;
   onSave: (
     id: string,
     updates: { subject: string; html_body: string; is_active: boolean }
   ) => Promise<void>;
+  onCreate?: (newTemplate: {
+    template_key: string;
+    name: string;
+    subject: string;
+    html_body: string;
+    variables: string[];
+    is_active: boolean;
+  }) => Promise<void>;
   onReset: (id: string, templateKey: string) => Promise<void>;
   isSaving: boolean;
   isResetting: boolean;
@@ -67,14 +83,20 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
   isOpen,
   onClose,
   template,
+  isCreateMode = false,
   onSave,
+  onCreate,
   onReset,
   isSaving,
   isResetting,
 }) => {
+  const [name, setName] = useState('');
+  const [templateKey, setTemplateKey] = useState('');
   const [subject, setSubject] = useState('');
   const [htmlBody, setHtmlBody] = useState('');
   const [isActive, setIsActive] = useState(true);
+  const [customVariables, setCustomVariables] = useState<string[]>([]);
+  const [newVariableInput, setNewVariableInput] = useState('');
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [copiedVariable, setCopiedVariable] = useState<string | null>(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -95,17 +117,28 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
   });
 
   useEffect(() => {
-    if (template) {
+    if (isCreateMode) {
+      setName('');
+      setTemplateKey('');
+      setSubject('');
+      setHtmlBody('<p>Dear {{customer_name}},</p><p>We are pleased to inform you about your order #{{order_number}}.</p>');
+      setIsActive(true);
+      setCustomVariables(['order_number', 'customer_name', 'total_amount']);
+      setShowResetConfirm(false);
+      setActiveTab('visual');
+    } else if (template) {
+      setName(template.name || '');
+      setTemplateKey(template.template_key || '');
       setSubject(template.subject || '');
       setHtmlBody(template.html_body || '');
       setIsActive(template.is_active ?? true);
+      setCustomVariables(Array.isArray(template.variables) ? template.variables : []);
       setShowResetConfirm(false);
       setActiveTab('visual');
     }
-  }, [template]);
+  }, [template, isCreateMode]);
 
   // Keep the visual editor in sync when html_body changes from outside tiptap
-  // (template load, HTML-tab edits, variable insert, reset) — but not from its own onUpdate.
   useEffect(() => {
     if (!editor) return;
     if (skipNextEditorSync.current) {
@@ -117,12 +150,38 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
     }
   }, [htmlBody, editor, activeTab]);
 
-  if (!isOpen || !template) return null;
+  const defaultConfig = useMemo(
+    () => DEFAULT_EMAIL_TEMPLATES.find((t) => t.template_key === templateKey),
+    [templateKey]
+  );
 
-  const defaultConfig = DEFAULT_EMAIL_TEMPLATES.find((t) => t.template_key === template.template_key);
-  const availableVariables = Array.isArray(template.variables) && template.variables.length > 0
-    ? template.variables
-    : defaultConfig?.variables || [];
+  const availableVariables = useMemo(() => {
+    if (isCreateMode) {
+      return customVariables;
+    }
+    if (Array.isArray(template?.variables) && template.variables.length > 0) {
+      return template.variables;
+    }
+    return defaultConfig?.variables || customVariables;
+  }, [isCreateMode, template, defaultConfig, customVariables]);
+
+  const requiredVariables = useMemo(() => {
+    return getRequiredVariables(templateKey, availableVariables);
+  }, [templateKey, availableVariables]);
+
+  // Real-time placeholder validation
+  const validation = useMemo(() => {
+    return validateTemplatePlaceholders({
+      subject,
+      htmlBody,
+      availableVariables,
+      templateKey,
+      explicitRequiredVariables: requiredVariables,
+    });
+  }, [subject, htmlBody, availableVariables, templateKey, requiredVariables]);
+
+  if (!isOpen) return null;
+  if (!isCreateMode && !template) return null;
 
   const handleInsertVariable = (variableName: string) => {
     const placeholder = `{{${variableName}}}`;
@@ -139,7 +198,30 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
     setTimeout(() => setCopiedVariable(null), 1500);
   };
 
+  const handleAddCustomVariable = () => {
+    const cleaned = newVariableInput.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+    if (!cleaned) return;
+    if (customVariables.includes(cleaned)) {
+      toast.error(`Variable {{${cleaned}}} already exists.`);
+      return;
+    }
+    setCustomVariables((prev) => [...prev, cleaned]);
+    setNewVariableInput('');
+    toast.success(`Added variable: {{${cleaned}}}`);
+  };
+
   const handleSave = async () => {
+    if (isCreateMode) {
+      if (!name.trim()) {
+        toast.error('Template name is required.');
+        return;
+      }
+      if (!templateKey.trim()) {
+        toast.error('Template key is required.');
+        return;
+      }
+    }
+
     if (!subject.trim()) {
       toast.error('Subject line cannot be empty.');
       return;
@@ -149,20 +231,54 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
       return;
     }
 
+    // Strict safety check 1: Accidental deletion of required variables
+    if (validation.missingRequiredVariables.length > 0) {
+      toast.error(
+        `Cannot save: Required variable missing: ${validation.missingRequiredVariables
+          .map((v) => `{{${v}}}`)
+          .join(', ')}. Please restore them to prevent system errors.`
+      );
+      return;
+    }
+
+    // Strict safety check 2: Unknown or invalid placeholders
+    if (validation.invalidPlaceholders.length > 0) {
+      toast.error(
+        `Cannot save: Invalid placeholder(s) detected: ${validation.invalidPlaceholders
+          .map((v) => `{{${v}}}`)
+          .join(', ')}. Please correct or remove them before saving.`
+      );
+      return;
+    }
+
     try {
-      await onSave(template.id, {
-        subject: subject.trim(),
-        html_body: htmlBody.trim(),
-        is_active: isActive,
-      });
-      toast.success('Email template updated successfully.');
-      onClose();
+      if (isCreateMode && onCreate) {
+        await onCreate({
+          template_key: templateKey.trim().toLowerCase(),
+          name: name.trim(),
+          subject: subject.trim(),
+          html_body: htmlBody.trim(),
+          variables: availableVariables,
+          is_active: isActive,
+        });
+        toast.success('New email template created successfully.');
+        onClose();
+      } else if (template) {
+        await onSave(template.id, {
+          subject: subject.trim(),
+          html_body: htmlBody.trim(),
+          is_active: isActive,
+        });
+        toast.success('Email template updated successfully.');
+        onClose();
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Failed to save template.');
     }
   };
 
   const handleReset = async () => {
+    if (!template) return;
     try {
       await onReset(template.id, template.template_key);
       const restored = DEFAULT_EMAIL_TEMPLATES.find((t) => t.template_key === template.template_key);
@@ -190,13 +306,17 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-base font-bold text-black truncate">{template.name}</h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F5F5F5] text-[#374151] border border-[#E5E7EB]">
-                    {template.template_key}
-                  </span>
+                  <h3 className="text-base font-bold text-black truncate">
+                    {isCreateMode ? 'Create New Email Template' : (template?.name || 'Edit Template')}
+                  </h3>
+                  {templateKey && (
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#F5F5F5] text-[#374151] border border-[#E5E7EB]">
+                      {templateKey}
+                    </span>
+                  )}
                 </div>
                 <p className="text-[11px] text-[#6B7280] mt-0.5 truncate">
-                  {defaultConfig?.description || 'Transactional notification template'}
+                  {defaultConfig?.description || (isCreateMode ? 'Define a new transactional notification for the store' : 'Transactional notification template')}
                 </p>
               </div>
             </div>
@@ -230,6 +350,32 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
 
           {/* Modal Body */}
           <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 bg-white">
+            {/* Create Mode: Template Name & Key */}
+            {isCreateMode && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-lg bg-[#F9FAFB] border border-[#E5E7EB]">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-black tracking-wide">Template Display Name</label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. VIP Concierge Order Follow-Up"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-[#D1D5DB] text-black text-xs focus:outline-hidden focus:border-[#DC2626] font-medium"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-black tracking-wide">Template Key (Slug)</label>
+                  <input
+                    type="text"
+                    value={templateKey}
+                    onChange={(e) => setTemplateKey(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
+                    placeholder="e.g. vip_order_followup"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-[#D1D5DB] text-black text-xs font-mono focus:outline-hidden focus:border-[#DC2626]"
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Subject Line Field */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-black tracking-wide flex items-center justify-between flex-wrap gap-1">
@@ -247,6 +393,48 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
               />
             </div>
 
+            {/* Validation Feedback Banners */}
+            {validation.missingRequiredVariables.length > 0 && (
+              <div className="p-3.5 rounded-lg bg-[#FEF2F2] border border-[#FECACA] flex items-start gap-3 text-xs text-[#991B1B]">
+                <AlertTriangle className="h-4 w-4 text-[#DC2626] shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="font-bold">Missing Required Placeholder</div>
+                  <div className="text-[11px] leading-relaxed">
+                    This template requires{' '}
+                    <strong className="underline">
+                      {validation.missingRequiredVariables.map((v) => `{{${v}}}`).join(', ')}
+                    </strong>
+                    . Deleting required variables will cause system issues. Please insert them in the subject or body before saving.
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {validation.invalidPlaceholders.length > 0 && (
+              <div className="p-3.5 rounded-lg bg-[#FFFBEB] border border-[#FDE68A] flex items-start gap-3 text-xs text-[#92400E]">
+                <AlertTriangle className="h-4 w-4 text-[#D97706] shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <div className="font-bold">Unknown Placeholder(s) Detected</div>
+                  <div className="text-[11px] leading-relaxed">
+                    The following placeholder(s) are unrecognized:{' '}
+                    <span className="font-mono font-bold">
+                      {validation.invalidPlaceholders.map((v) => `{{${v}}}`).join(', ')}
+                    </span>
+                    . These will not be replaced with customer data. Please correct typos or use the authorized placeholders below.
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {validation.isValid && (
+              <div className="p-2.5 rounded-lg bg-[#F0FDF4] border border-[#BBF7D0] flex items-center gap-2 text-xs text-[#166534]">
+                <ShieldCheck className="h-4 w-4 text-[#16A34A] shrink-0" />
+                <span className="font-medium text-[11px]">
+                  All placeholders validated &amp; required variables present.
+                </span>
+              </div>
+            )}
+
             {/* Available Variables Chips */}
             <div className="space-y-2 p-3.5 rounded-lg bg-[#F9FAFB] border border-[#E5E7EB]">
               <div className="flex items-center justify-between text-xs font-semibold text-[#374151] flex-wrap gap-1">
@@ -258,8 +446,40 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
                   Click any chip to copy and insert at cursor
                 </span>
               </div>
+
               <div className="flex flex-wrap gap-2 pt-1">
                 {availableVariables.map((v) => {
+                  const isCopied = copiedVariable === v;
+                  const isRequired = requiredVariables.includes(v);
+                  const isUsed = validation.usedPlaceholders.includes(v);
+
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={() => handleInsertVariable(v)}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono transition-all cursor-pointer border ${
+                        isCopied
+                          ? 'bg-[#C5A880] text-[#111111] border-[#C5A880] font-bold'
+                          : isUsed
+                          ? 'bg-white text-black border-[#A8A29E] font-semibold'
+                          : 'bg-white text-[#374151] border-[#D1D5DB] hover:border-[#C5A880] hover:text-[#111111]'
+                      }`}
+                      title={isRequired ? 'Required placeholder — click to insert' : 'Click to insert'}
+                    >
+                      {isCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                      <span>&#123;&#123;{v}&#125;&#125;</span>
+                      {isRequired && (
+                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA] font-sans font-bold">
+                          Required
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+
+                {/* Universal Brand Tokens */}
+                {UNIVERSAL_SYSTEM_VARIABLES.map((v) => {
                   const isCopied = copiedVariable === v;
                   return (
                     <button
@@ -269,9 +489,9 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
                       className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono transition-all cursor-pointer border ${
                         isCopied
                           ? 'bg-[#C5A880] text-[#111111] border-[#C5A880] font-bold'
-                          : 'bg-white text-[#374151] border-[#D1D5DB] hover:border-[#C5A880] hover:text-[#111111]'
+                          : 'bg-[#F3F4F6] text-[#4B5563] border-[#E5E7EB] hover:border-[#9CA3AF]'
                       }`}
-                      title="Click to copy"
+                      title="Universal system token — click to copy"
                     >
                       {isCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                       <span>&#123;&#123;{v}&#125;&#125;</span>
@@ -279,6 +499,33 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
                   );
                 })}
               </div>
+
+              {/* Add Custom Variable in Create Mode */}
+              {isCreateMode && (
+                <div className="pt-2 flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={newVariableInput}
+                    onChange={(e) => setNewVariableInput(e.target.value)}
+                    placeholder="Add custom placeholder (e.g. promo_code)"
+                    className="px-2.5 py-1 text-xs rounded border border-[#D1D5DB] font-mono w-64 bg-white"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddCustomVariable();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomVariable}
+                    className="px-2.5 py-1 text-xs rounded bg-slate-800 text-white font-medium hover:bg-black transition-colors flex items-center gap-1"
+                  >
+                    <Plus className="h-3 w-3" />
+                    <span>Add</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Email Body Editor */}
@@ -399,15 +646,15 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
               </div>
             </div>
 
-            {/* Reset Confirmation Alert */}
-            {showResetConfirm && (
+            {/* Reset Confirmation Alert (Edit Mode only) */}
+            {!isCreateMode && showResetConfirm && (
               <div className="p-4 rounded-lg bg-[#FEF2F2] border border-[#FECACA] text-xs text-[#991B1B] flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex items-start gap-2.5">
                   <AlertTriangle className="h-4 w-4 text-[#DC2626] shrink-0 mt-0.5" />
                   <div>
                     <div className="font-bold text-[#991B1B]">Reset template to factory defaults?</div>
                     <div className="text-[11px] text-[#991B1B]/80 mt-0.5">
-                      This will discard all your customized edits and restore the official default content.
+                      This will reset ONLY this specific template ({templateKey}) to its default preset. All other email templates and customizations remain completely untouched.
                     </div>
                   </div>
                 </div>
@@ -436,15 +683,17 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
           {/* Modal Footer Controls */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 sm:px-6 py-4 border-t border-[#E5E7EB] bg-white shrink-0">
             <div className="flex items-center gap-2 w-full sm:w-auto">
-              <button
-                type="button"
-                onClick={() => setShowResetConfirm(true)}
-                disabled={isResetting || isSaving}
-                className="px-3 py-2 text-xs rounded-lg border border-[#D1D5DB] bg-white text-[#374151] hover:bg-[#F9FAFB] hover:text-black flex items-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-                <span>Reset to Default</span>
-              </button>
+              {!isCreateMode && (
+                <button
+                  type="button"
+                  onClick={() => setShowResetConfirm(true)}
+                  disabled={isResetting || isSaving}
+                  className="px-3 py-2 text-xs rounded-lg border border-[#D1D5DB] bg-white text-[#374151] hover:bg-[#F9FAFB] hover:text-black flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                  <span>Reset to Default</span>
+                </button>
+              )}
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
@@ -474,7 +723,7 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
                 className="gap-1.5 shadow-md px-5"
               >
                 {isSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                <span>Save Changes</span>
+                <span>{isCreateMode ? 'Create Template' : 'Save Changes'}</span>
               </AdminButton>
             </div>
           </div>
@@ -485,10 +734,11 @@ export const EmailTemplateEditorModal: React.FC<EmailTemplateEditorModalProps> =
       <EmailTemplatePreviewModal
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
-        templateKey={template.template_key}
-        templateName={template.name}
+        templateKey={templateKey}
+        templateName={name || template?.name || 'Email Preview'}
         subject={subject}
         htmlBody={htmlBody}
+        availableVariables={availableVariables}
       />
     </>
   );
