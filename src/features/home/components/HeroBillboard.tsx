@@ -1,8 +1,149 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play, ChevronDown, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, ChevronDown, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import type { CmsHeroContent, CmsHeroSlide } from '@/services/CMSService';
+
+interface HeroVideoBackgroundProps {
+  videoUrl: string;
+  desktopImage?: string;
+  mobileImage?: string;
+  headline?: string;
+}
+
+const HeroVideoBackground: React.FC<HeroVideoBackgroundProps> = ({
+  videoUrl,
+  desktopImage,
+  mobileImage,
+  headline,
+}) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const attemptPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Critical for iOS Safari, WebKit & Android Chrome
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', 'true');
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // Silent fallback for iOS Low Power Mode / battery saver:
+          // Autoplay on first touch/scroll gesture without any play button
+          const handleFirstInteraction = () => {
+            if (videoRef.current) {
+              videoRef.current
+                .play()
+                .then(() => setIsPlaying(true))
+                .catch(() => {});
+            }
+            window.removeEventListener('touchstart', handleFirstInteraction);
+            window.removeEventListener('touchmove', handleFirstInteraction);
+            window.removeEventListener('click', handleFirstInteraction);
+            window.removeEventListener('scroll', handleFirstInteraction);
+          };
+
+          window.addEventListener('touchstart', handleFirstInteraction, { once: true, passive: true });
+          window.addEventListener('touchmove', handleFirstInteraction, { once: true, passive: true });
+          window.addEventListener('click', handleFirstInteraction, { once: true, passive: true });
+          window.addEventListener('scroll', handleFirstInteraction, { once: true, passive: true });
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', 'true');
+
+    attemptPlay();
+
+    // Pause when off-screen to preserve mobile resources; resume when in view
+    let observer: IntersectionObserver | null = null;
+    if ('IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              attemptPlay();
+            } else if (videoRef.current && !videoRef.current.paused) {
+              videoRef.current.pause();
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      observer.observe(video);
+    }
+
+    return () => {
+      if (observer) observer.disconnect();
+    };
+  }, [videoUrl, attemptPlay]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
+      {/* 1. Underlying Luxury Image (guarantees zero black flash while video buffers or decodes) */}
+      <picture className="w-full h-full block">
+        {mobileImage && (
+          <source media="(max-width: 640px)" srcSet={mobileImage} />
+        )}
+        <motion.img
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1.12 }}
+          transition={{ duration: 10, ease: 'easeOut' }}
+          src={desktopImage || mobileImage}
+          alt={headline || 'Philz Signature Fragrance'}
+          className="w-full h-full object-cover object-center"
+          loading="eager"
+          fetchPriority="high"
+        />
+      </picture>
+
+      {/* 2. Fullscreen Looping Video (smoothly crossfades in once playback begins) */}
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        autoPlay
+        muted
+        loop
+        playsInline
+        webkit-playsinline="true"
+        preload="auto"
+        controls={false}
+        disablePictureInPicture
+        disableRemotePlayback
+        onLoadedMetadata={attemptPlay}
+        onCanPlay={attemptPlay}
+        onPlaying={() => setIsPlaying(true)}
+        className={cn(
+          'absolute inset-0 w-full h-full object-cover object-center scale-105 pointer-events-none transition-opacity duration-700 ease-out',
+          isPlaying ? 'opacity-100' : 'opacity-0'
+        )}
+      >
+        <source src={videoUrl} type={videoUrl.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
+      </video>
+    </div>
+  );
+};
 
 export interface HeroBillboardProps {
   hero: CmsHeroContent;
@@ -214,6 +355,11 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
+      onTouchCancel={() => {
+        touchStartX.current = null;
+        touchStartY.current = null;
+        setIsPaused(false);
+      }}
       className="group relative h-screen min-h-[700px] w-full flex flex-col justify-between overflow-hidden bg-black focus:outline-none select-none"
     >
       {/* =========================================================================
@@ -229,16 +375,11 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
           className="absolute inset-0 z-0 overflow-hidden"
         >
           {currentSlide.video_url ? (
-            <video
-              src={currentSlide.video_url}
-              autoPlay
-              muted
-              loop
-              playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              poster={currentSlide.desktop_image || currentSlide.mobile_image}
-              className="w-full h-full object-cover object-center scale-105"
+            <HeroVideoBackground
+              videoUrl={currentSlide.video_url}
+              desktopImage={currentSlide.desktop_image}
+              mobileImage={currentSlide.mobile_image}
+              headline={currentSlide.headline}
             />
           ) : (
             <picture className="w-full h-full block">
@@ -450,18 +591,6 @@ export const HeroBillboard: React.FC<HeroBillboardProps> = ({ hero }) => {
           <span className="font-mono text-xs text-white/40 tracking-wider">
             0{slideCount}
           </span>
-
-          {/* Autoplay Pause / Play Toggle */}
-          {slideCount > 1 && (
-            <button
-              type="button"
-              onClick={() => setIsPaused(!isPaused)}
-              aria-label={isPaused ? 'Resume autoplay' : 'Pause autoplay'}
-              className="p-1 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors ml-2"
-            >
-              {isPaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
-            </button>
-          )}
         </div>
 
         {/* Centered Luxury Scroll Indicator */}

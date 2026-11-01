@@ -155,6 +155,16 @@ img, video, svg, canvas, .no-theme-transition,
   transition: none !important;
 }
 
+/* Suppress WebKit/iOS native video controls and play button overlay */
+video::-webkit-media-controls,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+}
+
 /* ===================================================================
    ADMIN DESIGN SYSTEM — fully independent of the storefront.
    The storefront stays the luxury Philz Signature experience; the

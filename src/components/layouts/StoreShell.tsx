@@ -25,7 +25,7 @@ export const StoreShell: React.FC = () => {
       {/* Main Viewport Content */}
       <main
         className={cn(
-          'flex-1 pb-[calc(4.25rem+env(safe-area-inset-bottom,0px))] lg:pb-0',
+          'flex-1',
           !isHomePage && 'pt-24 sm:pt-28'
         )}
       >

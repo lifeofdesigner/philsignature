@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck, Truck, MessageSquare, Gift, Instagram, Sparkle
 import { useStoreAppearance } from '@/features/cms/hooks/useStoreAppearance';
 import { useStoreSettings } from '@/hooks/useStoreSettings';
 import { cmsService, CMSService, type CmsFooterLink } from '@/services/CMSService';
+import { cn } from '@/lib/utils';
 
 export const Footer: React.FC = () => {
   const { appearance } = useStoreAppearance();
@@ -228,7 +229,14 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Copyright & Legal Links */}
-      <div className="border-t border-theme pt-6 pb-20 lg:pb-6 bg-surface/60">
+      <div
+        className={cn(
+          'border-t border-theme pt-6 bg-surface/60',
+          footer.credit_text
+            ? 'pb-6'
+            : 'pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pb-6'
+        )}
+      >
         <div className="container mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-text-muted-theme space-y-2 sm:space-y-0 font-light">
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <p>{copyrightText}</p>
@@ -257,7 +265,7 @@ export const Footer: React.FC = () => {
 
       {/* Site Credit (super admin managed) */}
       {footer.credit_text && (
-        <div className="border-t border-theme py-4 bg-surface">
+        <div className="border-t border-theme pt-4 pb-[calc(5.5rem+env(safe-area-inset-bottom,0px))] lg:pb-4 bg-surface">
           <div className="container mx-auto px-4 sm:px-8 text-center">
             {footer.credit_url ? (
               <a
