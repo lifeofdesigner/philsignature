@@ -21,11 +21,11 @@ const HeroVideoBackground: React.FC<HeroVideoBackgroundProps> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const attemptPlay = useCallback(() => {
+  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Critical for iOS Safari, WebKit & Android Chrome
+    // Critical for iOS Safari, WebKit & Android Chrome autoplay policy
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
@@ -35,69 +35,11 @@ const HeroVideoBackground: React.FC<HeroVideoBackgroundProps> = ({
 
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch(() => {
-          // Silent fallback for iOS Low Power Mode / battery saver:
-          // Autoplay on first touch/scroll gesture without any play button
-          const handleFirstInteraction = () => {
-            if (videoRef.current) {
-              videoRef.current
-                .play()
-                .then(() => setIsPlaying(true))
-                .catch(() => {});
-            }
-            window.removeEventListener('touchstart', handleFirstInteraction);
-            window.removeEventListener('touchmove', handleFirstInteraction);
-            window.removeEventListener('click', handleFirstInteraction);
-            window.removeEventListener('scroll', handleFirstInteraction);
-          };
-
-          window.addEventListener('touchstart', handleFirstInteraction, { once: true, passive: true });
-          window.addEventListener('touchmove', handleFirstInteraction, { once: true, passive: true });
-          window.addEventListener('click', handleFirstInteraction, { once: true, passive: true });
-          window.addEventListener('scroll', handleFirstInteraction, { once: true, passive: true });
-        });
+      playPromise.catch(() => {
+        // Handled silently - onCanPlay provides fallback trigger
+      });
     }
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
-    video.setAttribute('muted', '');
-    video.setAttribute('playsinline', '');
-    video.setAttribute('webkit-playsinline', 'true');
-
-    attemptPlay();
-
-    // Pause when off-screen to preserve mobile resources; resume when in view
-    let observer: IntersectionObserver | null = null;
-    if ('IntersectionObserver' in window) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              attemptPlay();
-            } else if (videoRef.current && !videoRef.current.paused) {
-              videoRef.current.pause();
-            }
-          });
-        },
-        { threshold: 0.15 }
-      );
-      observer.observe(video);
-    }
-
-    return () => {
-      if (observer) observer.disconnect();
-    };
-  }, [videoUrl, attemptPlay]);
+  }, [videoUrl]);
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -131,8 +73,11 @@ const HeroVideoBackground: React.FC<HeroVideoBackgroundProps> = ({
         controls={false}
         disablePictureInPicture
         disableRemotePlayback
-        onLoadedMetadata={attemptPlay}
-        onCanPlay={attemptPlay}
+        onCanPlay={() => {
+          if (videoRef.current && videoRef.current.paused) {
+            videoRef.current.play().catch(() => {});
+          }
+        }}
         onPlaying={() => setIsPlaying(true)}
         className={cn(
           'absolute inset-0 w-full h-full object-cover object-center scale-105 pointer-events-none transition-opacity duration-700 ease-out',
