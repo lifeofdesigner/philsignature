@@ -252,6 +252,9 @@ export class PaymentService {
 
       // If Paystack inline widget is loaded and the server returned a public key, use the popup
       if (window.PaystackPop && backendInit?.publicKey) {
+        // Paystack fires both `callback` (on success) AND `onClose` (always).
+        // This flag prevents onClose from triggering onCancel after a successful payment.
+        let paymentSucceeded = false;
         const handler = window.PaystackPop.setup({
           key: backendInit.publicKey,
           email: options.email,
@@ -269,8 +272,13 @@ export class PaymentService {
               },
             ],
           },
-          callback: (response) => options.onSuccess(response.reference || finalReference),
-          onClose: () => options.onCancel(),
+          callback: (response) => {
+            paymentSucceeded = true;
+            options.onSuccess(response.reference || finalReference);
+          },
+          onClose: () => {
+            if (!paymentSucceeded) options.onCancel();
+          },
         });
         handler.openIframe();
         return;

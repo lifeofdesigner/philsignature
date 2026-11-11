@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCart } from '@/features/cart/hooks/useCart';
@@ -374,11 +374,19 @@ export function useCheckout() {
     },
   });
 
+  // Ref-based re-entry guard: prevents duplicate orders from rapid double-clicks
+  // before React re-renders and disables the button via isSubmitting.
+  const isHandlingPayment = useRef(false);
+
   // 7. Complete Checkout and Trigger Payment Gateway
   const handleProceedToPayment = async () => {
+    if (isHandlingPayment.current) return;
+    isHandlingPayment.current = true;
+
     // If not authenticated and either guest is not allowed or hasn't been selected yet, gate user
     if (!user) {
       if (!guestCheckoutEnabled || !isGuestAccepted) {
+        isHandlingPayment.current = false;
         setIsAuthModalOpen(true);
         return;
       }
@@ -482,6 +490,8 @@ export function useCheckout() {
       const msg = err instanceof Error ? err.message : 'Could not complete your order. Please try again.';
       setCheckoutError(msg);
       setIsProcessingPayment(false);
+    } finally {
+      isHandlingPayment.current = false;
     }
   };
 

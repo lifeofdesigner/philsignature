@@ -3,7 +3,6 @@ import crypto from 'crypto';
 import { getGatewayCredentials } from '../_lib/gatewaySettings.js';
 import { markOrderPaid } from '../_lib/confirmPayment.js';
 import { triggerInventoryUpdate } from '../_lib/inventoryService.js';
-import { sendAllTransactionalEmails } from '../_lib/emailService.js';
 import { supabaseAdmin } from '../_lib/supabaseAdmin.js';
 
 export const config = {
@@ -323,21 +322,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error('[Paystack Webhook] Error triggering inventory updates:', invErr);
     }
 
-    // 8. Send All Transactional Emails (Payment confirmation, order confirmation, shipping updates)
-    try {
-      await sendAllTransactionalEmails(
-        confirmedOrder,
-        confirmedOrder.items || [],
-        {
-          reference,
-          amountNaira: verifiedAmountNaira,
-          gateway: 'paystack',
-          paidAt: verifiedData.paid_at || new Date().toISOString(),
-        }
-      );
-    } catch (emailErr) {
-      console.error('[Paystack Webhook] Error sending transactional emails:', emailErr);
-    }
+    // NOTE: transactional emails are already dispatched inside markOrderPaid.
+    // Do NOT call sendAllTransactionalEmails here — that would send every email twice.
 
     return res.status(200).json({
       received: true,
