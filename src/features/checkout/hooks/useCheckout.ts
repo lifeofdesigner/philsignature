@@ -32,7 +32,7 @@ export function useCheckout() {
   const queryClient = useQueryClient();
   const { items, subtotal, clearCart } = useCart();
   const { user, profile } = useAuth();
-  const { guestCheckoutEnabled } = useStoreSettings();
+  const { guestCheckoutEnabled, isLoading: isSettingsLoading } = useStoreSettings();
 
   // Track if user explicitly opted to continue as guest in this checkout session
   const [isGuestAccepted, setIsGuestAccepted] = useState<boolean>(() => {
@@ -527,6 +527,7 @@ export function useCheckout() {
     isAuthModalOpen,
     setIsAuthModalOpen,
     guestCheckoutEnabled,
+    isSettingsLoading,
     isGuestAccepted,
     acceptGuestCheckout,
     bankDetails:

@@ -21,14 +21,20 @@ export const CheckoutPage: React.FC = () => {
   const [showAuthGate, setShowAuthGate] = useState(false);
 
   // If user is not signed in and has not accepted guest checkout, show the gate modal
+  // Wait for both auth AND settings to resolve before making gate decision
   useEffect(() => {
-    if (!isAuthLoading && !user && !checkout.isGuestAccepted) {
-      checkout.acceptGuestCheckout();
-      setShowAuthGate(false);
+    if (isAuthLoading || checkout.isSettingsLoading) return;
+    if (!user && !checkout.isGuestAccepted) {
+      if (checkout.guestCheckoutEnabled) {
+        checkout.acceptGuestCheckout();
+        setShowAuthGate(false);
+      } else {
+        setShowAuthGate(true);
+      }
     } else if (user || checkout.isGuestAccepted) {
       setShowAuthGate(false);
     }
-  }, [user, isAuthLoading, checkout.isGuestAccepted]);
+  }, [user, isAuthLoading, checkout.isGuestAccepted, checkout.guestCheckoutEnabled, checkout.isSettingsLoading]);
 
   const isAddressValid = Boolean(
     checkout.addressForm.firstName.trim() &&
