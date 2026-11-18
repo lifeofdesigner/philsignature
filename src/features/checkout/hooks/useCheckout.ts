@@ -291,14 +291,9 @@ export function useCheckout() {
     mutationFn: async () => {
       setCheckoutError(null);
 
-      // Security check: Customer must either be authenticated OR guest checkout must be explicitly enabled and accepted
-      if (!user) {
-        if (!guestCheckoutEnabled) {
-          throw new Error('Please sign in or create an account before completing your order.');
-        }
-        if (!isGuestAccepted) {
-          throw new Error('Please choose how you would like to continue with your checkout.');
-        }
+      // Security check: Customer must either be authenticated OR have explicitly accepted guest checkout
+      if (!user && !isGuestAccepted) {
+        throw new Error('Please choose how you would like to continue with your checkout.');
       }
 
       // Validate required address fields
@@ -376,12 +371,10 @@ export function useCheckout() {
 
   // 7. Complete Checkout and Trigger Payment Gateway
   const handleProceedToPayment = async () => {
-    // If not authenticated and either guest is not allowed or hasn't been selected yet, gate user
-    if (!user) {
-      if (!guestCheckoutEnabled || !isGuestAccepted) {
-        setIsAuthModalOpen(true);
-        return;
-      }
+    // If not authenticated and guest checkout hasn't been accepted, gate user
+    if (!user && !isGuestAccepted) {
+      setIsAuthModalOpen(true);
+      return;
     }
 
     try {
