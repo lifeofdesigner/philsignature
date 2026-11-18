@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Heart, Check, Plus, Minus, ShieldCheck, Truck, Zap, Sparkles, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
