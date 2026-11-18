@@ -115,30 +115,30 @@ export class OrderRepository extends BaseRepository {
     const decrementedProducts: { productId: string; quantity: number }[] = [];
 
     try {
-      // 1. Insert Order Header
+      // 1. Insert Order Header via SECURITY DEFINER RPC so the RETURNING clause
+      //    is not blocked by the SELECT RLS policy for anonymous (guest) users.
       const { data: order, error: orderError } = await this.client
-        .from('orders')
-        .insert({
-          order_number: financialSummary.orderNumber,
-          customer_id: input.customer_id || null,
-          email: input.email,
-          phone: input.phone,
-          financial_status: 'pending',
-          fulfillment_status: 'pending',
-          subtotal: financialSummary.subtotal,
-          shipping_amount: financialSummary.shipping,
-          discount_amount: financialSummary.discount,
-          tax_amount: financialSummary.tax,
-          tax_rate: financialSummary.taxRate ?? 0,
-          total_amount: financialSummary.total,
-          payment_method: input.payment_method,
-          shipping_address: input.shipping_address,
-          billing_address: input.billing_address || input.shipping_address,
-          notes: input.notes || null,
-          customer_notes: input.notes || null,
-          coupon_code: input.coupon_code || null,
+        .rpc('create_order_header', {
+          order_data: {
+            order_number: financialSummary.orderNumber,
+            customer_id: input.customer_id || null,
+            email: input.email,
+            phone: input.phone,
+            financial_status: 'pending',
+            fulfillment_status: 'pending',
+            subtotal: financialSummary.subtotal,
+            shipping_amount: financialSummary.shipping,
+            discount_amount: financialSummary.discount,
+            tax_amount: financialSummary.tax,
+            tax_rate: financialSummary.taxRate ?? 0,
+            total_amount: financialSummary.total,
+            payment_method: input.payment_method,
+            shipping_address: input.shipping_address,
+            billing_address: input.billing_address || input.shipping_address,
+            notes: input.notes || null,
+            coupon_code: input.coupon_code || null,
+          },
         })
-        .select()
         .single();
 
       if (orderError) this.handleError(orderError, 'Failed to insert order header');
