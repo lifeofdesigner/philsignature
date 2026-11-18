@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBag, Heart, Check, Plus, Minus, ShieldCheck, Truck, Zap, Sparkles, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,8 +6,6 @@ import { ROUTES } from '@/constants/routes';
 import type { Product, ProductVariant } from '@/types/database';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
-import { useAuth } from '@/hooks/useAuth';
-import { CheckoutAuthModal } from '@/features/checkout/components';
 
 export interface ProductPurchaseCardProps {
   product: Product;
@@ -22,7 +20,6 @@ const DEFAULT_FALLBACK_VARIANTS = [
 
 export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ product }) => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist, isToggling } = useWishlist();
 
@@ -67,7 +64,6 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>(defaultVariant);
   const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Keep selected variant synchronized if product changes
   React.useEffect(() => {
@@ -120,10 +116,6 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
       name: selectedVariant.name || `${selectedVariant.size_ml}ml`,
       price: currentPrice,
     });
-    if (!user) {
-      setIsAuthModalOpen(true);
-      return;
-    }
     navigate(ROUTES.CHECKOUT);
   };
 
@@ -324,13 +316,6 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
         </div>
       </div>
 
-      {/* Checkout Authentication Gate Modal */}
-      <CheckoutAuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onSignIn={() => navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
-        onCreateAccount={() => navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
-      />
     </div>
   );
 };

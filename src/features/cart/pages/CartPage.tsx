@@ -1,24 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants/routes';
 import { useCart } from '@/hooks/useCart';
-import { useAuth } from '@/hooks/useAuth';
-import { CheckoutAuthModal } from '@/features/checkout/components';
 
 export const CartPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { items, subtotal, updateQuantity, removeItem, clearCart } = useCart();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const handleProceedToCheckout = () => {
-    if (!user) {
-      setIsAuthModalOpen(true);
-      return;
-    }
     navigate(ROUTES.CHECKOUT);
   };
 
@@ -182,13 +174,6 @@ export const CartPage: React.FC = () => {
           </div>
         )}
 
-        {/* Sign in gate modal */}
-        <CheckoutAuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
-          onSignIn={() => navigate(ROUTES.LOGIN, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
-          onCreateAccount={() => navigate(ROUTES.SIGNUP, { state: { from: { pathname: ROUTES.CHECKOUT } } })}
-        />
       </div>
     </div>
   );
