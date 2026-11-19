@@ -10,6 +10,10 @@ export abstract class BaseRepository {
     if (error instanceof Error) {
       throw new SupabaseError(error.message, error);
     }
+    // Supabase PostgrestError has a .message property but is not an instanceof Error
+    if (error && typeof error === 'object' && 'message' in error) {
+      throw new SupabaseError((error as { message: string }).message, error);
+    }
     throw new SupabaseError(fallbackMessage, error);
   }
 }
