@@ -41,23 +41,27 @@ export const ShippingStep: React.FC<ShippingStepProps> = ({
       </div>
 
       {isLoading ? (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-20 bg-luxury-card border border-luxury-border animate-pulse rounded-sm" />
           ))}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           {shippingMethods.map((method) => {
             const isSelected = selectedMethodId === method.id;
             const isFree = method.free_threshold && subtotal >= method.free_threshold;
             const effectivePrice = isFree ? 0 : method.price;
+            const isPickup =
+              method.name.toLowerCase().includes('pickup') ||
+              method.name.toLowerCase().includes('store') ||
+              (method.price === 0 && !method.free_threshold);
 
             return (
               <label
                 key={method.id}
                 onClick={() => onSelectMethod(method.id)}
-                className={`flex items-start justify-between p-5 border cursor-pointer transition-all duration-200 rounded-sm shadow-xs ${
+                className={`flex items-start justify-between p-5 border cursor-pointer transition-all duration-200 rounded-sm shadow-xs ${isPickup ? 'lg:col-span-2' : ''} ${
                   isSelected
                     ? 'border-luxury-gold bg-luxury-gold/5 shadow-md shadow-luxury-gold/5'
                     : 'border-luxury-border bg-luxury-card hover:border-luxury-gold/40'
