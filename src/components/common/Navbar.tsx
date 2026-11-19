@@ -117,12 +117,12 @@ export const Navbar: React.FC = () => {
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
         'w-full transition-all duration-400 select-none pointer-events-auto z-40',
-        isLight
-          ? isScrolled
+        isScrolled
+          ? isLight
             ? 'bg-white backdrop-blur-2xl border-b border-black/10 py-3 sm:py-3.5 shadow-[0_1px_12px_rgba(0,0,0,0.08)]'
-            : 'bg-white/80 backdrop-blur-xl border-b border-black/10 py-4 sm:py-6'
-          : isScrolled
-            ? 'bg-black/85 backdrop-blur-2xl border-b border-white/10 py-3 sm:py-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+            : 'bg-black/85 backdrop-blur-2xl border-b border-white/10 py-3 sm:py-3.5 shadow-[0_12px_40px_rgba(0,0,0,0.85)]'
+          : isLight
+            ? 'bg-white/90 backdrop-blur-xl border-b border-black/10 py-4 sm:py-6'
             : 'bg-transparent border-b border-transparent py-4 sm:py-6'
       )}
     >
@@ -146,7 +146,7 @@ export const Navbar: React.FC = () => {
                   onError={() => setLogoLoadError(true)}
                   className={cn(
                     'brand-navbar-logo w-auto object-contain transition-all duration-300',
-                    isLight
+                    isScrolled && isLight
                       ? 'drop-shadow-none brightness-0'
                       : 'drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)]'
                   )}
