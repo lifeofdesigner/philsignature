@@ -267,6 +267,13 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
           </button>
         </div>
 
+        {/* Low stock warning */}
+        {!isOutOfStock && (selectedVariant?.stock_quantity ?? product.stock_quantity) > 0 && (selectedVariant?.stock_quantity ?? product.stock_quantity) <= 5 && (
+          <p className="text-[11px] text-amber-400/90 font-mono">
+            Only {selectedVariant?.stock_quantity ?? product.stock_quantity} left in stock
+          </p>
+        )}
+
         {/* Action Buttons: Add to Cart & Buy Now */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Button
@@ -282,7 +289,7 @@ export const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({ produc
                 <span>Added to Bag</span>
               </>
             ) : isOutOfStock ? (
-              <span>Currently Unavailable</span>
+              <span>Out of Stock</span>
             ) : (
               <>
                 <ShoppingBag className="h-4 w-4" />

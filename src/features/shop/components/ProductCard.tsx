@@ -81,15 +81,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, priority = fa
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10 pointer-events-none">
-          {product.is_bestseller && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-gold text-black font-semibold shadow-xs">
-              Bestseller
+          {product.stock_quantity <= 0 ? (
+            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-zinc-700/90 text-zinc-300 font-semibold shadow-xs backdrop-blur-sm">
+              Out of Stock
             </span>
-          )}
-          {product.is_new_arrival && (
-            <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-white text-black font-semibold shadow-xs">
-              New
-            </span>
+          ) : (
+            <>
+              {product.is_bestseller && (
+                <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-luxury-gold text-black font-semibold shadow-xs">
+                  Bestseller
+                </span>
+              )}
+              {product.is_new_arrival && (
+                <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-white text-black font-semibold shadow-xs">
+                  New
+                </span>
+              )}
+            </>
           )}
           {product.fragrance_family && (
             <span className="px-2 py-0.5 text-[9px] uppercase tracking-wider bg-black/70 border border-luxury-border text-luxury-sand backdrop-blur-sm">
